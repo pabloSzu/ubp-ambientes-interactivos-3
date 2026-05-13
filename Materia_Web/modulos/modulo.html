@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PAI3 | Módulo</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../assets/css/campus.css" />
+  </head>
+  <body>
+    <header class="campusTop">
+      <a class="campusBrand" href="../index.html" aria-label="Inicio">
+        <span>PAI3</span>
+        <strong id="topTitle">Módulo</strong>
+      </a>
+      <nav class="globalNav" aria-label="Navegación global">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#modulos">Módulos</a>
+        <a href="../evaluacion.html">Evaluación integradora</a>
+      </nav>
+    </header>
+
+    <main class="campusShell">
+      <aside class="campusAside" aria-label="Navegación entre módulos">
+        <p class="asideLabel">Módulos</p>
+        <a href="modulo1.html">Módulo 1</a>
+        <a href="modulo.html?m=2">Módulo 2</a>
+        <a href="modulo3.html">Módulo 3</a>
+        <a href="modulo.html?m=4">Módulo 4</a>
+        <a href="modulo.html?m=5">Módulo 5</a>
+        <a href="modulo.html?m=6">Módulo 6</a>
+        <a href="modulo.html?m=7">Módulo 7</a>
+      </aside>
+
+      <section class="campusMain">
+        <section class="moduleHero">
+          <div>
+            <p class="eyebrow" id="moduleKicker">Módulo</p>
+            <h1 id="moduleTitle">Cargando módulo</h1>
+            <p id="moduleIntro"></p>
+            <nav class="moduleNav" aria-label="Secciones del módulo">
+              <a href="#microobjetivos">Microobjetivos</a>
+              <a href="#glosario">Glosario</a>
+              <a href="#contenidos">Contenidos</a>
+              <a href="#actividades">Actividades</a>
+            </nav>
+          </div>
+          <aside class="moduleStatus">
+            <span>Carpeta del módulo</span>
+            <strong id="moduleFolder">Módulos / Módulo X</strong>
+            <p>Microobjetivos, glosario, contenidos y actividades.</p>
+          </aside>
+        </section>
+
+        <section class="moduleLayout">
+          <aside class="moduleSide">
+            <a href="#microobjetivos">Microobjetivos</a>
+            <a href="#glosario">Glosario</a>
+            <a href="#contenidos">Contenidos</a>
+            <a href="#actividades">Actividades</a>
+          </aside>
+
+          <div>
+            <section id="microobjetivos" class="modulePanel">
+              <p class="eyebrow">Microobjetivos</p>
+              <h2>Qué debería lograr el estudiante</h2>
+              <div id="objectives" class="objectiveList"></div>
+            </section>
+
+            <section id="glosario" class="modulePanel">
+              <p class="eyebrow">Glosario</p>
+              <h2>Palabras técnicas clave</h2>
+              <div id="terms" class="termGrid"></div>
+            </section>
+
+            <section id="contenidos" class="modulePanel">
+              <p class="eyebrow">Contenidos</p>
+              <h2>Clase y desarrollo conceptual</h2>
+              <div id="contents" class="contentGrid"></div>
+            </section>
+
+            <section id="actividades" class="modulePanel">
+              <p class="eyebrow">Actividades</p>
+              <h2>Entrega evaluable del módulo</h2>
+              <div id="activities" class="activitySteps"></div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="../assets/js/campus.js"></script>
+  </body>
+</html>

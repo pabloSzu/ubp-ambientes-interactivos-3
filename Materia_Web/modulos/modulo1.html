@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PAI3 · Módulo 1 · Interactividad</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../assets/css/modulo1.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="../index.html" aria-label="Volver al indice">
+        <span>PAI3</span>
+        <strong>Módulo 1</strong>
+      </a>
+      <nav aria-label="Navegación">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#modulos">Módulos</a>
+        <a href="../evaluacion.html">Evaluación</a>
+        <a href="#niveles">Niveles</a>
+        <a href="#ginga">Ginga</a>
+        <a href="#plataformas">Plataformas</a>
+        <a href="#actividad">Actividad</a>
+        <button id="openGuide" type="button">Guía</button>
+      </nav>
+    </header>
+
+    <main id="inicio">
+      <section class="hero">
+        <div class="heroText">
+          <p class="eyebrow">Clase 1 · Del espectador al participante</p>
+          <h1>Interactividad es cuando la pantalla te escucha.</h1>
+          <p class="lead">
+            En este módulo aprendés a mirar una experiencia digital con ojos de
+            diseñador de sistemas: qué puede hacer el usuario, cómo responde la
+            interfaz y cuánto cambia realmente la experiencia.
+          </p>
+          <div class="ctaRow">
+            <a class="btn primary" href="#niveles">Empezar misión</a>
+            <button id="startGuide" class="btn" type="button">Explicamelo simple</button>
+          </div>
+        </div>
+
+        <section class="missionCard" aria-label="Resumen visual del módulo">
+          <div class="missionHeader">
+            <span class="pulse"></span>
+            <strong>Panel de misión</strong>
+          </div>
+          <div class="missionMap">
+            <article class="missionNode passive" data-tip="Antes: el usuario solo recibía señal.">
+              <b>1</b><span>TV pasiva</span>
+            </article>
+            <article class="missionNode ginga" data-tip="TV digital: señal + datos + aplicación.">
+              <b>2</b><span>Ginga</span>
+            </article>
+            <article class="missionNode stream" data-tip="Streaming: elegir, buscar, continuar, recomendar.">
+              <b>3</b><span>Streaming</span>
+            </article>
+            <article class="missionNode live" data-tip="Interacción colectiva: tus acciones afectan a otros.">
+              <b>4</b><span>En vivo</span>
+            </article>
+          </div>
+          <p id="missionTip" class="missionTip">Tocá una estación para ver la idea.</p>
+        </section>
+      </section>
+
+      <section class="explainSimple">
+        <div class="sectionTitle">
+          <p class="eyebrow">Explicado para cualquiera</p>
+          <h2>Una experiencia interactiva tiene 3 piezas</h2>
+        </div>
+        <div class="threeSteps">
+          <article>
+            <span>1</span>
+            <h3>Acción</h3>
+            <p>La persona hace algo: toca, elige, busca, vota, escribe o configura.</p>
+          </article>
+          <article>
+            <span>2</span>
+            <h3>Proceso</h3>
+            <p>El sistema interpreta esa acción. Decide qué mostrar, guardar o cambiar.</p>
+          </article>
+          <article>
+            <span>3</span>
+            <h3>Feedback</h3>
+            <p>La interfaz responde. Si no ves respuesta, sentís que el sistema no te escuchó.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="programMap" aria-label="Mapa del programa en el módulo 1">
+        <div class="sectionTitle">
+          <p class="eyebrow">Por qué esta clase sigue el programa</p>
+          <h2>Lo formal convertido en experiencia</h2>
+          <p>
+            El módulo no es una página linda suelta: cada bloque responde a un
+            punto del programa y prepara la actividad evaluable.
+          </p>
+        </div>
+        <div class="programGrid">
+          <article>
+            <span>Concepto</span>
+            <h3>Interactividad</h3>
+            <p>Se trabaja como acción, proceso y feedback para que no quede en definición memorizada.</p>
+          </article>
+          <article>
+            <span>Contexto</span>
+            <h3>TV digital</h3>
+            <p>Se conecta ISDB-Tb, datos, Ginga y aplicaciones como ecosistema técnico.</p>
+          </article>
+          <article>
+            <span>Caso</span>
+            <h3>DEVENDRA</h3>
+            <p>Se usa como ejemplo argentino para imaginar servicios interactivos con sentido público.</p>
+          </article>
+          <article>
+            <span>Análisis</span>
+            <h3>Netflix, Flow, DIRECTV Play</h3>
+            <p>Se miran por niveles, navegación, usuario, feedback y experiencia.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="niveles" class="chapter">
+        <div class="sectionTitle">
+          <p class="eyebrow">Interactivo principal</p>
+          <h2>Los 5 niveles de interactividad</h2>
+          <p>
+            Cada nivel aumenta el poder del usuario. Hacé clic y mirá la historia
+            en tres pasos: usuario, sistema y feedback.
+          </p>
+        </div>
+
+        <div class="levelExperience">
+          <aside class="levelMenu" aria-label="Selector de nivel">
+            <button class="levelButton active" data-level="0"><b>01</b> Reactividad</button>
+            <button class="levelButton" data-level="1"><b>02</b> Selección</button>
+            <button class="levelButton" data-level="2"><b>03</b> Personalización</button>
+            <button class="levelButton" data-level="3"><b>04</b> Cocreación</button>
+            <button class="levelButton" data-level="4"><b>05</b> Colectiva</button>
+          </aside>
+
+          <section class="levelStory">
+            <div class="levelIntro">
+              <p id="levelNumber" class="eyebrow">Nivel 1</p>
+              <h3 id="levelTitle">Reactividad</h3>
+              <p id="levelDescription">
+                El usuario controla reproducción básica, pero no transforma el
+                contenido.
+              </p>
+              <div class="powerMeter">
+                <span>Poder real del usuario</span>
+                <div><i id="powerFill"></i></div>
+              </div>
+            </div>
+
+            <div class="storyPanels" aria-live="polite">
+              <article class="storyPanel action">
+                <small>Usuario</small>
+                <div id="userIcon" class="bigIcon">▶</div>
+                <p id="userAction">Pausa o avanza un video.</p>
+              </article>
+              <article class="storyPanel process">
+                <small>Sistema</small>
+                <div id="systemIcon" class="bigIcon">⏱</div>
+                <p id="systemProcess">Actualiza el estado de reproducción.</p>
+              </article>
+              <article class="storyPanel feedback">
+                <small>Feedback</small>
+                <div id="feedbackIcon" class="bigIcon">✓</div>
+                <p id="feedbackText">La barra de progreso cambia.</p>
+              </article>
+            </div>
+          </section>
+
+          <aside class="exampleBox">
+            <h3>Ejemplos reales</h3>
+            <div id="examples"></div>
+            <button id="explainLevel" class="btn small" type="button">Explicar nivel</button>
+          </aside>
+        </div>
+      </section>
+
+      <section id="ginga" class="chapter gingaChapter">
+        <div class="sectionTitle">
+          <p class="eyebrow">Contenido formal del programa</p>
+          <h2>TV digital, Ginga y DEVENDRA</h2>
+          <p>
+            Esta parte baja el concepto a la materia: la televisión digital no
+            solo transmite video; puede transportar datos y ejecutar aplicaciones.
+          </p>
+        </div>
+
+        <div class="gingaBoard">
+          <div class="pipeline" aria-label="Pipeline ISDB-Tb Ginga DEVENDRA">
+            <button class="pipe active" data-pipe="isdb">ISDB-Tb</button>
+            <button class="pipe" data-pipe="datos">Datos</button>
+            <button class="pipe" data-pipe="ginga">Ginga</button>
+            <button class="pipe" data-pipe="ncl">NCL/Lua</button>
+            <button class="pipe devendra" data-pipe="devendra">DEVENDRA</button>
+            <button class="pipe" data-pipe="usuario">Usuario</button>
+          </div>
+
+          <section class="gingaDetail">
+            <div>
+              <p id="pipeKicker" class="eyebrow">Paso seleccionado</p>
+              <h3 id="pipeTitle">ISDB-Tb</h3>
+              <p id="pipeText">
+                Estándar de TV digital terrestre adoptado por Argentina. Permite
+                mejor calidad y soporte para datos adicionales.
+              </p>
+            </div>
+            <div class="tvMock" aria-label="Mockup de aplicación Ginga">
+              <div class="tvTop">Aplicación interactiva</div>
+              <div class="tvGrid">
+                <button>Guía</button>
+                <button>Clima</button>
+                <button>Educación</button>
+                <button>Alertas</button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="devendraFocus">
+          <div class="focusVisual">
+            <img src="../assets/m1/devendra_case.png" alt="Caso visual DEVENDRA aplicado a TV digital interactiva" />
+          </div>
+          <div class="focusCopy">
+            <p class="eyebrow">Caso para entenderlo sin vueltas</p>
+            <h3>DEVENDRA como puente entre idea y prototipo</h3>
+            <p>
+              En clase lo usamos así: una transmisión deja de ser solo video y
+              se transforma en un servicio. El alumno piensa qué dato viaja,
+              qué pantalla aparece, qué decide el usuario y qué feedback recibe.
+            </p>
+            <div class="focusSteps">
+              <article>
+                <b>1</b>
+                <span>Programa de TV</span>
+                <p>Hay contenido principal: noticia, clase, partido, campaña o programa.</p>
+              </article>
+              <article>
+                <b>2</b>
+                <span>Aplicación Ginga</span>
+                <p>Se agrega una capa interactiva: menú, encuesta, alerta o material extra.</p>
+              </article>
+              <article>
+                <b>3</b>
+                <span>Usuario activo</span>
+                <p>La persona elige y el sistema responde. Ahí aparece la interactividad real.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="visualMuseum" aria-label="Museo visual de TV digital interactiva">
+          <div class="museumText">
+            <p class="eyebrow">Museo visual</p>
+            <h3>De mirar señal a usar servicios</h3>
+            <p>
+              Tocá cada imagen. La idea es ver el salto conceptual: de una TV
+              que solo transmite, a una pantalla que puede ejecutar servicios
+              interactivos y pedir decisiones al usuario.
+            </p>
+          </div>
+          <div class="museumGrid">
+            <button class="museumItem active" data-museum="analog">
+              <img src="../assets/m1/tv_analogica.png" alt="Ilustración de TV analógica pasiva" />
+              <span>TV analógica</span>
+            </button>
+            <button class="museumItem" data-museum="ginga">
+              <img src="../assets/m1/ginga_app.png" alt="Ilustración de aplicación Ginga en TV digital" />
+              <span>Ginga App</span>
+            </button>
+            <button class="museumItem" data-museum="devendra">
+              <img src="../assets/m1/devendra_case.png" alt="Ilustración conceptual del caso DEVENDRA" />
+              <span>DEVENDRA</span>
+            </button>
+            <button class="museumItem" data-museum="streaming">
+              <img src="../assets/m1/streaming_lab.png" alt="Ilustración de plataforma streaming interactiva" />
+              <span>Streaming actual</span>
+            </button>
+          </div>
+          <article class="museumCaption">
+            <h3 id="museumTitle">TV analógica</h3>
+            <p id="museumText">
+              Modelo de recepción: la señal viaja en una dirección y el usuario
+              no modifica la experiencia desde el sistema.
+            </p>
+          </article>
+        </section>
+
+        <section class="buildApp">
+          <div class="sectionTitle">
+            <p class="eyebrow">Mini juego conceptual</p>
+            <h3>Armá una app interactiva para TV digital</h3>
+            <p>
+              Elegí un objetivo, un dato y una respuesta del usuario. El sistema
+              te muestra qué tipo de aplicación estás diseñando.
+            </p>
+          </div>
+          <div class="builder">
+            <div class="builderColumn">
+              <h4>Objetivo</h4>
+              <button class="buildOption active" data-kind="goal" data-value="educar">Educar</button>
+              <button class="buildOption" data-kind="goal" data-value="informar">Informar</button>
+              <button class="buildOption" data-kind="goal" data-value="alertar">Alertar</button>
+            </div>
+            <div class="builderColumn">
+              <h4>Dato</h4>
+              <button class="buildOption active" data-kind="data" data-value="contenido">Contenido ampliado</button>
+              <button class="buildOption" data-kind="data" data-value="clima">Clima/localidad</button>
+              <button class="buildOption" data-kind="data" data-value="estado">Estado en vivo</button>
+            </div>
+            <div class="builderColumn">
+              <h4>Respuesta</h4>
+              <button class="buildOption active" data-kind="response" data-value="menu">Menú</button>
+              <button class="buildOption" data-kind="response" data-value="voto">Voto</button>
+              <button class="buildOption" data-kind="response" data-value="formulario">Formulario</button>
+            </div>
+            <article class="builderResult">
+              <p class="eyebrow">Resultado</p>
+              <h4 id="builderTitle">App educativa con contenido ampliado</h4>
+              <p id="builderText">
+                El usuario navega un menú para ampliar una clase o programa con
+                material complementario.
+              </p>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section id="plataformas" class="chapter">
+        <div class="sectionTitle">
+          <p class="eyebrow">Laboratorio visual</p>
+          <h2>Analizá plataformas, no las mires “de gusto”</h2>
+          <p>
+            Elegí una experiencia y tocá sus zonas calientes. La clase te muestra
+            qué mirar: intención, navegación, personalización y feedback.
+          </p>
+        </div>
+
+        <div class="platformLab">
+          <div class="platformTabs">
+            <button class="platformTab active" data-platform="streaming">Streaming</button>
+            <button class="platformTab" data-platform="hybrid">TV híbrida</button>
+            <button class="platformTab" data-platform="sports">Deportes</button>
+          </div>
+
+          <section class="screenMock" id="screenMock" aria-label="Pantalla sintética para analizar interactividad">
+            <div class="screenFrame">
+              <div id="screenContent" class="screenContent"></div>
+              <button class="hotspot search" data-hotspot="search">
+                <b>1</b><span>Intención</span>
+              </button>
+              <button class="hotspot recommend" data-hotspot="recommend">
+                <b>2</b><span>Decisión del sistema</span>
+              </button>
+              <button class="hotspot state" data-hotspot="state">
+                <b>3</b><span>Feedback</span>
+              </button>
+            </div>
+            <div class="labHint">
+              Tocá los marcadores numerados sobre la pantalla. Cada uno muestra
+              qué mirar en una interfaz real.
+            </div>
+          </section>
+
+          <aside class="analysisPanel">
+            <p class="eyebrow">Guía de lectura</p>
+            <h3 id="analysisTitle">Búsqueda</h3>
+            <p id="analysisText">
+              El usuario expresa intención y espera respuesta rápida, clara y
+              filtrable.
+            </p>
+            <div class="analysisQuestion">
+              <span>Pregunta clave</span>
+              <strong id="analysisQuestion">¿Qué quiso hacer el usuario?</strong>
+            </div>
+            <div id="analysisTags" class="tags"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="actividad" class="chapter activityChapter">
+        <div class="sectionTitle">
+          <p class="eyebrow">Actividad evaluable</p>
+          <h2>Canvas de análisis interactivo</h2>
+          <p>
+            La entrega ideal parece una lámina profesional: captura anotada,
+            acciones del usuario, proceso del sistema, feedback, nivel de
+            interactividad y mejora propuesta.
+          </p>
+        </div>
+
+        <div class="activityBoard">
+          <article class="activityCard capture">
+            <span>1</span>
+            <h3>Captura o mockup</h3>
+            <p>Elegí una plataforma audiovisual. Marcá dónde el usuario puede actuar.</p>
+          </article>
+          <article class="activityCard">
+            <span>2</span>
+            <h3>5 ciclos</h3>
+            <p>Para cada acción: intención, proceso probable del sistema y feedback visible.</p>
+          </article>
+          <article class="activityCard">
+            <span>3</span>
+            <h3>Nivel</h3>
+            <p>Clasificá cada acción del 1 al 5 y justificá con evidencia.</p>
+          </article>
+          <article class="activityCard">
+            <span>4</span>
+            <h3>Puente TV digital</h3>
+            <p>Relacioná el caso con TV digital, Ginga o DEVENDRA.</p>
+          </article>
+          <article class="activityCard ai">
+            <span>5</span>
+            <h3>Mejora</h3>
+            <p>Proponé una mejora interactiva: recomendador, asistente, votación o servicio.</p>
+          </article>
+          <aside class="rubric">
+            <h3>Rúbrica</h3>
+            <ul>
+              <li>Acciones e intenciones: 20%</li>
+              <li>Acción, proceso y feedback: 20%</li>
+              <li>Niveles justificados: 20%</li>
+              <li>Vínculo con Ginga/DEVENDRA: 10%</li>
+              <li>Mejora fundamentada: 20%</li>
+              <li>Presentación profesional: 10%</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="materiales" class="chapter materialsChapter">
+        <div class="sectionTitle">
+          <p class="eyebrow">Paquete del módulo</p>
+          <h2>Todo lo que acompaña esta clase</h2>
+          <p>
+            La página es la experiencia interactiva. Estos materiales completan
+            el módulo para estudiar, dar clase y preparar la entrega.
+          </p>
+        </div>
+
+        <div class="materialsGrid">
+          <a class="materialCard pdf" href="#niveles">
+            <span>Clase</span>
+            <h3>Contenido interactivo</h3>
+            <p>Niveles de interactividad, ejemplos y lectura guiada de experiencias.</p>
+          </a>
+          <a class="materialCard ppt" href="#ginga">
+            <span>Caso</span>
+            <h3>TV digital y DEVENDRA</h3>
+            <p>Mapa visual para conectar ISDB-Tb, Ginga, NCL/Lua y usuario.</p>
+          </a>
+          <a class="materialCard" href="#actividad">
+            <span>Actividad</span>
+            <h3>Consigna y rúbrica</h3>
+            <p>Canvas de análisis interactivo con criterios de evaluación.</p>
+          </a>
+          <a class="materialCard" href="#plataformas">
+            <span>Laboratorio</span>
+            <h3>Plataformas actuales</h3>
+            <p>Pantalla guiada para mirar intención, decisión del sistema y feedback.</p>
+          </a>
+          <a class="materialCard teacher" href="../index.html">
+            <span>Materia</span>
+            <h3>Volver al índice</h3>
+            <p>Acceso a todos los módulos y a la evaluación integradora.</p>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <div id="modal" class="modal" aria-hidden="true">
+      <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button id="closeModal" class="close" type="button" aria-label="Cerrar">×</button>
+        <p id="modalStep" class="eyebrow">Guía</p>
+        <h2 id="modalTitle">Interactividad desde cero</h2>
+        <p id="modalText"></p>
+        <div id="modalExample" class="modalExample"></div>
+        <div class="modalActions">
+          <button id="prevModal" class="btn" type="button">Anterior</button>
+          <button id="nextModal" class="btn primary" type="button">Siguiente</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/modulo1.js"></script>
+  </body>
+</html>

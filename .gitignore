@@ -1,0 +1,12 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.env
+.env.local
+
+node_modules/
+dist/
+build/
+.vercel/
+

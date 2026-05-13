@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PAI3 | Modulo 3 interactivo</title>
+    <link rel="stylesheet" href="../assets/css/modulo3.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Programacion para Ambientes Interactivos III</p>
+        <h1>Modulo 3: Concurrencia en Java</h1>
+      </div>
+      <nav aria-label="Secciones">
+        <a href="../index.html">Inicio</a>
+        <a href="../index.html#modulos">Módulos</a>
+        <a href="../evaluacion.html">Evaluación</a>
+        <a href="modulo1.html">Modulo 1</a>
+        <a href="#simulador">Simulador</a>
+        <a href="#clase">Clase</a>
+        <a href="#actividad">Actividad</a>
+        <button id="tourBtn" class="nav-button" type="button">Guia</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="tag">Laboratorio vivo</p>
+          <h2>Tu programa tiene varias vidas al mismo tiempo.</h2>
+          <p>
+            En este modulo los estudiantes no memorizan hilos: los ven competir,
+            chocar, bloquearse y coordinarse. La pregunta central es simple:
+            que pasa cuando muchos agentes creen tener el control del mismo recurso?
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#simulador">Probar simulador</a>
+            <a class="button" href="#actividad">Ver consigna</a>
+            <button id="startTourHero" class="button" type="button">Explicamelo desde cero</button>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="thread-line t1"></div>
+          <div class="thread-line t2"></div>
+          <div class="thread-line t3"></div>
+          <div class="node n1">A1</div>
+          <div class="node n2">A2</div>
+          <div class="node n3">A3</div>
+          <div class="lock">LOCK</div>
+        </div>
+      </section>
+
+      <section class="panel intro-grid">
+        <article>
+          <span class="num">01</span>
+          <h3>Concepto formal</h3>
+          <p>Proceso, hilo, concurrencia, paralelismo y scheduler.</p>
+        </article>
+        <article>
+          <span class="num">02</span>
+          <h3>Experimento</h3>
+          <p>Agentes compiten por una grilla compartida y generan colisiones.</p>
+        </article>
+        <article>
+          <span class="num">03</span>
+          <h3>Explicacion Java</h3>
+          <p>La simulacion conecta con <code>Thread</code>, <code>Runnable</code>, <code>join</code> y race conditions.</p>
+        </article>
+      </section>
+
+      <section class="plain-guide">
+        <div class="section-head compact">
+          <p class="eyebrow">Antes de tocar botones</p>
+          <h2>Explicado bien simple</h2>
+          <p>
+            Si nunca programaste concurrencia, empezá por acá. La idea no es sonar técnico:
+            es entender la película.
+          </p>
+        </div>
+        <div class="explain-grid">
+          <article>
+            <div class="mini-icon">1</div>
+            <h3>Un hilo es un trabajador</h3>
+            <p>Tu programa es una cocina. Un hilo es una persona haciendo una tarea. Varios hilos pueden trabajar durante el mismo tiempo.</p>
+          </article>
+          <article>
+            <div class="mini-icon">2</div>
+            <h3>El recurso compartido es la mesa</h3>
+            <p>Si todos usan la misma mesa sin reglas, se pisan. En código, esa mesa puede ser una variable, lista, celda o cola.</p>
+          </article>
+          <article>
+            <div class="mini-icon">3</div>
+            <h3>Una carrera es decidir tarde</h3>
+            <p>Dos hilos ven una celda libre al mismo tiempo. Ambos creen que pueden entrar. Cuando llegan, chocan.</p>
+          </article>
+          <article>
+            <div class="mini-icon">4</div>
+            <h3>Un lock es pedir permiso</h3>
+            <p>El lock hace que revisar y ocupar el recurso ocurra sin interrupciones. Evita choques, pero puede generar espera.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="simulador" class="sim-section">
+        <div class="section-head">
+          <p class="eyebrow">Simulador interactivo</p>
+          <h2>Agentes que chocan</h2>
+          <p>
+            Cada agente intenta ocupar celdas de una memoria compartida. En modo
+            sin sincronizacion, dos agentes pueden elegir el mismo destino. En modo
+            con lock, el acceso se coordina y las colisiones bajan.
+          </p>
+        </div>
+
+        <div class="lab">
+          <aside class="controls">
+            <div class="coach">
+              <strong>Que estas viendo</strong>
+              <p id="modeCoach">
+                En modo sin lock, cada agente decide a la vez. Si dos eligen la misma celda, aparece una colision.
+              </p>
+            </div>
+            <label>
+              Modo
+              <select id="mode">
+                <option value="unsafe">Sin lock: carrera</option>
+                <option value="locked">Con lock: coordinado</option>
+              </select>
+            </label>
+            <label>
+              Agentes
+              <input id="agents" type="range" min="4" max="18" value="10" />
+              <span id="agentsValue">10</span>
+            </label>
+            <label>
+              Velocidad
+              <input id="speed" type="range" min="1" max="10" value="5" />
+              <span id="speedValue">5</span>
+            </label>
+            <div class="control-row">
+              <button id="start" class="primary">Iniciar</button>
+              <button id="step">Paso</button>
+              <button id="reset">Reset</button>
+            </div>
+            <div class="metrics">
+              <div><strong id="ticks">0</strong><span>ticks</span></div>
+              <div><strong id="collisions">0</strong><span>colisiones</span></div>
+              <div><strong id="blocked">0</strong><span>bloqueos</span></div>
+            </div>
+            <button id="explainCurrent" class="wide" type="button">Que significa esto?</button>
+          </aside>
+
+          <div class="board-wrap">
+            <div class="legend">
+              <span><i class="dot teal"></i>Agente/hilo</span>
+              <span><i class="cell-sample"></i>Celda compartida</span>
+              <span><i class="danger-sample"></i>Choque</span>
+            </div>
+            <div id="board" class="board" aria-label="Grilla de memoria compartida"></div>
+          </div>
+
+          <aside class="log-panel">
+            <h3>Log de ejecucion</h3>
+            <div id="log" class="log" aria-live="polite"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="clase" class="content-section">
+        <div class="section-head">
+          <p class="eyebrow">Clase breve</p>
+          <h2>Lo que tienen que llevarse</h2>
+        </div>
+        <div class="cards">
+          <article>
+            <h3>Proceso vs hilo</h3>
+            <p>
+              Un proceso tiene memoria propia. Un hilo vive dentro de un proceso y
+              comparte memoria con otros hilos. Esa memoria compartida hace que la
+              comunicacion sea rapida, pero tambien peligrosa.
+            </p>
+          </article>
+          <article>
+            <h3>Race condition</h3>
+            <p>
+              Hay condicion de carrera cuando el resultado depende del orden de
+              ejecucion. Si el orden cambia entre corridas, el bug aparece y
+              desaparece como si fuera aleatorio.
+            </p>
+          </article>
+          <article>
+            <h3>Java mental model</h3>
+            <p>
+              <code>Thread.start()</code> lanza una ejecucion concurrente.
+              <code>join()</code> espera. <code>sleep()</code> pausa. La
+              sincronizacion define quien puede tocar un recurso compartido.
+            </p>
+          </article>
+        </div>
+        <div class="timeline">
+          <h3>La historia de un tick</h3>
+          <ol>
+            <li><strong>El scheduler da turno.</strong> Cada hilo intenta avanzar.</li>
+            <li><strong>El hilo mira el recurso.</strong> Pregunta si una celda parece libre.</li>
+            <li><strong>Sin lock:</strong> otro hilo puede mirar lo mismo antes de que el primero escriba.</li>
+            <li><strong>Con lock:</strong> revisar y ocupar se vuelven una operación protegida.</li>
+            <li><strong>Resultado:</strong> menos choques, pero algunos hilos esperan.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="actividad" class="activity">
+        <div>
+          <p class="eyebrow">Actividad evaluable</p>
+          <h2>Choque de agentes concurrentes</h2>
+          <p>
+            Implementar en Java una simulacion con al menos 10 agentes ejecutados
+            como hilos. Primero debe observarse el problema sin sincronizacion.
+            Luego se debe proponer una estrategia para reducir o eliminar colisiones.
+          </p>
+        </div>
+        <ol>
+          <li>Crear una grilla compartida y agentes que intenten moverse.</li>
+          <li>Ejecutar 5 corridas sin sincronizacion y registrar resultados.</li>
+          <li>Explicar por que el resultado no es determinista.</li>
+          <li>Agregar una solucion con <code>synchronized</code>, <code>Lock</code> o control equivalente.</li>
+          <li>Entregar codigo, capturas, tabla de colisiones y conclusion.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="modal" class="modal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button id="modalClose" class="modal-close" type="button" aria-label="Cerrar">×</button>
+        <p class="eyebrow" id="modalStep">Guia interactiva</p>
+        <h2 id="modalTitle">Concurrencia desde cero</h2>
+        <p id="modalText"></p>
+        <div id="modalExample" class="modal-example"></div>
+        <div class="modal-actions">
+          <button id="modalPrev" type="button">Anterior</button>
+          <button id="modalNext" class="primary" type="button">Siguiente</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/modulo3.js"></script>
+  </body>
+</html>
