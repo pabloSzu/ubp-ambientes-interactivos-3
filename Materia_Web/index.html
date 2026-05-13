@@ -3,278 +3,346 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAI3 | Programacion para Ambientes Interactivos III</title>
+    <title>PAI3 — Programación para Ambientes Interactivos III</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="assets/css/campus.css" />
+    <link rel="stylesheet" href="assets/css/index.css" />
   </head>
-  <body class="indexPage">
-    <header class="campusTop indexTop">
-      <a class="campusBrand ubpBrand" href="index.html" aria-label="Inicio">
+  <body>
+
+    <div class="blob b1" aria-hidden="true"></div>
+    <div class="blob b2" aria-hidden="true"></div>
+    <div class="blob b3" aria-hidden="true"></div>
+    <div id="glow" aria-hidden="true"></div>
+
+    <!-- ══════════════════════════════════
+         HEADER
+    ══════════════════════════════════ -->
+    <header class="hdr">
+      <div class="hdrBrand">
         <img src="assets/brand/ubp-logo.png" alt="Universidad Blas Pascal" />
-        <span>PAI3</span>
-      </a>
-      <nav class="globalNav" aria-label="Navegacion principal">
-        <a href="#presentacion" aria-current="page">Presentacion</a>
-        <a href="#competencias">Competencias</a>
-        <a href="#modulos">Modulos</a>
-        <a href="evaluacion.html">Evaluacion</a>
+        <div class="hdrSep" aria-hidden="true"></div>
+        <div class="hdrBadge">
+          <span class="badge">PAI3</span>
+          <span class="course">Prog. para Ambientes Interactivos III</span>
+        </div>
+      </div>
+
+      <nav class="hdrNav" aria-label="Navegación">
+        <a href="#modulos">Módulos</a>
+        <a href="#evaluacion">Evaluación</a>
+        <a href="evaluacion.html">Parciales</a>
       </nav>
+
+      <a class="hdrCta" href="modulos/modulo1.html">Empezar módulo 1 →</a>
     </header>
 
     <main>
-      <section id="presentacion" class="indexHero">
-        <div class="heroCopy">
-          <p class="eyebrow">Licenciatura en Sistemas de Informacion · Plan 2021 · 6 horas semanales</p>
-          <h1>Programacion para Ambientes Interactivos III</h1>
-          <p class="heroLead">
-            Una materia para disenar, programar, probar y mejorar experiencias
-            interactivas: de la TV digital y las interfaces actuales a la
-            concurrencia, el paralelismo y los sistemas de alto rendimiento.
-          </p>
-          <div class="heroActions">
-            <a class="btn primary" href="modulos/modulo1.html">Empezar modulo 1</a>
-            <a class="btn" href="#modulos">Ver mapa de modulos</a>
-            <a class="btn quiet" href="evaluacion.html">Ver evaluacion</a>
+
+      <!-- ══════════════════════════════════
+           HERO
+      ══════════════════════════════════ -->
+      <section class="hero">
+        <div class="heroInner">
+          <div class="heroLeft reveal">
+            <p class="heroEye">UBP · Licenciatura en Sistemas de Información · Plan 2021</p>
+            <h1>Programación para<br />Ambientes Interactivos III</h1>
+            <p class="heroDesc">
+              Siete módulos para comprender, diseñar y programar experiencias interactivas:
+              desde TV digital y UX hasta concurrencia, paralelismo y computación de
+              alta performance.
+            </p>
+            <div class="heroCtas">
+              <a class="btnFill" href="modulos/modulo1.html">Empezar con el módulo 1</a>
+              <a class="btnGlass" href="evaluacion.html">Ver evaluación</a>
+            </div>
+          </div>
+          <div class="heroStats reveal" style="--d:100ms" aria-label="Datos de la materia">
+            <div class="heroStat"><strong>07</strong><span>módulos</span></div>
+            <div class="heroStat"><strong>100</strong><span>puntos</span></div>
+            <div class="heroStat"><strong>02</strong><span>parciales</span></div>
+            <div class="heroStat"><strong>6h</strong><span>semanales</span></div>
           </div>
         </div>
+      </section>
 
-        <aside class="heroConsole" aria-label="Mapa visual de la materia">
-          <div class="consoleHeader">
-            <span></span>
-            <span></span>
-            <span></span>
-            <strong>laboratorio_interactivo.java</strong>
+      <!-- ══════════════════════════════════
+           MÓDULOS — agrupados por bloque
+      ══════════════════════════════════ -->
+      <section id="modulos" class="modulesSection">
+        <div class="sectionWrap">
+
+          <div class="sectionHead reveal">
+            <h2>Los 7 módulos</h2>
+            <span class="sectionEye">Mapa de cursada</span>
           </div>
-          <div class="consoleGrid">
-            <article>
-              <b>input</b>
-              <p>usuario, medio, interfaz</p>
-            </article>
-            <article>
-              <b>proceso</b>
-              <p>software, hilos, datos</p>
-            </article>
-            <article>
-              <b>feedback</b>
-              <p>experiencia, prototipo, mejora</p>
-            </article>
+
+          <!-- ── BLOQUE 01: Medios y Diseño ── -->
+          <div class="moduleGroup g-medios">
+            <div class="groupHead reveal">
+              <span class="groupChip">Bloque 01</span>
+              <h3 class="groupTitle">Medios y Diseño Interactivo</h3>
+              <p class="groupDesc">Interactividad, TV digital, interfaces y experiencia del usuario.</p>
+            </div>
+            <div class="groupCards g2">
+
+              <a class="mCard m1 reveal" href="modulos/modulo1.html" style="--d:0ms">
+                <div class="mCardInner">
+                  <div class="mTop">
+                    <span class="mNum">01</span>
+                    <div class="mChips">
+                      <span class="mChip">Interactividad</span>
+                      <span class="mChip">TV Digital</span>
+                      <span class="mChip">Ginga</span>
+                      <span class="mChip">DEVENDRA</span>
+                    </div>
+                  </div>
+                  <h3>La interactividad y la TV digital interactiva</h3>
+                  <p class="mDesc">
+                    Interactividad como acción, proceso y feedback. Diferencias entre TV
+                    analógica, digital e Internet. ISDB-Tb, middleware Ginga, NCL/Lua y el
+                    caso DEVENDRA como servicio interactivo en Argentina.
+                  </p>
+                  <footer class="mFoot">
+                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mGo">Entrar →</span>
+                  </footer>
+                </div>
+              </a>
+
+              <a class="mCard m2 reveal" href="modulos/modulo.html?m=2" style="--d:70ms">
+                <div class="mCardInner">
+                  <div class="mTop">
+                    <span class="mNum">02</span>
+                    <div class="mChips">
+                      <span class="mChip">UX</span>
+                      <span class="mChip">UI</span>
+                      <span class="mChip">Moqups</span>
+                      <span class="mChip">Figma</span>
+                    </div>
+                  </div>
+                  <h3>Interfaces, navegabilidad y experiencia del usuario</h3>
+                  <p class="mDesc">
+                    Diferencias entre plataformas móviles y de escritorio. Flujos,
+                    jerarquía visual, accesibilidad y maquetación. Prototipado con
+                    Moqups o Figma.
+                  </p>
+                  <footer class="mFoot">
+                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mGo">Entrar →</span>
+                  </footer>
+                </div>
+              </a>
+
+            </div>
           </div>
-          <pre><code>while (aprendo) {
-  disenar(interaccion);
-  programar(Java);
-  probar(concurrencia);
-  mejorar(experiencia);
-}</code></pre>
-        </aside>
-      </section>
 
-      <section class="indexBand purposeBand">
-        <div class="sectionTitle">
-          <p class="eyebrow">De que se trata</p>
-          <h2>La materia cruza informatica, medios y experiencias digitales.</h2>
-          <p>
-            El programa parte de un cambio cultural y tecnico: video digital,
-            Internet, movilidad, television, redes, plataformas y contenidos
-            conectados. En ese escenario, programar ambientes interactivos implica
-            comprender como una idea se transforma en una experiencia usable,
-            comunicable, probada y sostenida por software.
-          </p>
-        </div>
-        <div class="purposeGrid">
-          <article>
-            <span>01</span>
-            <h3>Interactividad</h3>
-            <p>Acciones del usuario, respuesta del sistema, niveles de control y experiencias con sentido.</p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>Interfaces</h3>
-            <p>UX, UI, navegabilidad, plataformas, prototipos y decisiones de diseno.</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Concurrencia</h3>
-            <p>Procesos, multiples hilos, comunicacion, sincronizacion, depuracion y pruebas.</p>
-          </article>
-          <article>
-            <span>04</span>
-            <h3>Paralelismo</h3>
-            <p>Arquitecturas paralelas, rendimiento, limites, metricas y alto requerimiento computacional.</p>
-          </article>
-        </div>
-      </section>
+          <!-- ── BLOQUE 02: Programación Concurrente ── -->
+          <div class="moduleGroup g-java">
+            <div class="groupHead reveal">
+              <span class="groupChip">Bloque 02</span>
+              <h3 class="groupTitle">Programación Concurrente en Java</h3>
+              <p class="groupDesc">Procesos, hilos, comunicación y sincronización.</p>
+            </div>
+            <div class="groupCards g3">
 
-      <section class="indexBand learningBand">
-        <div class="learningCopy">
-          <p class="eyebrow">Finalidad general</p>
-          <h2>Que el estudiante pase de mirar pantallas a construir sistemas interactivos.</h2>
-          <p>
-            La cursada propone una mirada profesional: analizar experiencias
-            existentes, disenar interfaces, programar soluciones, testear
-            comportamiento concurrente y justificar decisiones tecnicas con
-            evidencia.
-          </p>
-        </div>
-        <div class="learningCards" aria-label="Objetivos principales">
-          <article><b>Comprender</b><span>interactividad, lenguaje interactivo y TV digital.</span></article>
-          <article><b>Reconocer</b><span>interfaces, navegabilidad, usuario, UX y UI.</span></article>
-          <article><b>Construir</b><span>programas concurrentes usando Java como eje practico.</span></article>
-          <article><b>Depurar</b><span>programas concurrentes, detectar errores y explicar resultados.</span></article>
-          <article><b>Analizar</b><span>algoritmos paralelos y arquitecturas con sus limites.</span></article>
-        </div>
-      </section>
+              <a class="mCard m3 reveal" href="modulos/modulo3.html" style="--d:0ms">
+                <div class="mCardInner">
+                  <div class="mTop">
+                    <span class="mNum">03</span>
+                    <div class="mChips">
+                      <span class="mChip">Procesos</span>
+                      <span class="mChip">Hilos</span>
+                      <span class="mChip">Scheduler</span>
+                    </div>
+                  </div>
+                  <h3>Introducción a la programación concurrente</h3>
+                  <p class="mDesc">
+                    Procesos, múltiples hilos, scheduler, concurrencia vs. paralelismo.
+                    Simulador visual de race conditions en Java.
+                  </p>
+                  <footer class="mFoot">
+                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mGo">Entrar →</span>
+                  </footer>
+                </div>
+              </a>
 
-      <section id="competencias" class="indexBand competenceBand">
-        <div class="sectionTitle">
-          <p class="eyebrow">Competencias del programa</p>
-          <h2>La materia entrena capacidades tecnicas, profesionales y actitudinales.</h2>
-          <p>
-            Las competencias no se modifican: se traducen en actividades,
-            prototipos, analisis, entregas y defensa de decisiones.
-          </p>
-        </div>
-        <div class="competenceRail">
-          <article>
-            <span>Resolver</span>
-            <p>Identificar, formular y resolver problemas de informatica.</p>
-          </article>
-          <article>
-            <span>Disenar</span>
-            <p>Concebir y desarrollar proyectos de software e informacion.</p>
-          </article>
-          <article>
-            <span>Gestionar</span>
-            <p>Planificar, ejecutar, controlar y mejorar proyectos.</p>
-          </article>
-          <article>
-            <span>Construir</span>
-            <p>Usar herramientas, lenguajes, tecnicas y entornos de desarrollo.</p>
-          </article>
-          <article>
-            <span>Innovar</span>
-            <p>Proponer desarrollos tecnologicos con valor e impacto.</p>
-          </article>
-          <article>
-            <span>Comunicar</span>
-            <p>Trabajar en equipo, explicar decisiones y sostener criterios eticos.</p>
-          </article>
-        </div>
-      </section>
+              <a class="mCard m4 reveal" href="modulos/modulo.html?m=4" style="--d:70ms">
+                <div class="mCardInner">
+                  <div class="mTop">
+                    <span class="mNum">04</span>
+                    <div class="mChips">
+                      <span class="mChip">IPC</span>
+                      <span class="mChip">Pipes</span>
+                      <span class="mChip">BlockingQueue</span>
+                    </div>
+                  </div>
+                  <h3>Comunicación entre procesos e hilos</h3>
+                  <p class="mDesc">
+                    IPC, pipes, FIFO, colas de mensajes y memoria compartida.
+                    Patrón productor-consumidor en Java.
+                  </p>
+                  <footer class="mFoot">
+                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mGo">Entrar →</span>
+                  </footer>
+                </div>
+              </a>
 
-      <section class="indexBand outcomesBand">
-        <div class="outcomeVisual">
-          <img src="assets/recursos/diagrama_hilos_lock_vs_race.png" alt="Diagrama visual de hilos, locks y condiciones de carrera" />
-        </div>
-        <div class="outcomeCopy">
-          <p class="eyebrow">Resultados de aprendizaje</p>
-          <h2>Al final no alcanza con saber: hay que mostrar que funciona.</h2>
-          <ul>
-            <li>Desarrollar aplicaciones interactivas y graficas con interfaces de calidad.</li>
-            <li>Crear interfaces visualmente atractivas, usables y coherentes.</li>
-            <li>Analizar y mejorar la calidad del software.</li>
-            <li>Construir prototipos funcionales para visualizar, analizar y compartir informacion.</li>
-            <li>Probar prototipos y explicar sus resultados.</li>
-          </ul>
-        </div>
-      </section>
+              <a class="mCard m5 reveal" href="modulos/modulo.html?m=5" style="--d:140ms">
+                <div class="mCardInner">
+                  <div class="mTop">
+                    <span class="mNum">05</span>
+                    <div class="mChips">
+                      <span class="mChip">Mutex</span>
+                      <span class="mChip">Semáforos</span>
+                      <span class="mChip">Deadlock</span>
+                    </div>
+                  </div>
+                  <h3>Sincronización entre procesos e hilos</h3>
+                  <p class="mDesc">
+                    Exclusión mutua, semáforos, monitores y variables de condición.
+                    Detección y prevención de deadlock y starvation.
+                  </p>
+                  <footer class="mFoot">
+                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mGo">Entrar →</span>
+                  </footer>
+                </div>
+              </a>
 
-      <section id="modulos" class="indexShell moduleIndex">
-        <div class="sectionTitle">
-          <p class="eyebrow">Mapa de cursada</p>
-          <h2>7 modulos, un recorrido: experiencia, software, concurrencia y performance.</h2>
-        </div>
+            </div>
+          </div>
 
-        <section class="indexModules" aria-label="Indice de modulos">
-          <a class="indexModule featured" href="modulos/modulo1.html">
-            <span>Modulo 1</span>
-            <h3>La interactividad y la TV digital interactiva</h3>
-            <p>Interactividad, niveles, Ginga, DEVENDRA e interfaces audiovisuales.</p>
-            <b>Entrar</b>
-          </a>
+          <!-- ── BLOQUE 03: Alto Rendimiento ── -->
+          <div class="moduleGroup g-hpc">
+            <div class="groupHead reveal">
+              <span class="groupChip">Bloque 03</span>
+              <h3 class="groupTitle">Paralelismo y Alto Rendimiento</h3>
+              <p class="groupDesc">Arquitecturas paralelas, speedup y computación de alta performance.</p>
+            </div>
+            <div class="groupCards g2">
 
-          <a class="indexModule" href="modulos/modulo.html?m=2">
-            <span>Modulo 2</span>
-            <h3>Interfaces, navegabilidad y experiencia del usuario</h3>
-            <p>Movil, PC, UX, UI, navegacion y maquetacion de experiencias.</p>
-            <b>Entrar</b>
-          </a>
+              <a class="mCard m6 reveal" href="modulos/modulo.html?m=6" style="--d:0ms">
+                <div class="mCardInner">
+                  <div class="mTop">
+                    <span class="mNum">06</span>
+                    <div class="mChips">
+                      <span class="mChip">SIMD</span>
+                      <span class="mChip">MIMD</span>
+                      <span class="mChip">ForkJoin</span>
+                    </div>
+                  </div>
+                  <h3>Programación en sistemas paralelos</h3>
+                  <p class="mDesc">
+                    Taxonomía de Flynn, memoria compartida y distribuida,
+                    paso de mensajes y paralelismo con Java ForkJoinPool.
+                  </p>
+                  <footer class="mFoot">
+                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mGo">Entrar →</span>
+                  </footer>
+                </div>
+              </a>
 
-          <a class="indexModule lab" href="modulos/modulo3.html">
-            <span>Modulo 3</span>
-            <h3>Introduccion a la programacion concurrente</h3>
-            <p>Procesos hijo, multiples hilos de ejecucion y simulador visual.</p>
-            <b>Entrar</b>
-          </a>
+              <a class="mCard m7 reveal" href="modulos/modulo.html?m=7" style="--d:70ms">
+                <div class="mCardInner">
+                  <div class="mTop">
+                    <span class="mNum">07</span>
+                    <div class="mChips">
+                      <span class="mChip">Speedup</span>
+                      <span class="mChip">Amdahl</span>
+                      <span class="mChip">Gustafson</span>
+                      <span class="mChip">HPC</span>
+                    </div>
+                  </div>
+                  <h3>Computación de alta performance</h3>
+                  <p class="mDesc">
+                    Medición de rendimiento, speedup, eficiencia y escalabilidad.
+                    Ley de Amdahl y Gustafson-Barsis como modelos de análisis y cierre de la materia.
+                  </p>
+                  <footer class="mFoot">
+                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mGo">Entrar →</span>
+                  </footer>
+                </div>
+              </a>
 
-          <a class="indexModule" href="modulos/modulo.html?m=4">
-            <span>Modulo 4</span>
-            <h3>Comunicacion entre procesos e hilos</h3>
-            <p>IPC, pipes, FIFO, colas de mensajes y memoria compartida.</p>
-            <b>Entrar</b>
-          </a>
+            </div>
+          </div>
 
-          <a class="indexModule" href="modulos/modulo.html?m=5">
-            <span>Modulo 5</span>
-            <h3>Sincronizacion entre procesos e hilos</h3>
-            <p>Locks, semaforos, monitores, deadlock, espera y coordinacion.</p>
-            <b>Entrar</b>
-          </a>
-
-          <a class="indexModule" href="modulos/modulo.html?m=6">
-            <span>Modulo 6</span>
-            <h3>Programacion en sistemas paralelos</h3>
-            <p>SISD, SIMD, MISD, MIMD, memoria compartida y distribuida.</p>
-            <b>Entrar</b>
-          </a>
-
-          <a class="indexModule" href="modulos/modulo.html?m=7">
-            <span>Modulo 7</span>
-            <h3>Computacion de alta performance</h3>
-            <p>Performance, algoritmos paralelos, Amdahl y Gustafson-Barsis.</p>
-            <b>Entrar</b>
-          </a>
-
-          <a class="indexModule evaluation" href="evaluacion.html">
-            <span>Evaluacion integradora</span>
-            <h3>Parcial 1 + Parcial 2</h3>
-            <p>Dos entregas integradoras: 40 puntos + 60 puntos = 100 puntos.</p>
-            <b>Ver evaluacion</b>
-          </a>
-        </section>
-      </section>
-
-      <section class="indexBand evaluationBand">
-        <div>
-          <p class="eyebrow">Evaluacion</p>
-          <h2>La evaluacion integra teoria, practica, prototipo y explicacion tecnica.</h2>
-          <p>
-            Para regularizar se trabajan actividades obligatorias que constituyen
-            instancias parciales. La propuesta web organiza esas entregas en dos
-            parciales integradores, con puntaje explicito y rubricas.
-          </p>
-        </div>
-        <div class="scoreCards">
-          <article>
-            <span>Parcial 1</span>
-            <strong>40</strong>
-            <p>Interactividad, interfaces, analisis visual y primeros prototipos.</p>
-          </article>
-          <article>
-            <span>Parcial 2</span>
-            <strong>60</strong>
-            <p>Concurrencia, sincronizacion, paralelismo, performance y defensa tecnica.</p>
-          </article>
         </div>
       </section>
 
-      <section class="closingBand">
-        <p class="eyebrow">Idea de cursada</p>
-        <h2>Entrar, tocar, probar, romper, explicar y mejorar.</h2>
-        <p>
-          Esa es la energia de esta materia: convertir contenidos en experiencias
-          interactivas y convertir codigo en comportamiento observable.
-        </p>
+      <!-- ══════════════════════════════════
+           COMPETENCIAS
+      ══════════════════════════════════ -->
+      <section class="compSection" aria-label="Competencias del programa">
+        <div class="compInner">
+          <span class="compLabel">Competencias</span>
+          <div class="compPills">
+            <span class="compPill">Resolver problemas</span>
+            <span class="compPill">Diseñar software</span>
+            <span class="compPill">Gestionar proyectos</span>
+            <span class="compPill">Construir soluciones</span>
+            <span class="compPill">Innovar</span>
+            <span class="compPill">Comunicar decisiones</span>
+          </div>
+        </div>
       </section>
+
+      <!-- ══════════════════════════════════
+           EVALUACIÓN
+      ══════════════════════════════════ -->
+      <section id="evaluacion" class="evalSection">
+        <div class="evalInner">
+
+          <div class="evalHead reveal">
+            <h2>Evaluación integradora</h2>
+            <p>Dos parciales que integran contenidos de los módulos. Total: 100 puntos.</p>
+          </div>
+
+          <div class="evalCards">
+            <a class="evalCard p1 glass reveal" href="evaluacion.html#parcial1" style="--d:0ms">
+              <p class="evalScore">40</p>
+              <h3>Parcial 1 — Bloque 01 + 02</h3>
+              <p>Interactividad, UX/UI, concurrencia e IPC.</p>
+              <table>
+                <tr><td>Análisis de interactividad</td><td>10 pts</td></tr>
+                <tr><td>Rediseño UX/UI justificado</td><td>10 pts</td></tr>
+                <tr><td>Simulación con hilos Java</td><td>10 pts</td></tr>
+                <tr><td>Pipeline de comunicación</td><td>10 pts</td></tr>
+              </table>
+              <span class="evalCta">Ver consignas →</span>
+            </a>
+
+            <a class="evalCard p2 glass reveal" href="evaluacion.html#parcial2" style="--d:100ms">
+              <p class="evalScore">60</p>
+              <h3>Parcial 2 — Bloque 02 + 03</h3>
+              <p>Sincronización, paralelismo y performance.</p>
+              <table>
+                <tr><td>Problema de sincronización</td><td>20 pts</td></tr>
+                <tr><td>Paralelización y medición</td><td>20 pts</td></tr>
+                <tr><td>Análisis Amdahl / Gustafson</td><td>20 pts</td></tr>
+              </table>
+              <span class="evalCta">Ver consignas →</span>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
+           CLOSING
+      ══════════════════════════════════ -->
+      <section class="closing reveal">
+        <h2>Entrar. Tocar. Probar.<br />Romper. Entender.</h2>
+        <p>Convertir contenidos en experiencias interactivas y código en comportamiento observable.</p>
+        <a class="btnFill" href="modulos/modulo1.html">Empezar con el módulo 1 →</a>
+      </section>
+
     </main>
+
+    <script src="assets/js/index.js"></script>
   </body>
 </html>
