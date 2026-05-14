@@ -5,10 +5,10 @@
 /* Enforce violet accent (campus.js may default to module 1 yellow without ?m= param) */
 (function() {
   const r = document.documentElement;
-  r.style.setProperty('--accent',        '#9b6fff');
-  r.style.setProperty('--accent-sub',    'rgba(155,111,255,0.08)');
-  r.style.setProperty('--accent-border', 'rgba(155,111,255,0.25)');
-  r.style.setProperty('--accent-mid',    'rgba(155,111,255,0.38)');
+  r.style.setProperty('--accent',        '#a855f7');
+  r.style.setProperty('--accent-sub',    'rgba(168,85,247,0.10)');
+  r.style.setProperty('--accent-border', 'rgba(168,85,247,0.30)');
+  r.style.setProperty('--accent-mid',    'rgba(168,85,247,0.45)');
 })();
 
 /* ─── Reading progress ───────────────────── */
