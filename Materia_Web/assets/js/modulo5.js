@@ -277,14 +277,42 @@ function runDeadlockMode() {
 function leftForkIdx(id)  { return id; }
 function rightForkIdx(id) { return (id + 1) % PHIL_N; }
 
+/* ── Step card helper ─────────────────────── */
+function setStep(html) {
+  const card = document.getElementById('simStepCard');
+  const txt  = document.getElementById('simStepText');
+  if (!card) return;
+  const show = simMode === 'semaphore' && simRunning;
+  card.style.display = show ? 'block' : 'none';
+  if (show && txt) {
+    txt.innerHTML = html;
+    /* re-trigger animation */
+    card.classList.remove('stepAnim');
+    void card.offsetWidth;
+    card.classList.add('stepAnim');
+  }
+}
+
+function hideStep() {
+  const card = document.getElementById('simStepCard');
+  if (card) card.style.display = 'none';
+}
+
+/* ── STEP DELAY (ms) — controls simulation pace ── */
+const STEP_MS = 1400;   /* between each sub-step   */
+const EAT_MS  = 3500;   /* how long eating lasts   */
+const THINK_MS_MIN = 2500;
+const THINK_MS_MAX = 4000;
+
 function startHungerCycle(id) {
   if (!simRunning || simMode !== 'semaphore') return;
   setPhilState(id, 'hungry');
-  addLog(`F${id} tiene hambre 🍽️ — pide permiso al semáforo`, 'wait');
+  addLog(`F${id} tiene hambre 🍽️ — va a pedir permiso al semáforo`, 'wait');
+  setStep(`<strong>Filósofo ${id}</strong> tiene hambre y solicita permiso al semáforo.<br>Semáforo actual: <strong>${semPermits}/4 permisos libres</strong>`);
 
   setTimeout(() => {
     if (simRunning && phils[id].state === 'hungry') tryAcquire(id);
-  }, 500);
+  }, STEP_MS);
 }
 
 function tryAcquire(id) {
@@ -294,50 +322,55 @@ function tryAcquire(id) {
   const rf = rightForkIdx(id);
 
   if (semPermits > 0 && forks[lf].held === null && forks[rf].held === null) {
-    /* Step 1: get semaphore permit */
+
+    /* ── Sub-step 1: obtain semaphore permit ── */
     semPermits--;
     updatePermits();
     addLog(`F${id} OBTIENE permiso ✅ — semáforo: ${semPermits}/4 libres`, 'sem');
-    updateStatus(`F${id} obtiene permiso. Semáforo: ${semPermits}/4 disponibles`);
+    updateStatus(`F${id} obtuvo permiso del semáforo`);
+    setStep(`<strong>Semáforo concede permiso a F${id}</strong> ✅<br>Permisos restantes: <strong>${semPermits}/4</strong> — ahora F${id} puede intentar tomar los tenedores`);
 
-    /* Step 2: left fork */
+    /* ── Sub-step 2: left fork ── */
     setTimeout(() => {
       if (!simRunning) return;
       forks[lf].held = id;
       updateForkEl(lf);
       addLog(`F${id} toma tenedor izquierdo T${lf} 🍴`, 'eat');
+      setStep(`<strong>F${id} tomó tenedor izquierdo T${lf}</strong> 🍴<br>Ahora espera el tenedor derecho T${rf}...`);
 
-      /* Step 3: right fork */
+      /* ── Sub-step 3: right fork ── */
       setTimeout(() => {
         if (!simRunning) return;
         forks[rf].held = id;
         updateForkEl(rf);
         addLog(`F${id} toma tenedor derecho T${rf} 🍴 — ¡tiene los dos!`, 'eat');
+        setStep(`<strong>F${id} tomó tenedor derecho T${rf}</strong> 🍴<br>¡Tiene ambos tenedores! Empieza a comer 😋`);
 
-        /* Step 4: eating */
+        /* ── Sub-step 4: eating ── */
         setTimeout(() => {
           if (!simRunning) return;
           setPhilState(id, 'eating');
           stats.meals++;
           updateStats();
-          addLog(`F${id} come 😋 (comida #${stats.meals})`, 'eat');
-          updateStatus(`F${id} come. Semáforo: ${semPermits}/4 libres — sistema progresando ✅`);
+          addLog(`F${id} come 😋 — comida #${stats.meals}`, 'eat');
+          updateStatus(`F${id} come. Semáforo: ${semPermits}/4 disponibles — sistema progresa ✅`);
+          setStep(`<strong>F${id} come</strong> 😋 (comida #${stats.meals})<br>Tiene T${lf} y T${rf} ocupados. Semáforo: ${semPermits}/4 libres.<br><em>Otros filósofos pueden intentar mientras tanto.</em>`);
 
-          /* Step 5: finish eating after delay */
-          const eatDuration = 2500 + Math.random() * 1000;
-          setTimeout(() => finishEatingVerbose(id, lf, rf), eatDuration);
-        }, 350);
-      }, 350);
-    }, 350);
+          /* ── Sub-step 5: finish ── */
+          setTimeout(() => finishEatingVerbose(id, lf, rf), EAT_MS);
+        }, STEP_MS);
+      }, STEP_MS);
+    }, STEP_MS);
 
   } else {
-    /* Can't eat yet — explain why and retry */
+    /* Can't eat — explain why, slower retry */
     const reason = semPermits <= 0
-      ? `semáforo agotado (0/4 permisos libres) — espera`
-      : `tenedores T${lf} o T${rf} ocupados — espera`;
-    addLog(`F${id} no puede comer aún: ${reason}`, 'wait');
+      ? `el semáforo está lleno (0/4 permisos disponibles)`
+      : `el tenedor T${forks[lf].held !== null ? lf : rf} está ocupado`;
+    addLog(`F${id} no puede comer aún — ${reason}`, 'wait');
+    setStep(`<strong>F${id} espera</strong> ⏳<br>${reason === `el semáforo está lleno (0/4 permisos disponibles)` ? 'El semáforo no tiene permisos libres — F' + id + ' espera su turno' : 'Un tenedor está ocupado — F' + id + ' reintentará pronto'}`);
 
-    const retryDelay = 600 + Math.random() * 400;
+    const retryDelay = STEP_MS + Math.random() * 600;
     setTimeout(() => {
       if (simRunning && phils[id].state === 'hungry') tryAcquire(id);
     }, retryDelay);
@@ -347,18 +380,20 @@ function tryAcquire(id) {
 function finishEatingVerbose(id, lf, rf) {
   if (!simRunning) return;
 
-  addLog(`F${id} terminó de comer — libera los recursos`, 'info');
+  addLog(`F${id} terminó de comer — libera recursos`, 'info');
+  setStep(`<strong>F${id} terminó de comer</strong><br>Va a soltar los tenedores T${lf} y T${rf} y devolver el permiso al semáforo`);
 
-  /* Step 1: release forks */
+  /* ── Sub-step 6: release forks ── */
   setTimeout(() => {
     if (!simRunning) return;
     forks[lf].held = null;
     forks[rf].held = null;
     updateForkEl(lf);
     updateForkEl(rf);
-    addLog(`F${id} suelta tenedores T${lf} y T${rf} — disponibles para otros`, 'sem');
+    addLog(`F${id} suelta T${lf} y T${rf} — disponibles para otros`, 'sem');
+    setStep(`<strong>F${id} suelta tenedores T${lf} y T${rf}</strong> 🍴 libre<br>Otros filósofos hambrientos pueden tomarlos ahora`);
 
-    /* Step 2: release semaphore permit */
+    /* ── Sub-step 7: return permit ── */
     setTimeout(() => {
       if (!simRunning) return;
       semPermits++;
@@ -366,23 +401,24 @@ function finishEatingVerbose(id, lf, rf) {
       addLog(`F${id} devuelve permiso al semáforo ✅ — semáforo: ${semPermits}/4 libres`, 'sem');
       setPhilState(id, 'thinking');
       updateStatus(`F${id} vuelve a pensar. Semáforo: ${semPermits}/4 disponibles`);
+      setStep(`<strong>F${id} devuelve permiso al semáforo</strong> ✅<br>Semáforo: <strong>${semPermits}/4 libres</strong><br>F${id} vuelve a pensar 💭 — ciclo completado`);
 
-      /* Wake hungry philosophers who might benefit */
+      /* Wake any hungry philosopher */
       for (let i = 0; i < PHIL_N; i++) {
         if (phils[i].state === 'hungry') {
           setTimeout(() => {
             if (simRunning && phils[i].state === 'hungry') tryAcquire(i);
-          }, 200 + i * 80);
+          }, 300 + i * 120);
         }
       }
 
       /* Schedule next hunger cycle */
-      const thinkTime = 2000 + Math.random() * 1500;
+      const thinkTime = THINK_MS_MIN + Math.random() * (THINK_MS_MAX - THINK_MS_MIN);
       setTimeout(() => {
         if (simRunning && simMode === 'semaphore') startHungerCycle(id);
       }, thinkTime);
-    }, 350);
-  }, 350);
+    }, STEP_MS);
+  }, STEP_MS);
 }
 
 function startSemaphoreMode() {

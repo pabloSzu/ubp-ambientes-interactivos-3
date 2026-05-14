@@ -176,7 +176,7 @@
           <!-- PATOLOGÍAS -->
           <div class="m5conceptCard m5conceptBug reveal" style="--delay:180ms">
             <div class="m5conceptTop">
-              <div class="m5conceptIcon" style="--ic:#ef4444"><i class="ph-bold ph-chain"></i></div>
+              <div class="m5conceptIcon" style="--ic:#ef4444"><i class="ph-bold ph-skull"></i></div>
               <div class="m5conceptMeta">
                 <span class="m5conceptTag m5conceptTagBug">PATOLOGÍA</span>
                 <span class="m5conceptName">Deadlock</span>
@@ -403,6 +403,12 @@
                 <button class="m5simBtn" onclick="simReset()">
                   <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset
                 </button>
+              </div>
+
+              <!-- Step card — visible only in semaphore mode while running -->
+              <div class="m5simStepCard" id="simStepCard" style="display:none">
+                <div class="m5simStepLabel"><i class="ph ph-play-circle"></i> Paso actual</div>
+                <div class="m5simStepText" id="simStepText">...</div>
               </div>
 
               <div class="m5simScoreRow" id="simScoreRow">
@@ -731,38 +737,39 @@ public class DeadlockFix {
         </div>
 
         <div class="m5labWrap reveal">
-          <div class="m5labStepsRow">
-            <div class="m5labStep">
-              <div class="m5labStepDot" style="--dc:#ff7d54">1</div>
-              <div class="m5labStepText">
-                <strong>Copiá el código y pegalo en el editor</strong>
-                <p>Usá el botón "Copiar código" de abajo y pegalo en el editor de Java. Luego presioná Run.</p>
+          <div class="m5labMain">
+            <!-- Left: steps + code to copy -->
+            <div class="m5labLeft">
+              <div class="m5labStep">
+                <div class="m5labStepDot" style="--dc:#ff7d54">1</div>
+                <div class="m5labStepText">
+                  <strong>Copiá el código</strong>
+                  <p>Usá el botón "Copiar código" y pegalo en el editor de Java de la derecha con Ctrl+V.</p>
+                </div>
               </div>
-            </div>
-            <div class="m5labStep">
-              <div class="m5labStepDot" style="--dc:#4a8ef0">2</div>
-              <div class="m5labStepText">
-                <strong>Observá qué pasa</strong>
-                <p>Vas a ver los prints iniciales. El programa luego se congela — eso <em>es</em> el deadlock. T1 tiene A, T2 tiene B, ninguno puede avanzar.</p>
+              <div class="m5labStep">
+                <div class="m5labStepDot" style="--dc:#4a8ef0">2</div>
+                <div class="m5labStepText">
+                  <strong>Ejecutá y observá</strong>
+                  <p>Presioná Run. Vas a ver los prints de "tomó LOCK_X". Luego se congela — eso <em>es</em> el deadlock.</p>
+                </div>
               </div>
-            </div>
-            <div class="m5labStep">
-              <div class="m5labStepDot" style="--dc:#00e8c6">3</div>
-              <div class="m5labStepText">
-                <strong>Desafío: ¡arreglalo!</strong>
-                <p>Modificá T2 para que también pida LOCK_A primero, luego LOCK_B. El deadlock desaparece. ¿Por qué? Pensá en las condiciones de Coffman.</p>
+              <div class="m5labStep">
+                <div class="m5labStepDot" style="--dc:#00e8c6">3</div>
+                <div class="m5labStepText">
+                  <strong>Desafío: arreglalo</strong>
+                  <p>Modificá T2 para que pida LOCK_A primero (igual que T1). El deadlock desaparece. ¿Por qué?</p>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div class="m5labCodeBlock">
-            <div class="m5labCodeHeader">
-              <span><i class="ph ph-file-code"></i> DeadlockDemo.java — copiá este código y pegalo en el editor</span>
-              <button class="m5simBtn m5simBtnAccent" onclick="copyLabCode()" style="padding:6px 14px;font-size:12px">
-                <i class="ph ph-copy"></i> Copiar código
-              </button>
-            </div>
-            <pre id="labCodePre"><code class="language-java">public class DeadlockDemo {
+              <div class="m5labCodeBlock">
+                <div class="m5labCodeHeader">
+                  <span><i class="ph ph-file-code"></i> DeadlockDemo.java</span>
+                  <button class="m5simBtn m5simBtnAccent" onclick="copyLabCode()" style="padding:5px 12px;font-size:12px">
+                    <i class="ph ph-copy"></i> Copiar
+                  </button>
+                </div>
+                <pre id="labCodePre"><code class="language-java">public class DeadlockDemo {
     static final Object LOCK_A = new Object();
     static final Object LOCK_B = new Object();
 
@@ -778,7 +785,7 @@ public class DeadlockFix {
         });
 
         Thread t2 = new Thread(() -> {
-            synchronized (LOCK_B) {  // ← orden invertido: LOCK_B primero
+            synchronized (LOCK_B) { // ← orden INVERTIDO
                 System.out.println("T2 tomó LOCK_B — espera LOCK_A...");
                 try { Thread.sleep(100); } catch (Exception e) {}
                 synchronized (LOCK_A) {
@@ -790,18 +797,21 @@ public class DeadlockFix {
         t1.start();
         t2.start();
         Thread.sleep(3000);
-        System.out.println("🔒 DEADLOCK: ninguno pudo terminar");
+        System.out.println("DEADLOCK: ninguno terminó");
     }
 }</code></pre>
-          </div>
+              </div>
+            </div>
 
-          <div class="m5labEmbed">
-            <iframe
-              src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
-              width="100%" height="500"
-              style="border:none; border-radius: 12px;"
-              title="Java lab — Deadlock Demo"
-            ></iframe>
+            <!-- Right: Java editor -->
+            <div class="m5labEmbed">
+              <iframe
+                src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
+                width="100%" height="100%"
+                style="border:none; border-radius: 12px; min-height:560px;"
+                title="Java lab — Deadlock Demo"
+              ></iframe>
+            </div>
           </div>
         </div>
       </div>
@@ -932,7 +942,7 @@ public class DeadlockFix {
           <div class="m5flipCard reveal" style="--delay:180ms">
             <div class="m5flipInner">
               <div class="m5flipFront">
-                <i class="ph-bold ph-chain" style="font-size:28px;color:var(--accent)"></i>
+                <i class="ph-bold ph-skull" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Deadlock</strong>
                 <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
