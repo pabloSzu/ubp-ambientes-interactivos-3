@@ -278,17 +278,17 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 .msecHead {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
-  padding-bottom: 14px;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
   border-bottom: 1px solid var(--border);
 }
 .msecHead h2 {
-  font-size: clamp(15px, 1.7vw, 20px);
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text);
 }
 .msecEye {
   font-size: 11px;
@@ -296,6 +296,16 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.msecSub {
+  font-size: 15px;
+  color: var(--sub);
+  line-height: 1.7;
+  max-width: 680px;
+  margin-top: 2px;
 }
 
 /* ─── Objectives ─────────────────────────── */
@@ -328,7 +338,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   margin-top: 2px;
 }
 .objText {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text);
   line-height: 1.65;
 }
@@ -351,15 +361,15 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 .termName {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   color: var(--accent);
   margin-bottom: 6px;
 }
 .termDef {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--sub);
-  line-height: 1.62;
+  line-height: 1.65;
 }
 
 /* ─── Contents ───────────────────────────── */
@@ -391,13 +401,13 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .cCard:hover::before { opacity: 0.85; }
 
 .cTitle {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--text);
   margin-bottom: 7px;
 }
 .cText {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--sub);
   line-height: 1.65;
 }
@@ -436,7 +446,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   margin-top: 2px;
 }
 .actText {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text);
   line-height: 1.65;
 }

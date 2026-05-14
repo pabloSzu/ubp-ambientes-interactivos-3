@@ -190,9 +190,9 @@
   margin-bottom: 5px;
 }
 .m1objCard p {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--sub);
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -221,9 +221,9 @@
   margin-bottom: 6px;
 }
 .m1callout p {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--sub);
-  line-height: 1.65;
+  line-height: 1.7;
   margin: 0;
 }
 .m1callout p strong { display: inline; color: var(--text); }
@@ -373,9 +373,9 @@
   margin-bottom: 10px;
 }
 .levelDesc {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--sub);
-  line-height: 1.65;
+  line-height: 1.7;
   margin-bottom: 20px;
 }
 .powerMeter {
@@ -416,9 +416,9 @@
 .levelExample {
   display: flex;
   gap: 10px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--sub);
-  padding: 8px 12px;
+  padding: 9px 13px;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: rgba(255,255,255,0.02);
@@ -460,7 +460,7 @@
   flex-shrink: 0;
   color: var(--accent);
 }
-.storyText { font-size: 12px; color: var(--sub); line-height: 1.5; }
+.storyText { font-size: 14px; color: var(--sub); line-height: 1.5; }
 
 /* ─── Mini-game ──────────────────────────── */
 .m1game {
@@ -585,10 +585,10 @@
   backdrop-filter: blur(8px);
 }
 .m1blogText {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--sub);
-  line-height: 1.75;
-  margin-bottom: 14px;
+  line-height: 1.8;
+  margin-bottom: 16px;
 }
 .m1blogText strong { color: var(--text); }
 .m1splitStats {
@@ -664,7 +664,7 @@
   margin-bottom: 5px;
 }
 .pipeTitle { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
-.pipeText { font-size: 13px; color: var(--sub); line-height: 1.65; }
+.pipeText { font-size: 15px; color: var(--sub); line-height: 1.7; }
 
 /* ─── DEVENDRA case ──────────────────────── */
 .m1devendraCase {
@@ -743,9 +743,9 @@
   color: var(--text);
 }
 .m1devendraStep p {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--sub);
-  line-height: 1.6;
+  line-height: 1.65;
   margin: 0;
 }
 
@@ -897,7 +897,7 @@
   backdrop-filter: blur(16px);
   transform: rotateY(180deg);
 }
-.m1flipBack p { font-size: 12px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m1flipBack p { font-size: 13px; color: var(--sub); line-height: 1.65; margin: 0; }
 
 /* ─── Pre-activity theory block ─────────── */
 .m1actTheory {
@@ -1098,9 +1098,9 @@
   margin-bottom: 5px;
 }
 .m1missionStepBody p {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--sub);
-  line-height: 1.6;
+  line-height: 1.7;
   margin: 0;
 }
 
