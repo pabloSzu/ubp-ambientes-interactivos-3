@@ -117,7 +117,7 @@
             </div>
           </div>
           <div class="m2objCard reveal" style="--delay:240ms">
-            <div class="m2objIcon" style="--oc:#ffd166"><i class="ph-bold ph-pencil-ruler"></i></div>
+            <div class="m2objIcon" style="--oc:#ff9b6b"><i class="ph-bold ph-pencil-ruler"></i></div>
             <div>
               <strong>Diagnosticar y rediseñar</strong>
               <p>Realizar una auditoría de interfaz real con el fin de proponer mejoras específicas y fundamentadas en los principios del módulo.</p>
@@ -136,7 +136,7 @@
           <p class="msecSub">Estos tres términos se usan juntos y a veces mal. Entender la diferencia es el punto de partida de cualquier análisis serio de interfaz.</p>
         </div>
         <div class="m2triLayer reveal">
-          <div class="m2triCard" style="--tc:#ffd166">
+          <div class="m2triCard" style="--tc:#ff9b6b">
             <div class="m2triCardTop">
               <div class="m2triIcon"><i class="ph-bold ph-palette"></i></div>
               <span class="m2triLabel">UI — User Interface</span>
@@ -191,79 +191,98 @@
           <h2>La evolución de las interfaces</h2>
           <p class="msecSub">Cada era redefinió qué significa "interactuar con un sistema". Entender esta historia ayuda a predecir hacia dónde va la próxima generación de interfaces.</p>
         </div>
-        <div class="m2timeline reveal">
-          <!-- Top row: 1960s · 1994 · 2016 -->
-          <div class="m2tlTop">
-            <div class="m2tlItem" style="--ti:#ffd166">
+        <div class="m2tl reveal">
+          <!-- Top row: cards at columns 1 (1960s), 3 (1994), 5 (2016) -->
+          <div class="m2tlTopRow">
+            <div class="m2tlTopCell" style="--ti:#ff9b6b">
               <div class="m2tlCard">
                 <div class="m2tlIcon"><i class="ph-bold ph-terminal"></i></div>
-                <div class="m2tlCardYear">1960s</div>
                 <h4>CLI — Command Line</h4>
-                <p>Solo texto. Solo comandos. Si no sabías la sintaxis exacta, el sistema no respondía. La interfaz era exclusivamente para expertos técnicos.</p>
+                <p>Solo texto, solo comandos. Sin la sintaxis exacta, no había respuesta. Interfaz solo para expertos técnicos.</p>
                 <div class="m2tlTag">Solo para técnicos</div>
               </div>
-              <div class="m2tlStem"></div>
-              <div class="m2tlDot"></div>
+              <div class="m2tlStemDown"></div>
             </div>
-            <div class="m2tlItem" style="--ti:#9b6fff">
+            <div class="m2tlTopCell empty"></div>
+            <div class="m2tlTopCell" style="--ti:#9b6fff">
               <div class="m2tlCard">
                 <div class="m2tlIcon"><i class="ph-bold ph-globe"></i></div>
-                <div class="m2tlCardYear">1994</div>
                 <h4>Web — Hipertexto</h4>
-                <p>Tim Berners-Lee inventó la web. Las interfaces pasaron a estar en red. El link fue la nueva metáfora: conectar información con un clic.</p>
+                <p>Tim Berners-Lee inventó la web. El link como nueva metáfora: conectar información con un clic.</p>
                 <div class="m2tlTag">Conexión global</div>
               </div>
-              <div class="m2tlStem"></div>
-              <div class="m2tlDot"></div>
+              <div class="m2tlStemDown"></div>
             </div>
-            <div class="m2tlItem" style="--ti:#00e8c6">
+            <div class="m2tlTopCell empty"></div>
+            <div class="m2tlTopCell" style="--ti:#00e8c6">
               <div class="m2tlCard">
                 <div class="m2tlIcon"><i class="ph-bold ph-microphone"></i></div>
-                <div class="m2tlCardYear">2016</div>
                 <h4>Voice — Alexa / Siri</h4>
-                <p>La interfaz se volvió invisible. Sin pantalla, sin teclado, sin mouse. Solo la voz natural. El desafío: diseñar experiencias completas sin elementos visuales.</p>
+                <p>La interfaz se volvió invisible. Sin pantalla, sin teclado. Solo la voz natural como único canal.</p>
                 <div class="m2tlTag">Sin pantalla</div>
               </div>
-              <div class="m2tlStem"></div>
-              <div class="m2tlDot"></div>
+              <div class="m2tlStemDown"></div>
+            </div>
+            <div class="m2tlTopCell empty"></div>
+          </div>
+
+          <!-- Central axis: horizontal line with 6 year markers -->
+          <div class="m2tlAxis">
+            <div class="m2tlAxisMark" style="--ti:#ff9b6b">
+              <div class="m2tlAxisDot"></div>
+              <div class="m2tlAxisYear">1960s</div>
+            </div>
+            <div class="m2tlAxisMark" style="--ti:#4a8ef0">
+              <div class="m2tlAxisDot"></div>
+              <div class="m2tlAxisYear">1984</div>
+            </div>
+            <div class="m2tlAxisMark" style="--ti:#9b6fff">
+              <div class="m2tlAxisDot"></div>
+              <div class="m2tlAxisYear">1994</div>
+            </div>
+            <div class="m2tlAxisMark" style="--ti:#ff7d54">
+              <div class="m2tlAxisDot"></div>
+              <div class="m2tlAxisYear">2007</div>
+            </div>
+            <div class="m2tlAxisMark" style="--ti:#00e8c6">
+              <div class="m2tlAxisDot"></div>
+              <div class="m2tlAxisYear">2016</div>
+            </div>
+            <div class="m2tlAxisMark" style="--ti:#ff5050">
+              <div class="m2tlAxisDot"></div>
+              <div class="m2tlAxisYear">2023</div>
             </div>
           </div>
 
-          <!-- Central line -->
-          <div class="m2tlLine"></div>
-
-          <!-- Bottom row: 1984 · 2007 · 2023 -->
-          <div class="m2tlBot">
-            <div class="m2tlItem" style="--ti:#4a8ef0">
-              <div class="m2tlDot"></div>
-              <div class="m2tlStem"></div>
+          <!-- Bottom row: cards at columns 2 (1984), 4 (2007), 6 (2023) -->
+          <div class="m2tlBotRow">
+            <div class="m2tlBotCell empty"></div>
+            <div class="m2tlBotCell" style="--ti:#4a8ef0">
+              <div class="m2tlStemUp"></div>
               <div class="m2tlCard">
                 <div class="m2tlIcon"><i class="ph-bold ph-desktop"></i></div>
-                <div class="m2tlCardYear">1984</div>
                 <h4>GUI — Macintosh</h4>
-                <p>Apple popularizó el mouse y el escritorio con íconos. La metáfora del mundo real permitió que millones de personas usaran una computadora por primera vez.</p>
+                <p>Apple popularizó el mouse y los íconos. Millones de personas usaron una computadora por primera vez.</p>
                 <div class="m2tlTag">Democratización</div>
               </div>
             </div>
-            <div class="m2tlItem" style="--ti:#ff7d54">
-              <div class="m2tlDot"></div>
-              <div class="m2tlStem"></div>
+            <div class="m2tlBotCell empty"></div>
+            <div class="m2tlBotCell" style="--ti:#ff7d54">
+              <div class="m2tlStemUp"></div>
               <div class="m2tlCard">
                 <div class="m2tlIcon"><i class="ph-bold ph-device-mobile"></i></div>
-                <div class="m2tlCardYear">2007</div>
                 <h4>Touch — iPhone</h4>
-                <p>Steve Jobs eliminó el teclado físico. Multi-touch, gestos, pantalla completa. La interfaz pasó a ser el propio dedo del usuario.</p>
+                <p>Steve Jobs eliminó el teclado físico. Multi-touch y gestos. El dedo del usuario se convirtió en la interfaz.</p>
                 <div class="m2tlTag">El dedo como cursor</div>
               </div>
             </div>
-            <div class="m2tlItem" style="--ti:#ff5050">
-              <div class="m2tlDot"></div>
-              <div class="m2tlStem"></div>
+            <div class="m2tlBotCell empty"></div>
+            <div class="m2tlBotCell" style="--ti:#ff5050">
+              <div class="m2tlStemUp"></div>
               <div class="m2tlCard">
                 <div class="m2tlIcon"><i class="ph-bold ph-eye"></i></div>
-                <div class="m2tlCardYear">2023</div>
                 <h4>Spatial — Vision Pro</h4>
-                <p>La interfaz se superpone al mundo real. Gaze tracking, gestos en el aire, ventanas flotantes. El espacio físico se convierte en el canvas de la interfaz.</p>
+                <p>La interfaz se superpone al mundo real. Gaze tracking, gestos en el aire. El espacio físico como canvas.</p>
                 <div class="m2tlTag">El mundo como pantalla</div>
               </div>
             </div>
@@ -324,7 +343,7 @@
             <p>La <em>respuesta del sistema</em> a una acción del usuario. Sin feedback, el usuario no sabe si su acción tuvo efecto. El feedback cierra el loop de la interacción y genera confianza.</p>
             <div class="m2conceptEg">Ej: el botón cambia de color y dice "Enviado ✓" — eso es feedback</div>
           </div>
-          <div class="m2conceptCard" style="--cc:#ffd166">
+          <div class="m2conceptCard" style="--cc:#ff9b6b">
             <div class="m2conceptCardTop">
               <div class="m2conceptIcon"><i class="ph-bold ph-brain"></i></div>
               <strong>Modelo mental</strong>
@@ -414,7 +433,7 @@
             </div>
           </div>
 
-          <div class="m2lawCard" style="--lc:#ffd166">
+          <div class="m2lawCard" style="--lc:#ff9b6b">
             <div class="m2lawCardHead">
               <div class="m2lawNum">04</div>
               <div class="m2lawIcon"><i class="ph-bold ph-squares-four"></i></div>
@@ -586,7 +605,7 @@
             <p>Hipoacusia parcial, sordera total, dificultad con sonidos en ciertos rangos de frecuencia.</p>
             <div class="m2a11yTypeSol"><strong>Soluciones:</strong> subtítulos en videos, transcripciones de audio, no usar solo el sonido como feedback de acciones importantes.</div>
           </div>
-          <div class="m2a11yType" style="--at:#ffd166">
+          <div class="m2a11yType" style="--at:#ff9b6b">
             <div class="m2a11yTypeIcon"><i class="ph-bold ph-brain"></i></div>
             <h4>Cognitiva</h4>
             <p>Dislexia, TDAH, autismo, dificultades de procesamiento, deterioro cognitivo relacionado con la edad.</p>
@@ -598,7 +617,7 @@
           <div class="m2wcagTitle"><i class="ph-bold ph-certificate"></i> WCAG 2.1 — Web Content Accessibility Guidelines</div>
           <p class="m2wcagIntro">Publicadas por el W3C, las WCAG son el estándar internacional de accesibilidad web. Se organizan en tres niveles de cumplimiento:</p>
           <div class="m2wcagLevels">
-            <div class="m2wcagLevel" style="--wl:#ffd166">
+            <div class="m2wcagLevel" style="--wl:#ff9b6b">
               <div class="m2wcagLevelBadge">Nivel A</div>
               <div class="m2wcagLevelDesc">Mínimo indispensable. Sin esto, la interfaz es inutilizable para muchos usuarios. Incluye: alt text en imágenes, no depender solo del color, formularios con labels correctos.</div>
             </div>
@@ -735,7 +754,7 @@
             <h4>Edge Cases</h4>
             <p>Casos límite: nombre muy largo, email con caracteres especiales, sesión expirada, timeout de red. Ignorar edge cases garantiza bugs en producción.</p>
           </div>
-          <div class="m2flowType" style="--ft:#ffd166">
+          <div class="m2flowType" style="--ft:#ff9b6b">
             <div class="m2flowTypeIcon"><i class="ph-bold ph-arrows-merge"></i></div>
             <h4>Flujo de retorno</h4>
             <p>Qué hace el usuario después de completar o abandonar la tarea. ¿Ve un resumen? ¿Recibe confirmación? El flujo no termina con el botón "Confirmar".</p>
@@ -1044,7 +1063,7 @@
               </div>
             </div>
             <div class="m1missionStep">
-              <div class="m1missionStepIcon" style="--sc:#ffd166"><i class="ph-bold ph-wheelchair"></i></div>
+              <div class="m1missionStepIcon" style="--sc:#ff9b6b"><i class="ph-bold ph-wheelchair"></i></div>
               <div class="m1missionStepBody">
                 <strong>Paso 4 — Revisá accesibilidad básica</strong>
                 <p>Con Lighthouse o solo mirando: ¿hay suficiente contraste? ¿Los botones son lo suficientemente grandes para tocar? ¿Los campos del formulario tienen labels visibles? Sumá al menos una observación de accesibilidad.</p>
