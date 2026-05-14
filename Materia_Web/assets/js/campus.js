@@ -355,14 +355,15 @@ function setText(id, value) {
   if (el) el.textContent = value;
 }
 
+function moduleUrl(targetId) {
+  if (targetId === 1) return 'modulo1.html';
+  return `modulo.html?m=${targetId}`;
+}
+
 function setModuleLink(btnId, targetId, fallback) {
   const el = document.getElementById(btnId);
   if (!el) return;
-  if (targetId) {
-    el.href = `modulo.html?m=${targetId}`;
-  } else {
-    el.href = fallback;
-  }
+  el.href = targetId ? moduleUrl(targetId) : fallback;
 }
 
 function renderList(containerId, items, renderer) {
