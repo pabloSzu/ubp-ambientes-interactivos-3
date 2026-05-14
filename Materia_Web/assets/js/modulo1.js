@@ -2,14 +2,6 @@
    PAI3 · Módulo 1 · Interactivos
 ═══════════════════════════════════════════ */
 
-/* ─── Cursor glow ────────────────────────── */
-const glow = document.getElementById('mglow');
-if (glow) {
-  document.addEventListener('mousemove', e => {
-    glow.style.transform = `translate(${e.clientX - 210}px, ${e.clientY - 210}px)`;
-  });
-}
-
 /* ─── Reading progress ───────────────────── */
 const readProgress = document.getElementById('readProgress');
 if (readProgress) {
