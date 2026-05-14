@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
     <style>
       :root {
-        --accent:        #4a8ef0;
-        --accent-sub:    rgba(74, 142, 240, 0.08);
-        --accent-border: rgba(74, 142, 240, 0.25);
-        --accent-mid:    rgba(74, 142, 240, 0.38);
+        --accent:        #9b6fff;
+        --accent-sub:    rgba(155, 111, 255, 0.08);
+        --accent-border: rgba(155, 111, 255, 0.25);
+        --accent-mid:    rgba(155, 111, 255, 0.38);
       }
     </style>
   </head>
@@ -192,64 +192,80 @@
           <p class="msecSub">Cada era redefinió qué significa "interactuar con un sistema". Entender esta historia ayuda a predecir hacia dónde va la próxima generación de interfaces.</p>
         </div>
         <div class="m2timeline reveal">
-          <div class="m2timelineItem" style="--ti:#ffd166">
-            <div class="m2timelineYear">1960s</div>
-            <div class="m2timelineDot"></div>
-            <div class="m2timelineCard">
-              <div class="m2timelineIcon"><i class="ph-bold ph-terminal"></i></div>
-              <h4>CLI — Command Line</h4>
-              <p>Solo texto. Solo comandos. Si no sabías la sintaxis exacta, el sistema no respondía. La interfaz era exclusivamente para expertos técnicos.</p>
-              <div class="m2timelineTag">Solo para técnicos</div>
+          <!-- Top row: 1960s · 1994 · 2016 -->
+          <div class="m2tlTop">
+            <div class="m2tlItem" style="--ti:#ffd166">
+              <div class="m2tlCard">
+                <div class="m2tlIcon"><i class="ph-bold ph-terminal"></i></div>
+                <div class="m2tlCardYear">1960s</div>
+                <h4>CLI — Command Line</h4>
+                <p>Solo texto. Solo comandos. Si no sabías la sintaxis exacta, el sistema no respondía. La interfaz era exclusivamente para expertos técnicos.</p>
+                <div class="m2tlTag">Solo para técnicos</div>
+              </div>
+              <div class="m2tlStem"></div>
+              <div class="m2tlDot"></div>
+            </div>
+            <div class="m2tlItem" style="--ti:#9b6fff">
+              <div class="m2tlCard">
+                <div class="m2tlIcon"><i class="ph-bold ph-globe"></i></div>
+                <div class="m2tlCardYear">1994</div>
+                <h4>Web — Hipertexto</h4>
+                <p>Tim Berners-Lee inventó la web. Las interfaces pasaron a estar en red. El link fue la nueva metáfora: conectar información con un clic.</p>
+                <div class="m2tlTag">Conexión global</div>
+              </div>
+              <div class="m2tlStem"></div>
+              <div class="m2tlDot"></div>
+            </div>
+            <div class="m2tlItem" style="--ti:#00e8c6">
+              <div class="m2tlCard">
+                <div class="m2tlIcon"><i class="ph-bold ph-microphone"></i></div>
+                <div class="m2tlCardYear">2016</div>
+                <h4>Voice — Alexa / Siri</h4>
+                <p>La interfaz se volvió invisible. Sin pantalla, sin teclado, sin mouse. Solo la voz natural. El desafío: diseñar experiencias completas sin elementos visuales.</p>
+                <div class="m2tlTag">Sin pantalla</div>
+              </div>
+              <div class="m2tlStem"></div>
+              <div class="m2tlDot"></div>
             </div>
           </div>
-          <div class="m2timelineItem" style="--ti:#4a8ef0">
-            <div class="m2timelineYear">1984</div>
-            <div class="m2timelineDot"></div>
-            <div class="m2timelineCard">
-              <div class="m2timelineIcon"><i class="ph-bold ph-desktop"></i></div>
-              <h4>GUI — Macintosh</h4>
-              <p>Apple popularizó el mouse y el escritorio con íconos. La metáfora del mundo real (carpetas, papeleras, ventanas) permitió que millones de personas usaran una computadora por primera vez.</p>
-              <div class="m2timelineTag">Democratización</div>
+
+          <!-- Central line -->
+          <div class="m2tlLine"></div>
+
+          <!-- Bottom row: 1984 · 2007 · 2023 -->
+          <div class="m2tlBot">
+            <div class="m2tlItem" style="--ti:#4a8ef0">
+              <div class="m2tlDot"></div>
+              <div class="m2tlStem"></div>
+              <div class="m2tlCard">
+                <div class="m2tlIcon"><i class="ph-bold ph-desktop"></i></div>
+                <div class="m2tlCardYear">1984</div>
+                <h4>GUI — Macintosh</h4>
+                <p>Apple popularizó el mouse y el escritorio con íconos. La metáfora del mundo real permitió que millones de personas usaran una computadora por primera vez.</p>
+                <div class="m2tlTag">Democratización</div>
+              </div>
             </div>
-          </div>
-          <div class="m2timelineItem" style="--ti:#9b6fff">
-            <div class="m2timelineYear">1994</div>
-            <div class="m2timelineDot"></div>
-            <div class="m2timelineCard">
-              <div class="m2timelineIcon"><i class="ph-bold ph-globe"></i></div>
-              <h4>Web — Hipertexto</h4>
-              <p>Tim Berners-Lee inventó la web. Las interfaces pasaron a estar en red. El link fue la nueva metáfora: conectar información con un clic. La navegación como concepto nació aquí.</p>
-              <div class="m2timelineTag">Conexión global</div>
+            <div class="m2tlItem" style="--ti:#ff7d54">
+              <div class="m2tlDot"></div>
+              <div class="m2tlStem"></div>
+              <div class="m2tlCard">
+                <div class="m2tlIcon"><i class="ph-bold ph-device-mobile"></i></div>
+                <div class="m2tlCardYear">2007</div>
+                <h4>Touch — iPhone</h4>
+                <p>Steve Jobs eliminó el teclado físico. Multi-touch, gestos, pantalla completa. La interfaz pasó a ser el propio dedo del usuario.</p>
+                <div class="m2tlTag">El dedo como cursor</div>
+              </div>
             </div>
-          </div>
-          <div class="m2timelineItem" style="--ti:#ff7d54">
-            <div class="m2timelineYear">2007</div>
-            <div class="m2timelineDot"></div>
-            <div class="m2timelineCard">
-              <div class="m2timelineIcon"><i class="ph-bold ph-device-mobile"></i></div>
-              <h4>Touch — iPhone</h4>
-              <p>Steve Jobs eliminó el teclado físico. Multi-touch, gestos, pantalla completa. La interfaz pasó a ser el propio dedo del usuario. Todo el diseño UX tuvo que reinventarse para el pulgar.</p>
-              <div class="m2timelineTag">El dedo como cursor</div>
-            </div>
-          </div>
-          <div class="m2timelineItem" style="--ti:#00e8c6">
-            <div class="m2timelineYear">2016</div>
-            <div class="m2timelineDot"></div>
-            <div class="m2timelineCard">
-              <div class="m2timelineIcon"><i class="ph-bold ph-microphone"></i></div>
-              <h4>Voice — Alexa / Siri</h4>
-              <p>La interfaz se volvió invisible. Sin pantalla, sin teclado, sin mouse. Solo la voz natural. El desafío: diseñar experiencias completas sin ningún elemento visual.</p>
-              <div class="m2timelineTag">Sin pantalla</div>
-            </div>
-          </div>
-          <div class="m2timelineItem" style="--ti:#ff5050">
-            <div class="m2timelineYear">2023</div>
-            <div class="m2timelineDot"></div>
-            <div class="m2timelineCard">
-              <div class="m2timelineIcon"><i class="ph-bold ph-eye"></i></div>
-              <h4>Spatial — Apple Vision Pro</h4>
-              <p>La interfaz se superpone al mundo real. Gaze tracking, gestos en el aire, ventanas flotantes. El espacio físico se convierte en el canvas de la interfaz.</p>
-              <div class="m2timelineTag">El mundo como pantalla</div>
+            <div class="m2tlItem" style="--ti:#ff5050">
+              <div class="m2tlDot"></div>
+              <div class="m2tlStem"></div>
+              <div class="m2tlCard">
+                <div class="m2tlIcon"><i class="ph-bold ph-eye"></i></div>
+                <div class="m2tlCardYear">2023</div>
+                <h4>Spatial — Vision Pro</h4>
+                <p>La interfaz se superpone al mundo real. Gaze tracking, gestos en el aire, ventanas flotantes. El espacio físico se convierte en el canvas de la interfaz.</p>
+                <div class="m2tlTag">El mundo como pantalla</div>
+              </div>
             </div>
           </div>
         </div>
@@ -266,8 +282,8 @@
         </div>
         <div class="m2splitLayout reveal">
           <div class="m2splitImg">
-            <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=700&q=80&fit=crop" alt="Wireframing y diseño de interfaz" />
-            <div class="m2splitImgBadge">El diseño empieza en papel</div>
+            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=700&q=80&fit=crop" alt="Código y diseño de interfaz" />
+            <div class="m2splitImgBadge">Del wireframe al código</div>
           </div>
           <div class="m2splitContent">
             <p class="m2blogText">Una interfaz no es una pantalla — es un <strong>contrato implícito</strong> entre el sistema y la persona que lo usa. Ese contrato dice: "si hacés esto, va a pasar aquello". Cuando el contrato se rompe, la experiencia falla.</p>
