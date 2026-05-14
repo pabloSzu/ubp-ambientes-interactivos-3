@@ -61,60 +61,77 @@ function switchTab(btn, panelId) {
   const panel = document.getElementById(panelId);
   if (panel) {
     panel.classList.remove('m5codePanelHidden');
-    Prism.highlightAllUnder(panel);
+    if (window.Prism) Prism.highlightAllUnder(panel);
   }
 }
 
+/* ─── Lab code copy ──────────────────────── */
+const LAB_CODE = `public class DeadlockDemo {
+    static final Object LOCK_A = new Object();
+    static final Object LOCK_B = new Object();
+
+    public static void main(String[] args) throws Exception {
+        Thread t1 = new Thread(() -> {
+            synchronized (LOCK_A) {
+                System.out.println("T1 tomó LOCK_A — espera LOCK_B...");
+                try { Thread.sleep(100); } catch (Exception e) {}
+                synchronized (LOCK_B) {
+                    System.out.println("T1 consiguió LOCK_B — éxito");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            synchronized (LOCK_B) {  // ← orden invertido: LOCK_B primero
+                System.out.println("T2 tomó LOCK_B — espera LOCK_A...");
+                try { Thread.sleep(100); } catch (Exception e) {}
+                synchronized (LOCK_A) {
+                    System.out.println("T2 consiguió LOCK_A — éxito");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+        Thread.sleep(3000);
+        System.out.println("🔒 DEADLOCK: ninguno pudo terminar");
+    }
+}`;
+
+function copyLabCode() {
+  navigator.clipboard.writeText(LAB_CODE).then(() => {
+    const btn = document.querySelector('[onclick="copyLabCode()"]');
+    if (!btn) return;
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="ph-bold ph-check"></i> ¡Copiado!';
+    setTimeout(() => { btn.innerHTML = orig; }, 2200);
+  });
+}
+
 /* ═══════════════════════════════════════════
-   DINING PHILOSOPHERS SIMULATOR
+   DINING PHILOSOPHERS SIMULATOR — REDESIGNED
+   Slow, verbose, step-by-step explanation
 ═══════════════════════════════════════════ */
 
 const PHIL_N = 5;
 
-/* state per philosopher: thinking | hungry | waiting | eating | dead */
 let phils = [];
 let forks = [];
 let simMode = 'deadlock';
 let simRunning = false;
-let simTickId = null;
 let simDeadlockTimeouts = [];
 let semPermits = 4;
 let stats = { meals: 0, deadlocks: 0 };
 let simStartTime = null;
 let timeTickId = null;
 
-const STATE_EMOJI = {
-  thinking: '💭',
-  hungry:   '🍽️',
-  waiting:  '⏳',
-  eating:   '😋',
-  dead:     '💀'
-};
-const STATE_CLASS = {
-  thinking: 'm5sThinking',
-  hungry:   'm5sHungry',
-  waiting:  'm5sWaiting',
-  eating:   'm5sEating',
-  dead:     'm5sDead'
-};
-const STATE_LABEL = {
-  thinking: 'pensando',
-  hungry:   'hambriento',
-  waiting:  'esperando',
-  eating:   'comiendo',
-  dead:     'deadlock'
-};
+const STATE_EMOJI = { thinking:'💭', hungry:'🍽️', waiting:'⏳', eating:'😋', dead:'💀' };
+const STATE_CLASS = { thinking:'m5sThinking', hungry:'m5sHungry', waiting:'m5sWaiting', eating:'m5sEating', dead:'m5sDead' };
+const STATE_LABEL = { thinking:'pensando', hungry:'hambriento', waiting:'esperando tenedor', eating:'comiendo', dead:'deadlock' };
 
 function initPhils() {
-  phils = Array.from({ length: PHIL_N }, (_, i) => ({
-    id: i,
-    state: 'thinking',
-    eatTimer: 0
-  }));
-  forks = Array.from({ length: PHIL_N }, (_, i) => ({
-    id: i,
-    held: null
-  }));
+  phils = Array.from({ length: PHIL_N }, (_, i) => ({ id: i, state: 'thinking' }));
+  forks = Array.from({ length: PHIL_N }, (_, i) => ({ id: i, held: null }));
   semPermits = 4;
   stats = { meals: 0, deadlocks: 0 };
   simStartTime = null;
@@ -122,9 +139,9 @@ function initPhils() {
 
 function setPhilState(id, state) {
   phils[id].state = state;
-  const philEl   = document.getElementById(`sp${id}`);
-  const emojiEl  = document.getElementById(`se${id}`);
-  const stateEl  = document.getElementById(`ss${id}`);
+  const philEl  = document.getElementById(`sp${id}`);
+  const emojiEl = document.getElementById(`se${id}`);
+  const stateEl = document.getElementById(`ss${id}`);
   if (!philEl) return;
   Object.values(STATE_CLASS).forEach(c => philEl.classList.remove(c));
   philEl.classList.add(STATE_CLASS[state]);
@@ -136,15 +153,7 @@ function updateForkEl(id) {
   const el = document.getElementById(`sf${id}`);
   if (!el) return;
   el.classList.remove('m5fkHeld', 'm5fkFree');
-  if (forks[id].held !== null) {
-    el.classList.add('m5fkHeld');
-  } else {
-    el.classList.add('m5fkFree');
-  }
-}
-
-function updateAllForks() {
-  for (let i = 0; i < PHIL_N; i++) updateForkEl(i);
+  el.classList.add(forks[id].held !== null ? 'm5fkHeld' : 'm5fkFree');
 }
 
 function addLog(msg, type = 'info') {
@@ -152,8 +161,8 @@ function addLog(msg, type = 'info') {
   if (!log) return;
   const entry = document.createElement('div');
   entry.className = `m5simLogEntry m5simLog${type.charAt(0).toUpperCase() + type.slice(1)}`;
-  const now = simStartTime ? ((Date.now() - simStartTime) / 1000).toFixed(1) : '0.0';
-  entry.textContent = `[${now}s] ${msg}`;
+  const elapsed = simStartTime ? ((Date.now() - simStartTime) / 1000).toFixed(1) : '0.0';
+  entry.textContent = `[${elapsed}s] ${msg}`;
   log.appendChild(entry);
   log.scrollTop = log.scrollHeight;
 }
@@ -179,138 +188,216 @@ function updateTimeTick() {
 function updatePlayBtn() {
   const btn = document.getElementById('simPlayBtn');
   if (!btn) return;
-  if (simRunning) {
-    btn.innerHTML = '<i class="ph-bold ph-pause"></i> Pause';
-  } else {
-    btn.innerHTML = '<i class="ph-bold ph-play"></i> Play';
+  btn.innerHTML = simRunning
+    ? '<i class="ph-bold ph-pause"></i> Pausar'
+    : '<i class="ph-bold ph-play"></i> Play';
+}
+
+function updatePermits() {
+  const wrap = document.getElementById('simPermitWrap');
+  if (wrap) wrap.style.display = (simMode === 'semaphore') ? 'block' : 'none';
+  const count = document.getElementById('permCount');
+  if (count) count.textContent = `${semPermits}/4`;
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById(`perm${i}`);
+    if (dot) {
+      dot.classList.toggle('m5permFree', i < semPermits);
+    }
   }
 }
 
-/* ── Deadlock mode ─────────────────────── */
+/* ══════════════════════════════
+   DEADLOCK MODE — staggered, slow
+   Each step is logged individually
+══════════════════════════════ */
 function runDeadlockMode() {
   simStartTime = Date.now();
+  addLog('Sistema iniciado. 5 filósofos piensan sin ningún control de sincronización.', 'info');
+  updateStatus('Filósofos pensando — sin mecanismo de coordinación');
 
-  addLog('Todos los filósofos empiezan a pensar...', 'info');
-  updateStatus('Los filósofos piensan...');
+  /* Phase 1: become hungry one by one */
+  for (let i = 0; i < PHIL_N; i++) {
+    const t = setTimeout(() => {
+      if (!simRunning) return;
+      setPhilState(i, 'hungry');
+      addLog(`F${i} tiene hambre 🍽️ — va a tomar el tenedor de su izquierda`, 'wait');
+    }, 1000 + i * 400);
+    simDeadlockTimeouts.push(t);
+  }
 
-  const t1 = setTimeout(() => {
-    if (!simRunning) return;
-    for (let i = 0; i < PHIL_N; i++) setPhilState(i, 'hungry');
-    addLog('¡Todos tienen hambre al mismo tiempo!', 'info');
-    updateStatus('Todos quieren comer — van por el tenedor izquierdo');
-  }, 1000);
-
-  const t2 = setTimeout(() => {
-    if (!simRunning) return;
-    for (let i = 0; i < PHIL_N; i++) {
+  /* Phase 2: each picks up LEFT fork one by one */
+  for (let i = 0; i < PHIL_N; i++) {
+    const t = setTimeout(() => {
+      if (!simRunning) return;
       forks[i].held = i;
       setPhilState(i, 'waiting');
       updateForkEl(i);
-    }
-    addLog('Todos tomaron su tenedor IZQUIERDO', 'wait');
-    addLog('Cada filósofo espera el tenedor DERECHO de su vecino...', 'wait');
-    updateStatus('Todos tienen un tenedor — esperan el otro');
-  }, 2500);
+      addLog(`F${i} tomó tenedor T${i} (izquierdo) 🍴 — ahora espera T${(i + 1) % 5}`, 'wait');
+    }, 3500 + i * 400);
+    simDeadlockTimeouts.push(t);
+  }
 
-  const t3 = setTimeout(() => {
+  /* Phase 3: detection */
+  const tDetect = setTimeout(() => {
+    if (!simRunning) return;
+    addLog('⚠️ Situación: todos tienen un tenedor. Todos esperan el tenedor de su vecino.', 'wait');
+    addLog('    F0 espera T1 (lo tiene F1)', 'wait');
+    addLog('    F1 espera T2 (lo tiene F2)', 'wait');
+    addLog('    F2 espera T3 (lo tiene F3)', 'wait');
+    addLog('    F3 espera T4 (lo tiene F4)', 'wait');
+    addLog('    F4 espera T0 (lo tiene F0) ← ¡ciclo cerrado!', 'wait');
+  }, 6200);
+  simDeadlockTimeouts.push(tDetect);
+
+  /* Phase 4: DEADLOCK confirmed */
+  const tDead = setTimeout(() => {
     if (!simRunning) return;
     for (let i = 0; i < PHIL_N; i++) setPhilState(i, 'dead');
-    addLog('🔴 DEADLOCK — nadie puede tomar el tenedor derecho', 'dead');
-    addLog('El sistema está paralizado. Ningún hilo puede avanzar.', 'dead');
+    addLog('💀 DEADLOCK — espera circular confirmada. Las 4 condiciones de Coffman se cumplen:', 'dead');
+    addLog('   ① Exclusión mutua: cada tenedor es de uso exclusivo', 'dead');
+    addLog('   ② Hold & wait: cada filósofo retiene T_izq mientras espera T_der', 'dead');
+    addLog('   ③ No preempción: nadie puede quitarle el tenedor a otro', 'dead');
+    addLog('   ④ Espera circular: F0→F1→F2→F3→F4→F0', 'dead');
+    addLog('El sistema está paralizado. Reiniciá y probá con Semáforo(4).', 'dead');
     stats.deadlocks++;
     updateStats();
-    updateStatus('DEADLOCK detectado — el sistema está congelado');
-
+    updateStatus('💀 DEADLOCK detectado — probá el modo Con Semáforo(4)');
     simRunning = false;
-    updatePlayBtn();
     clearInterval(timeTickId);
-  }, 4500);
-
-  simDeadlockTimeouts = [t1, t2, t3];
+    updatePlayBtn();
+  }, 7500);
+  simDeadlockTimeouts.push(tDead);
 }
 
-/* ── Semaphore mode ────────────────────── */
-const THINK_MIN = 800;
-const THINK_MAX = 1800;
-const EAT_MIN   = 1000;
-const EAT_MAX   = 1600;
+/* ══════════════════════════════
+   SEMAPHORE MODE — verbose, clear
+   Shows every sub-step with delays
+══════════════════════════════ */
 
-function randBetween(min, max) {
-  return min + Math.random() * (max - min);
-}
+function leftForkIdx(id)  { return id; }
+function rightForkIdx(id) { return (id + 1) % PHIL_N; }
 
-function leftFork(id)  { return id; }
-function rightFork(id) { return (id + 1) % PHIL_N; }
-
-function tryEat(id) {
-  if (!simRunning || simMode !== 'semaphore') return;
-  if (phils[id].state !== 'hungry') return;
-
-  const lf = leftFork(id);
-  const rf = rightFork(id);
-
-  if (semPermits > 0 && forks[lf].held === null && forks[rf].held === null) {
-    semPermits--;
-    forks[lf].held = id;
-    forks[rf].held = id;
-    setPhilState(id, 'eating');
-    updateForkEl(lf);
-    updateForkEl(rf);
-    addLog(`F${id} come (tenedores T${lf} y T${rf}) — semáforo: ${semPermits} permisos libres`, 'eat');
-    updateStatus(`F${id} está comiendo — semáforo: ${semPermits}/4 permisos libres`);
-
-    const eatDuration = randBetween(EAT_MIN, EAT_MAX);
-    setTimeout(() => finishEating(id), eatDuration);
-  } else {
-    /* Can't eat yet — retry in a bit */
-    if (simRunning && phils[id].state === 'hungry') {
-      setTimeout(() => tryEat(id), 200 + Math.random() * 200);
-    }
-  }
-}
-
-function finishEating(id) {
-  if (!simRunning) return;
-  const lf = leftFork(id);
-  const rf = rightFork(id);
-
-  forks[lf].held = null;
-  forks[rf].held = null;
-  semPermits++;
-  stats.meals++;
-  updateStats();
-  updateForkEl(lf);
-  updateForkEl(rf);
-  addLog(`F${id} terminó de comer — semáforo: ${semPermits} permisos libres`, 'sem');
-  setPhilState(id, 'thinking');
-
-  /* Wake anyone who was hungry and might benefit from the freed permit/forks */
-  for (let i = 0; i < PHIL_N; i++) {
-    if (phils[i].state === 'hungry') tryEat(i);
-  }
-
-  /* Schedule next hunger cycle */
-  const thinkTime = randBetween(THINK_MIN, THINK_MAX);
-  setTimeout(() => becomeHungry(id), thinkTime);
-}
-
-function becomeHungry(id) {
+function startHungerCycle(id) {
   if (!simRunning || simMode !== 'semaphore') return;
   setPhilState(id, 'hungry');
-  addLog(`F${id} tiene hambre — pide permiso al semáforo`, 'wait');
-  tryEat(id);
+  addLog(`F${id} tiene hambre 🍽️ — pide permiso al semáforo`, 'wait');
+
+  setTimeout(() => {
+    if (simRunning && phils[id].state === 'hungry') tryAcquire(id);
+  }, 500);
+}
+
+function tryAcquire(id) {
+  if (!simRunning || simMode !== 'semaphore' || phils[id].state !== 'hungry') return;
+
+  const lf = leftForkIdx(id);
+  const rf = rightForkIdx(id);
+
+  if (semPermits > 0 && forks[lf].held === null && forks[rf].held === null) {
+    /* Step 1: get semaphore permit */
+    semPermits--;
+    updatePermits();
+    addLog(`F${id} OBTIENE permiso ✅ — semáforo: ${semPermits}/4 libres`, 'sem');
+    updateStatus(`F${id} obtiene permiso. Semáforo: ${semPermits}/4 disponibles`);
+
+    /* Step 2: left fork */
+    setTimeout(() => {
+      if (!simRunning) return;
+      forks[lf].held = id;
+      updateForkEl(lf);
+      addLog(`F${id} toma tenedor izquierdo T${lf} 🍴`, 'eat');
+
+      /* Step 3: right fork */
+      setTimeout(() => {
+        if (!simRunning) return;
+        forks[rf].held = id;
+        updateForkEl(rf);
+        addLog(`F${id} toma tenedor derecho T${rf} 🍴 — ¡tiene los dos!`, 'eat');
+
+        /* Step 4: eating */
+        setTimeout(() => {
+          if (!simRunning) return;
+          setPhilState(id, 'eating');
+          stats.meals++;
+          updateStats();
+          addLog(`F${id} come 😋 (comida #${stats.meals})`, 'eat');
+          updateStatus(`F${id} come. Semáforo: ${semPermits}/4 libres — sistema progresando ✅`);
+
+          /* Step 5: finish eating after delay */
+          const eatDuration = 2500 + Math.random() * 1000;
+          setTimeout(() => finishEatingVerbose(id, lf, rf), eatDuration);
+        }, 350);
+      }, 350);
+    }, 350);
+
+  } else {
+    /* Can't eat yet — explain why and retry */
+    const reason = semPermits <= 0
+      ? `semáforo agotado (0/4 permisos libres) — espera`
+      : `tenedores T${lf} o T${rf} ocupados — espera`;
+    addLog(`F${id} no puede comer aún: ${reason}`, 'wait');
+
+    const retryDelay = 600 + Math.random() * 400;
+    setTimeout(() => {
+      if (simRunning && phils[id].state === 'hungry') tryAcquire(id);
+    }, retryDelay);
+  }
+}
+
+function finishEatingVerbose(id, lf, rf) {
+  if (!simRunning) return;
+
+  addLog(`F${id} terminó de comer — libera los recursos`, 'info');
+
+  /* Step 1: release forks */
+  setTimeout(() => {
+    if (!simRunning) return;
+    forks[lf].held = null;
+    forks[rf].held = null;
+    updateForkEl(lf);
+    updateForkEl(rf);
+    addLog(`F${id} suelta tenedores T${lf} y T${rf} — disponibles para otros`, 'sem');
+
+    /* Step 2: release semaphore permit */
+    setTimeout(() => {
+      if (!simRunning) return;
+      semPermits++;
+      updatePermits();
+      addLog(`F${id} devuelve permiso al semáforo ✅ — semáforo: ${semPermits}/4 libres`, 'sem');
+      setPhilState(id, 'thinking');
+      updateStatus(`F${id} vuelve a pensar. Semáforo: ${semPermits}/4 disponibles`);
+
+      /* Wake hungry philosophers who might benefit */
+      for (let i = 0; i < PHIL_N; i++) {
+        if (phils[i].state === 'hungry') {
+          setTimeout(() => {
+            if (simRunning && phils[i].state === 'hungry') tryAcquire(i);
+          }, 200 + i * 80);
+        }
+      }
+
+      /* Schedule next hunger cycle */
+      const thinkTime = 2000 + Math.random() * 1500;
+      setTimeout(() => {
+        if (simRunning && simMode === 'semaphore') startHungerCycle(id);
+      }, thinkTime);
+    }, 350);
+  }, 350);
 }
 
 function startSemaphoreMode() {
   simStartTime = Date.now();
-  addLog('Semáforo(4) iniciado — max 4 filósofos intentando a la vez', 'sem');
-  updateStatus('Modo semáforo activo — 4 permisos disponibles');
+  addLog('Semáforo(4) inicializado — máximo 4 filósofos intentando a la vez', 'sem');
+  addLog('Regla: adquirir permiso → tomar fork izquierdo → tomar fork derecho → comer', 'sem');
+  updateStatus('Modo semáforo activo — observá los permisos y los tenedores');
+  updatePermits();
 
+  /* Stagger initial hunger so it's not overwhelming */
   for (let i = 0; i < PHIL_N; i++) {
-    const delay = i * 300 + Math.random() * 200;
+    const delay = 600 + i * 700;
     setTimeout(() => {
       if (!simRunning) return;
-      becomeHungry(i);
+      startHungerCycle(i);
     }, delay);
   }
 }
@@ -321,18 +408,16 @@ function setMode(mode) {
   simMode = mode;
   document.getElementById('modeDeadlock').classList.toggle('m5simModeActive', mode === 'deadlock');
   document.getElementById('modeSemaphore').classList.toggle('m5simModeActive', mode === 'semaphore');
-  const statusMsg = mode === 'deadlock'
-    ? 'Modo sin control — cada filósofo toma su tenedor izquierdo sin coordinación'
-    : 'Modo semáforo — máximo 4 filósofos intentando simultáneamente';
-  updateStatus(statusMsg);
+  updatePermits();
+
+  const msg = mode === 'deadlock'
+    ? 'Modo sin control — cada filósofo toma su tenedor izquierdo sin coordinación → deadlock'
+    : 'Modo semáforo — máximo 4 filósofos intentando a la vez → progreso garantizado';
+  updateStatus(msg);
 }
 
 function simToggle() {
-  if (simRunning) {
-    simPause();
-  } else {
-    simStart();
-  }
+  if (simRunning) { simPause(); } else { simStart(); }
 }
 
 function simStart() {
@@ -341,9 +426,11 @@ function simStart() {
   initPhils();
   clearSimLog();
   updateStats();
+  updatePermits();
 
   for (let i = 0; i < PHIL_N; i++) {
     setPhilState(i, 'thinking');
+    forks[i].held = null;
     updateForkEl(i);
   }
 
@@ -372,46 +459,43 @@ function simReset() {
   simDeadlockTimeouts = [];
   updatePlayBtn();
   initPhils();
+  updatePermits();
 
   for (let i = 0; i < PHIL_N; i++) {
     setPhilState(i, 'thinking');
-  }
-  for (let i = 0; i < PHIL_N; i++) {
     forks[i].held = null;
     updateForkEl(i);
   }
 
   clearSimLog();
-  const el = document.getElementById('simTime');
-  if (el) el.textContent = '0s';
-  const meals = document.getElementById('simMeals');
-  const dead  = document.getElementById('simDeadlocks');
-  if (meals) meals.textContent = '0';
-  if (dead)  dead.textContent  = '0';
+  ['simTime', 'simMeals', 'simDeadlocks'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = id === 'simTime' ? '0s' : '0';
+  });
   updateStatus('Sistema reiniciado. Elegí un modo y presioná Play.');
 }
 
 function clearSimLog() {
   const log = document.getElementById('simLog');
-  if (log) {
-    log.innerHTML = '<div class="m5simLogEntry m5simLogInfo">— Log reiniciado —</div>';
-  }
+  if (log) log.innerHTML = '<div class="m5simLogEntry m5simLogInfo">— Log reiniciado —</div>';
 }
 
 /* Initialize forks as free on load */
 (function () {
   initPhils();
+  updatePermits();
   for (let i = 0; i < PHIL_N; i++) updateForkEl(i);
 })();
 
 /* ═══════════════════════════════════════════
-   DEADLOCK DOCTOR GAME
+   DEADLOCK DOCTOR GAME — 7 scenarios
 ═══════════════════════════════════════════ */
 
 const GAME_SCENARIOS = [
   {
-    scenario: `// T1 adquiere LOCK_A y espera LOCK_B
-// T2 adquiere LOCK_B y espera LOCK_A
+    scenario:
+`// T1 adquiere LOCK_A, espera LOCK_B
+// T2 adquiere LOCK_B, espera LOCK_A
 // Ambos hilos empiezan al mismo tiempo
 
 Thread t1 = new Thread(() -> {
@@ -428,88 +512,128 @@ Thread t2 = new Thread(() -> {
 });
 t1.start(); t2.start();`,
     answer: 'DEADLOCK',
-    explanation: '✅ Correcto: T1 retiene lockA y espera lockB; T2 retiene lockB y espera lockA. Ciclo de espera circular clásico — las 4 condiciones de Coffman se cumplen simultáneamente.'
+    explanation: 'T1 retiene lockA y espera lockB; T2 retiene lockB y espera lockA. Ciclo de espera circular clásico — las 4 condiciones de Coffman se cumplen. Para arreglarlo: que ambos pidan los locks en el mismo orden (lockA→lockB).'
   },
   {
-    scenario: `// Scheduler sin fair queuing
-// Thread de alta prioridad en loop continuo
+    scenario:
+`// Thread de alta prioridad en loop continuo
 // Thread de baja prioridad espera el mismo lock
 
-Thread highPrio = new Thread(() -> {
+Thread high = new Thread(() -> {
     while(true) {
-        synchronized(sharedResource) {
-            process(); // tarda 10ms
+        synchronized(recurso) {
+            procesar(); // tarda 10ms
         }
-        // sin sleep — vuelve a intentar INMEDIATAMENTE
+        // sin sleep — vuelve INMEDIATAMENTE
     }
-}, "HIGH");
-Thread lowPrio = new Thread(() -> {
-    synchronized(sharedResource) {
-        // jamás entra — siempre pierde contra HIGH
-        process();
+});
+Thread low = new Thread(() -> {
+    synchronized(recurso) {
+        // Nunca entra: HIGH lo ocupa sin parar
+        procesar();
     }
-}, "LOW");
-highPrio.setPriority(Thread.MAX_PRIORITY);
-lowPrio.setPriority(Thread.MIN_PRIORITY);`,
+});
+high.setPriority(Thread.MAX_PRIORITY);
+low.setPriority(Thread.MIN_PRIORITY);`,
     answer: 'STARVATION',
-    explanation: '✅ Correcto: El hilo HIGH nunca cede el recurso por tiempo suficiente — el hilo LOW nunca puede entrar. El sistema avanza (HIGH funciona bien), pero LOW muere de hambre. Clásica starvation por prioridad injusta.'
+    explanation: 'El hilo HIGH nunca cede el recurso por tiempo suficiente — LOW nunca puede entrar. El sistema avanza (HIGH funciona bien), pero LOW muere de hambre. Solución: usar ReentrantLock(true) para fair queuing, o agregar un sleep en HIGH.'
   },
   {
-    scenario: `// T1 y T2 se "ceden el paso" mutuamente
+    scenario:
+`// T1 y T2 se "ceden el paso" mutuamente
 // Ninguno avanza pero tampoco están bloqueados
 
 while(true) {
     while(other.isActive()) {
-        setActive(false);    // "yo me aparto"
+        setActive(false);   // "yo me aparto"
         Thread.sleep(1);
-        setActive(true);     // "intento de nuevo"
+        setActive(true);    // "intento de nuevo"
     }
     // Ambos ven al otro activo, ambos retroceden
-    // el ciclo se repite indefinidamente
+    // el ciclo se repite infinitamente
     useResource();
 }`,
     answer: 'LIVELOCK',
-    explanation: '✅ Correcto: Ambos hilos están ejecutándose (no bloqueados), pero se responden mutuamente: cada uno ve al otro "activo" y se aparta. Nadie usa el recurso nunca. Esto es livelock — active pero sin progreso.'
+    explanation: 'Ambos hilos están ejecutándose (no bloqueados), pero se responden mutuamente: cada uno ve al otro "activo" y se aparta. Nadie usa el recurso. Solución: backoff aleatorio — que cada hilo espere un tiempo distinto antes de reintentar.'
   },
   {
-    scenario: `// Ambos hilos adquieren los locks en el MISMO orden
+    scenario:
+`// Ambos hilos adquieren locks en el MISMO orden
 // T1: A → B    T2: A → B  (idéntico)
 
 Thread t1 = new Thread(() -> {
     synchronized(lockA) {
         synchronized(lockB) {
-            processA_B();
+            procesarA_B();
         }
     }
 });
 Thread t2 = new Thread(() -> {
     synchronized(lockA) {  // mismo orden que T1
         synchronized(lockB) {
-            processA_B();
+            procesarA_B();
         }
     }
 });
 t1.start(); t2.start();`,
     answer: 'SEGURO',
-    explanation: '✅ Correcto: Cuando ambos hilos adquieren los locks en el mismo orden (A→B), se rompe la condición de "espera circular" de Coffman. T2 simplemente espera que T1 libere lockA — no hay ciclo.'
+    explanation: 'Cuando ambos hilos adquieren los locks en el mismo orden (A→B), se rompe la condición de "espera circular" de Coffman. T2 simplemente espera que T1 libere lockA — no hay ciclo. El sistema progresa normalmente.'
   },
   {
-    scenario: `// 3 hilos en ciclo: T1→T2→T3→T1
+    scenario:
+`// 3 hilos en ciclo: T1→T2→T3→T1
 // Cada uno retiene un lock y espera el siguiente
 
-synchronized(lockA) {           // T1: tiene A, pide B
-    synchronized(lockB) { ... }
-}
+// T1: tiene lockA, pide lockB
+synchronized(lockA) { synchronized(lockB) { ... } }
 
-synchronized(lockB) {           // T2: tiene B, pide C
-    synchronized(lockC) { ... }
-}
+// T2: tiene lockB, pide lockC
+synchronized(lockB) { synchronized(lockC) { ... } }
 
-synchronized(lockC) {           // T3: tiene C, pide A  ← cierra el ciclo
-    synchronized(lockA) { ... }
-}`,
+// T3: tiene lockC, pide lockA  ← cierra el ciclo
+synchronized(lockC) { synchronized(lockA) { ... } }`,
     answer: 'DEADLOCK',
-    explanation: '✅ Correcto: El grafo de espera forma un ciclo de 3 nodos: T1 espera a T2, T2 espera a T3, T3 espera a T1. Un deadlock no requiere solo 2 hilos — puede ocurrir con cualquier cantidad que forme un ciclo cerrado.'
+    explanation: 'El grafo de espera forma un ciclo de 3 nodos: T1→T2→T3→T1. Un deadlock no requiere solo 2 hilos — puede ocurrir con cualquier cantidad que forme un ciclo cerrado. La solución es imponer un orden global: todos piden lockA→lockB→lockC.'
+  },
+  {
+    scenario:
+`-- Deadlock en base de datos SQL
+-- Dos transacciones actualizan filas en orden inverso
+
+-- Transacción 1 (simultánea con T2)
+BEGIN;
+UPDATE cuentas SET saldo = saldo - 100 WHERE id = 1;  -- lock fila 1
+-- espera...
+UPDATE cuentas SET saldo = saldo + 100 WHERE id = 2;  -- espera lock fila 2
+
+-- Transacción 2 (simultánea con T1)
+BEGIN;
+UPDATE cuentas SET saldo = saldo - 50  WHERE id = 2;  -- lock fila 2
+-- espera...
+UPDATE cuentas SET saldo = saldo + 50  WHERE id = 1;  -- espera lock fila 1`,
+    answer: 'DEADLOCK',
+    explanation: 'Los deadlocks no son exclusivos de Java — ocurren en bases de datos relacionales. T1 tiene la fila 1 y espera la fila 2; T2 tiene la fila 2 y espera la fila 1. La mayoría de los motores de BD detectan esto automáticamente y abortan una transacción (victim selection).'
+  },
+  {
+    scenario:
+`// ReentrantLock con fair=true
+// Garantiza orden FIFO de adquisición del lock
+
+ReentrantLock fairLock = new ReentrantLock(true);
+
+Thread lowPrio = new Thread(() -> {
+    fairLock.lock();  // espera su turno en la cola FIFO
+    try {
+        procesar();
+    } finally {
+        fairLock.unlock();
+    }
+});
+
+// Con fair=true, el primer hilo que esperó es el primero
+// en entrar. Cola FIFO → starvation imposible.`,
+    answer: 'SEGURO',
+    explanation: 'ReentrantLock(true) habilita el modo "fair": los hilos se encolan en orden de llegada (FIFO). Ningún hilo puede "colarse". Esto previene starvation. La contrapartida: menor throughput comparado con unfair lock, porque el scheduler no puede optimizar el orden de entrada.'
   }
 ];
 
@@ -519,9 +643,7 @@ let gameCorrect = 0;
 let gameAnswered = false;
 
 function buildGame() {
-  gameIndex = 0;
-  gameCorrect = 0;
-  gameAnswered = false;
+  gameIndex = 0; gameCorrect = 0; gameAnswered = false;
   renderGameScenario();
   const result = document.getElementById('gameResult');
   const card   = document.getElementById('gameCard');
@@ -531,7 +653,7 @@ function buildGame() {
 
 function renderGameScenario() {
   const sc = GAME_SCENARIOS[gameIndex];
-  document.getElementById('gameNum').textContent = `Caso ${gameIndex + 1} / ${GAME_SCENARIOS.length}`;
+  document.getElementById('gameNum').textContent   = `Caso ${gameIndex + 1} / ${GAME_SCENARIOS.length}`;
   document.getElementById('gameScore').textContent = `${gameCorrect} correcta${gameCorrect !== 1 ? 's' : ''}`;
   document.getElementById('gameScenario').textContent = sc.scenario;
 
@@ -545,7 +667,7 @@ function renderGameScenario() {
     opts.appendChild(btn);
   });
 
-  const fb = document.getElementById('gameFeedback');
+  const fb   = document.getElementById('gameFeedback');
   const next = document.getElementById('gameNext');
   if (fb)   { fb.style.display = 'none'; fb.className = 'm5gameFeedback'; }
   if (next) next.style.display = 'none';
@@ -555,12 +677,10 @@ function renderGameScenario() {
 function answerGame(choice, btn) {
   if (gameAnswered) return;
   gameAnswered = true;
-  const sc = GAME_SCENARIOS[gameIndex];
+  const sc      = GAME_SCENARIOS[gameIndex];
   const correct = choice === sc.answer;
-  if (correct) {
-    gameCorrect++;
-    btn.classList.add('correct');
-  } else {
+  if (correct) { gameCorrect++; btn.classList.add('correct'); }
+  else {
     btn.classList.add('wrong');
     document.querySelectorAll('.m5gameOpt').forEach(b => {
       if (b.textContent === sc.answer) b.classList.add('correct');
@@ -578,20 +698,17 @@ function answerGame(choice, btn) {
   const next = document.getElementById('gameNext');
   if (next) {
     next.style.display = 'inline-flex';
-    if (gameIndex >= GAME_SCENARIOS.length - 1) {
-      next.innerHTML = 'Ver resultado <i class="ph-bold ph-check"></i>';
-    }
+    next.innerHTML = gameIndex >= GAME_SCENARIOS.length - 1
+      ? 'Ver resultado <i class="ph-bold ph-check"></i>'
+      : 'Siguiente caso <i class="ph-bold ph-arrow-right"></i>';
   }
   document.getElementById('gameScore').textContent = `${gameCorrect} correcta${gameCorrect !== 1 ? 's' : ''}`;
 }
 
 function gameNext() {
   gameIndex++;
-  if (gameIndex >= GAME_SCENARIOS.length) {
-    showGameResult();
-  } else {
-    renderGameScenario();
-  }
+  if (gameIndex >= GAME_SCENARIOS.length) showGameResult();
+  else renderGameScenario();
 }
 
 function showGameResult() {
@@ -600,14 +717,11 @@ function showGameResult() {
   document.getElementById('gameFinalScore').textContent = `${gameCorrect} / ${GAME_SCENARIOS.length}`;
 }
 
-function gameRestart() {
-  buildGame();
-}
-
+function gameRestart() { buildGame(); }
 buildGame();
 
 /* ═══════════════════════════════════════════
-   QUIZ
+   QUIZ — 8 questions
 ═══════════════════════════════════════════ */
 
 const QUIZ_QUESTIONS = [
@@ -623,21 +737,21 @@ const QUIZ_QUESTIONS = [
     fb: 'synchronized implementa exclusión mutua: el hilo que entra "toma el lock" del objeto y los demás quedan en espera hasta que lo libere al salir del bloque.'
   },
   {
-    q: 'Un `Semaphore(3)` permite _____ hilos en la sección protegida de forma simultánea.',
-    opts: ['1 hilo — es lo mismo que un mutex', '2 hilos — reserva uno para el SO', '3 hilos — exactamente N', 'Ilimitados — el semáforo no limita'],
+    q: 'Un `Semaphore(3)` permite _____ hilos simultáneos en la sección protegida.',
+    opts: ['1 hilo — es equivalente a mutex', '2 hilos — reserva uno para el SO', '3 hilos — exactamente N', 'Ilimitados — no limita'],
     ans: 2,
     fb: 'Semaphore(N) permite exactamente N hilos simultáneos. acquire() decrementa el contador; si llega a 0, el próximo hilo se bloquea. release() lo incrementa y despierta un hilo en espera.'
   },
   {
     q: '¿Cuál de estas opciones describe la condición de Coffman "Hold & Wait"?',
     opts: [
-      'El SO puede quitar el recurso al hilo que lo tiene por la fuerza',
+      'El SO puede quitarle el recurso al hilo por la fuerza',
       'El hilo retiene recursos ya adquiridos mientras espera obtener otros nuevos',
       'Todos los hilos esperan entre sí formando un ciclo cerrado',
-      'El recurso puede usarse por múltiples hilos a la vez sin conflicto'
+      'El recurso puede usarse por múltiples hilos sin conflicto'
     ],
     ans: 1,
-    fb: '"Hold & wait" significa que el hilo NO suelta lo que ya tiene mientras espera más. Romper esta condición (soltar antes de pedir nuevos) es una de las estrategias para prevenir deadlock.'
+    fb: '"Hold & wait" significa que el hilo NO suelta lo que ya tiene mientras espera más. Romper esta condición (liberar antes de pedir nuevos) es una de las estrategias para prevenir deadlock.'
   },
   {
     q: 'La diferencia clave entre deadlock y starvation es:',
@@ -645,21 +759,21 @@ const QUIZ_QUESTIONS = [
       'En starvation el sistema tampoco progresa para ningún hilo',
       'En deadlock el sistema continúa respondiendo normalmente',
       'En starvation el sistema avanza, pero un hilo específico nunca accede al recurso',
-      'Son sinónimos — ambos significan que ningún hilo progresa'
+      'Son sinónimos — significan lo mismo'
     ],
     ans: 2,
-    fb: 'En starvation el sistema funciona bien para la mayoría — solo un hilo (o pocos) nunca obtienen recursos. En deadlock, todos los hilos involucrados están bloqueados y el sistema no progresa en absoluto.'
+    fb: 'En starvation el sistema funciona bien para la mayoría — solo un hilo nunca obtiene recursos. En deadlock, todos los hilos involucrados están bloqueados y el sistema no progresa.'
   },
   {
     q: '¿Qué hace `wait()` cuando se llama dentro de un bloque `synchronized`?',
     opts: [
       'Termina definitivamente la ejecución del hilo',
       'Libera el lock del objeto y suspende el hilo hasta que alguien llame notify()',
-      'Mantiene el lock y bloquea el hilo hasta que pase el tiempo especificado',
+      'Mantiene el lock y bloquea el hilo por el tiempo especificado',
       'Solo funciona con ReentrantLock, no con synchronized'
     ],
     ans: 1,
-    fb: 'wait() hace dos cosas atomicamente: libera el lock (permitiendo que otros hilos entren) y suspende el hilo actual. Esto es fundamental — si no liberara el lock, nadie podría llamar notify() y el hilo quedaría atrapado para siempre.'
+    fb: 'wait() hace dos cosas atómicamente: libera el lock (permitiendo que otros hilos entren) y suspende el hilo. Esto es fundamental — si no liberara el lock, nadie podría llamar notify() y el sistema quedaría atrapado.'
   },
   {
     q: '¿Qué caracteriza al livelock a diferencia del deadlock?',
@@ -670,7 +784,7 @@ const QUIZ_QUESTIONS = [
       'En livelock el scheduler asigna incorrectamente las prioridades'
     ],
     ans: 1,
-    fb: 'En livelock los hilos NO están bloqueados — están ejecutándose, consumiendo CPU, reaccionando entre sí. El problema es que sus respuestas se anulan mutuamente sin generar progreso real. Como dos personas que se corren al mismo lado en un pasillo.'
+    fb: 'En livelock los hilos NO están bloqueados — están ejecutándose, consumiendo CPU, reaccionando entre sí. El problema es que sus respuestas se anulan sin generar progreso real. Como dos personas que se corren al mismo lado en un pasillo.'
   },
   {
     q: 'En el problema de los 5 filósofos, ¿por qué `Semaphore(4)` resuelve el deadlock?',
@@ -681,7 +795,7 @@ const QUIZ_QUESTIONS = [
       'Porque elimina la condición de exclusión mutua sobre los tenedores'
     ],
     ans: 1,
-    fb: 'Con 5 filósofos y 5 tenedores: si los 5 toman el izquierdo, deadlock. Pero si solo 4 intentan, el 5to filósofo "libre" no tiene el tenedor que el 1ro necesita — entonces el 1ro puede tomar ambos, comer y liberar. El sistema siempre progresa.'
+    fb: 'Con 5 filósofos y 5 tenedores: si los 5 toman el izquierdo, deadlock. Pero si solo 4 intentan, el 5to no tiene el tenedor que el 1ro necesita — entonces el 1ro puede tomar ambos, comer y liberar. El sistema siempre progresa.'
   },
   {
     q: '¿Qué ventaja específica tiene `tryLock(timeout)` de ReentrantLock sobre `synchronized`?',
@@ -692,16 +806,16 @@ const QUIZ_QUESTIONS = [
       'No requiere que el programador libere el lock manualmente'
     ],
     ans: 1,
-    fb: 'tryLock(timeout) rompe la condición de Coffman "no preempción": si el hilo no puede obtener el segundo lock en el tiempo dado, suelta el primero y reintenta más tarde. Esto hace que el deadlock sea imposible, aunque puede generar livelock si el backoff no es adecuado.'
+    fb: 'tryLock(timeout) rompe la condición de Coffman "no preempción": si el hilo no puede obtener el segundo lock en el tiempo dado, suelta el primero y reintenta. Esto hace que el deadlock sea imposible (aunque puede generar livelock si el backoff no es aleatorio).'
   }
 ];
 
-let quizIndex = 0;
-let quizAnswers = new Array(QUIZ_QUESTIONS.length).fill(null);
+let quizIndex   = 0;
+let quizAnswers  = new Array(QUIZ_QUESTIONS.length).fill(null);
 let quizAnswered = new Array(QUIZ_QUESTIONS.length).fill(false);
 
 function renderQuiz() {
-  const q = QUIZ_QUESTIONS[quizIndex];
+  const q     = QUIZ_QUESTIONS[quizIndex];
   const total = QUIZ_QUESTIONS.length;
 
   document.getElementById('quizProgressLabel').textContent = `Pregunta ${quizIndex + 1} de ${total}`;
@@ -721,7 +835,7 @@ function renderQuiz() {
       if (i === quizAnswers[quizIndex] && i !== q.ans) btn.classList.add('wrong');
       btn.classList.add('disabled');
     } else {
-      btn.onclick = () => answerQuiz(i, btn);
+      btn.onclick = () => answerQuiz(i);
     }
     opts.appendChild(btn);
   });
@@ -736,31 +850,27 @@ function renderQuiz() {
     fb.style.display = 'none';
   }
 
-  document.getElementById('quizPrev').style.opacity = quizIndex === 0 ? '0.4' : '1';
-  document.getElementById('quizPrev').disabled = quizIndex === 0;
+  const prevBtn = document.getElementById('quizPrev');
+  prevBtn.style.opacity  = quizIndex === 0 ? '0.4' : '1';
+  prevBtn.disabled       = quizIndex === 0;
 
   const nextBtn = document.getElementById('quizNext');
-  if (quizIndex === total - 1) {
-    nextBtn.innerHTML = 'Ver resultado <i class="ph ph-trophy"></i>';
-  } else {
-    nextBtn.innerHTML = 'Siguiente <i class="ph ph-arrow-right"></i>';
-  }
+  nextBtn.innerHTML = quizIndex === total - 1
+    ? 'Ver resultado <i class="ph ph-trophy"></i>'
+    : 'Siguiente <i class="ph ph-arrow-right"></i>';
 }
 
-function answerQuiz(i, btn) {
+function answerQuiz(i) {
   if (quizAnswered[quizIndex]) return;
   quizAnswered[quizIndex] = true;
-  quizAnswers[quizIndex] = i;
+  quizAnswers[quizIndex]  = i;
   renderQuiz();
 }
 
 function quizNav(dir) {
   const next = quizIndex + dir;
   if (next < 0) return;
-  if (next >= QUIZ_QUESTIONS.length) {
-    showQuizResult();
-    return;
-  }
+  if (next >= QUIZ_QUESTIONS.length) { showQuizResult(); return; }
   quizIndex = next;
   renderQuiz();
 }
@@ -770,11 +880,11 @@ function showQuizResult() {
   const total   = QUIZ_QUESTIONS.length;
   const pct     = Math.round((correct / total) * 100);
 
-  document.getElementById('quizCard').style.display       = 'none';
-  document.getElementById('quizProgressLabel').textContent = '';
-  document.querySelector('.m5quizProgress').style.display = 'none';
-  document.querySelector('.m5quizNav').style.display       = 'none';
-  document.getElementById('quizFeedback').style.display   = 'none';
+  ['quizCard', '.m5quizProgress', '.m5quizNav'].forEach(sel => {
+    const el = sel.startsWith('.') ? document.querySelector(sel) : document.getElementById(sel);
+    if (el) el.style.display = 'none';
+  });
+  document.getElementById('quizFeedback').style.display = 'none';
 
   const result = document.getElementById('quizResult');
   result.style.display = 'block';
@@ -797,14 +907,19 @@ function showQuizResult() {
 }
 
 function quizRestart() {
-  quizIndex   = 0;
-  quizAnswers = new Array(QUIZ_QUESTIONS.length).fill(null);
+  quizIndex    = 0;
+  quizAnswers  = new Array(QUIZ_QUESTIONS.length).fill(null);
   quizAnswered = new Array(QUIZ_QUESTIONS.length).fill(false);
 
-  document.getElementById('quizCard').style.display       = 'block';
-  document.querySelector('.m5quizProgress').style.display = 'flex';
-  document.querySelector('.m5quizNav').style.display       = 'flex';
-  document.getElementById('quizResult').style.display     = 'none';
+  ['quizCard'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'block';
+  });
+  ['.m5quizProgress', '.m5quizNav'].forEach(sel => {
+    const el = document.querySelector(sel);
+    if (el) el.style.display = 'flex';
+  });
+  document.getElementById('quizResult').style.display = 'none';
   renderQuiz();
 }
 
@@ -815,7 +930,9 @@ document.querySelectorAll('.m5flipCard').forEach(card => {
   card.addEventListener('click', () => card.classList.toggle('flipped'));
 });
 
-/* ─── Prism highlight on load ────────────── */
-document.addEventListener('DOMContentLoaded', () => {
+/* ─── Prism on load ──────────────────────── */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => { if (window.Prism) Prism.highlightAll(); });
+} else {
   if (window.Prism) Prism.highlightAll();
-});
+}

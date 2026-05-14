@@ -580,7 +580,8 @@
 .m5gameScenario {
   padding: 18px; border-radius: 10px; margin-bottom: 18px;
   background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08);
-  font-size: 14px; line-height: 1.7; font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 13px; line-height: 1.7; font-family: 'Fira Code', 'Courier New', monospace;
+  white-space: pre-wrap; word-break: break-word; overflow-x: auto;
 }
 .m5gameOptions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
 .m5gameOpt {
@@ -747,6 +748,101 @@
   background: var(--bc);
 }
 
+/* ─── Semaphore permit visual ────────────── */
+.m5simPermitWrap {
+  padding: 12px 14px; border-radius: 10px;
+  background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.25);
+}
+.m5simPermitLabel {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #a855f7; margin-bottom: 8px;
+}
+.m5simPermitRow { display: flex; align-items: center; gap: 12px; }
+.m5simPermitDots { display: flex; gap: 8px; }
+.m5simPermitDot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.15);
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.m5simPermitDot.m5permFree {
+  background: rgba(168,85,247,0.35); border-color: rgba(168,85,247,0.85);
+  box-shadow: 0 0 10px rgba(168,85,247,0.35);
+}
+.m5simPermitCount {
+  font-size: 20px; font-weight: 900; color: #a855f7; line-height: 1;
+}
+.m5simPermitDesc {
+  font-size: 11px; color: var(--sub); margin-top: 6px; line-height: 1.5;
+}
+
+/* ─── Lab code block ─────────────────────── */
+.m5labWrap {
+  display: flex; flex-direction: column; gap: 20px; margin-top: 32px;
+}
+.m5labStepsRow {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.m5labCodeBlock {
+  border-radius: var(--r); overflow: hidden; border: 1px solid var(--border);
+  background: var(--surface); backdrop-filter: blur(12px);
+}
+.m5labCodeHeader {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 18px; background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px; color: var(--sub); font-weight: 600;
+  gap: 12px; flex-wrap: wrap;
+}
+.m5labCodeHeader span { display: flex; align-items: center; gap: 7px; }
+.m5labCodeBlock pre { margin: 0 !important; border-radius: 0 !important; }
+
+/* ─── Vida real section ──────────────────── */
+.m5realGrid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 32px;
+}
+.m5realCard {
+  padding: 24px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--border);
+  border-top: 3px solid color-mix(in srgb, var(--rc) 70%, transparent);
+  backdrop-filter: blur(12px); transition: transform 0.25s;
+}
+.m5realCard:hover { transform: translateY(-3px); }
+.m5realCardTop {
+  display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px;
+}
+.m5realIcon {
+  width: 44px; height: 44px; border-radius: 11px; flex-shrink: 0;
+  background: color-mix(in srgb, var(--rc) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rc) 30%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; color: var(--rc);
+}
+.m5realTag {
+  font-size: 9px; font-weight: 900; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--rc); display: block; margin-bottom: 3px;
+}
+.m5realCardTop h3 { font-size: 14px; font-weight: 800; color: var(--text); }
+.m5realScenario { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.m5realBad, .m5realGood {
+  padding: 12px; border-radius: 8px;
+}
+.m5realBad { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.2); }
+.m5realGood { background: rgba(0,232,198,0.07); border: 1px solid rgba(0,232,198,0.2); }
+.m5realBadLabel, .m5realGoodLabel {
+  font-size: 10px; font-weight: 900; text-transform: uppercase;
+  letter-spacing: 0.1em; display: flex; align-items: center; gap: 5px; margin-bottom: 6px;
+}
+.m5realBadLabel  { color: #ef4444; }
+.m5realGoodLabel { color: #00e8c6; }
+.m5realBad p, .m5realGood p { color: var(--text); font-size: 13px; line-height: 1.6; margin: 0; }
+.m5realCode {
+  padding: 8px 12px; border-radius: 7px;
+  background: rgba(0,0,0,0.4); font-size: 12px;
+  color: #00e8c6; font-family: 'Fira Code', 'Courier New', monospace;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
 /* ─── Responsive ─────────────────────────── */
 @media (max-width: 900px) {
   .m5conceptGrid     { grid-template-columns: 1fr 1fr; }
@@ -755,9 +851,10 @@
   .m5simMain         { grid-template-columns: 1fr; }
   .m5simTableWrap    { border-right: none; border-bottom: 1px solid var(--border); }
   .m5coffmanGrid     { grid-template-columns: repeat(2, 1fr); }
-  .m5labWrap         { grid-template-columns: 1fr; }
+  .m5labStepsRow     { grid-template-columns: 1fr; }
   .m5flipGrid        { grid-template-columns: repeat(2, 1fr); }
   .m5objGrid         { grid-template-columns: 1fr; }
+  .m5realGrid        { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   .m5conceptGrid   { grid-template-columns: 1fr; }

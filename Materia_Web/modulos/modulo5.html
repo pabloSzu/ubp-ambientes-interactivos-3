@@ -381,6 +381,21 @@
                 Seleccioná un modo y presioná Play
               </div>
 
+              <!-- Semaphore permit visual — visible only in semaphore mode -->
+              <div class="m5simPermitWrap" id="simPermitWrap" style="display:none">
+                <div class="m5simPermitLabel"><i class="ph ph-ticket"></i> Semáforo(4) — permisos</div>
+                <div class="m5simPermitRow">
+                  <div class="m5simPermitDots">
+                    <div class="m5simPermitDot m5permFree" id="perm0" title="Permiso 1"></div>
+                    <div class="m5simPermitDot m5permFree" id="perm1" title="Permiso 2"></div>
+                    <div class="m5simPermitDot m5permFree" id="perm2" title="Permiso 3"></div>
+                    <div class="m5simPermitDot m5permFree" id="perm3" title="Permiso 4"></div>
+                    <span class="m5simPermitCount" id="permCount">4/4</span>
+                  </div>
+                </div>
+                <div class="m5simPermitDesc">Punto morado = permiso libre. Solo 4 filósofos pueden intentar comer a la vez.</div>
+              </div>
+
               <div class="m5simCtrlRow">
                 <button class="m5simBtn m5simBtnAccent" id="simPlayBtn" onclick="simToggle()">
                   <i class="ph-bold ph-play"></i> Play
@@ -461,6 +476,82 @@
           <i class="ph-bold ph-lightbulb"></i>
           <div>
             <strong>La solución más práctica en Java:</strong> usar <code>ReentrantLock.tryLock(timeout)</code>. Si no podés tomar todos los locks en un tiempo, los soltás y reintentás. Esto rompe la condición 3 (no preempción) y el deadlock se vuelve imposible.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── VIDA REAL ─────────────────────────── -->
+    <section class="msec alt" id="vidareal">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-buildings"></i> Fuera del código</span>
+          <h2>Los mismos problemas en el mundo real</h2>
+          <p class="msecSub">Los conceptos de mutex, semáforo y deadlock no son abstracciones de laboratorio — aparecen en bancos, estacionamientos, bases de datos y hasta en el tráfico urbano. Solo cambia el vocabulario.</p>
+        </div>
+
+        <div class="m5realGrid">
+          <div class="m5realCard reveal" style="--delay:0ms; --rc:#ff7d54">
+            <div class="m5realCardTop">
+              <div class="m5realIcon"><i class="ph-bold ph-bank"></i></div>
+              <div>
+                <span class="m5realTag">MUTEX en acción</span>
+                <h3>La caja de seguridad del banco</h3>
+              </div>
+            </div>
+            <div class="m5realScenario">
+              <div class="m5realBad">
+                <span class="m5realBadLabel"><i class="ph-bold ph-warning"></i> Sin mutex</span>
+                <p>Dos personas abren la caja simultáneamente. Ambas depositan sobre los mismos billetes. El sistema registra solo una operación. La otra se pierde — race condition en los saldos.</p>
+              </div>
+              <div class="m5realGood">
+                <span class="m5realGoodLabel"><i class="ph-bold ph-check"></i> Con synchronized</span>
+                <p>Un solo cliente entra a la caja a la vez. El segundo espera afuera hasta que el primero termina y cierra. Ambas operaciones se registran correctamente.</p>
+              </div>
+            </div>
+            <div class="m5realCode"><code>synchronized(cuenta) { balance += monto; }</code></div>
+          </div>
+
+          <div class="m5realCard reveal" style="--delay:80ms; --rc:#4a8ef0">
+            <div class="m5realCardTop">
+              <div class="m5realIcon"><i class="ph-bold ph-car"></i></div>
+              <div>
+                <span class="m5realTag">SEMÁFORO en acción</span>
+                <h3>El estacionamiento con N lugares</h3>
+              </div>
+            </div>
+            <div class="m5realScenario">
+              <div class="m5realBad">
+                <span class="m5realBadLabel"><i class="ph-bold ph-warning"></i> Sin semáforo</span>
+                <p>Todos los autos entran sin control. Con 50 lugares y 200 autos adentro, el sistema colapsa — nadie puede maniobrar, los accesos quedan bloqueados.</p>
+              </div>
+              <div class="m5realGood">
+                <span class="m5realGoodLabel"><i class="ph-bold ph-check"></i> Con Semaphore(50)</span>
+                <p>Una barrera cuenta los lugares disponibles. Cuando llega a 50 ocupados, la barrera no se abre. Los autos esperan afuera hasta que sale uno.</p>
+              </div>
+            </div>
+            <div class="m5realCode"><code>Semaphore parking = new Semaphore(50);</code></div>
+          </div>
+
+          <div class="m5realCard reveal" style="--delay:160ms; --rc:#ef4444">
+            <div class="m5realCardTop">
+              <div class="m5realIcon"><i class="ph-bold ph-train"></i></div>
+              <div>
+                <span class="m5realTag">DEADLOCK en acción</span>
+                <h3>Dos trenes en vía única</h3>
+              </div>
+            </div>
+            <div class="m5realScenario">
+              <div class="m5realBad">
+                <span class="m5realBadLabel"><i class="ph-bold ph-skull"></i> Deadlock</span>
+                <p>Tren A avanza hacia el norte, Tren B hacia el sur. Se encuentran de frente en la vía única. Cada uno espera que el otro retroceda. Ninguno retrocede — sistema paralizado.</p>
+              </div>
+              <div class="m5realGood">
+                <span class="m5realGoodLabel"><i class="ph-bold ph-check"></i> Solución: prioridad global</span>
+                <p>El despachador define una regla: el tren con destino más lejano tiene prioridad. El otro retrocede a la estación anterior. Orden global de locks → deadlock imposible.</p>
+              </div>
+            </div>
+            <div class="m5realCode"><code>// Adquirir locks siempre en el mismo orden global</code></div>
           </div>
         </div>
       </div>
@@ -640,33 +731,73 @@ public class DeadlockFix {
         </div>
 
         <div class="m5labWrap reveal">
-          <div class="m5labSteps">
+          <div class="m5labStepsRow">
             <div class="m5labStep">
               <div class="m5labStepDot" style="--dc:#ff7d54">1</div>
               <div class="m5labStepText">
-                <strong>Ejecutá el código</strong>
-                <p>Presioná Run. Vas a ver los prints de "tomó LOCK_X". El programa luego se congela — eso <em>es</em> el deadlock.</p>
+                <strong>Copiá el código y pegalo en el editor</strong>
+                <p>Usá el botón "Copiar código" de abajo y pegalo en el editor de Java. Luego presioná Run.</p>
               </div>
             </div>
             <div class="m5labStep">
               <div class="m5labStepDot" style="--dc:#4a8ef0">2</div>
               <div class="m5labStepText">
-                <strong>Observá el orden de adquisición</strong>
-                <p>T1 toma A primero; T2 toma B primero. Ese orden cruzado crea el ciclo de espera circular.</p>
+                <strong>Observá qué pasa</strong>
+                <p>Vas a ver los prints iniciales. El programa luego se congela — eso <em>es</em> el deadlock. T1 tiene A, T2 tiene B, ninguno puede avanzar.</p>
               </div>
             </div>
             <div class="m5labStep">
               <div class="m5labStepDot" style="--dc:#00e8c6">3</div>
               <div class="m5labStepText">
                 <strong>Desafío: ¡arreglalo!</strong>
-                <p>Modificá T2 para que también pida LOCK_A primero y luego LOCK_B. El deadlock desaparece. ¿Por qué?</p>
+                <p>Modificá T2 para que también pida LOCK_A primero, luego LOCK_B. El deadlock desaparece. ¿Por qué? Pensá en las condiciones de Coffman.</p>
               </div>
             </div>
           </div>
 
+          <div class="m5labCodeBlock">
+            <div class="m5labCodeHeader">
+              <span><i class="ph ph-file-code"></i> DeadlockDemo.java — copiá este código y pegalo en el editor</span>
+              <button class="m5simBtn m5simBtnAccent" onclick="copyLabCode()" style="padding:6px 14px;font-size:12px">
+                <i class="ph ph-copy"></i> Copiar código
+              </button>
+            </div>
+            <pre id="labCodePre"><code class="language-java">public class DeadlockDemo {
+    static final Object LOCK_A = new Object();
+    static final Object LOCK_B = new Object();
+
+    public static void main(String[] args) throws Exception {
+        Thread t1 = new Thread(() -> {
+            synchronized (LOCK_A) {
+                System.out.println("T1 tomó LOCK_A — espera LOCK_B...");
+                try { Thread.sleep(100); } catch (Exception e) {}
+                synchronized (LOCK_B) {
+                    System.out.println("T1 consiguió LOCK_B — éxito");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            synchronized (LOCK_B) {  // ← orden invertido: LOCK_B primero
+                System.out.println("T2 tomó LOCK_B — espera LOCK_A...");
+                try { Thread.sleep(100); } catch (Exception e) {}
+                synchronized (LOCK_A) {
+                    System.out.println("T2 consiguió LOCK_A — éxito");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+        Thread.sleep(3000);
+        System.out.println("🔒 DEADLOCK: ninguno pudo terminar");
+    }
+}</code></pre>
+          </div>
+
           <div class="m5labEmbed">
             <iframe
-              src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true&code=public%20class%20DeadlockDemo%20%7B%0A%20%20%20%20static%20final%20Object%20LOCK_A%20%3D%20new%20Object()%3B%0A%20%20%20%20static%20final%20Object%20LOCK_B%20%3D%20new%20Object()%3B%0A%0A%20%20%20%20public%20static%20void%20main(String%5B%5D%20args)%20throws%20Exception%20%7B%0A%20%20%20%20%20%20%20%20Thread%20t1%20%3D%20new%20Thread(()%20-%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20synchronized%20(LOCK_A)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(%22T1%20tom%C3%B3%20LOCK_A%2C%20espera%20LOCK_B...%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20try%20%7B%20Thread.sleep(100)%3B%20%7D%20catch%20(Exception%20e)%20%7B%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20synchronized%20(LOCK_B)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(%22T1%20consigui%C3%B3%20LOCK_B%20%E2%80%94%20%C3%A9xito%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D)%3B%0A%0A%20%20%20%20%20%20%20%20Thread%20t2%20%3D%20new%20Thread(()%20-%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20synchronized%20(LOCK_B)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(%22T2%20tom%C3%B3%20LOCK_B%2C%20espera%20LOCK_A...%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20try%20%7B%20Thread.sleep(100)%3B%20%7D%20catch%20(Exception%20e)%20%7B%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20synchronized%20(LOCK_A)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(%22T2%20consigui%C3%B3%20LOCK_A%20%E2%80%94%20%C3%A9xito%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D)%3B%0A%0A%20%20%20%20%20%20%20%20t1.start()%3B%0A%20%20%20%20%20%20%20%20t2.start()%3B%0A%20%20%20%20%20%20%20%20Thread.sleep(3000)%3B%0A%20%20%20%20%20%20%20%20System.out.println(%22%F0%9F%94%92%20DEADLOCK%3A%20ninguno%20pudo%20terminar%22)%3B%0A%20%20%20%20%7D%0A%7D"
+              src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
               width="100%" height="500"
               style="border:none; border-radius: 12px;"
               title="Java lab — Deadlock Demo"
@@ -682,7 +813,7 @@ public class DeadlockFix {
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-stethoscope"></i> Deadlock Doctor</span>
           <h2>Diagnosticá el problema</h2>
-          <p class="msecSub">5 escenarios de código o situación concurrente. Cada uno tiene una patología (o no). Tu misión: identificarla correctamente.</p>
+          <p class="msecSub">7 escenarios de código concurrente — Java y SQL. Cada uno tiene una patología (o ninguna). Tu misión: diagnosticarla correctamente.</p>
         </div>
 
         <div class="m5gameWrap reveal">
