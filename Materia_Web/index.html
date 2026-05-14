@@ -55,6 +55,7 @@
               <a class="btnFill" href="modulos/modulo1.html">Empezar con el módulo 1</a>
               <a class="btnGlass" href="evaluacion.html">Ver evaluación</a>
             </div>
+            <button class="btnHint" id="openModal" type="button">¿Qué es esta materia? Leer presentación →</button>
           </div>
           <div class="heroStats reveal" style="--d:100ms" aria-label="Datos de la materia">
             <div class="heroStat"><strong>07</strong><span>módulos</span></div>
@@ -103,7 +104,7 @@
                     caso DEVENDRA como servicio interactivo en Argentina.
                   </p>
                   <footer class="mFoot">
-                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mStruct">Objetivos · Glosario · Contenido · Actividades</span>
                     <span class="mGo">Entrar →</span>
                   </footer>
                 </div>
@@ -127,7 +128,7 @@
                     Moqups o Figma.
                   </p>
                   <footer class="mFoot">
-                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mStruct">Objetivos · Glosario · Contenido · Actividades</span>
                     <span class="mGo">Entrar →</span>
                   </footer>
                 </div>
@@ -161,7 +162,7 @@
                     Simulador visual de race conditions en Java.
                   </p>
                   <footer class="mFoot">
-                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mStruct">Objetivos · Glosario · Contenido · Actividades</span>
                     <span class="mGo">Entrar →</span>
                   </footer>
                 </div>
@@ -183,7 +184,7 @@
                     Patrón productor-consumidor en Java.
                   </p>
                   <footer class="mFoot">
-                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mStruct">Objetivos · Glosario · Contenido · Actividades</span>
                     <span class="mGo">Entrar →</span>
                   </footer>
                 </div>
@@ -205,7 +206,7 @@
                     Detección y prevención de deadlock y starvation.
                   </p>
                   <footer class="mFoot">
-                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mStruct">Objetivos · Glosario · Contenido · Actividades</span>
                     <span class="mGo">Entrar →</span>
                   </footer>
                 </div>
@@ -239,7 +240,7 @@
                     paso de mensajes y paralelismo con Java ForkJoinPool.
                   </p>
                   <footer class="mFoot">
-                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mStruct">Objetivos · Glosario · Contenido · Actividades</span>
                     <span class="mGo">Entrar →</span>
                   </footer>
                 </div>
@@ -262,7 +263,7 @@
                     Ley de Amdahl y Gustafson-Barsis como modelos de análisis y cierre de la materia.
                   </p>
                   <footer class="mFoot">
-                    <span class="mStruct">M · G · C · A</span>
+                    <span class="mStruct">Objetivos · Glosario · Contenido · Actividades</span>
                     <span class="mGo">Entrar →</span>
                   </footer>
                 </div>
@@ -281,12 +282,13 @@
         <div class="compInner">
           <span class="compLabel">Competencias</span>
           <div class="compPills">
-            <span class="compPill">Resolver problemas</span>
-            <span class="compPill">Diseñar software</span>
-            <span class="compPill">Gestionar proyectos</span>
-            <span class="compPill">Construir soluciones</span>
-            <span class="compPill">Innovar</span>
-            <span class="compPill">Comunicar decisiones</span>
+            <span class="compPill">Resolver problemas complejos</span>
+            <span class="compPill">Diseñar soluciones de software</span>
+            <span class="compPill">Gestionar proyectos tecnológicos</span>
+            <span class="compPill">Construir prototipos funcionales</span>
+            <span class="compPill">Optimizar rendimiento</span>
+            <span class="compPill">Innovar con tecnología</span>
+            <span class="compPill">Comunicar decisiones técnicas</span>
           </div>
         </div>
       </section>
@@ -342,6 +344,105 @@
       </section>
 
     </main>
+
+    <!-- ══════════════════════════════════
+         MODAL — Presentación de la materia
+    ══════════════════════════════════ -->
+    <div class="modalOverlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modalCard">
+        <button class="modalClose" id="modalClose" aria-label="Cerrar">×</button>
+        <div class="modalScroll">
+
+          <div class="modalHead">
+            <span class="modalEye">UBP · Licenciatura en Sistemas de Información · Plan 2021</span>
+            <h2 id="modalTitle">Programación para<br>Ambientes Interactivos III</h2>
+            <p class="modalSub">Séptima materia del área de sistemas interactivos. Un recorrido por la interactividad digital, la programación concurrente y el cómputo de alta performance.</p>
+          </div>
+
+          <div class="modalSection">
+            <h4 class="modalSectionTitle">Propósito</h4>
+            <p class="modalText">Comprender y aplicar los conceptos fundamentales de la interactividad digital y la programación concurrente, diseñando y construyendo soluciones multiplataforma que integren interfaz de usuario, comunicación entre procesos y optimización del rendimiento.</p>
+          </div>
+
+          <div class="modalSection">
+            <h4 class="modalSectionTitle">¿Qué vas a aprender?</h4>
+            <ul class="modalList">
+              <li>Entender la interactividad como proceso, acción y feedback en sistemas digitales</li>
+              <li>Analizar la TV digital interactiva: ISDB-Tb, middleware Ginga y NCL/Lua</li>
+              <li>Diseñar interfaces y experiencias de usuario para múltiples plataformas</li>
+              <li>Implementar aplicaciones concurrentes con hilos y procesos en Java</li>
+              <li>Aplicar mecanismos de comunicación IPC: pipes, colas y memoria compartida</li>
+              <li>Resolver problemas de sincronización con semáforos, monitores y exclusión mutua</li>
+              <li>Programar en arquitecturas paralelas (SIMD/MIMD) con Java ForkJoinPool</li>
+              <li>Medir y analizar el rendimiento con Speedup, Ley de Amdahl y Gustafson-Barsis</li>
+            </ul>
+          </div>
+
+          <div class="modalGrid2">
+            <div class="modalSection">
+              <h4 class="modalSectionTitle">Estructura del cursado</h4>
+              <div class="modalStats">
+                <div class="modalStat"><strong>7</strong><span>módulos</span></div>
+                <div class="modalStat"><strong>3</strong><span>bloques</span></div>
+                <div class="modalStat"><strong>2</strong><span>parciales</span></div>
+                <div class="modalStat"><strong>100</strong><span>puntos</span></div>
+              </div>
+            </div>
+            <div class="modalSection">
+              <h4 class="modalSectionTitle">Herramientas</h4>
+              <div class="modalTools">
+                <span class="modalTool">Java</span>
+                <span class="modalTool">NetBeans</span>
+                <span class="modalTool">Visual Studio Code</span>
+                <span class="modalTool">OnlineGDB</span>
+                <span class="modalTool">Figma</span>
+                <span class="modalTool">Moqups</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modalSection">
+            <h4 class="modalSectionTitle">Cada módulo incluye</h4>
+            <div class="modalModStruct">
+              <div class="modalModItem">
+                <span class="modalModBadge t">Obj</span>
+                <div>
+                  <strong>Microobjetivos</strong>
+                  <p>Verbos en infinitivo que guían el aprendizaje específico del módulo</p>
+                </div>
+              </div>
+              <div class="modalModItem">
+                <span class="modalModBadge g">Glo</span>
+                <div>
+                  <strong>Glosario</strong>
+                  <p>Términos clave definidos en el contexto preciso del módulo</p>
+                </div>
+              </div>
+              <div class="modalModItem">
+                <span class="modalModBadge c">Con</span>
+                <div>
+                  <strong>Contenidos</strong>
+                  <p>Teoría, ejemplos, simuladores y recursos visuales aplicados</p>
+                </div>
+              </div>
+              <div class="modalModItem">
+                <span class="modalModBadge a">Act</span>
+                <div>
+                  <strong>Actividades</strong>
+                  <p>Ejercicios prácticos orientados a los parciales integradores</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modalFooter">
+          <a class="btnFill" href="modulos/modulo1.html">Empezar con el módulo 1 →</a>
+          <button class="btnGlass modalCloseBtn" id="modalClose2" type="button">Cerrar</button>
+        </div>
+      </div>
+    </div>
 
     <script src="assets/js/index.js"></script>
   </body>
