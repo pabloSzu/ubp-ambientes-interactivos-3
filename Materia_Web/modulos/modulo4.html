@@ -1,0 +1,1060 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PAI3 · Módulo 4 · Comunicación IPC</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../assets/css/modulo.css" />
+    <link rel="stylesheet" href="../assets/css/modulo4.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-one-dark.min.css" />
+    <style>
+      :root {
+        --accent:        #9b6fff;
+        --accent-sub:    rgba(155,111,255,0.10);
+        --accent-border: rgba(155,111,255,0.30);
+        --accent-mid:    rgba(155,111,255,0.45);
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="readProgress" id="readProgress"></div>
+    <div class="mglow" id="mglow"></div>
+
+    <!-- ── HEADER ──────────────────────────── -->
+    <header class="mhdr">
+      <a class="mhdrBack" href="../index.html">
+        <i class="ph ph-arrow-left"></i> Campus
+      </a>
+      <span class="mhdrBrand">PAI3</span>
+      <span class="mhdrLabel">Módulo 4 · Comunicación IPC</span>
+      <nav class="mhdrSections">
+        <a href="#conceptos">Conceptos</a>
+        <a href="#ipc">IPC</a>
+        <a href="#simulador">Simulador</a>
+        <a href="#laboratorio">Laboratorio</a>
+        <a href="#actividades">Actividad</a>
+      </nav>
+    </header>
+
+    <!-- ── HERO ─────────────────────────────── -->
+    <section class="m4hero">
+      <div class="m4heroBg">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1400&q=80&fit=crop" alt="" aria-hidden="true" class="m4heroImg" />
+        <div class="m4heroOverlay"></div>
+      </div>
+      <div class="m4heroPipe" style="--pd:0s;   --pc:#9b6fff; top:20%"></div>
+      <div class="m4heroPipe" style="--pd:1.4s; --pc:#4a8ef0; top:36%"></div>
+      <div class="m4heroPipe" style="--pd:2.6s; --pc:#00e8c6; top:52%"></div>
+      <div class="m4heroPipe" style="--pd:0.8s; --pc:#ff9b6b; top:66%"></div>
+      <div class="m4heroPipe" style="--pd:1.9s; --pc:#9b6fff; top:80%"></div>
+      <div class="m4heroContent msecWrap">
+        <div class="m4heroBadge">
+          <i class="ph-bold ph-git-merge"></i> Bloque 02
+        </div>
+        <h1 class="m4heroTitle">Comunicación entre<br/><span>Procesos e Hilos</span></h1>
+        <p class="m4heroIntro">Los procesos viven en burbujas de memoria aisladas. IPC es el conjunto de mecanismos que les permite cruzar esa barrera — con pipes, colas, memoria compartida y BlockingQueues de Java — sin romper los datos en el camino.</p>
+        <div class="m4heroStats">
+          <div class="m4heroStat">
+            <div class="m4heroStatTop">
+              <span class="m4heroStatNum" id="counter1">0</span>
+            </div>
+            <span class="m4heroStatLabel">mecanismos principales de IPC que vas a comparar en este módulo</span>
+          </div>
+          <div class="m4heroStat">
+            <div class="m4heroStatTop">
+              <span class="m4heroStatNum" id="counter2">0</span>
+            </div>
+            <span class="m4heroStatLabel">slots del BlockingQueue en el simulador interactivo</span>
+          </div>
+          <div class="m4heroStat">
+            <div class="m4heroStatTop">
+              <span class="m4heroStatNum" id="counter3">0</span>
+            </div>
+            <span class="m4heroStatLabel">etapas del pipeline productor-consumidor de la actividad práctica</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PULL QUOTE ────────────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <blockquote class="m4pullQuote reveal">
+          <i class="ph-bold ph-quotes"></i>
+          <p>"El mayor problema en la comunicación es la ilusión de que ha ocurrido."</p>
+          <cite>— George Bernard Shaw · En sistemas: dos procesos pueden creer estar coordinados cuando en realidad cada uno vive en su propia burbuja de memoria y nunca intercambiaron un solo byte.</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ── MICROOBJETIVOS ────────────────────── -->
+    <section class="msec" id="microobjetivos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-target"></i> Objetivos del módulo</span>
+          <h2>¿Qué vas a aprender?</h2>
+          <p class="msecSub">Al terminar este módulo vas a poder diseñar programas concurrentes coordinados, elegir el mecanismo de IPC correcto para cada contexto e implementar un pipeline productor-consumidor en Java con BlockingQueue.</p>
+        </div>
+        <div class="m4objGrid">
+          <div class="m4objCard reveal" style="--delay:0ms">
+            <div class="m4objIcon" style="--oc:#9b6fff"><i class="ph-bold ph-git-merge"></i></div>
+            <div>
+              <strong>Comunicación entre procesos e hilos</strong>
+              <p>Comprender los mecanismos de IPC con el fin de diseñar programas concurrentes coordinados que intercambien datos de forma segura y eficiente.</p>
+            </div>
+          </div>
+          <div class="m4objCard reveal" style="--delay:80ms">
+            <div class="m4objIcon" style="--oc:#4a8ef0"><i class="ph-bold ph-funnel"></i></div>
+            <div>
+              <strong>Distinguir pipes, FIFO, colas y memoria compartida</strong>
+              <p>Comparar los cuatro mecanismos principales de IPC con el fin de seleccionar la herramienta correcta según velocidad, persistencia y acoplamiento requerido.</p>
+            </div>
+          </div>
+          <div class="m4objCard reveal" style="--delay:160ms">
+            <div class="m4objIcon" style="--oc:#00e8c6"><i class="ph-bold ph-package"></i></div>
+            <div>
+              <strong>Implementar un pipeline productor-consumidor</strong>
+              <p>Construir un flujo de 3 etapas en Java usando BlockingQueue con el fin de resolver comunicación entre tareas sin race conditions y sin polling activo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EL PROBLEMA DEL AISLAMIENTO ──────── -->
+    <section class="msec alt" id="conceptos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-island"></i> El problema del aislamiento</span>
+          <h2>¿Por qué necesitan comunicarse?</h2>
+          <p class="msecSub">El diseño del sistema operativo aisla los procesos entre sí: cada uno vive en su propia burbuja de memoria virtual. Sin IPC, dos procesos son islas incomunicadas.</p>
+        </div>
+
+        <div class="m4isoLayout reveal">
+          <div class="m4isoCard m4isoCardA">
+            <div class="m4isoCardTop">
+              <div class="m4isoIcon" style="--ic:#4a8ef0"><i class="ph-bold ph-island"></i></div>
+              <span class="m4isoLabel" style="--lc:#4a8ef0">PROCESO AISLADO</span>
+            </div>
+            <h3>La isla</h3>
+            <p class="m4isoDesc">Sin mecanismo de IPC, cada proceso es una isla. Tiene su propio espacio de memoria virtual — no puede leer ni escribir la memoria de otro proceso. El SO lo garantiza por seguridad.</p>
+            <div class="m4isoBubble">
+              <div class="m4isoBubbleLabel">Espacio de memoria propio (aislado)</div>
+              <div class="m4isoRooms">
+                <div class="m4isoRoom" style="--rc:#4a8ef0">
+                  <span class="m4isoRoomName">Stack</span>
+                  <span class="m4isoRoomDesc">Solo accesible por este proceso</span>
+                </div>
+                <div class="m4isoRoom" style="--rc:#4a8ef0">
+                  <span class="m4isoRoomName">Heap</span>
+                  <span class="m4isoRoomDesc">Invisible para los demás</span>
+                </div>
+              </div>
+            </div>
+            <ul class="m4isoList">
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Fallo aislado — no afecta a otros procesos</li>
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Seguridad — no puede espiar otros procesos</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> No puede intercambiar datos directamente</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Necesita IPC para coordinarse</li>
+            </ul>
+          </div>
+
+          <div class="m4isoSep">
+            <div class="m4isoSepLine"></div>
+            <div class="m4isoSepArrow">
+              <i class="ph-bold ph-arrows-left-right"></i>
+              <span>IPC</span>
+            </div>
+            <div class="m4isoSepLine"></div>
+          </div>
+
+          <div class="m4isoCard m4isoCardB">
+            <div class="m4isoCardTop">
+              <div class="m4isoIcon" style="--ic:#9b6fff"><i class="ph-bold ph-plugs-connected"></i></div>
+              <span class="m4isoLabel" style="--lc:#9b6fff">PROCESO COMUNICADO</span>
+            </div>
+            <h3>El canal</h3>
+            <p class="m4isoDesc">Con un mecanismo de IPC, los procesos tienen un canal controlado para intercambiar datos. El SO actúa de intermediario — garantiza que la comunicación sea segura y ordenada.</p>
+            <div class="m4isoChannel">
+              <div class="m4isoProcBox" style="--pb:#4a8ef0">Proceso A</div>
+              <div class="m4isoChannelMid">
+                <div class="m4isoPacket"></div>
+                <div class="m4isoPacket" style="animation-delay:0.6s"></div>
+                <div class="m4isoPacket" style="animation-delay:1.2s"></div>
+                <div class="m4isoChannelLabel">pipe / cola / shm</div>
+              </div>
+              <div class="m4isoProcBox" style="--pb:#9b6fff">Proceso B</div>
+            </div>
+            <ul class="m4isoList">
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Intercambio de datos controlado</li>
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Sincronización automática (colas)</li>
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Sin acceso directo a la memoria ajena</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Overhead de IPC (copias, locks, syscalls)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LOS 4 MECANISMOS IPC ──────────────── -->
+    <section class="msec" id="ipc">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-squares-four"></i> Las herramientas del SO</span>
+          <h2>Los 4 mecanismos de IPC</h2>
+          <p class="msecSub">Cada mecanismo tiene su nicho: velocidad, persistencia, acoplamiento y complejidad distintos. Elegir el correcto es decisión de diseño, no de implementación.</p>
+        </div>
+
+        <div class="m4ipcGrid reveal">
+          <!-- PIPE -->
+          <div class="m4ipcCard" style="--cc:#4a8ef0">
+            <div class="m4ipcCardTop">
+              <div class="m4ipcIcon" style="--ic:#4a8ef0"><i class="ph-bold ph-arrow-right"></i></div>
+              <span class="m4ipcName">Pipe</span>
+            </div>
+            <div class="m4ipcSpeedWrap">
+              <span class="m4ipcSpeedLabel">Velocidad</span>
+              <div class="m4ipcSpeedBar">
+                <div class="m4ipcSpeedFill" style="--sf:3; --sc:#4a8ef0"></div>
+              </div>
+              <span class="m4ipcSpeedNum">3/4</span>
+            </div>
+            <p class="m4ipcDesc">Canal de comunicación unidireccional entre dos procesos relacionados. Los datos fluyen de escritor a lector como una tubería — lo que entra primero sale primero.</p>
+            <div class="m4ipcUso"><i class="ph-bold ph-lightning"></i> Caso de uso: filtros Unix, <code>child_process</code></div>
+            <ul class="m4ipcList">
+              <li class="good"><i class="ph-bold ph-check"></i> Simple y rápido</li>
+              <li class="good"><i class="ph-bold ph-check"></i> Buffering automático por el SO</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Solo entre padre-hijo (fork)</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Unidireccional</li>
+            </ul>
+          </div>
+
+          <!-- FIFO -->
+          <div class="m4ipcCard" style="--cc:#00e8c6">
+            <div class="m4ipcCardTop">
+              <div class="m4ipcIcon" style="--ic:#00e8c6"><i class="ph-bold ph-funnel"></i></div>
+              <span class="m4ipcName">FIFO / Named Pipe</span>
+            </div>
+            <div class="m4ipcSpeedWrap">
+              <span class="m4ipcSpeedLabel">Velocidad</span>
+              <div class="m4ipcSpeedBar">
+                <div class="m4ipcSpeedFill" style="--sf:3; --sc:#00e8c6"></div>
+              </div>
+              <span class="m4ipcSpeedNum">3/4</span>
+            </div>
+            <p class="m4ipcDesc">Como un pipe, pero con nombre en el filesystem. Cualquier proceso que conozca el path puede abrirlo, sin relación padre-hijo.</p>
+            <div class="m4ipcUso"><i class="ph-bold ph-lightning"></i> Caso de uso: demonios, logger de sistema</div>
+            <ul class="m4ipcList">
+              <li class="good"><i class="ph-bold ph-check"></i> Procesos no relacionados pueden comunicarse</li>
+              <li class="good"><i class="ph-bold ph-check"></i> Persiste en el filesystem</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Sigue siendo unidireccional</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Requiere un path conocido</li>
+            </ul>
+          </div>
+
+          <!-- COLA -->
+          <div class="m4ipcCard" style="--cc:#ff9b6b">
+            <div class="m4ipcCardTop">
+              <div class="m4ipcIcon" style="--ic:#ff9b6b"><i class="ph-bold ph-envelope"></i></div>
+              <span class="m4ipcName">Cola de mensajes</span>
+            </div>
+            <div class="m4ipcSpeedWrap">
+              <span class="m4ipcSpeedLabel">Velocidad</span>
+              <div class="m4ipcSpeedBar">
+                <div class="m4ipcSpeedFill" style="--sf:2; --sc:#ff9b6b"></div>
+              </div>
+              <span class="m4ipcSpeedNum">2/4</span>
+            </div>
+            <p class="m4ipcDesc">Estructura asincrónica: el productor envía mensajes y sigue su camino aunque el consumidor esté caído. Los mensajes esperan hasta ser procesados.</p>
+            <div class="m4ipcUso"><i class="ph-bold ph-lightning"></i> Caso de uso: sistemas de pedidos, event queues</div>
+            <ul class="m4ipcList">
+              <li class="good"><i class="ph-bold ph-check"></i> Asincrónica y desacoplada</li>
+              <li class="good"><i class="ph-bold ph-check"></i> Persistente — mensajes sobreviven caídas</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Mayor overhead que pipe</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Requiere gestión del broker</li>
+            </ul>
+          </div>
+
+          <!-- SHARED MEMORY -->
+          <div class="m4ipcCard" style="--cc:#9b6fff">
+            <div class="m4ipcCardTop">
+              <div class="m4ipcIcon" style="--ic:#9b6fff"><i class="ph-bold ph-database"></i></div>
+              <span class="m4ipcName">Memoria compartida</span>
+            </div>
+            <div class="m4ipcSpeedWrap">
+              <span class="m4ipcSpeedLabel">Velocidad</span>
+              <div class="m4ipcSpeedBar">
+                <div class="m4ipcSpeedFill" style="--sf:4; --sc:#9b6fff"></div>
+              </div>
+              <span class="m4ipcSpeedNum">4/4</span>
+            </div>
+            <p class="m4ipcDesc">El mecanismo más rápido: ambos procesos mapean el mismo segmento físico de RAM. Sin copia de datos — pero requiere sincronización manual (mutex, semáforo).</p>
+            <div class="m4ipcUso"><i class="ph-bold ph-lightning"></i> Caso de uso: rendering 3D, IA, tiempo real</div>
+            <ul class="m4ipcList">
+              <li class="good"><i class="ph-bold ph-check"></i> Sin copia — latencia mínima</li>
+              <li class="good"><i class="ph-bold ph-check"></i> Ideal para datos grandes y alta frecuencia</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Requiere sincronización manual</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Race conditions si se usa mal</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tabla comparativa -->
+        <div class="m4compareWrap reveal">
+          <table class="m4compareTable">
+            <thead>
+              <tr>
+                <th>Característica</th>
+                <th style="color:#4a8ef0">Pipe</th>
+                <th style="color:#00e8c6">FIFO</th>
+                <th style="color:#ff9b6b">Cola</th>
+                <th style="color:#9b6fff">Shm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Velocidad relativa</td>
+                <td>Alta</td>
+                <td>Alta</td>
+                <td>Media</td>
+                <td class="good">Máxima</td>
+              </tr>
+              <tr>
+                <td>Procesos no relacionados</td>
+                <td class="warn">No</td>
+                <td class="good">Sí</td>
+                <td class="good">Sí</td>
+                <td class="good">Sí</td>
+              </tr>
+              <tr>
+                <td>Asincrónico</td>
+                <td class="warn">No</td>
+                <td class="warn">No</td>
+                <td class="good">Sí</td>
+                <td class="warn">No</td>
+              </tr>
+              <tr>
+                <td>Sincronización automática</td>
+                <td class="good">Sí (SO)</td>
+                <td class="good">Sí (SO)</td>
+                <td class="good">Sí (broker)</td>
+                <td class="warn">Manual</td>
+              </tr>
+              <tr>
+                <td>Copia de datos</td>
+                <td class="warn">Sí</td>
+                <td class="warn">Sí</td>
+                <td class="warn">Sí</td>
+                <td class="good">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PIPES EN ACCIÓN ───────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-arrow-right"></i> Flujo de datos</span>
+          <h2>Pipes en acción</h2>
+          <p class="msecSub">Un pipe es literalmente una tubería: los datos entran por un extremo y salen por el otro. Unidireccional, sin nombre, entre procesos relacionados.</p>
+        </div>
+
+        <div class="m4pipeVizWrap reveal">
+          <div class="m4pipeViz">
+            <div class="m4pipeActor m4pipeActorA">
+              <div class="m4pipeActorIcon"><i class="ph-bold ph-pencil"></i></div>
+              <span class="m4pipeActorName">Proceso A</span>
+              <span class="m4pipeActorRole">Escritor</span>
+              <code>PipedOutputStream</code>
+            </div>
+
+            <div class="m4pipeTube" id="pipeTube">
+              <div class="m4pipeTubeInner">
+                <!-- packets injected here by JS -->
+              </div>
+              <div class="m4pipeTubeLabel">
+                <i class="ph-bold ph-arrow-right"></i>
+                Unidireccional — los datos solo fluyen en esta dirección
+              </div>
+            </div>
+
+            <div class="m4pipeActor m4pipeActorB">
+              <div class="m4pipeActorIcon"><i class="ph-bold ph-eye"></i></div>
+              <span class="m4pipeActorName">Proceso B</span>
+              <span class="m4pipeActorRole">Lector</span>
+              <code>PipedInputStream</code>
+            </div>
+          </div>
+
+          <div class="m4pipeCtrl">
+            <button class="m4btn m4btnAccent" onclick="sendPipePacket()">
+              <i class="ph-bold ph-paper-plane-tilt"></i> Enviar dato
+            </button>
+            <div class="m4pipeLog" id="pipeLog">Presioná "Enviar dato" para ver un paquete viajar por el pipe.</div>
+          </div>
+        </div>
+
+        <div class="m4javaTabsWrap reveal">
+          <div class="m4javaTabs" role="tablist">
+            <button class="m4javaTab active" role="tab" onclick="showJavaTab(0)">
+              <i class="ph-bold ph-package"></i> BlockingQueue básico
+              <span class="m4javaBadge" style="--bc:#9b6fff">Recomendado</span>
+            </button>
+            <button class="m4javaTab" role="tab" onclick="showJavaTab(1)">
+              <i class="ph-bold ph-flow-arrow"></i> Pipeline 3 etapas
+              <span class="m4javaBadge" style="--bc:#ff9b6b">Actividad</span>
+            </button>
+            <button class="m4javaTab" role="tab" onclick="showJavaTab(2)">
+              <i class="ph-bold ph-pipe"></i> PipedStreams
+            </button>
+          </div>
+
+          <div class="m4javaPanel" id="javaPanel0">
+            <pre class="language-java"><code class="language-java">import java.util.concurrent.*;
+
+public class ProductorConsumidor {
+    // Queue con capacidad máxima 5 — put() bloquea si está llena, take() bloquea si está vacía
+    private static final BlockingQueue&lt;String&gt; queue = new LinkedBlockingQueue&lt;&gt;(5);
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread productor = new Thread(() -&gt; {
+            for (int i = 1; i &lt;= 10; i++) {
+                try {
+                    String item = "Item-" + i;
+                    queue.put(item);  // BLOQUEA si queue llena — espera automáticamente
+                    System.out.println("[P] Produjo: " + item + " | En cola: " + queue.size());
+                    Thread.sleep(200);
+                } catch (InterruptedException e) { Thread.currentThread().interrupt(); return; }
+            }
+        }, "Productor");
+
+        Thread consumidor = new Thread(() -&gt; {
+            for (int i = 0; i &lt; 10; i++) {
+                try {
+                    String item = queue.take(); // BLOQUEA si queue vacía — espera automáticamente
+                    Thread.sleep(500); // simula procesamiento más lento que producción
+                    System.out.println("[C] Consumió: " + item + " | En cola: " + queue.size());
+                } catch (InterruptedException e) { Thread.currentThread().interrupt(); return; }
+            }
+        }, "Consumidor");
+
+        productor.start();
+        consumidor.start();
+        productor.join();
+        consumidor.join();
+        System.out.println("Pipeline completo. Total en cola: " + queue.size());
+    }
+}</code></pre>
+            <div class="m4javaWhenBox">
+              <div class="m4javaWhenTitle"><i class="ph-bold ph-question"></i> ¿Cuándo usarlo?</div>
+              <p>El patrón básico de productor-consumidor con un solo par. <code>LinkedBlockingQueue(5)</code> es el buffer. El productor genera más rápido que el consumidor — la queue actúa como amortiguador y bloquea al productor cuando se llena. No necesitás sincronización manual.</p>
+            </div>
+          </div>
+
+          <div class="m4javaPanel hidden" id="javaPanel1">
+            <pre class="language-java"><code class="language-java">import java.util.concurrent.*;
+
+public class Pipeline3Etapas {
+    // Queues de comunicación entre etapas
+    static final BlockingQueue&lt;String&gt; etapa1a2 = new LinkedBlockingQueue&lt;&gt;(3);
+    static final BlockingQueue&lt;String&gt; etapa2a3 = new LinkedBlockingQueue&lt;&gt;(3);
+
+    public static void main(String[] args) throws InterruptedException {
+        // Etapa 1: Generador — produce datos crudos
+        Thread etapa1 = new Thread(() -&gt; {
+            for (int i = 1; i &lt;= 5; i++) {
+                try {
+                    String raw = "dato-" + i;
+                    etapa1a2.put(raw);
+                    System.out.println("[E1-GENERA]  → " + raw);
+                    Thread.sleep(300);
+                } catch (InterruptedException e) { Thread.currentThread().interrupt(); return; }
+            }
+        }, "Generador");
+
+        // Etapa 2: Procesador — transforma los datos
+        Thread etapa2 = new Thread(() -&gt; {
+            for (int i = 0; i &lt; 5; i++) {
+                try {
+                    String raw = etapa1a2.take();
+                    String processed = raw.toUpperCase() + "_OK";
+                    etapa2a3.put(processed);
+                    System.out.println("[E2-PROCESA] → " + processed);
+                    Thread.sleep(500);
+                } catch (InterruptedException e) { Thread.currentThread().interrupt(); return; }
+            }
+        }, "Procesador");
+
+        // Etapa 3: Consumidor — entrega el resultado final
+        Thread etapa3 = new Thread(() -&gt; {
+            for (int i = 0; i &lt; 5; i++) {
+                try {
+                    String result = etapa2a3.take();
+                    System.out.println("[E3-ENTREGA] → " + result + " ✓");
+                    Thread.sleep(200);
+                } catch (InterruptedException e) { Thread.currentThread().interrupt(); return; }
+            }
+        }, "Consumidor");
+
+        long inicio = System.currentTimeMillis();
+        etapa1.start(); etapa2.start(); etapa3.start();
+        etapa1.join(); etapa2.join(); etapa3.join();
+        System.out.println("Pipeline completado en " + (System.currentTimeMillis() - inicio) + "ms");
+    }
+}</code></pre>
+            <div class="m4javaWhenBox">
+              <div class="m4javaWhenTitle"><i class="ph-bold ph-check-circle"></i> Esta es la Actividad</div>
+              <p>Pipeline de 3 etapas conectadas por BlockingQueues. Cada etapa es un hilo independiente. Las colas actúan como buffers entre etapas — si una etapa es más lenta, la cola la desacopla temporalmente. Este es el patrón que vas a implementar y medir en la actividad práctica.</p>
+            </div>
+          </div>
+
+          <div class="m4javaPanel hidden" id="javaPanel2">
+            <pre class="language-java"><code class="language-java">import java.io.*;
+
+public class PipedStreamDemo {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        // PipedOutputStream y PipedInputStream — simulan el pipe del sistema operativo
+        PipedOutputStream pipeOut = new PipedOutputStream();
+        PipedInputStream  pipeIn  = new PipedInputStream(pipeOut, 1024);
+
+        // Escritor: escribe en el extremo de salida del pipe
+        Thread escritor = new Thread(() -&gt; {
+            try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(pipeOut))) {
+                for (int i = 1; i &lt;= 5; i++) {
+                    writer.println("Mensaje " + i);
+                    writer.flush();
+                    System.out.println("[PIPE→] Escribió: Mensaje " + i);
+                    Thread.sleep(400);
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+        }, "Escritor");
+
+        // Lector: lee del extremo de entrada del pipe
+        Thread lector = new Thread(() -&gt; {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(pipeIn))) {
+                String linea;
+                while ((linea = reader.readLine()) != null) {
+                    System.out.println("[→PIPE] Leyó:    " + linea);
+                }
+            } catch (IOException e) { e.printStackTrace(); }
+        }, "Lector");
+
+        escritor.start();
+        lector.start();
+        escritor.join();
+        lector.join();
+        System.out.println("Pipe cerrado. Comunicación completa.");
+    }
+}</code></pre>
+            <div class="m4javaWhenBox">
+              <div class="m4javaWhenTitle"><i class="ph-bold ph-pipe"></i> El equivalente Java al pipe Unix</div>
+              <p><code>PipedOutputStream/PipedInputStream</code> simulan el pipe del SO dentro de la JVM. El escritor conecta su salida a la entrada del lector — datos unidireccionales, bloqueante. Útil para entender el concepto, pero en producción se prefiere <code>BlockingQueue</code> por más control y flexibilidad.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRODUCTOR-CONSUMIDOR ──────────────── -->
+    <section class="msec">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-scales"></i> El patrón fundamental</span>
+          <h2>El problema Productor-Consumidor</h2>
+          <p class="msecSub">Cuando un productor y un consumidor corren a velocidades distintas, la queue actúa como amortiguador. Pero tiene límite — y ahí aparece el backpressure.</p>
+        </div>
+
+        <div class="m4pcScenarios reveal">
+          <div class="m4pcScenario m4pcEq">
+            <div class="m4pcScenarioIcon"><i class="ph-bold ph-scales"></i></div>
+            <div class="m4pcScenarioName">Equilibrio</div>
+            <div class="m4pcScenarioDesc">P = C · Productor y consumidor van a la misma velocidad. La queue se mantiene estable — ni se llena ni se vacía.</div>
+            <div class="m4pcMiniQueue">
+              <div class="m4pcSlot filled" style="--fc:#9b6fff"></div>
+              <div class="m4pcSlot filled" style="--fc:#9b6fff"></div>
+              <div class="m4pcSlot filled" style="--fc:#9b6fff"></div>
+              <div class="m4pcSlot"></div>
+              <div class="m4pcSlot"></div>
+            </div>
+            <div class="m4pcStatus m4pcStatusOk">Queue estable</div>
+          </div>
+
+          <div class="m4pcScenario m4pcFast">
+            <div class="m4pcScenarioIcon"><i class="ph-bold ph-lightning"></i></div>
+            <div class="m4pcScenarioName">Productor más rápido</div>
+            <div class="m4pcScenarioDesc">P &gt; C · La queue se va llenando. Cuando está llena, el productor se bloquea — <code>put()</code> espera que el consumidor libere un slot.</div>
+            <div class="m4pcMiniQueue">
+              <div class="m4pcSlot filled" style="--fc:#ff9b6b"></div>
+              <div class="m4pcSlot filled" style="--fc:#ff9b6b"></div>
+              <div class="m4pcSlot filled" style="--fc:#ff9b6b"></div>
+              <div class="m4pcSlot filled" style="--fc:#ff9b6b"></div>
+              <div class="m4pcSlot filled" style="--fc:#ff9b6b"></div>
+            </div>
+            <div class="m4pcStatus m4pcStatusWarn">Productor BLOQUEADO</div>
+          </div>
+
+          <div class="m4pcScenario m4pcSlow">
+            <div class="m4pcScenarioIcon"><i class="ph-bold ph-hourglass"></i></div>
+            <div class="m4pcScenarioName">Consumidor más rápido</div>
+            <div class="m4pcScenarioDesc">P &lt; C · La queue se vacía. El consumidor llama <code>take()</code> y se bloquea esperando que el productor agregue algo.</div>
+            <div class="m4pcMiniQueue">
+              <div class="m4pcSlot filled" style="--fc:#4a8ef0"></div>
+              <div class="m4pcSlot"></div>
+              <div class="m4pcSlot"></div>
+              <div class="m4pcSlot"></div>
+              <div class="m4pcSlot"></div>
+            </div>
+            <div class="m4pcStatus m4pcStatusInfo">Consumidor ESPERANDO</div>
+          </div>
+        </div>
+
+        <div class="m4flashQuizWrap reveal">
+          <div class="m4flashQuizHead">
+            <i class="ph-bold ph-lightning"></i> Flash Quiz — ¿Qué pasa en cada escenario?
+          </div>
+          <div class="m4flashQuiz" id="pcFlashCards"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BLOCKINGQUEUE SIMULATOR ───────────── -->
+    <section class="msec alt" id="simulador">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-cpu"></i> Simulador interactivo</span>
+          <h2>BlockingQueue Simulator</h2>
+          <p class="msecSub">Controlá la velocidad del productor y del consumidor de forma independiente. Observá cómo la queue actúa de amortiguador — y qué pasa cuando se llena o se vacía.</p>
+        </div>
+
+        <div class="m4bqSimulator reveal">
+          <div class="m4bqLayout">
+            <!-- PRODUCTOR -->
+            <div class="m4bqActor" id="bqProducer">
+              <div class="m4bqActorHeader">
+                <div class="m4bqActorIcon" style="--ai:#9b6fff"><i class="ph-bold ph-factory"></i></div>
+                <span class="m4bqActorName">Productor</span>
+              </div>
+              <div class="m4bqBadge" id="bqProdBadge">
+                <span class="m4bqBadgeDot"></span>
+                <span class="m4bqBadgeText">INACTIVO</span>
+              </div>
+              <div class="m4bqSliderWrap">
+                <label class="m4bqSliderLabel">Velocidad: <span id="prodRateLabel">800</span>ms</label>
+                <input type="range" class="m4bqSlider" id="producerSlider" min="300" max="2000" value="800" step="100" />
+              </div>
+              <div class="m4bqActorCode"><code>queue.put(item)</code></div>
+            </div>
+
+            <!-- QUEUE -->
+            <div class="m4bqQueueWrap">
+              <div class="m4bqQueueLabel">
+                <span>BlockingQueue</span>
+                <span class="m4bqQueueCap" id="bqCapLabel">0 / 8</span>
+              </div>
+              <div class="m4bqQueue" id="bqQueue">
+                <div class="m4bqSlot" id="bqSlot0"></div>
+                <div class="m4bqSlot" id="bqSlot1"></div>
+                <div class="m4bqSlot" id="bqSlot2"></div>
+                <div class="m4bqSlot" id="bqSlot3"></div>
+                <div class="m4bqSlot" id="bqSlot4"></div>
+                <div class="m4bqSlot" id="bqSlot5"></div>
+                <div class="m4bqSlot" id="bqSlot6"></div>
+                <div class="m4bqSlot" id="bqSlot7"></div>
+              </div>
+              <div class="m4bqFillBarWrap">
+                <div class="m4bqFillBar" id="bqFillBar"></div>
+              </div>
+            </div>
+
+            <!-- CONSUMIDOR -->
+            <div class="m4bqActor" id="bqConsumer">
+              <div class="m4bqActorHeader">
+                <div class="m4bqActorIcon" style="--ai:#4a8ef0"><i class="ph-bold ph-package"></i></div>
+                <span class="m4bqActorName">Consumidor</span>
+              </div>
+              <div class="m4bqBadge" id="bqConsBadge">
+                <span class="m4bqBadgeDot"></span>
+                <span class="m4bqBadgeText">INACTIVO</span>
+              </div>
+              <div class="m4bqSliderWrap">
+                <label class="m4bqSliderLabel">Velocidad: <span id="consRateLabel">1200</span>ms</label>
+                <input type="range" class="m4bqSlider" id="consumerSlider" min="300" max="2000" value="1200" step="100" />
+              </div>
+              <div class="m4bqActorCode"><code>queue.take()</code></div>
+            </div>
+          </div>
+
+          <!-- STATS -->
+          <div class="m4bqStats">
+            <div class="m4bqStat">
+              <span class="m4bqStatNum" id="statProduced">0</span>
+              <span class="m4bqStatLabel">Producidos</span>
+            </div>
+            <div class="m4bqStat">
+              <span class="m4bqStatNum" id="statConsumed">0</span>
+              <span class="m4bqStatLabel">Consumidos</span>
+            </div>
+            <div class="m4bqStat">
+              <span class="m4bqStatNum" id="statProdBlocked" style="color:#ff9b6b">0</span>
+              <span class="m4bqStatLabel">Productor bloqueado</span>
+            </div>
+            <div class="m4bqStat">
+              <span class="m4bqStatNum" id="statConsBlocked" style="color:#4a8ef0">0</span>
+              <span class="m4bqStatLabel">Consumidor bloqueado</span>
+            </div>
+          </div>
+
+          <!-- CONTROLS -->
+          <div class="m4bqCtrl">
+            <button class="m4btn m4btnAccent" id="bqToggleBtn" onclick="bqToggle()">
+              <i class="ph-bold ph-play"></i> Iniciar
+            </button>
+            <button class="m4btn" onclick="bqReset()">
+              <i class="ph-bold ph-arrow-counter-clockwise"></i> Resetear
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LAB ONECOMPILER ───────────────────── -->
+    <section class="msec" id="laboratorio">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-flask"></i> Manos a la obra</span>
+          <h2>Laboratorio Interactivo</h2>
+          <p class="msecSub">Ejecutá el pipeline de 3 etapas en el navegador y observá cómo las BlockingQueues coordinan los hilos sin sincronización manual.</p>
+        </div>
+
+        <div class="m4lab reveal">
+          <div class="m4labInstructions">
+            <div class="m4labStep">
+              <div class="m4labStepNum">1</div>
+              <div class="m4labStepText">
+                <strong>Copiá el código</strong>
+                <p>Usá el botón de copiar para obtener el Pipeline de 3 etapas — es el código de la Actividad.</p>
+              </div>
+            </div>
+            <div class="m4labStep">
+              <div class="m4labStepNum">2</div>
+              <div class="m4labStepText">
+                <strong>Pegalo en el editor</strong>
+                <p>Reemplazá el contenido del editor de OneCompiler con el código copiado.</p>
+              </div>
+            </div>
+            <div class="m4labStep">
+              <div class="m4labStepNum">3</div>
+              <div class="m4labStepText">
+                <strong>Ejecutá y observá</strong>
+                <p>Presioná Run. Observá cómo los 3 hilos se coordinan usando las queues — el orden de salida refleja el backpressure entre etapas.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m4labEmbed">
+            <iframe
+              src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
+              width="100%"
+              height="480"
+              frameborder="0"
+              allowfullscreen
+              title="OneCompiler Java IDE"
+            ></iframe>
+          </div>
+
+          <div class="m4labHint">
+            <div class="m4labHintHeader">
+              <i class="ph-bold ph-code-block"></i>
+              Código para copiar — Pipeline 3 Etapas (Actividad)
+              <button class="m4btn m4btnSm" onclick="copyLabCode()">
+                <i class="ph-bold ph-copy"></i> Copiar
+              </button>
+            </div>
+            <pre class="language-java" id="labCodeBlock"><code class="language-java">import java.util.concurrent.*;
+
+public class Pipeline3Etapas {
+    static final BlockingQueue&lt;String&gt; etapa1a2 = new LinkedBlockingQueue&lt;&gt;(3);
+    static final BlockingQueue&lt;String&gt; etapa2a3 = new LinkedBlockingQueue&lt;&gt;(3);
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread etapa1 = new Thread(() -&gt; {
+            for (int i = 1; i &lt;= 5; i++) {
+                try {
+                    String raw = "dato-" + i;
+                    etapa1a2.put(raw);
+                    System.out.println("[E1-GENERA]  → " + raw);
+                    Thread.sleep(300);
+                } catch (InterruptedException e) { Thread.currentThread().interrupt(); return; }
+            }
+        }, "Generador");
+
+        Thread etapa2 = new Thread(() -&gt; {
+            for (int i = 0; i &lt; 5; i++) {
+                try {
+                    String raw = etapa1a2.take();
+                    String processed = raw.toUpperCase() + "_OK";
+                    etapa2a3.put(processed);
+                    System.out.println("[E2-PROCESA] → " + processed);
+                    Thread.sleep(500);
+                } catch (InterruptedException e) { Thread.currentThread().interrupt(); return; }
+            }
+        }, "Procesador");
+
+        Thread etapa3 = new Thread(() -&gt; {
+            for (int i = 0; i &lt; 5; i++) {
+                try {
+                    String result = etapa2a3.take();
+                    System.out.println("[E3-ENTREGA] → " + result + " ✓");
+                    Thread.sleep(200);
+                } catch (InterruptedException e) { Thread.currentThread().interrupt(); return; }
+            }
+        }, "Consumidor");
+
+        long inicio = System.currentTimeMillis();
+        etapa1.start(); etapa2.start(); etapa3.start();
+        etapa1.join(); etapa2.join(); etapa3.join();
+        System.out.println("Pipeline completado en " + (System.currentTimeMillis() - inicio) + "ms");
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EL COURIER GAME ───────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-motorcycle"></i> Modo courier</span>
+          <h2>El Courier</h2>
+          <p class="msecSub">Leé el escenario y elegí el mecanismo de IPC correcto. Hay 5 entregas — ¿podés clasificarlas todas?</p>
+        </div>
+        <div class="m4gameWrap reveal">
+          <div class="m4gameScore">
+            Puntaje: <span id="gameScore">0</span> / 5
+          </div>
+          <div class="m4game" id="gameCards"></div>
+          <button class="m4btn m4btnAccent" onclick="buildCourier()" style="margin-top:20px">
+            <i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUIZ ──────────────────────────────── -->
+    <section class="msec" id="quiz">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-exam"></i> Autoevaluación</span>
+          <h2>Quiz — Comunicación IPC</h2>
+          <p class="msecSub">8 preguntas para verificar que los conceptos de IPC, BlockingQueue y el patrón productor-consumidor quedaron claros.</p>
+        </div>
+        <div class="m4quiz reveal">
+          <div class="m4quizHeader">
+            <span id="quizNum">Pregunta 1 de 8</span>
+            <div class="m4quizProgressWrap">
+              <div class="m4quizProgressBar" id="quizProgress"></div>
+            </div>
+          </div>
+          <div class="m4quizBody" id="quizContent"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GLOSARIO FLIP ──────────────────────── -->
+    <section class="msec alt" id="glosario">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-book-open"></i> Vocabulario técnico</span>
+          <h2>Glosario</h2>
+          <p class="msecSub">Tocá cada tarjeta para ver la definición. Estos son los términos que vas a usar al diseñar sistemas distribuidos, microservicios y pipelines de datos.</p>
+        </div>
+        <div class="m4flipGrid">
+          <div class="m4flipCard reveal" style="--delay:0ms">
+            <div class="m4flipInner">
+              <div class="m4flipFront">
+                <i class="ph-bold ph-git-merge" style="font-size:28px;color:var(--accent)"></i>
+                <strong>IPC</strong>
+                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m4flipBack">
+                <p>Inter-Process Communication — conjunto de mecanismos provistos por el SO para intercambiar datos entre procesos o hilos. Necesario porque cada proceso tiene su propio espacio de memoria aislado. Incluye pipes, FIFOs, colas de mensajes y memoria compartida.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m4flipCard reveal" style="--delay:60ms">
+            <div class="m4flipInner">
+              <div class="m4flipFront">
+                <i class="ph-bold ph-arrow-right" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Pipe</strong>
+                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m4flipBack">
+                <p>Canal de comunicación unidireccional y secuencial entre dos procesos. Los datos fluyen en una sola dirección (escritor → lector). Típicamente entre procesos relacionados (padre-hijo con fork). El SO maneja el buffering automáticamente.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m4flipCard reveal" style="--delay:120ms">
+            <div class="m4flipInner">
+              <div class="m4flipFront">
+                <i class="ph-bold ph-funnel" style="font-size:28px;color:var(--accent)"></i>
+                <strong>FIFO</strong>
+                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m4flipBack">
+                <p>First In, First Out — cola donde el primer elemento en entrar es el primero en salir. En IPC, un FIFO (named pipe) es un pipe con nombre en el filesystem que permite comunicación entre procesos no relacionados. Se crea con <code>mkfifo</code> en Unix.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m4flipCard reveal" style="--delay:180ms">
+            <div class="m4flipInner">
+              <div class="m4flipFront">
+                <i class="ph-bold ph-envelope" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Cola de mensajes</strong>
+                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m4flipBack">
+                <p>Estructura para enviar datos entre productores y consumidores de forma asincrónica. El productor envía y sigue sin esperar al consumidor. Los mensajes persisten en la cola hasta ser procesados. Ideal para sistemas desacoplados y resilientes.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m4flipCard reveal" style="--delay:240ms">
+            <div class="m4flipInner">
+              <div class="m4flipFront">
+                <i class="ph-bold ph-database" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Memoria compartida</strong>
+                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m4flipBack">
+                <p>Zona de datos accesible por más de una unidad de ejecución. Es el mecanismo de IPC más rápido porque no hay copia de datos — ambos procesos mapean el mismo segmento físico de RAM. Requiere sincronización manual (mutex, semáforo) para evitar race conditions.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m4flipCard reveal" style="--delay:300ms">
+            <div class="m4flipInner">
+              <div class="m4flipFront">
+                <i class="ph-bold ph-stack" style="font-size:28px;color:var(--accent)"></i>
+                <strong>BlockingQueue</strong>
+                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m4flipBack">
+                <p>Cola Java que coordina productores y consumidores bloqueando automáticamente. <code>put()</code> bloquea si la queue está llena — el productor espera. <code>take()</code> bloquea si está vacía — el consumidor espera. Sin polling, sin sincronización manual. La implementación más común es <code>LinkedBlockingQueue</code>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACTIVIDAD ──────────────────────────── -->
+    <section class="msec" id="actividades">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-code-simple"></i> Tu turno</span>
+          <h2>Actividad — Pipeline Productor-Consumidor</h2>
+          <p class="msecSub">Esta actividad vale <strong>10 puntos</strong>. Vas a implementar un pipeline de 3 etapas en Java, medir tiempos y comparar conceptualmente con los mecanismos de IPC vistos en la teoría.</p>
+        </div>
+
+        <div class="m4actMission reveal">
+          <div class="m4missionHeader">
+            <div class="m4missionBadge"><i class="ph-bold ph-code-simple"></i> Misión 04</div>
+            <h3>Construí y medí el pipeline de 3 etapas</h3>
+          </div>
+          <div class="m4missionSteps">
+            <div class="m4missionStep">
+              <div class="m4missionStepIcon" style="--sc:#9b6fff"><i class="ph-bold ph-flow-arrow"></i></div>
+              <div class="m4missionStepBody">
+                <strong>Paso 1 — Implementar el pipeline productor-procesador-consumidor</strong>
+                <p>Creá la clase <code>Pipeline3Etapas</code> con tres hilos: Generador (produce datos crudos), Procesador (transforma con <code>toUpperCase()</code>) y Consumidor (entrega el resultado final). Usá el código de referencia como punto de partida.</p>
+              </div>
+            </div>
+            <div class="m4missionStep">
+              <div class="m4missionStepIcon" style="--sc:#4a8ef0"><i class="ph-bold ph-stack"></i></div>
+              <div class="m4missionStepBody">
+                <strong>Paso 2 — Usar BlockingQueue entre etapas</strong>
+                <p>Conectá las etapas con <code>LinkedBlockingQueue(3)</code>. Verificá que <code>put()</code> bloquea cuando la cola está llena y <code>take()</code> bloquea cuando está vacía. Probá con velocidades distintas entre etapas.</p>
+              </div>
+            </div>
+            <div class="m4missionStep">
+              <div class="m4missionStepIcon" style="--sc:#ff9b6b"><i class="ph-bold ph-clock"></i></div>
+              <div class="m4missionStepBody">
+                <strong>Paso 3 — Registrar mensajes procesados y medir tiempos</strong>
+                <p>Usá <code>System.currentTimeMillis()</code> para medir el tiempo total del pipeline. Logeá cada ítem que pasa por cada etapa con su timestamp. Documentá la tabla de resultados con al menos 3 configuraciones de velocidad distintas.</p>
+              </div>
+            </div>
+            <div class="m4missionStep">
+              <div class="m4missionStepIcon" style="--sc:#00e8c6"><i class="ph-bold ph-file-text"></i></div>
+              <div class="m4missionStepBody">
+                <strong>Paso 4 — Comparar con pipes y FIFO de la teoría</strong>
+                <p>Escribí un párrafo explicando: ¿en qué se parece una <code>BlockingQueue</code> a un pipe? ¿en qué se diferencia? ¿cuándo elegirías un FIFO del SO sobre una <code>BlockingQueue</code> de Java? Justificá con los conceptos del módulo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m4rubric reveal">
+          <div class="m4rubricTitle"><i class="ph-bold ph-list-checks"></i> Rúbrica de evaluación</div>
+          <div class="m4rubricItems">
+            <div class="m4rubricItem">
+              <div class="m4rubricItemHeader">
+                <span class="m4rubricItemName">Implementación del pipeline 3 etapas funcional</span>
+                <span class="m4rubricPct">40%</span>
+              </div>
+              <div class="m4rubricBar"><div class="m4rubricBarFill" style="--pct:40%;--bc:#9b6fff"></div></div>
+              <p class="m4rubricDesc">Código compilable con los 3 hilos funcionando. Los 5 ítems pasan por todas las etapas y se imprimen en el orden correcto. Sin errores de compilación.</p>
+            </div>
+            <div class="m4rubricItem">
+              <div class="m4rubricItemHeader">
+                <span class="m4rubricItemName">Uso correcto de BlockingQueue entre etapas</span>
+                <span class="m4rubricPct">30%</span>
+              </div>
+              <div class="m4rubricBar"><div class="m4rubricBarFill" style="--pct:30%;--bc:#4a8ef0"></div></div>
+              <p class="m4rubricDesc">Se usan dos LinkedBlockingQueues con capacidad limitada. Se verifica que el bloqueo ocurre correctamente al cambiar velocidades entre etapas.</p>
+            </div>
+            <div class="m4rubricItem">
+              <div class="m4rubricItemHeader">
+                <span class="m4rubricItemName">Medición de tiempos y documentación</span>
+                <span class="m4rubricPct">20%</span>
+              </div>
+              <div class="m4rubricBar"><div class="m4rubricBarFill" style="--pct:20%;--bc:#ff9b6b"></div></div>
+              <p class="m4rubricDesc">Tabla comparativa con al menos 3 configuraciones de velocidad. Timestamps por etapa. Análisis del bottleneck observado.</p>
+            </div>
+            <div class="m4rubricItem">
+              <div class="m4rubricItemHeader">
+                <span class="m4rubricItemName">Comparación conceptual pipes/FIFO/BlockingQueue</span>
+                <span class="m4rubricPct">10%</span>
+              </div>
+              <div class="m4rubricBar"><div class="m4rubricBarFill" style="--pct:10%;--bc:#00e8c6"></div></div>
+              <p class="m4rubricDesc">Párrafo propio que explique similitudes y diferencias con precisión técnica. Criterio de cuándo usar cada mecanismo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ─────────────────────────────── -->
+    <footer class="mfoot">
+      <a href="modulo3.html" class="mfootLink">
+        <i class="ph ph-arrow-left"></i> Módulo 3
+      </a>
+      <a href="../index.html" class="mfootBrand">Campus PAI3</a>
+      <a href="modulo5.html" class="mfootLink">
+        Módulo 5 <i class="ph ph-arrow-right"></i>
+      </a>
+    </footer>
+
+    <!-- ── SCRIPTS ────────────────────────────── -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="../assets/js/campus.js"></script>
+    <script src="../assets/js/modulo4.js"></script>
+  </body>
+</html>
