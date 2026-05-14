@@ -2,6 +2,15 @@
    PAI3 · Módulo 2 · Interfaces y UX
 ═══════════════════════════════════════════ */
 
+/* Enforce violet accent (campus.js may default to module 1 yellow without ?m= param) */
+(function() {
+  const r = document.documentElement;
+  r.style.setProperty('--accent',        '#9b6fff');
+  r.style.setProperty('--accent-sub',    'rgba(155,111,255,0.08)');
+  r.style.setProperty('--accent-border', 'rgba(155,111,255,0.25)');
+  r.style.setProperty('--accent-mid',    'rgba(155,111,255,0.38)');
+})();
+
 /* ─── Reading progress ───────────────────── */
 const readProgress = document.getElementById('readProgress');
 if (readProgress) {

@@ -49,10 +49,10 @@ const MODULES = {
     title: "Interfaces, navegabilidad y experiencia del usuario",
     intro: "Especificidad de cada plataforma, experiencia de usuario, navegabilidad e interfaces. Maquetación y prototipado con Moqups o Figma.",
     block: "Bloque 01",
-    accent: "#4a8ef0",
-    accentSub: "rgba(74,142,240,0.08)",
-    accentBorder: "rgba(74,142,240,0.25)",
-    accentMid: "rgba(74,142,240,0.35)",
+    accent: "#9b6fff",
+    accentSub: "rgba(155,111,255,0.08)",
+    accentBorder: "rgba(155,111,255,0.25)",
+    accentMid: "rgba(155,111,255,0.38)",
     objectives: [
       "Reconocer los conceptos de interfaz, usuario, navegabilidad y experiencia con el fin de analizar plataformas interactivas.",
       "Comparar interfaces móviles y de escritorio con el fin de identificar restricciones y oportunidades de diseño.",
@@ -267,7 +267,8 @@ const MODULES = {
    Inicialización
 ═══════════════════════════════════════════ */
 const params = new URLSearchParams(window.location.search);
-const id = Number(params.get("m")) || 1;
+const filenameMatch = window.location.pathname.match(/modulo(\d+)\.html/);
+const id = Number(params.get("m")) || (filenameMatch ? Number(filenameMatch[1]) : 1);
 const data = MODULES[id] || MODULES[1];
 const doc = document.documentElement;
 
