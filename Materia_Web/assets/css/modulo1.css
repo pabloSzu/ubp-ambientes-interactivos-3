@@ -95,32 +95,50 @@
 }
 .m1heroStats {
   display: flex;
-  gap: 40px;
+  gap: 0;
   flex-wrap: wrap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  background: rgba(6, 8, 15, 0.5);
+  max-width: 600px;
 }
 .m1heroStat {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  padding: 22px 28px;
+  flex: 1;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.2s;
+}
+.m1heroStat:last-child { border-right: none; }
+.m1heroStat:hover { background: rgba(255, 255, 255, 0.03); }
+.m1heroStatTop {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
 }
 .m1heroStatNum {
-  font-size: clamp(28px, 4vw, 42px);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.m1heroStatSuf {
+  font-size: clamp(22px, 3vw, 32px);
   font-weight: 900;
   color: var(--accent);
   line-height: 1;
   letter-spacing: -0.02em;
 }
-.m1heroStatSuf {
-  font-size: clamp(20px, 3vw, 32px);
-  font-weight: 900;
-  color: var(--accent);
-  line-height: 1;
-}
 .m1heroStatLabel {
-  font-size: 12px;
-  color: var(--muted);
-  max-width: 160px;
-  line-height: 1.4;
+  font-size: 13px;
+  color: var(--sub);
+  max-width: 150px;
+  line-height: 1.45;
 }
 
 /* ─── Pull quote ─────────────────────────── */
@@ -148,9 +166,10 @@
   margin-bottom: 12px;
 }
 .m1pullQuote cite {
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 15px;
+  color: var(--sub);
   font-style: normal;
+  font-weight: 600;
 }
 
 /* ─── Objectives grid ────────────────────── */
@@ -286,9 +305,9 @@
   margin-bottom: 10px;
 }
 .m1cicloCard p {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--sub);
-  line-height: 1.65;
+  line-height: 1.7;
   margin-bottom: 16px;
 }
 .m1cicloTag {
@@ -498,10 +517,10 @@
 }
 .m1gameCard.answered { border-color: var(--accent-border); }
 .m1gameScenario {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .m1gameOptions {
   display: flex;
@@ -525,9 +544,9 @@
 .m1gameOption.wrong { border-color: rgba(255,80,80,0.5); background: rgba(255,80,80,0.08); color: #ff5050; }
 .m1gameHint {
   margin-top: 10px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--sub);
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: 8px;
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--border);
@@ -575,12 +594,12 @@
 .m1splitImgBadge {
   position: absolute;
   bottom: 14px; left: 14px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text);
   background: rgba(6,8,15,0.85);
   border: 1px solid var(--border);
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
   backdrop-filter: blur(8px);
 }
@@ -743,71 +762,117 @@
   color: var(--text);
 }
 .m1devendraStep p {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--sub);
-  line-height: 1.65;
+  line-height: 1.7;
   margin: 0;
 }
 
 /* ─── Quiz ───────────────────────────────── */
 .m1quiz {
-  background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--r);
-  padding: 28px;
-  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  overflow: hidden;
   margin-top: 24px;
 }
+.m1quizHeader {
+  padding: 20px 28px 0;
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+}
+.m1quizMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.m1quizMetaLabel {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+.m1quizMetaNum {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
 .m1quizProgress {
-  height: 4px;
+  height: 6px;
   background: rgba(255,255,255,0.06);
-  border-radius: 999px;
+  border-radius: 0;
   overflow: hidden;
-  margin-bottom: 24px;
 }
 .m1quizProgressBar {
   height: 100%;
   background: var(--accent);
-  border-radius: 999px;
   transition: width 0.4s ease;
+  box-shadow: 0 0 8px var(--accent);
 }
-.m1quizQ { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 16px; }
-.m1quizOptions { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.m1quizBody {
+  padding: 28px;
+  background: rgba(6,8,15,0.4);
+}
+.m1quizQ { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 20px; line-height: 1.4; }
+.m1quizOptions { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
 .m1quizOption {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 13px 16px;
-  border-radius: 10px;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 12px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,0.02);
+  background: rgba(255,255,255,0.025);
   color: var(--sub);
-  font-size: 13px;
+  font-size: 15px;
   font-family: inherit;
   cursor: pointer;
   text-align: left;
   transition: all 0.2s;
 }
-.m1quizOption:hover:not(:disabled) { border-color: var(--border-hover); color: var(--text); background: rgba(255,255,255,0.04); }
-.m1quizOption.correct { border-color: rgba(0,232,198,0.5); background: rgba(0,232,198,0.08); color: #00e8c6; }
-.m1quizOption.wrong { border-color: rgba(255,80,80,0.4); background: rgba(255,80,80,0.07); color: #ff5050; }
-.m1quizExplain {
+.m1quizOption::before {
+  content: attr(data-opt);
   font-size: 12px;
-  color: var(--sub);
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.03);
+  font-weight: 900;
+  color: var(--muted);
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
   border: 1px solid var(--border);
-  margin-bottom: 16px;
-  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.m1quizOption:hover:not(:disabled) {
+  border-color: var(--accent-border);
+  color: var(--text);
+  background: var(--accent-sub);
+}
+.m1quizOption:hover:not(:disabled)::before { border-color: var(--accent); color: var(--accent); }
+.m1quizOption.correct { border-color: rgba(0,232,198,0.5); background: rgba(0,232,198,0.08); color: #00e8c6; }
+.m1quizOption.correct::before { border-color: #00e8c6; color: #00e8c6; background: rgba(0,232,198,0.12); }
+.m1quizOption.wrong { border-color: rgba(255,80,80,0.4); background: rgba(255,80,80,0.07); color: #ff5050; }
+.m1quizOption.wrong::before { border-color: #ff5050; color: #ff5050; }
+.m1quizExplain {
+  font-size: 15px;
+  color: var(--sub);
+  padding: 16px 18px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border-left: 3px solid var(--accent);
+  margin-bottom: 20px;
+  line-height: 1.7;
 }
 .m1quizNext {
-  padding: 10px 24px;
+  padding: 12px 28px;
   border-radius: 999px;
   border: 1px solid var(--accent-border);
   background: var(--accent-sub);
   color: var(--accent);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   font-family: inherit;
   cursor: pointer;
@@ -816,40 +881,50 @@
 .m1quizNext:hover { background: var(--accent-mid); }
 .m1quizResult {
   text-align: center;
-  padding: 32px 20px;
+  padding: 48px 20px;
 }
 .m1quizResultScore {
-  font-size: clamp(48px, 8vw, 80px);
+  font-size: clamp(64px, 10vw, 96px);
   font-weight: 900;
   color: var(--accent);
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  text-shadow: 0 0 40px var(--accent-mid);
 }
 .m1quizResultLabel {
-  font-size: 14px;
-  color: var(--sub);
-  margin-bottom: 24px;
-}
-.m1quizResultMsg {
   font-size: 16px;
-  font-weight: 700;
-  color: var(--text);
+  color: var(--sub);
   margin-bottom: 20px;
 }
+.m1quizResultMsg {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 28px;
+  max-width: 400px;
+  margin-inline: auto;
+  line-height: 1.5;
+}
 .m1quizRetry {
-  padding: 10px 24px;
+  padding: 12px 28px;
   border-radius: 999px;
   border: 1px solid var(--accent-border);
   background: var(--accent-sub);
   color: var(--accent);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s;
 }
+.m1quizRetry:hover { background: var(--accent-mid); }
 
 /* ─── Flip cards ─────────────────────────── */
+@keyframes flipHintPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
 .m1flipGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -857,7 +932,7 @@
   margin-top: 28px;
 }
 .m1flipCard {
-  height: 180px;
+  height: 200px;
   perspective: 1000px;
   cursor: pointer;
 }
@@ -865,7 +940,7 @@
   position: relative;
   width: 100%; height: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
 }
 .m1flipCard.flipped .m1flipInner { transform: rotateY(180deg); }
 .m1flipFront,
@@ -879,25 +954,38 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 22px 18px;
   text-align: center;
   gap: 10px;
 }
 .m1flipFront {
   background: var(--surface);
   backdrop-filter: blur(12px);
-  transition: border-color 0.2s;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
-.m1flipCard:hover .m1flipFront { border-color: var(--accent-border); }
-.m1flipFront strong { font-size: 14px; font-weight: 800; color: var(--text); }
-.m1flipHint { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+.m1flipCard:hover .m1flipFront {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 20px var(--accent-sub), inset 0 0 20px var(--accent-sub);
+  transform: translateY(-3px);
+}
+.m1flipFront strong { font-size: 16px; font-weight: 800; color: var(--text); }
+.m1flipHint {
+  font-size: 12px;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  animation: flipHintPulse 2s ease-in-out infinite;
+}
+.m1flipCard.flipped .m1flipHint { animation: none; }
 .m1flipBack {
-  background: var(--accent-sub);
+  background: linear-gradient(135deg, var(--accent-sub) 0%, rgba(6,8,15,0.8) 100%);
   border-color: var(--accent-border);
   backdrop-filter: blur(16px);
   transform: rotateY(180deg);
 }
-.m1flipBack p { font-size: 13px; color: var(--sub); line-height: 1.65; margin: 0; }
+.m1flipBack p { font-size: 14px; color: var(--text); line-height: 1.65; margin: 0; }
 
 /* ─── Pre-activity theory block ─────────── */
 .m1actTheory {
@@ -927,10 +1015,10 @@
   letter-spacing: -0.01em;
 }
 .m1actTheoryText p {
-  font-size: 13px;
+  font-size: 16px;
   color: var(--sub);
-  line-height: 1.75;
-  margin-bottom: 12px;
+  line-height: 1.8;
+  margin-bottom: 14px;
 }
 .m1actTheoryText p strong { color: var(--text); }
 .m1actTheoryTips {
@@ -967,75 +1055,107 @@
 .m1actDiagram {
   border-radius: var(--r);
   border: 1px solid var(--accent-border);
-  background: var(--accent-sub);
-  backdrop-filter: blur(16px);
-  padding: 20px;
+  background: rgba(6, 8, 15, 0.6);
+  backdrop-filter: blur(20px);
+  overflow: hidden;
 }
-.m1actDiagramTitle {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--sub);
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+.m1actDiagramHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border);
+  background: var(--accent-sub);
+}
+.m1actDiagramAppName {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.m1actDiagramInteraction {
+  font-size: 12px;
+  color: var(--sub);
 }
 .m1actDiagramFlow {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding: 16px;
   gap: 0;
 }
 .m1actDiagramNode {
-  width: 100%;
   padding: 14px 16px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--nc) 30%, transparent);
   background: color-mix(in srgb, var(--nc) 8%, rgba(6,8,15,0.5));
+}
+.m1actDiagramNodeHead {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
 }
 .m1actDiagramNodeIcon {
-  width: 32px; height: 32px;
-  border-radius: 8px;
+  width: 34px; height: 34px;
+  border-radius: 9px;
   background: color-mix(in srgb, var(--nc) 15%, transparent);
   border: 1px solid color-mix(in srgb, var(--nc) 35%, transparent);
   display: flex; align-items: center; justify-content: center;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--nc);
   flex-shrink: 0;
 }
 .m1actDiagramNodeLabel {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--nc);
-  margin-bottom: 3px;
 }
 .m1actDiagramNodeText {
-  font-size: 12px;
-  color: var(--sub);
-  line-height: 1.5;
-}
-.m1actDiagramArrow {
   font-size: 14px;
-  color: var(--muted);
-  opacity: 0.4;
-  padding: 4px 0;
+  color: var(--sub);
+  line-height: 1.55;
+  padding-left: 44px;
 }
-.m1actDiagramLevel {
+.m1actDiagramConnector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 2px 0;
+  color: var(--muted);
+  font-size: 14px;
+  opacity: 0.45;
+}
+.m1actDiagramLine {
+  width: 1px;
+  height: 10px;
+  background: currentColor;
+}
+.m1actDiagramFooter {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 14px;
-  padding-top: 12px;
+  gap: 12px;
+  padding: 14px 20px;
   border-top: 1px solid var(--border);
-  font-size: 12px;
-  color: var(--sub);
+  background: rgba(255,255,255,0.015);
 }
-.m1actDiagramLevel i { color: var(--accent); }
-.m1actDiagramLevel strong { color: var(--text); }
+.m1actDiagramLevelBadge {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-sub);
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.m1actDiagramLevelReason {
+  font-size: 13px;
+  color: var(--sub);
+  line-height: 1.4;
+}
 
 /* ─── Mission / Activity ─────────────────── */
 .m1missionBox {
@@ -1106,8 +1226,8 @@
 
 /* ─── Rubric ─────────────────────────────── */
 .m1rubric {
-  margin-top: 20px;
-  padding: 24px;
+  margin-top: 24px;
+  padding: 28px;
   border-radius: var(--r);
   border: 1px solid var(--border);
   background: rgba(255,255,255,0.015);
@@ -1116,42 +1236,53 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--muted);
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
-.m1rubricItems { display: flex; flex-direction: column; gap: 14px; }
+.m1rubricItems { display: flex; flex-direction: column; gap: 16px; }
 .m1rubricItem {
-  display: flex;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
   align-items: center;
-  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
+.m1rubricPct {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+  text-align: center;
+}
+.m1rubricInfo strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.m1rubricInfo span { font-size: 14px; color: var(--sub); line-height: 1.5; }
 .m1rubricBar {
-  flex: 1;
-  height: 6px;
+  margin-top: 10px;
+  height: 5px;
   border-radius: 999px;
   background: rgba(255,255,255,0.06);
   overflow: hidden;
-  max-width: 200px;
 }
 .m1rubricFill {
   height: 100%;
   border-radius: 999px;
   background: var(--accent);
   width: var(--pct);
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.m1rubricInfo strong {
-  display: block;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-.m1rubricInfo span { font-size: 12px; color: var(--muted); }
 
 /* ─── Responsive ─────────────────────────── */
 @media (max-width: 1100px) {
@@ -1168,7 +1299,8 @@
   .m1splitLayout { grid-template-columns: 1fr; }
   .m1flipGrid { grid-template-columns: repeat(2, 1fr); }
   .m1devendraGrid { grid-template-columns: 1fr; }
-  .m1heroStats { gap: 24px; }
+  .m1heroStats { max-width: 100%; }
+  .m1heroStat { padding: 18px 20px; }
 }
 @media (max-width: 600px) {
   .m1objGrid { grid-template-columns: 1fr; }
@@ -1178,7 +1310,8 @@
   .pipeConnector { display: none; }
   .pipeline { justify-content: center; }
   .m1game { padding: 18px; }
-  .m1quiz { padding: 18px; }
+  .m1quiz { padding: 0; }
+  .m1quizBody { padding: 18px; }
   .m1devendraCase { padding: 22px; }
   .m1missionSteps { padding: 16px 20px; }
   .m1missionHeader { padding: 20px; }

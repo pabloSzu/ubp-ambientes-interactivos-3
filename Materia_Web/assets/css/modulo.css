@@ -60,13 +60,17 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 /* ─── Cursor glow ────────────────────────── */
 #mglow {
   position: fixed;
-  width: 420px; height: 420px;
+  width: 280px; height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-sub), transparent 70%);
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.022) 0%,
+    rgba(255, 255, 255, 0.008) 45%,
+    transparent 70%
+  );
   pointer-events: none;
   z-index: 1;
   transform: translate(-9999px, -9999px);
-  transition: transform 0.16s ease;
+  transition: transform 0.2s ease;
   will-change: transform;
 }
 
@@ -301,7 +305,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   gap: 6px;
 }
 .msecSub {
-  font-size: 15px;
+  font-size: 17px;
   color: var(--sub);
   line-height: 1.7;
   max-width: 680px;

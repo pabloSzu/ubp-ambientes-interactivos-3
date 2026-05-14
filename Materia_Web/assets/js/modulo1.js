@@ -330,6 +330,8 @@ let quizIdx = 0;
 let quizScoreVal = 0;
 const quizContent = document.getElementById('quizContent');
 const quizProgressBar = document.getElementById('quizProgress');
+const quizMetaEl = document.getElementById('quizMeta');
+const optLabels = ['A', 'B', 'C', 'D'];
 
 function renderQuiz() {
   if (!quizContent) return;
@@ -337,14 +339,16 @@ function renderQuiz() {
     showQuizResult();
     return;
   }
-  if (quizProgressBar) quizProgressBar.style.width = `${(quizIdx / quizData.length) * 100}%`;
+  const pct = (quizIdx / quizData.length) * 100;
+  if (quizProgressBar) quizProgressBar.style.width = `${pct}%`;
+  if (quizMetaEl) quizMetaEl.textContent = `Pregunta ${quizIdx + 1} de ${quizData.length}`;
 
   const q = quizData[quizIdx];
   quizContent.innerHTML = `
-    <div class="m1quizQ">${quizIdx + 1}. ${q.q}</div>
+    <div class="m1quizQ">${q.q}</div>
     <div class="m1quizOptions">
       ${q.opts.map((opt, i) =>
-        `<button class="m1quizOption" onclick="quizAnswer(${i})">${opt}</button>`
+        `<button class="m1quizOption" data-opt="${optLabels[i]}" onclick="quizAnswer(${i})">${opt}</button>`
       ).join('')}
     </div>
   `;

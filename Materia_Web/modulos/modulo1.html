@@ -59,15 +59,23 @@
         <p class="m1heroIntro">¿Qué pasa cuando el usuario deja de ser espectador y pasa a ser parte del sistema? Este módulo es tu punto de partida para entender cómo se diseña la conversación entre personas y tecnología.</p>
         <div class="m1heroStats">
           <div class="m1heroStat">
-            <span class="m1heroStatNum" id="counter1">0</span>
-            <span class="m1heroStatLabel">millones de hogares con TV digital en AR</span>
+            <div class="m1heroStatTop">
+              <span class="m1heroStatNum" id="counter1">0</span>
+              <span class="m1heroStatSuf">M</span>
+            </div>
+            <span class="m1heroStatLabel">hogares con TV digital en Argentina</span>
           </div>
           <div class="m1heroStat">
-            <span class="m1heroStatNum" id="counter2">0</span><span class="m1heroStatSuf">%</span>
+            <div class="m1heroStatTop">
+              <span class="m1heroStatNum" id="counter2">0</span>
+              <span class="m1heroStatSuf">%</span>
+            </div>
             <span class="m1heroStatLabel">de usuarios esperan feedback inmediato</span>
           </div>
           <div class="m1heroStat">
-            <span class="m1heroStatNum" id="counter3">0</span>
+            <div class="m1heroStatTop">
+              <span class="m1heroStatNum" id="counter3">0</span>
+            </div>
             <span class="m1heroStatLabel">niveles de interactividad a conquistar</span>
           </div>
         </div>
@@ -405,10 +413,16 @@
           <p class="msecSub">5 preguntas para comprobar que los conceptos clave están claros. Sin presión — si errás, aparece la explicación.</p>
         </div>
         <div class="m1quiz reveal" id="quizZone">
-          <div class="m1quizProgress">
-            <div class="m1quizProgressBar" id="quizProgress"></div>
+          <div class="m1quizHeader">
+            <div class="m1quizMeta">
+              <span class="m1quizMetaLabel"><i class="ph ph-exam"></i> Autoevaluación · Módulo 1</span>
+              <span class="m1quizMetaNum" id="quizMeta">Pregunta 1 de 5</span>
+            </div>
+            <div class="m1quizProgress">
+              <div class="m1quizProgressBar" id="quizProgress"></div>
+            </div>
           </div>
-          <div id="quizContent"></div>
+          <div class="m1quizBody" id="quizContent"></div>
         </div>
       </div>
     </section>
@@ -556,28 +570,47 @@
           <div class="m1actTheoryExample">
             <div class="m1actTheoryExampleLabel">Ejemplo de diagrama esperado</div>
             <div class="m1actDiagram">
-              <div class="m1actDiagramTitle">Instagram Stories — Interacción: "Me gusta"</div>
-              <div class="m1actDiagramFlow">
-                <div class="m1actDiagramNode" style="--nc:#ffd166">
-                  <div class="m1actDiagramNodeIcon"><i class="ph-bold ph-hand-tap"></i></div>
-                  <div class="m1actDiagramNodeLabel">ACCIÓN</div>
-                  <div class="m1actDiagramNodeText">Usuario toca dos veces la pantalla sobre la story</div>
-                </div>
-                <div class="m1actDiagramArrow"><i class="ph-bold ph-arrow-down"></i></div>
-                <div class="m1actDiagramNode" style="--nc:#00e8c6">
-                  <div class="m1actDiagramNodeIcon"><i class="ph-bold ph-cpu"></i></div>
-                  <div class="m1actDiagramNodeLabel">PROCESO</div>
-                  <div class="m1actDiagramNodeText">API registra la reacción, actualiza el contador y notifica al creador</div>
-                </div>
-                <div class="m1actDiagramArrow"><i class="ph-bold ph-arrow-down"></i></div>
-                <div class="m1actDiagramNode" style="--nc:#9b6fff">
-                  <div class="m1actDiagramNodeIcon"><i class="ph-bold ph-heart"></i></div>
-                  <div class="m1actDiagramNodeLabel">FEEDBACK</div>
-                  <div class="m1actDiagramNodeText">Corazón animado aparece en pantalla + vibración háptica</div>
+              <div class="m1actDiagramHeader">
+                <i class="ph-bold ph-instagram-logo" style="font-size:18px;color:var(--accent)"></i>
+                <div>
+                  <div class="m1actDiagramAppName">Instagram Stories</div>
+                  <div class="m1actDiagramInteraction">Interacción: tocar dos veces para dar "me gusta"</div>
                 </div>
               </div>
-              <div class="m1actDiagramLevel">
-                <i class="ph-bold ph-chart-bar"></i> Nivel: <strong>Cocreación (N4)</strong> — el usuario produce una reacción que otros ven
+              <div class="m1actDiagramFlow">
+                <div class="m1actDiagramNode" style="--nc:#ffd166">
+                  <div class="m1actDiagramNodeHead">
+                    <div class="m1actDiagramNodeIcon"><i class="ph-bold ph-hand-tap"></i></div>
+                    <span class="m1actDiagramNodeLabel">ACCIÓN</span>
+                  </div>
+                  <div class="m1actDiagramNodeText">El usuario toca dos veces la pantalla sobre la story</div>
+                </div>
+                <div class="m1actDiagramConnector">
+                  <div class="m1actDiagramLine"></div>
+                  <i class="ph-bold ph-arrow-down"></i>
+                </div>
+                <div class="m1actDiagramNode" style="--nc:#00e8c6">
+                  <div class="m1actDiagramNodeHead">
+                    <div class="m1actDiagramNodeIcon"><i class="ph-bold ph-cpu"></i></div>
+                    <span class="m1actDiagramNodeLabel">PROCESO</span>
+                  </div>
+                  <div class="m1actDiagramNodeText">La API registra la reacción, actualiza el contador y notifica al creador</div>
+                </div>
+                <div class="m1actDiagramConnector">
+                  <div class="m1actDiagramLine"></div>
+                  <i class="ph-bold ph-arrow-down"></i>
+                </div>
+                <div class="m1actDiagramNode" style="--nc:#9b6fff">
+                  <div class="m1actDiagramNodeHead">
+                    <div class="m1actDiagramNodeIcon"><i class="ph-bold ph-heart"></i></div>
+                    <span class="m1actDiagramNodeLabel">FEEDBACK</span>
+                  </div>
+                  <div class="m1actDiagramNodeText">Corazón animado en pantalla + vibración háptica inmediata</div>
+                </div>
+              </div>
+              <div class="m1actDiagramFooter">
+                <div class="m1actDiagramLevelBadge">N4 — Cocreación</div>
+                <div class="m1actDiagramLevelReason">El usuario produce contenido (reacción) que el creador recibe</div>
               </div>
             </div>
           </div>
@@ -632,30 +665,27 @@
           <div class="m1rubricTitle"><i class="ph ph-check-square"></i> Criterios de evaluación</div>
           <div class="m1rubricItems">
             <div class="m1rubricItem">
-              <div class="m1rubricBar">
-                <div class="m1rubricFill" style="--pct:40%"></div>
-              </div>
+              <div class="m1rubricPct">40</div>
               <div class="m1rubricInfo">
                 <strong>Diagrama del ciclo</strong>
-                <span>40 pts — Claridad, completitud, 3+ interacciones</span>
+                <span>Claridad visual, completitud y al menos 3 interacciones distintas bien identificadas</span>
+                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:40%"></div></div>
               </div>
             </div>
             <div class="m1rubricItem">
-              <div class="m1rubricBar">
-                <div class="m1rubricFill" style="--pct:30%"></div>
-              </div>
+              <div class="m1rubricPct">30</div>
               <div class="m1rubricInfo">
                 <strong>Clasificación en el espectro</strong>
-                <span>30 pts — Nivel correcto + justificación</span>
+                <span>Nivel correcto del espectro con justificación argumentada y concreta</span>
+                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:30%"></div></div>
               </div>
             </div>
             <div class="m1rubricItem">
-              <div class="m1rubricBar">
-                <div class="m1rubricFill" style="--pct:30%"></div>
-              </div>
+              <div class="m1rubricPct">30</div>
               <div class="m1rubricInfo">
                 <strong>Mejoras propuestas</strong>
-                <span>30 pts — Especificidad y fundamento</span>
+                <span>3 mejoras específicas con fundamento en los conceptos del módulo</span>
+                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:30%"></div></div>
               </div>
             </div>
           </div>
