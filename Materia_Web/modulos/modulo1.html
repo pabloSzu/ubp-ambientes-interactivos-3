@@ -7,405 +7,627 @@
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="../assets/css/modulo.css" />
     <link rel="stylesheet" href="../assets/css/modulo1.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
     <style>
       :root {
         --accent:        #ffd166;
         --accent-sub:    rgba(255, 209, 102, 0.08);
         --accent-border: rgba(255, 209, 102, 0.25);
         --accent-mid:    rgba(255, 209, 102, 0.38);
+        --c-teal: #00e8c6;
+        --c-purple: #9b6fff;
+        --c-blue: #4a8ef0;
+        --c-orange: #ff7d54;
       }
     </style>
   </head>
   <body>
 
-    <div class="blob mb1" aria-hidden="true"></div>
-    <div class="blob mb2" aria-hidden="true"></div>
-    <div id="mglow" aria-hidden="true"></div>
+    <!-- Reading progress -->
+    <div class="readProgress" id="readProgress"></div>
 
-    <!-- ══════════════════════════════════
-         HEADER
-    ══════════════════════════════════ -->
+    <!-- Cursor glow -->
+    <div class="mglow" id="mglow"></div>
+
+    <!-- ── HEADER ──────────────────────────── -->
     <header class="mhdr">
-      <div class="mhdrBrand">
-        <a href="../index.html" class="mhdrBack">← PAI3</a>
-        <div class="mhdrSep"></div>
-        <span class="mhdrLabel">Módulo 01</span>
-      </div>
-      <nav class="mhdrSections" aria-label="Secciones del módulo">
+      <a class="mhdrBack" href="../index.html">
+        <i class="ph ph-arrow-left"></i> Campus
+      </a>
+      <span class="mhdrBrand">PAI3</span>
+      <span class="mhdrLabel">Módulo 1 · Interactividad</span>
+      <nav class="mhdrSections">
         <a href="#microobjetivos">Objetivos</a>
         <a href="#glosario">Glosario</a>
         <a href="#contenidos">Contenido</a>
         <a href="#actividades">Actividades</a>
       </nav>
-      <div class="mhdrNav">
-        <a class="mhdrArrow off" href="../index.html" aria-label="Anterior">←</a>
-        <a class="mhdrArrow" href="modulo.html?m=2" aria-label="Módulo 2">→</a>
-      </div>
     </header>
 
-    <main>
-
-      <!-- ══════════════════════════════════
-           HERO
-      ══════════════════════════════════ -->
-      <section class="mhero">
-        <div class="mheroDecor" aria-hidden="true">01</div>
-        <div class="mheroInner">
-          <div class="mheroTop">
-            <span class="mheroBlock">Bloque 01 · Medios y Diseño Interactivo</span>
-          </div>
-          <div class="mheroNum">01</div>
-          <h1>La interactividad y la<br>TV digital interactiva</h1>
-          <p class="mheroIntro">
-            Interactividad como acción, proceso y feedback. De la TV analógica a la TV digital,
-            Ginga y el caso DEVENDRA como servicio interactivo en Argentina.
-          </p>
-          <nav class="mheroPills" aria-label="Ir a sección">
-            <a class="mheroPill" href="#microobjetivos">Microobjetivos</a>
-            <a class="mheroPill" href="#glosario">Glosario</a>
-            <a class="mheroPill" href="#niveles">Los 5 niveles</a>
-            <a class="mheroPill" href="#ginga">Ginga y DEVENDRA</a>
-            <a class="mheroPill" href="#actividades">Actividades</a>
-          </nav>
+    <!-- ── HERO ───────────────────────────── -->
+    <section class="m1hero">
+      <div class="m1heroBg">
+        <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1400&q=80&fit=crop" alt="" aria-hidden="true" class="m1heroImg" />
+        <div class="m1heroOverlay"></div>
+      </div>
+      <div class="m1heroContent msecWrap">
+        <div class="m1heroBadge">
+          <i class="ph-bold ph-broadcast"></i> Bloque 01
         </div>
-      </section>
-
-      <!-- ══════════════════════════════════
-           EL CICLO BÁSICO
-      ══════════════════════════════════ -->
-      <section class="msec" id="ciclo">
-        <div class="msecWrap">
-          <div class="msecHead">
-            <h2>El ciclo básico</h2>
-            <span class="msecEye">Toda experiencia interactiva tiene 3 piezas</span>
+        <h1 class="m1heroTitle">Interactividad<br/><span>y TV Digital</span></h1>
+        <p class="m1heroIntro">¿Qué pasa cuando el usuario deja de ser espectador y pasa a ser parte del sistema? Este módulo es tu punto de partida para entender cómo se diseña la conversación entre personas y tecnología.</p>
+        <div class="m1heroStats">
+          <div class="m1heroStat">
+            <span class="m1heroStatNum" id="counter1">0</span>
+            <span class="m1heroStatLabel">millones de hogares con TV digital en AR</span>
           </div>
-          <div class="cicloGrid">
-            <div class="cicloCard">
-              <span class="cicloNum">01</span>
-              <h3>Acción</h3>
-              <p>La persona hace algo: toca, elige, busca, vota, escribe o configura. Sin acción no hay interactividad.</p>
-            </div>
-            <div class="cicloArrow" aria-hidden="true">→</div>
-            <div class="cicloCard">
-              <span class="cicloNum">02</span>
-              <h3>Proceso</h3>
-              <p>El sistema interpreta la acción y decide qué mostrar, guardar o cambiar. Es la lógica invisible.</p>
-            </div>
-            <div class="cicloArrow" aria-hidden="true">→</div>
-            <div class="cicloCard">
-              <span class="cicloNum">03</span>
-              <h3>Feedback</h3>
-              <p>La interfaz responde de forma visible. Si no hay respuesta, la persona siente que el sistema no la escuchó.</p>
-            </div>
+          <div class="m1heroStat">
+            <span class="m1heroStatNum" id="counter2">0</span><span class="m1heroStatSuf">%</span>
+            <span class="m1heroStatLabel">de usuarios esperan feedback inmediato</span>
+          </div>
+          <div class="m1heroStat">
+            <span class="m1heroStatNum" id="counter3">0</span>
+            <span class="m1heroStatLabel">niveles de interactividad a conquistar</span>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ══════════════════════════════════
-           MICROOBJETIVOS
-      ══════════════════════════════════ -->
-      <section class="msec alt" id="microobjetivos">
-        <div class="msecWrap">
-          <div class="msecHead">
-            <h2>Microobjetivos</h2>
-            <span class="msecEye">¿Qué vas a lograr en este módulo?</span>
-          </div>
-          <div class="objList">
-            <div class="objCard">
-              <span class="objNum">01</span>
-              <span class="objText">Conocer el concepto de interactividad y el lenguaje interactivo con el fin de transferirlos a las situaciones prácticas propuestas en la materia.</span>
-            </div>
-            <div class="objCard">
-              <span class="objNum">02</span>
-              <span class="objText">Identificar los niveles de interactividad con el fin de clasificar y comparar experiencias digitales.</span>
-            </div>
-            <div class="objCard">
-              <span class="objNum">03</span>
-              <span class="objText">Analizar el ecosistema de la TV digital argentina —ISDB-Tb, Ginga, NCL/Lua, DEVENDRA— con el fin de entender el contexto técnico de aplicaciones interactivas.</span>
-            </div>
-            <div class="objCard">
-              <span class="objNum">04</span>
-              <span class="objText">Aplicar el ciclo acción-proceso-feedback con el fin de evaluar y proponer mejoras en experiencias digitales reales.</span>
-            </div>
-          </div>
+    <!-- ── HOOK QUOTE ─────────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <blockquote class="m1pullQuote reveal">
+          <i class="ph-bold ph-quotes"></i>
+          <p>"La interactividad no es hacer clic. Es un diálogo entre personas y sistemas donde cada acción tiene consecuencias reales."</p>
+          <cite>— Fundamento del módulo</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ── MICROOBJETIVOS ─────────────────── -->
+    <section class="msec" id="microobjetivos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-target"></i> Objetivos del módulo</span>
+          <h2>¿Qué vas a aprender?</h2>
+          <p class="msecSub">Al terminar este módulo vas a poder analizar cualquier sistema interactivo y ubicarlo en el espectro de interactividad con precisión técnica.</p>
         </div>
-      </section>
-
-      <!-- ══════════════════════════════════
-           GLOSARIO
-      ══════════════════════════════════ -->
-      <section class="msec" id="glosario">
-        <div class="msecWrap">
-          <div class="msecHead">
-            <h2>Glosario</h2>
-            <span class="msecEye">Términos clave del módulo</span>
+        <div class="m1objGrid">
+          <div class="m1objCard reveal" style="--delay:0ms">
+            <div class="m1objIcon" style="--oc:#ffd166"><i class="ph-bold ph-eye"></i></div>
+            <div>
+              <strong>Definir interactividad</strong>
+              <p>Distinguir entre sistemas reactivos, selectivos, personalizados, cocreativos y colectivos.</p>
+            </div>
           </div>
-          <div class="termGrid">
-            <div class="termCard">
-              <span class="termName">Interactividad</span>
-              <span class="termDef">Relación dinámica en la que el usuario actúa y el sistema responde transformando la experiencia.</span>
+          <div class="m1objCard reveal" style="--delay:80ms">
+            <div class="m1objIcon" style="--oc:#00e8c6"><i class="ph-bold ph-arrows-clockwise"></i></div>
+            <div>
+              <strong>Modelar el ciclo básico</strong>
+              <p>Identificar Acción, Proceso y Feedback en cualquier aplicación real.</p>
             </div>
-            <div class="termCard">
-              <span class="termName">Acción-Proceso-Feedback</span>
-              <span class="termDef">Ciclo básico de toda experiencia interactiva: el usuario actúa, el sistema procesa y la interfaz responde.</span>
+          </div>
+          <div class="m1objCard reveal" style="--delay:160ms">
+            <div class="m1objIcon" style="--oc:#9b6fff"><i class="ph-bold ph-television-simple"></i></div>
+            <div>
+              <strong>Entender TV Digital</strong>
+              <p>Conocer el ecosistema ISDB-Tb / Ginga y el rol de Argentina en la región.</p>
             </div>
-            <div class="termCard">
-              <span class="termName">ISDB-Tb</span>
-              <span class="termDef">Estándar de televisión digital terrestre adoptado en Argentina; permite transmitir video, audio y datos.</span>
+          </div>
+          <div class="m1objCard reveal" style="--delay:240ms">
+            <div class="m1objIcon" style="--oc:#4a8ef0"><i class="ph-bold ph-code-block"></i></div>
+            <div>
+              <strong>Analizar DEVENDRA</strong>
+              <p>Estudiar el caso argentino como modelo de servicios interactivos sobre ISDB.</p>
             </div>
-            <div class="termCard">
-              <span class="termName">Middleware</span>
-              <span class="termDef">Capa de software entre el sistema operativo del decodificador y las aplicaciones interactivas.</span>
+          </div>
+          <div class="m1objCard reveal" style="--delay:320ms">
+            <div class="m1objIcon" style="--oc:#ff7d54"><i class="ph-bold ph-game-controller"></i></div>
+            <div>
+              <strong>Clasificar experiencias</strong>
+              <p>Usar el espectro de 5 niveles para evaluar cualquier sistema interactivo.</p>
             </div>
-            <div class="termCard">
-              <span class="termName">Ginga</span>
-              <span class="termDef">Middleware estándar de la TV digital brasileña y argentina para ejecutar aplicaciones NCL/Lua.</span>
-            </div>
-            <div class="termCard">
-              <span class="termName">NCL/Lua</span>
-              <span class="termDef">Lenguajes de programación usados para crear aplicaciones interactivas sobre el middleware Ginga.</span>
-            </div>
-            <div class="termCard">
-              <span class="termName">DEVENDRA</span>
-              <span class="termDef">Servicio de TV digital interactiva desarrollado en Argentina; caso de aplicación real de Ginga.</span>
-            </div>
-            <div class="termCard">
-              <span class="termName">Nivel de interactividad</span>
-              <span class="termDef">Escala del 1 al 5 que mide el grado de poder real del usuario sobre la experiencia digital.</span>
+          </div>
+          <div class="m1objCard reveal" style="--delay:400ms">
+            <div class="m1objIcon" style="--oc:#ffd166"><i class="ph-bold ph-pencil-line"></i></div>
+            <div>
+              <strong>Prototipear el ciclo</strong>
+              <p>Diseñar el diagrama Acción → Proceso → Feedback de un sistema propio.</p>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ══════════════════════════════════
-           CONTENIDOS — Los 5 niveles
-      ══════════════════════════════════ -->
-      <section class="msec alt" id="niveles">
-        <div class="msecWrap">
-          <div class="msecHead">
-            <h2>Los 5 niveles de interactividad</h2>
-            <span class="msecEye">Cada nivel aumenta el poder del usuario</span>
-          </div>
-
-          <div class="levelExperience">
-            <!-- Tab buttons -->
-            <div class="levelTabs" role="tablist" aria-label="Nivel de interactividad">
-              <button class="levelTab active" data-level="0" role="tab" aria-selected="true">
-                <span class="levelTabNum">01</span>
-                <span class="levelTabName">Reactividad</span>
-              </button>
-              <button class="levelTab" data-level="1" role="tab" aria-selected="false">
-                <span class="levelTabNum">02</span>
-                <span class="levelTabName">Selección</span>
-              </button>
-              <button class="levelTab" data-level="2" role="tab" aria-selected="false">
-                <span class="levelTabNum">03</span>
-                <span class="levelTabName">Personalización</span>
-              </button>
-              <button class="levelTab" data-level="3" role="tab" aria-selected="false">
-                <span class="levelTabNum">04</span>
-                <span class="levelTabName">Cocreación</span>
-              </button>
-              <button class="levelTab" data-level="4" role="tab" aria-selected="false">
-                <span class="levelTabNum">05</span>
-                <span class="levelTabName">Colectiva</span>
-              </button>
+    <!-- ── CICLO BÁSICO ────────────────────── -->
+    <section class="msec alt" id="contenidos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-arrows-clockwise"></i> El fundamento</span>
+          <h2>El Ciclo Básico de Interactividad</h2>
+          <p class="msecSub">Todo sistema interactivo, desde una app de Netflix hasta un kiosko bancario, funciona con el mismo mecanismo de tres pasos. Entenderlo es entender todo el módulo.</p>
+        </div>
+        <div class="m1cicloRow reveal">
+          <div class="m1cicloCard" style="--cc:#ffd166">
+            <div class="m1cicloCardTop">
+              <span class="m1cicloNum">01</span>
+              <div class="m1cicloIcon"><i class="ph-bold ph-cursor-click"></i></div>
             </div>
+            <h3>Acción</h3>
+            <p>El usuario hace algo: toca, habla, mueve, selecciona. Sin acción del usuario, no hay interactividad — solo contenido pasivo.</p>
+            <div class="m1cicloTag">Usuario → Sistema</div>
+          </div>
+          <div class="m1cicloArrow"><i class="ph-bold ph-arrow-right"></i></div>
+          <div class="m1cicloCard" style="--cc:#00e8c6">
+            <div class="m1cicloCardTop">
+              <span class="m1cicloNum">02</span>
+              <div class="m1cicloIcon"><i class="ph-bold ph-cpu"></i></div>
+            </div>
+            <h3>Proceso</h3>
+            <p>El sistema interpreta la acción, aplica lógica y prepara una respuesta. Acá vive toda la inteligencia del sistema.</p>
+            <div class="m1cicloTag">Lógica interna</div>
+          </div>
+          <div class="m1cicloArrow"><i class="ph-bold ph-arrow-right"></i></div>
+          <div class="m1cicloCard" style="--cc:#9b6fff">
+            <div class="m1cicloCardTop">
+              <span class="m1cicloNum">03</span>
+              <div class="m1cicloIcon"><i class="ph-bold ph-chat-circle-dots"></i></div>
+            </div>
+            <h3>Feedback</h3>
+            <p>El sistema comunica el resultado al usuario: visual, sonoro, háptico. Sin feedback, el usuario no sabe si pasó algo.</p>
+            <div class="m1cicloTag">Sistema → Usuario</div>
+          </div>
+        </div>
 
-            <!-- Level panel -->
-            <div class="levelPanel">
-              <div class="levelPanelLeft">
-                <p class="levelEye" id="levelEye">Nivel 1 de 5</p>
-                <h3 class="levelTitle" id="levelTitle">Reactividad</h3>
-                <p class="levelDesc" id="levelDesc">El usuario controla reproducción básica, pero no transforma el contenido.</p>
-                <div class="powerMeter">
-                  <span class="powerLabel">Poder real del usuario</span>
-                  <div class="powerTrack">
-                    <div class="powerFill" id="powerFill" style="width: 20%"></div>
-                  </div>
-                  <span class="powerPct" id="powerPct">20%</span>
+        <!-- Did you know? -->
+        <div class="m1callout reveal" style="--delay:200ms">
+          <div class="m1calloutIcon"><i class="ph-bold ph-lightbulb"></i></div>
+          <div>
+            <strong>¿Sabías esto?</strong>
+            <p>El tiempo de respuesta importa más de lo que pensás. Los usuarios perciben demoras de más de <strong>100ms</strong> como "lag". Por encima de <strong>1 segundo</strong> pierden el hilo mental de la tarea. Diseñar feedback rápido no es opcional — es parte del contrato con el usuario.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── NIVELES DE INTERACTIVIDAD ─────── -->
+    <section class="msec">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-chart-bar"></i> El espectro</span>
+          <h2>5 Niveles de Interactividad</h2>
+          <p class="msecSub">No toda interactividad es igual. Este espectro te permite analizar y comparar sistemas con precisión. ¿En qué nivel estás diseñando?</p>
+        </div>
+        <div class="levelExperience reveal">
+          <div class="levelTabs" role="tablist">
+            <button class="levelTab" data-level="0" role="tab" aria-selected="true">
+              <span class="levelTabNum">N1</span>
+              <span class="levelTabName">Reactividad</span>
+            </button>
+            <button class="levelTab" data-level="1" role="tab" aria-selected="false">
+              <span class="levelTabNum">N2</span>
+              <span class="levelTabName">Selección</span>
+            </button>
+            <button class="levelTab" data-level="2" role="tab" aria-selected="false">
+              <span class="levelTabNum">N3</span>
+              <span class="levelTabName">Personalización</span>
+            </button>
+            <button class="levelTab" data-level="3" role="tab" aria-selected="false">
+              <span class="levelTabNum">N4</span>
+              <span class="levelTabName">Cocreación</span>
+            </button>
+            <button class="levelTab" data-level="4" role="tab" aria-selected="false">
+              <span class="levelTabNum">N5</span>
+              <span class="levelTabName">Colectiva</span>
+            </button>
+          </div>
+          <div class="levelPanel">
+            <div class="levelPanelLeft">
+              <div class="levelEye" id="levelEye">Nivel 1 de 5</div>
+              <div class="levelTitle" id="levelTitle">—</div>
+              <div class="levelDesc" id="levelDesc">—</div>
+              <div class="powerMeter">
+                <span class="powerLabel">Poder interactivo</span>
+                <div class="powerTrack">
+                  <div class="powerFill" id="powerFill"></div>
                 </div>
-                <div class="levelExamples" id="levelExamples"></div>
+                <span class="powerPct" id="powerPct">—</span>
               </div>
-              <div class="levelPanelRight">
-                <div class="storyCards">
-                  <div class="storyCard">
-                    <span class="storyLabel">Usuario</span>
-                    <div class="storyIcon" id="storyUser">▶</div>
-                    <p class="storyText" id="storyUserText">Pausa o avanza un video.</p>
-                  </div>
-                  <div class="storyCard">
-                    <span class="storyLabel">Sistema</span>
-                    <div class="storyIcon" id="storySystem">⏱</div>
-                    <p class="storyText" id="storySystemText">Actualiza el estado de reproducción.</p>
-                  </div>
-                  <div class="storyCard">
-                    <span class="storyLabel">Feedback</span>
-                    <div class="storyIcon" id="storyFeedback">✓</div>
-                    <p class="storyText" id="storyFeedbackText">La barra de progreso cambia.</p>
-                  </div>
-                </div>
-              </div>
+              <div class="levelExamples" id="levelExamples"></div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ══════════════════════════════════
-           CONTENIDOS — Ginga y DEVENDRA
-      ══════════════════════════════════ -->
-      <section class="msec" id="ginga">
-        <div class="msecWrap">
-          <div class="msecHead">
-            <h2>TV digital, Ginga y DEVENDRA</h2>
-            <span class="msecEye">El ecosistema interactivo de la TV argentina</span>
-          </div>
-
-          <!-- Pipeline -->
-          <p class="pipeIntro">La TV digital no solo transmite video: transporta datos y ejecuta aplicaciones. Tocá cada paso para entender el ecosistema.</p>
-          <div class="pipeline" role="group" aria-label="Pipeline ISDB-Tb a Usuario">
-            <button class="pipeBtn active" data-pipe="isdb">ISDB-Tb</button>
-            <span class="pipeConnector" aria-hidden="true">→</span>
-            <button class="pipeBtn" data-pipe="datos">Datos</button>
-            <span class="pipeConnector" aria-hidden="true">→</span>
-            <button class="pipeBtn" data-pipe="ginga">Ginga</button>
-            <span class="pipeConnector" aria-hidden="true">→</span>
-            <button class="pipeBtn" data-pipe="ncl">NCL/Lua</button>
-            <span class="pipeConnector" aria-hidden="true">→</span>
-            <button class="pipeBtn devBtn" data-pipe="devendra">DEVENDRA</button>
-            <span class="pipeConnector" aria-hidden="true">→</span>
-            <button class="pipeBtn" data-pipe="usuario">Usuario</button>
-          </div>
-          <div class="pipePanel">
-            <p class="pipeEye" id="pipeEye">Paso seleccionado</p>
-            <h3 class="pipeTitle" id="pipeTitle">ISDB-Tb</h3>
-            <p class="pipeText" id="pipeText">Estándar de TV digital terrestre adoptado por Argentina. Permite mejor calidad y soporte para datos adicionales.</p>
-          </div>
-
-          <!-- DEVENDRA case -->
-          <div class="devendraCase">
-            <div class="devendraHead">
-              <span class="devendraBadge">Caso</span>
-              <h3>DEVENDRA como puente entre idea y prototipo</h3>
-              <p>En el aula lo usamos para imaginar cómo una transmisión deja de ser solo video y se convierte en un servicio interactivo.</p>
-            </div>
-            <div class="devendraSteps">
-              <div class="devendraStep">
-                <span class="devendraStepNum">01</span>
-                <div>
-                  <strong>Programa de TV</strong>
-                  <p>Hay contenido principal: noticia, clase, partido, campaña o programa.</p>
+            <div class="levelPanelRight">
+              <div class="storyTitle">¿Cómo funciona?</div>
+              <div class="storyCards">
+                <div class="storyCard">
+                  <span class="storyLabel">USUARIO</span>
+                  <div class="storyIcon" id="storyUser"></div>
+                  <span class="storyText" id="storyUserText"></span>
                 </div>
-              </div>
-              <div class="devendraStep">
-                <span class="devendraStepNum">02</span>
-                <div>
-                  <strong>Aplicación Ginga</strong>
-                  <p>Se agrega una capa interactiva: menú, encuesta, alerta o material extra disponible con el control remoto.</p>
+                <div class="storyCard">
+                  <span class="storyLabel">SISTEMA</span>
+                  <div class="storyIcon" id="storySystem"></div>
+                  <span class="storyText" id="storySystemText"></span>
                 </div>
-              </div>
-              <div class="devendraStep">
-                <span class="devendraStepNum">03</span>
-                <div>
-                  <strong>Usuario activo</strong>
-                  <p>La persona elige y el sistema responde. Ahí aparece la interactividad real: acción, proceso y feedback.</p>
+                <div class="storyCard">
+                  <span class="storyLabel">FEEDBACK</span>
+                  <div class="storyIcon" id="storyFeedback"></div>
+                  <span class="storyText" id="storyFeedbackText"></span>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ══════════════════════════════════
-           ACTIVIDADES
-      ══════════════════════════════════ -->
-      <section class="msec alt" id="actividades">
-        <div class="msecWrap">
-          <div class="msecHead">
-            <h2>Actividades</h2>
-            <span class="msecEye">Canvas de análisis interactivo</span>
-          </div>
-
-          <p class="actIntro">
-            Elegí una plataforma audiovisual y analizala como diseñador de sistemas.
-            La entrega documenta el ciclo acción-proceso-feedback de 5 acciones reales.
-          </p>
-
-          <div class="actList">
-            <div class="actCard">
-              <span class="actStep">Paso 01</span>
-              <span class="actText">Elegí una plataforma audiovisual interactiva (streaming, app de TV, servicio en vivo).</span>
-            </div>
-            <div class="actCard">
-              <span class="actStep">Paso 02</span>
-              <span class="actText">Identificá 5 acciones del usuario dentro de la plataforma y describí el ciclo acción-proceso-feedback para cada una.</span>
-            </div>
-            <div class="actCard">
-              <span class="actStep">Paso 03</span>
-              <span class="actText">Clasificá cada acción según el nivel de interactividad (1 al 5) y justificá con evidencia observable.</span>
-            </div>
-            <div class="actCard">
-              <span class="actStep">Paso 04</span>
-              <span class="actText">Relacioná al menos una acción con la lógica de TV digital, Ginga o el caso DEVENDRA.</span>
-            </div>
-            <div class="actCard">
-              <span class="actStep">Paso 05</span>
-              <span class="actText">Proponé una mejora interactiva concreta para la plataforma elegida y fundamentala.</span>
-            </div>
-          </div>
-
-          <!-- Rúbrica -->
-          <div class="rubric">
-            <p class="rubricLabel">Rúbrica de evaluación</p>
-            <div class="rubricGrid">
-              <div class="rubricItem">
-                <span class="rubricPct">20%</span>
-                <span>Acciones e intenciones identificadas</span>
-              </div>
-              <div class="rubricItem">
-                <span class="rubricPct">20%</span>
-                <span>Ciclo acción-proceso-feedback por acción</span>
-              </div>
-              <div class="rubricItem">
-                <span class="rubricPct">20%</span>
-                <span>Niveles clasificados y justificados</span>
-              </div>
-              <div class="rubricItem">
-                <span class="rubricPct">10%</span>
-                <span>Vínculo con TV digital o Ginga/DEVENDRA</span>
-              </div>
-              <div class="rubricItem">
-                <span class="rubricPct">20%</span>
-                <span>Mejora interactiva fundamentada</span>
-              </div>
-              <div class="rubricItem">
-                <span class="rubricPct">10%</span>
-                <span>Presentación y claridad profesional</span>
-              </div>
-            </div>
-          </div>
-
+    <!-- ── MINIJUEGO ──────────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-game-controller"></i> Minijuego</span>
+          <h2>¿En qué nivel cae?</h2>
+          <p class="msecSub">Cinco escenarios reales. Tu misión: clasificarlos en el nivel correcto del espectro. Lee bien antes de elegir.</p>
         </div>
-      </section>
+        <div class="m1game reveal" id="gameZone">
+          <div class="m1gameScore">
+            Puntaje: <strong id="gameScore">0</strong> / <strong id="gameTotal">5</strong>
+            <span class="m1gameBadge" id="gameBadge" style="display:none">¡Perfecto!</span>
+          </div>
+          <div class="m1gameCards" id="gameCards"></div>
+          <button class="m1gameReset" id="gameReset" style="display:none">
+            <i class="ph-bold ph-arrow-clockwise"></i> Jugar de nuevo
+          </button>
+        </div>
+      </div>
+    </section>
 
-      <!-- ══════════════════════════════════
-           FOOTER NAV
-      ══════════════════════════════════ -->
-      <nav class="mfoot" aria-label="Navegación entre módulos">
-        <a href="../index.html" class="mfootBtn off">
-          <span>←</span>
-          <span>Índice</span>
+    <!-- ── TV DIGITAL SPLIT ────────────────── -->
+    <section class="msec">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-television-simple"></i> El ecosistema</span>
+          <h2>TV Digital Interactiva en Argentina</h2>
+        </div>
+        <div class="m1splitLayout reveal">
+          <div class="m1splitImg">
+            <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f4834c?w=700&q=80&fit=crop" alt="TV digital" />
+            <div class="m1splitImgBadge">Estándar ISDB-Tb · Argentina desde 2009</div>
+          </div>
+          <div class="m1splitContent">
+            <p class="m1blogText">Argentina adoptó el estándar <strong>ISDB-Tb</strong> (brasileño) para la televisión digital terrestre en 2009. Este estándar no solo mejora imagen y audio respecto al analógico — también habilita un canal de datos paralelo a la señal de video.</p>
+            <p class="m1blogText">Ese canal de datos es donde vive la magia de la interactividad. Aplicaciones, guías de programación, alertas de emergencia, información pública, servicios educativos — todo puede viajar junto a la señal de TV.</p>
+            <div class="m1splitStats">
+              <div class="m1splitStat">
+                <span class="m1splitStatNum">2009</span>
+                <span>Adopción en Argentina</span>
+              </div>
+              <div class="m1splitStat">
+                <span class="m1splitStatNum">ISDB-Tb</span>
+                <span>Estándar brasileño</span>
+              </div>
+              <div class="m1splitStat">
+                <span class="m1splitStatNum">Ginga</span>
+                <span>Middleware activo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PIPELINE INTERACTIVO ───────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-flow-arrow"></i> Cómo funciona</span>
+          <h2>El pipeline de TV Digital</h2>
+          <p class="msecSub">Hacé clic en cada nodo para entender su rol en el ecosistema. Desde el estándar técnico hasta el usuario final.</p>
+        </div>
+        <div class="pipeline reveal">
+          <button class="pipeBtn" data-pipe="isdb">ISDB-Tb</button>
+          <span class="pipeConnector">→</span>
+          <button class="pipeBtn" data-pipe="datos">Datos</button>
+          <span class="pipeConnector">→</span>
+          <button class="pipeBtn" data-pipe="ginga">Ginga</button>
+          <span class="pipeConnector">→</span>
+          <button class="pipeBtn" data-pipe="ncl">NCL/Lua</button>
+          <span class="pipeConnector">→</span>
+          <button class="pipeBtn devBtn" data-pipe="devendra">DEVENDRA</button>
+          <span class="pipeConnector">→</span>
+          <button class="pipeBtn" data-pipe="usuario">Usuario</button>
+        </div>
+        <div class="pipePanel">
+          <div class="pipeEye" id="pipeEye">Seleccioná un nodo</div>
+          <div class="pipeTitle" id="pipeTitle">—</div>
+          <div class="pipeText" id="pipeText">Hacé clic en cualquier elemento del pipeline de arriba para ver su descripción.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DEVENDRA CASE ───────────────────── -->
+    <section class="msec">
+      <div class="msecWrap">
+        <div class="m1devendraCase reveal">
+          <div class="m1devendraBadge">
+            <i class="ph-bold ph-map-pin"></i> Caso Argentino
+          </div>
+          <h2 class="m1devendraTitle">DEVENDRA</h2>
+          <p class="m1devendraIntro">Un experimento real de TV interactiva educativa sobre la red de TV Digital Argentina. Alumno, profesora, contenido y señal pública: todo conectado a través de un control remoto.</p>
+          <div class="m1devendraGrid">
+            <div class="m1devendraStep">
+              <div class="m1devendraStepNum">01</div>
+              <i class="ph-bold ph-broadcast" style="color:#00e8c6;font-size:22px"></i>
+              <strong>Señal pública</strong>
+              <p>Canal de educación y cultura transmite el contenido educativo junto a la señal de TV.</p>
+            </div>
+            <div class="m1devendraStep">
+              <div class="m1devendraStepNum">02</div>
+              <i class="ph-bold ph-code" style="color:#ffd166;font-size:22px"></i>
+              <strong>App Ginga</strong>
+              <p>Una aplicación NCL/Lua corre en el receptor compatible del hogar sin conexión a internet.</p>
+            </div>
+            <div class="m1devendraStep">
+              <div class="m1devendraStepNum">03</div>
+              <i class="ph-bold ph-student" style="color:#9b6fff;font-size:22px"></i>
+              <strong>Alumno interactúa</strong>
+              <p>Con el control remoto, el alumno navega ejercicios, responde preguntas, accede a guías.</p>
+            </div>
+            <div class="m1devendraStep">
+              <div class="m1devendraStepNum">04</div>
+              <i class="ph-bold ph-chart-line-up" style="color:#4a8ef0;font-size:22px"></i>
+              <strong>Datos de uso</strong>
+              <p>El sistema puede recopilar respuestas y enviarlas de vuelta al canal educativo para análisis.</p>
+            </div>
+            <div class="m1devendraStep">
+              <div class="m1devendraStepNum">05</div>
+              <i class="ph-bold ph-globe" style="color:#ff7d54;font-size:22px"></i>
+              <strong>Impacto social</strong>
+              <p>Llega a hogares sin internet, democratizando la educación interactiva a escala nacional.</p>
+            </div>
+            <div class="m1devendraStep m1devendraStepHighlight">
+              <div class="m1devendraStepNum">¿?</div>
+              <i class="ph-bold ph-question" style="color:#ffd166;font-size:22px"></i>
+              <strong>Tu análisis</strong>
+              <p>¿En qué nivel del espectro de interactividad ubicarías a DEVENDRA? Esta pregunta guía la actividad.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUIZ ───────────────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-exam"></i> Autoevaluación</span>
+          <h2>Quiz de Módulo</h2>
+          <p class="msecSub">5 preguntas para comprobar que los conceptos clave están claros. Sin presión — si errás, aparece la explicación.</p>
+        </div>
+        <div class="m1quiz reveal" id="quizZone">
+          <div class="m1quizProgress">
+            <div class="m1quizProgressBar" id="quizProgress"></div>
+          </div>
+          <div id="quizContent"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GLOSARIO FLIP ───────────────────── -->
+    <section class="msec" id="glosario">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-book-open"></i> Vocabulario técnico</span>
+          <h2>Glosario</h2>
+          <p class="msecSub">Tocá cada tarjeta para ver la definición. Estos términos son los que vas a usar en las actividades y en el examen.</p>
+        </div>
+        <div class="m1flipGrid">
+          <div class="m1flipCard reveal" style="--delay:0ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-arrows-left-right" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Interactividad</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Capacidad de un sistema de responder a acciones del usuario en tiempo real, creando una experiencia bidireccional entre persona y tecnología.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:60ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-arrows-clockwise" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Ciclo básico</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Modelo de tres etapas: Acción (usuario actúa), Proceso (sistema interpreta) y Feedback (sistema responde). Fundamento de todo sistema interactivo.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:120ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-television-simple" style="font-size:28px;color:var(--accent)"></i>
+                <strong>ISDB-Tb</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Integrated Services Digital Broadcasting Terrestrial — versión brasileña. Estándar de TV digital adoptado por Argentina en 2009. Habilita canal de datos paralelo a la señal de video.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:180ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-stack" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Middleware</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Capa de software entre el hardware del receptor y las aplicaciones. Gestiona recursos, comunicación con la señal y la ejecución de apps interactivas.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:240ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-circuit-board" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Ginga</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Middleware de referencia para el estándar ISDB-Tb. Permite ejecutar aplicaciones interactivas en receptores de TV digital. Open source, mantenido en Brasil y adoptado en Argentina.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:300ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-code" style="font-size:28px;color:var(--accent)"></i>
+                <strong>NCL / Lua</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>NCL (Nested Context Language) organiza estructura multimedia. Lua agrega lógica y comportamiento. Juntos forman el stack de desarrollo de apps para Ginga.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:360ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-chat-circle-dots" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Feedback</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Respuesta del sistema a la acción del usuario. Puede ser visual, auditiva, háptica o combinada. Sin feedback claro, el usuario no puede completar tareas con confianza.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:420ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-globe" style="font-size:28px;color:var(--accent)"></i>
+                <strong>DEVENDRA</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Proyecto piloto argentino de educación interactiva sobre TV Digital. Usa Ginga para distribuir contenido educativo interactivo sin necesidad de internet, democratizando el acceso.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACTIVIDADES ─────────────────────── -->
+    <section class="msec alt" id="actividades">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-pencil-line"></i> Tu turno</span>
+          <h2>Actividad Práctica</h2>
+          <p class="msecSub">Esta actividad vale <strong>10 puntos</strong> y la subís al Campus Virtual antes de la próxima clase. No hay respuestas únicas — hay análisis bien fundamentados.</p>
+        </div>
+
+        <div class="m1missionBox reveal">
+          <div class="m1missionHeader">
+            <div class="m1missionBadge"><i class="ph-bold ph-rocket-launch"></i> Misión 01</div>
+            <h3>Mapeá el Ciclo de Interactividad</h3>
+          </div>
+          <div class="m1missionSteps">
+            <div class="m1missionStep">
+              <div class="m1missionStepIcon" style="--sc:#ffd166"><i class="ph-bold ph-magnifying-glass"></i></div>
+              <div class="m1missionStepBody">
+                <strong>Paso 1 — Elegí tu sistema</strong>
+                <p>Seleccioná un sistema interactivo que uses seguido: una app, un kiosko, una plataforma de streaming, un juego, un cajero automático. Tiene que ser algo concreto y real.</p>
+              </div>
+            </div>
+            <div class="m1missionStep">
+              <div class="m1missionStepIcon" style="--sc:#00e8c6"><i class="ph-bold ph-tree-structure"></i></div>
+              <div class="m1missionStepBody">
+                <strong>Paso 2 — Dibujá el ciclo</strong>
+                <p>Hacé un diagrama (puede ser a mano, en Figma, o en cualquier herramienta) que muestre con claridad Acción, Proceso y Feedback para al menos <strong>3 interacciones distintas</strong> dentro de ese sistema.</p>
+              </div>
+            </div>
+            <div class="m1missionStep">
+              <div class="m1missionStepIcon" style="--sc:#9b6fff"><i class="ph-bold ph-chart-bar"></i></div>
+              <div class="m1missionStepBody">
+                <strong>Paso 3 — Ubicalo en el espectro</strong>
+                <p>Clasificá tu sistema en uno de los 5 niveles de interactividad. Justificá tu elección con <strong>argumentos concretos</strong>, no solo con el nombre del nivel.</p>
+              </div>
+            </div>
+            <div class="m1missionStep">
+              <div class="m1missionStepIcon" style="--sc:#4a8ef0"><i class="ph-bold ph-pencil-simple-line"></i></div>
+              <div class="m1missionStepBody">
+                <strong>Paso 4 — Reflexión crítica</strong>
+                <p>¿Qué mejorarías en el diseño de feedback de ese sistema? Escribí al menos <strong>3 mejoras específicas</strong> con fundamento en los conceptos del módulo.</p>
+              </div>
+            </div>
+            <div class="m1missionStep">
+              <div class="m1missionStepIcon" style="--sc:#ff7d54"><i class="ph-bold ph-upload-simple"></i></div>
+              <div class="m1missionStepBody">
+                <strong>Paso 5 — Subí tu trabajo</strong>
+                <p>Entregá todo en un PDF o documento compartido. Incluí el diagrama, la clasificación justificada y las 3 mejoras. Podés también subir un video walkthrough de max 3 min.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rubric -->
+        <div class="m1rubric reveal">
+          <div class="m1rubricTitle"><i class="ph ph-check-square"></i> Criterios de evaluación</div>
+          <div class="m1rubricItems">
+            <div class="m1rubricItem">
+              <div class="m1rubricBar">
+                <div class="m1rubricFill" style="--pct:40%"></div>
+              </div>
+              <div class="m1rubricInfo">
+                <strong>Diagrama del ciclo</strong>
+                <span>40 pts — Claridad, completitud, 3+ interacciones</span>
+              </div>
+            </div>
+            <div class="m1rubricItem">
+              <div class="m1rubricBar">
+                <div class="m1rubricFill" style="--pct:30%"></div>
+              </div>
+              <div class="m1rubricInfo">
+                <strong>Clasificación en el espectro</strong>
+                <span>30 pts — Nivel correcto + justificación</span>
+              </div>
+            </div>
+            <div class="m1rubricItem">
+              <div class="m1rubricBar">
+                <div class="m1rubricFill" style="--pct:30%"></div>
+              </div>
+              <div class="m1rubricInfo">
+                <strong>Mejoras propuestas</strong>
+                <span>30 pts — Especificidad y fundamento</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER NAV ─────────────────────── -->
+    <footer class="mfoot">
+      <a class="mfootHome" href="../index.html">
+        <i class="ph ph-house-simple"></i> Campus
+      </a>
+      <div class="mfootNav">
+        <span class="mfootBtn mfootBtnDisabled">
+          <i class="ph ph-arrow-left"></i> Anterior
+        </span>
+        <a class="mfootBtn" id="btnNext" href="modulo.html?m=2">
+          Siguiente <i class="ph ph-arrow-right"></i>
         </a>
-        <a href="../index.html" class="mfootHome">Volver al índice</a>
-        <a href="modulo.html?m=2" class="mfootBtn mfootRight">
-          <span>Módulo 2</span>
-          <span>→</span>
-        </a>
-      </nav>
+      </div>
+    </footer>
 
-    </main>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="../assets/js/campus.js"></script>
     <script src="../assets/js/modulo1.js"></script>
   </body>
 </html>
