@@ -109,32 +109,28 @@ function copyLabCode() {
 }
 
 /* ═══════════════════════════════════════════
-   DINING PHILOSOPHERS SIMULATOR — REDESIGNED
-   Slow, verbose, step-by-step explanation
+   DINING PHILOSOPHERS SIMULATOR — PASO A PASO
+   Navegación manual: Anterior / Siguiente
+   Cada paso explica en detalle qué pasa y por qué
 ═══════════════════════════════════════════ */
 
 const PHIL_N = 5;
 
-let phils = [];
-let forks = [];
-let simMode = 'deadlock';
-let simRunning = false;
-let simDeadlockTimeouts = [];
+let phils      = [];
+let forks      = [];
+let simMode    = 'deadlock';
 let semPermits = 4;
-let stats = { meals: 0, deadlocks: 0 };
-let simStartTime = null;
-let timeTickId = null;
+let stepIdx    = -1;
+let stepList   = null;
 
 const STATE_EMOJI = { thinking:'💭', hungry:'🍽️', waiting:'⏳', eating:'😋', dead:'💀' };
 const STATE_CLASS = { thinking:'m5sThinking', hungry:'m5sHungry', waiting:'m5sWaiting', eating:'m5sEating', dead:'m5sDead' };
-const STATE_LABEL = { thinking:'pensando', hungry:'hambriento', waiting:'esperando tenedor', eating:'comiendo', dead:'deadlock' };
+const STATE_LABEL = { thinking:'pensando', hungry:'hambriento', waiting:'esperando tenedor', eating:'comiendo', dead:'💀 deadlock' };
 
 function initPhils() {
-  phils = Array.from({ length: PHIL_N }, (_, i) => ({ id: i, state: 'thinking' }));
-  forks = Array.from({ length: PHIL_N }, (_, i) => ({ id: i, held: null }));
+  phils      = Array.from({ length: PHIL_N }, (_, i) => ({ id: i, state: 'thinking' }));
+  forks      = Array.from({ length: PHIL_N }, (_, i) => ({ id: i, held: null }));
   semPermits = 4;
-  stats = { meals: 0, deadlocks: 0 };
-  simStartTime = null;
 }
 
 function setPhilState(id, state) {
@@ -156,371 +152,287 @@ function updateForkEl(id) {
   el.classList.add(forks[id].held !== null ? 'm5fkHeld' : 'm5fkFree');
 }
 
+function updatePermits() {
+  const wrap = document.getElementById('simPermitWrap');
+  if (wrap) wrap.style.display = (simMode === 'semaphore' && stepIdx >= 0) ? 'block' : 'none';
+  const count = document.getElementById('permCount');
+  if (count) count.textContent = `${semPermits}/4`;
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById(`perm${i}`);
+    if (dot) dot.classList.toggle('m5permFree', i < semPermits);
+  }
+}
+
 function addLog(msg, type = 'info') {
   const log = document.getElementById('simLog');
   if (!log) return;
   const entry = document.createElement('div');
   entry.className = `m5simLogEntry m5simLog${type.charAt(0).toUpperCase() + type.slice(1)}`;
-  const elapsed = simStartTime ? ((Date.now() - simStartTime) / 1000).toFixed(1) : '0.0';
-  entry.textContent = `[${elapsed}s] ${msg}`;
+  const clean = msg.replace(/^[^\wÀ-ú]+/, '').trim();
+  entry.textContent = `${stepIdx + 1}. ${clean}`;
   log.appendChild(entry);
   log.scrollTop = log.scrollHeight;
 }
 
-function updateStatus(msg) {
-  const el = document.getElementById('simStatus');
-  if (el) el.innerHTML = `<i class="ph ph-info"></i> ${msg}`;
+function clearSimLog() {
+  const log = document.getElementById('simLog');
+  if (log) log.innerHTML = '<div class="m5simLogEntry m5simLogInfo">— Historial de pasos —</div>';
 }
 
-function updateStats() {
-  const meals = document.getElementById('simMeals');
-  const dead  = document.getElementById('simDeadlocks');
-  if (meals) meals.textContent = stats.meals;
-  if (dead)  dead.textContent  = stats.deadlocks;
-}
+/* ══════════════════════════════════════════
+   PASO A PASO — arrays de pasos definidos
+══════════════════════════════════════════ */
 
-function updateTimeTick() {
-  if (!simStartTime) return;
-  const el = document.getElementById('simTime');
-  if (el) el.textContent = ((Date.now() - simStartTime) / 1000).toFixed(0) + 's';
-}
-
-function updatePlayBtn() {
-  const btn = document.getElementById('simPlayBtn');
-  if (!btn) return;
-  btn.innerHTML = simRunning
-    ? '<i class="ph-bold ph-pause"></i> Pausar'
-    : '<i class="ph-bold ph-play"></i> Play';
-}
-
-function updatePermits() {
-  const wrap = document.getElementById('simPermitWrap');
-  if (wrap) wrap.style.display = (simMode === 'semaphore') ? 'block' : 'none';
-  const count = document.getElementById('permCount');
-  if (count) count.textContent = `${semPermits}/4`;
-  for (let i = 0; i < 4; i++) {
-    const dot = document.getElementById(`perm${i}`);
-    if (dot) {
-      dot.classList.toggle('m5permFree', i < semPermits);
-    }
+const DEADLOCK_STEPS = [
+  {
+    title: '🧘 Estado inicial — todos pensando',
+    explain: 'Cinco filósofos se sientan alrededor de una mesa circular. Entre cada par hay exactamente <strong>1 tenedor</strong> (5 filósofos, 5 tenedores). Todos están pensando tranquilamente. <strong>No existe ningún mecanismo de control</strong> — cualquiera puede tomar un tenedor cuando quiera, sin coordinación.',
+    insight: null,
+    phils:   ['thinking','thinking','thinking','thinking','thinking'],
+    forks:   [null,null,null,null,null],
+    permits: 4
+  },
+  {
+    title: '🍽️ F0 tiene hambre — toma el tenedor izquierdo T0',
+    explain: 'F0 quiere comer. El protocolo sin sincronización es simple: <strong>primero toma el tenedor de su izquierda</strong>. F0 agarra T0 sin coordinar con nadie. Ahora F0 <strong>retiene T0</strong> y espera conseguir T1 (su tenedor derecho) para poder comer.',
+    insight: '⚠️ Primera condición de Coffman activada: <strong>Hold & Wait</strong> — F0 retiene un recurso (T0) mientras espera otro (T1).',
+    phils:   ['waiting','thinking','thinking','thinking','thinking'],
+    forks:   [0,null,null,null,null],
+    permits: 4
+  },
+  {
+    title: '🍽️ F1 tiene hambre — toma su tenedor izquierdo T1',
+    explain: 'F1 también quiere comer y hace exactamente lo mismo que F0: agarra <strong>T1</strong>, su tenedor izquierdo. Ahora F1 retiene T1 y espera T2. Ya hay <strong>dos filósofos esperando</strong>, cada uno reteniendo un tenedor y esperando el del vecino.',
+    insight: null,
+    phils:   ['waiting','waiting','thinking','thinking','thinking'],
+    forks:   [0,1,null,null,null],
+    permits: 4
+  },
+  {
+    title: '🍽️ F2 toma T2 · F3 toma T3 — cuatro bloqueados',
+    explain: 'F2 y F3 hacen lo mismo. F2 retiene T2 y espera T3. F3 retiene T3 y espera T4. <strong>Cuatro filósofos tienen exactamente un tenedor cada uno</strong>. Solo queda T4 libre. El sistema está al borde del colapso total.',
+    insight: null,
+    phils:   ['waiting','waiting','waiting','waiting','thinking'],
+    forks:   [0,1,2,3,null],
+    permits: 4
+  },
+  {
+    title: '💀 F4 toma T4 — EL SISTEMA COLAPSA',
+    explain: 'F4 tiene hambre y toma <strong>T4</strong>, el último tenedor libre. Ahora <strong>TODOS los tenedores están ocupados</strong>. Cada filósofo tiene uno y espera el del vecino. Nadie puede avanzar. El sistema está paralizado para siempre. Esto es un <strong>deadlock</strong>.',
+    insight: '🔴 DEADLOCK CONFIRMADO: F0 espera T1 (lo tiene F1) · F1 espera T2 (lo tiene F2) · F2 espera T3 · F3 espera T4 · F4 espera T0 (lo tiene F0) → <strong>ciclo de espera circular cerrado</strong>. Nadie puede avanzar.',
+    phils:   ['dead','dead','dead','dead','dead'],
+    forks:   [0,1,2,3,4],
+    permits: 4
+  },
+  {
+    title: '📋 Análisis: las 4 condiciones de Coffman — todas presentes',
+    explain: 'Edward G. Coffman (1971) formuló que un deadlock ocurre si y solo si se cumplen <strong>4 condiciones simultáneas</strong>. Para prevenir el deadlock, basta con <strong>romper cualquiera de las cuatro</strong>. Mirá qué condición eliminamos con el semáforo.',
+    insight: '① <strong>Exclusión mutua:</strong> cada tenedor solo lo puede usar un filósofo a la vez.<br>② <strong>Hold &amp; Wait:</strong> cada filósofo retiene su tenedor izquierdo mientras espera el derecho.<br>③ <strong>No preempción:</strong> nadie puede quitarle el tenedor a otro por la fuerza.<br>④ <strong>Espera circular:</strong> F0→F1→F2→F3→F4→F0 — ciclo cerrado perfecto.',
+    phils:   ['dead','dead','dead','dead','dead'],
+    forks:   [0,1,2,3,4],
+    permits: 4
+  },
+  {
+    title: '💡 La solución: Semáforo(4) rompe la espera circular',
+    explain: 'La solución más elegante: agregar un <strong>Semáforo(4)</strong>. Con esta restricción, como máximo 4 de los 5 filósofos pueden intentar comer simultáneamente. El quinto no puede tomar ningún tenedor. Siempre hay "espacio" para que alguien complete el par de tenedores y coma.',
+    insight: '✅ <strong>¿Por qué funciona?</strong> Con 5 filósofos y 5 tenedores: si solo 4 intentan, siempre habrá al menos un tenedor libre para completar un par → al menos uno come → sistema progresa → 0 deadlocks. Seleccioná <strong>Con Semáforo(4)</strong> arriba y comprobalo vos mismo.',
+    phils:   ['dead','dead','dead','dead','dead'],
+    forks:   [0,1,2,3,4],
+    permits: 4
   }
-}
+];
 
-/* ══════════════════════════════
-   DEADLOCK MODE — staggered, slow
-   Each step is logged individually
-══════════════════════════════ */
-function runDeadlockMode() {
-  simStartTime = Date.now();
-  addLog('Sistema iniciado. 5 filósofos piensan sin ningún control de sincronización.', 'info');
-  updateStatus('Filósofos pensando — sin mecanismo de coordinación');
+const SEMAPHORE_STEPS = [
+  {
+    title: '🎫 Semáforo(4) instalado — 4 permisos disponibles',
+    explain: 'Se instala un <strong>Semáforo con contador = 4</strong>. La regla es simple y obligatoria: antes de tomar cualquier tenedor, el filósofo debe ejecutar <code>sem.acquire()</code> y obtener un permiso. Si el contador llega a 0, el próximo filósofo que pida queda <strong>bloqueado automáticamente</strong>.',
+    insight: '🔑 El semáforo funciona como un portero: solo 4 personas pueden estar en el "área de tenedores" a la vez. El quinto espera afuera hasta que alguien salga. Simple, pero rompe el deadlock.',
+    phils:   ['thinking','thinking','thinking','thinking','thinking'],
+    forks:   [null,null,null,null,null],
+    permits: 4
+  },
+  {
+    title: '🍽️ F0 tiene hambre — pide permiso al semáforo',
+    explain: 'F0 quiere comer. <strong>Paso obligatorio: sem.acquire()</strong>. El semáforo tiene 4 permisos disponibles → concede el permiso inmediatamente y decrementa el contador a <strong>3/4</strong>. F0 queda autorizado para buscar tenedores.',
+    insight: '📊 Semáforo: 4 → <strong>3 permisos libres</strong>. F0 puede proceder a tomar los tenedores.',
+    phils:   ['hungry','thinking','thinking','thinking','thinking'],
+    forks:   [null,null,null,null,null],
+    permits: 3
+  },
+  {
+    title: '🍴 F0 toma el tenedor izquierdo T0',
+    explain: 'Con el permiso en mano, F0 toma <strong>T0</strong> (su tenedor izquierdo). Lo retiene y va a buscar T1 (el derecho). En este momento, el semáforo garantiza que como máximo 4 filósofos están haciendo esta operación simultáneamente.',
+    insight: null,
+    phils:   ['waiting','thinking','thinking','thinking','thinking'],
+    forks:   [0,null,null,null,null],
+    permits: 3
+  },
+  {
+    title: '🍴🍴 F0 toma el tenedor derecho T1 — ¡tiene los dos!',
+    explain: 'F0 consigue <strong>T1</strong>. Tiene ambos tenedores: T0 y T1. <strong>El semáforo garantiza que nunca los 5 filósofos están buscando su tenedor derecho simultáneamente.</strong> Siempre hay al menos un "hueco" que permite completar el par. F0 puede comer.',
+    insight: '✅ Esta es la clave del Semaphore(N-1): con 5 intentando podrían tomar todos el izquierdo y bloquearse. Con solo 4 intentando, SIEMPRE al menos uno puede completar el par → sistema avanza.',
+    phils:   ['eating','thinking','thinking','thinking','thinking'],
+    forks:   [0,0,null,null,null],
+    permits: 3
+  },
+  {
+    title: '😋 F0 come · F1, F2, F3 también piden permisos',
+    explain: 'F0 está comiendo. Mientras tanto, F1, F2 y F3 tienen hambre y llaman a <code>sem.acquire()</code>. Los tres obtienen permiso. El semáforo baja: 3→2→1→<strong>0 permisos libres</strong>. Ahora el semáforo está completamente ocupado.',
+    insight: '⚠️ Semáforo en 0/4. Si F4 pide permiso ahora, el semáforo lo <strong>BLOQUEARÁ</strong> antes de que pueda tocar cualquier tenedor. Esto es lo que rompe el ciclo de deadlock.',
+    phils:   ['eating','waiting','waiting','waiting','thinking'],
+    forks:   [0,0,null,null,null],
+    permits: 0
+  },
+  {
+    title: '🚦 F4 tiene hambre — el semáforo le dice ESPERA',
+    explain: 'F4 quiere comer y llama a <code>sem.acquire()</code>. Pero el semáforo está en <strong>0</strong> — todos los permisos están ocupados. F4 queda <strong>BLOQUEADO en la cola del semáforo</strong>. No puede tomar T4 ni ningún tenedor. Queda suspendido esperando.',
+    insight: '🔑 Sin el semáforo, F4 tomaría T4 y cerraría el ciclo de espera circular (deadlock). <strong>Con el semáforo, F4 ni siquiera puede intentarlo</strong> → el ciclo jamás se cierra → deadlock imposible. ¡Problema resuelto!',
+    phils:   ['eating','waiting','waiting','waiting','hungry'],
+    forks:   [0,0,null,null,null],
+    permits: 0
+  },
+  {
+    title: '✅ F0 termina — libera tenedores y devuelve el permiso',
+    explain: 'F0 terminó de comer. Ejecuta en orden: suelta T0, suelta T1, luego <code>sem.release()</code>. El semáforo sube de 0 a <strong>1</strong>. F4, que estaba bloqueado esperando, <strong>se despierta automáticamente</strong> y recibe el permiso.',
+    insight: '🔄 El ciclo virtuoso: comer → soltar tenedores → devolver permiso → despertar al siguiente en cola → el siguiente come. <strong>Progreso garantizado</strong>, siempre, sin excepciones.',
+    phils:   ['thinking','waiting','waiting','waiting','hungry'],
+    forks:   [null,null,null,null,null],
+    permits: 1
+  },
+  {
+    title: '🎫 F4 despierta — obtiene permiso, toma tenedores, come',
+    explain: 'El semáforo despertó a F4 y le entregó el permiso (contador: 1→0). F4 toma <strong>T4</strong> (izquierdo) y <strong>T0</strong> (derecho, libre ahora que F0 terminó). F4 empieza a comer satisfactoriamente. El sistema sigue rotando.',
+    insight: '✅ Ningún filósofo queda esperando para siempre. El sistema siempre avanza. <strong>0 deadlocks garantizados</strong> con Semaphore(N-1).',
+    phils:   ['thinking','waiting','waiting','waiting','eating'],
+    forks:   [4,null,null,null,4],
+    permits: 0
+  },
+  {
+    title: '🏆 Sistema estable — Semaphore(4) garantiza 0 deadlocks',
+    explain: 'El sistema puede ejecutarse indefinidamente sin deadlock. Los filósofos comen, piensan y rotan. El <strong>Semaphore(N-1)</strong> elimina la condición de "espera circular" de Coffman al garantizar que nunca los N filósofos toman su tenedor izquierdo simultáneamente.',
+    insight: '💡 <strong>La regla general:</strong> Para N filósofos con N recursos → usar <code>Semaphore(N-1)</code>. En Java:<br><code>Semaphore permiso = new Semaphore(4);</code><br>Antes de tomar cualquier tenedor: <code>permiso.acquire()</code><br>Al terminar de comer: <code>permiso.release()</code>',
+    phils:   ['thinking','thinking','thinking','thinking','eating'],
+    forks:   [4,null,null,null,4],
+    permits: 1
+  }
+];
 
-  /* Phase 1: become hungry one by one */
+/* ── Aplicar un paso ────────────────────── */
+function applyStep(step) {
+  /* Visual state */
+  for (let i = 0; i < PHIL_N; i++) setPhilState(i, step.phils[i]);
   for (let i = 0; i < PHIL_N; i++) {
-    const t = setTimeout(() => {
-      if (!simRunning) return;
-      setPhilState(i, 'hungry');
-      addLog(`F${i} tiene hambre 🍽️ — va a tomar el tenedor de su izquierda`, 'wait');
-    }, 1000 + i * 400);
-    simDeadlockTimeouts.push(t);
+    forks[i].held = step.forks[i];
+    updateForkEl(i);
   }
-
-  /* Phase 2: each picks up LEFT fork one by one */
-  for (let i = 0; i < PHIL_N; i++) {
-    const t = setTimeout(() => {
-      if (!simRunning) return;
-      forks[i].held = i;
-      setPhilState(i, 'waiting');
-      updateForkEl(i);
-      addLog(`F${i} tomó tenedor T${i} (izquierdo) 🍴 — ahora espera T${(i + 1) % 5}`, 'wait');
-    }, 3500 + i * 400);
-    simDeadlockTimeouts.push(t);
-  }
-
-  /* Phase 3: detection */
-  const tDetect = setTimeout(() => {
-    if (!simRunning) return;
-    addLog('⚠️ Situación: todos tienen un tenedor. Todos esperan el tenedor de su vecino.', 'wait');
-    addLog('    F0 espera T1 (lo tiene F1)', 'wait');
-    addLog('    F1 espera T2 (lo tiene F2)', 'wait');
-    addLog('    F2 espera T3 (lo tiene F3)', 'wait');
-    addLog('    F3 espera T4 (lo tiene F4)', 'wait');
-    addLog('    F4 espera T0 (lo tiene F0) ← ¡ciclo cerrado!', 'wait');
-  }, 6200);
-  simDeadlockTimeouts.push(tDetect);
-
-  /* Phase 4: DEADLOCK confirmed */
-  const tDead = setTimeout(() => {
-    if (!simRunning) return;
-    for (let i = 0; i < PHIL_N; i++) setPhilState(i, 'dead');
-    addLog('💀 DEADLOCK — espera circular confirmada. Las 4 condiciones de Coffman se cumplen:', 'dead');
-    addLog('   ① Exclusión mutua: cada tenedor es de uso exclusivo', 'dead');
-    addLog('   ② Hold & wait: cada filósofo retiene T_izq mientras espera T_der', 'dead');
-    addLog('   ③ No preempción: nadie puede quitarle el tenedor a otro', 'dead');
-    addLog('   ④ Espera circular: F0→F1→F2→F3→F4→F0', 'dead');
-    addLog('El sistema está paralizado. Reiniciá y probá con Semáforo(4).', 'dead');
-    stats.deadlocks++;
-    updateStats();
-    updateStatus('💀 DEADLOCK detectado — probá el modo Con Semáforo(4)');
-    simRunning = false;
-    clearInterval(timeTickId);
-    updatePlayBtn();
-  }, 7500);
-  simDeadlockTimeouts.push(tDead);
-}
-
-/* ══════════════════════════════
-   SEMAPHORE MODE — verbose, clear
-   Shows every sub-step with delays
-══════════════════════════════ */
-
-function leftForkIdx(id)  { return id; }
-function rightForkIdx(id) { return (id + 1) % PHIL_N; }
-
-/* ── Step card helper ─────────────────────── */
-function setStep(html) {
-  const card = document.getElementById('simStepCard');
-  const txt  = document.getElementById('simStepText');
-  if (!card) return;
-  const show = simMode === 'semaphore' && simRunning;
-  card.style.display = show ? 'block' : 'none';
-  if (show && txt) {
-    txt.innerHTML = html;
-    /* re-trigger animation */
-    card.classList.remove('stepAnim');
-    void card.offsetWidth;
-    card.classList.add('stepAnim');
-  }
-}
-
-function hideStep() {
-  const card = document.getElementById('simStepCard');
-  if (card) card.style.display = 'none';
-}
-
-/* ── STEP DELAY (ms) — controls simulation pace ── */
-const STEP_MS = 1400;   /* between each sub-step   */
-const EAT_MS  = 3500;   /* how long eating lasts   */
-const THINK_MS_MIN = 2500;
-const THINK_MS_MAX = 4000;
-
-function startHungerCycle(id) {
-  if (!simRunning || simMode !== 'semaphore') return;
-  setPhilState(id, 'hungry');
-  addLog(`F${id} tiene hambre 🍽️ — va a pedir permiso al semáforo`, 'wait');
-  setStep(`<strong>Filósofo ${id}</strong> tiene hambre y solicita permiso al semáforo.<br>Semáforo actual: <strong>${semPermits}/4 permisos libres</strong>`);
-
-  setTimeout(() => {
-    if (simRunning && phils[id].state === 'hungry') tryAcquire(id);
-  }, STEP_MS);
-}
-
-function tryAcquire(id) {
-  if (!simRunning || simMode !== 'semaphore' || phils[id].state !== 'hungry') return;
-
-  const lf = leftForkIdx(id);
-  const rf = rightForkIdx(id);
-
-  if (semPermits > 0 && forks[lf].held === null && forks[rf].held === null) {
-
-    /* ── Sub-step 1: obtain semaphore permit ── */
-    semPermits--;
+  if (step.permits !== undefined) {
+    semPermits = step.permits;
     updatePermits();
-    addLog(`F${id} OBTIENE permiso ✅ — semáforo: ${semPermits}/4 libres`, 'sem');
-    updateStatus(`F${id} obtuvo permiso del semáforo`);
-    setStep(`<strong>Semáforo concede permiso a F${id}</strong> ✅<br>Permisos restantes: <strong>${semPermits}/4</strong> — ahora F${id} puede intentar tomar los tenedores`);
+  }
 
-    /* ── Sub-step 2: left fork ── */
-    setTimeout(() => {
-      if (!simRunning) return;
-      forks[lf].held = id;
-      updateForkEl(lf);
-      addLog(`F${id} toma tenedor izquierdo T${lf} 🍴`, 'eat');
-      setStep(`<strong>F${id} tomó tenedor izquierdo T${lf}</strong> 🍴<br>Ahora espera el tenedor derecho T${rf}...`);
+  /* Panel de explicación */
+  const badge   = document.getElementById('simStepBadge');
+  const titleEl = document.getElementById('simStepTitle');
+  const exEl    = document.getElementById('simStepExplain');
+  const inEl    = document.getElementById('simStepInsight');
+  const counter = document.getElementById('simStepCounter');
 
-      /* ── Sub-step 3: right fork ── */
-      setTimeout(() => {
-        if (!simRunning) return;
-        forks[rf].held = id;
-        updateForkEl(rf);
-        addLog(`F${id} toma tenedor derecho T${rf} 🍴 — ¡tiene los dos!`, 'eat');
-        setStep(`<strong>F${id} tomó tenedor derecho T${rf}</strong> 🍴<br>¡Tiene ambos tenedores! Empieza a comer 😋`);
+  if (badge)   badge.textContent = `Paso ${stepIdx + 1} de ${stepList.length}`;
+  if (counter) counter.textContent = `${stepIdx + 1} / ${stepList.length}`;
+  if (titleEl) titleEl.innerHTML = step.title;
+  if (exEl)    exEl.innerHTML    = step.explain;
+  if (inEl) {
+    inEl.style.display = step.insight ? 'block' : 'none';
+    if (step.insight) inEl.innerHTML = step.insight;
+  }
 
-        /* ── Sub-step 4: eating ── */
-        setTimeout(() => {
-          if (!simRunning) return;
-          setPhilState(id, 'eating');
-          stats.meals++;
-          updateStats();
-          addLog(`F${id} come 😋 — comida #${stats.meals}`, 'eat');
-          updateStatus(`F${id} come. Semáforo: ${semPermits}/4 disponibles — sistema progresa ✅`);
-          setStep(`<strong>F${id} come</strong> 😋 (comida #${stats.meals})<br>Tiene T${lf} y T${rf} ocupados. Semáforo: ${semPermits}/4 libres.<br><em>Otros filósofos pueden intentar mientras tanto.</em>`);
+  /* Botones nav */
+  const prevBtn = document.getElementById('simPrevBtn');
+  const nextBtn = document.getElementById('simNextBtn');
+  if (prevBtn) prevBtn.disabled = (stepIdx === 0);
+  if (nextBtn) {
+    nextBtn.innerHTML = stepIdx >= stepList.length - 1
+      ? '<i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar'
+      : 'Siguiente <i class="ph-bold ph-arrow-right"></i>';
+  }
 
-          /* ── Sub-step 5: finish ── */
-          setTimeout(() => finishEatingVerbose(id, lf, rf), EAT_MS);
-        }, STEP_MS);
-      }, STEP_MS);
-    }, STEP_MS);
+  /* Log */
+  const logType = step.phils.includes('dead') ? 'dead'
+    : step.phils.includes('eating') ? 'eat'
+    : step.phils.includes('waiting') ? 'wait' : 'info';
+  addLog(step.title.replace(/^[^\wÀ-úA-Z]/u, '').replace(/^[^\wÀ-ú]+/, '').trim(), logType);
+}
 
+/* ── Navegación pública ──────────────────── */
+function simNextStep() {
+  if (stepIdx < 0) {
+    /* Primera vez: inicializar */
+    stepList = simMode === 'deadlock' ? DEADLOCK_STEPS : SEMAPHORE_STEPS;
+    stepIdx  = 0;
+    initPhils();
+    clearSimLog();
+    for (let i = 0; i < PHIL_N; i++) { setPhilState(i,'thinking'); forks[i].held=null; updateForkEl(i); }
+    updatePermits();
+    applyStep(stepList[0]);
+  } else if (stepIdx >= stepList.length - 1) {
+    simReset();
   } else {
-    /* Can't eat — explain why, slower retry */
-    const reason = semPermits <= 0
-      ? `el semáforo está lleno (0/4 permisos disponibles)`
-      : `el tenedor T${forks[lf].held !== null ? lf : rf} está ocupado`;
-    addLog(`F${id} no puede comer aún — ${reason}`, 'wait');
-    setStep(`<strong>F${id} espera</strong> ⏳<br>${reason === `el semáforo está lleno (0/4 permisos disponibles)` ? 'El semáforo no tiene permisos libres — F' + id + ' espera su turno' : 'Un tenedor está ocupado — F' + id + ' reintentará pronto'}`);
-
-    const retryDelay = STEP_MS + Math.random() * 600;
-    setTimeout(() => {
-      if (simRunning && phils[id].state === 'hungry') tryAcquire(id);
-    }, retryDelay);
+    stepIdx++;
+    applyStep(stepList[stepIdx]);
   }
 }
 
-function finishEatingVerbose(id, lf, rf) {
-  if (!simRunning) return;
-
-  addLog(`F${id} terminó de comer — libera recursos`, 'info');
-  setStep(`<strong>F${id} terminó de comer</strong><br>Va a soltar los tenedores T${lf} y T${rf} y devolver el permiso al semáforo`);
-
-  /* ── Sub-step 6: release forks ── */
-  setTimeout(() => {
-    if (!simRunning) return;
-    forks[lf].held = null;
-    forks[rf].held = null;
-    updateForkEl(lf);
-    updateForkEl(rf);
-    addLog(`F${id} suelta T${lf} y T${rf} — disponibles para otros`, 'sem');
-    setStep(`<strong>F${id} suelta tenedores T${lf} y T${rf}</strong> 🍴 libre<br>Otros filósofos hambrientos pueden tomarlos ahora`);
-
-    /* ── Sub-step 7: return permit ── */
-    setTimeout(() => {
-      if (!simRunning) return;
-      semPermits++;
-      updatePermits();
-      addLog(`F${id} devuelve permiso al semáforo ✅ — semáforo: ${semPermits}/4 libres`, 'sem');
-      setPhilState(id, 'thinking');
-      updateStatus(`F${id} vuelve a pensar. Semáforo: ${semPermits}/4 disponibles`);
-      setStep(`<strong>F${id} devuelve permiso al semáforo</strong> ✅<br>Semáforo: <strong>${semPermits}/4 libres</strong><br>F${id} vuelve a pensar 💭 — ciclo completado`);
-
-      /* Wake any hungry philosopher */
-      for (let i = 0; i < PHIL_N; i++) {
-        if (phils[i].state === 'hungry') {
-          setTimeout(() => {
-            if (simRunning && phils[i].state === 'hungry') tryAcquire(i);
-          }, 300 + i * 120);
-        }
-      }
-
-      /* Schedule next hunger cycle */
-      const thinkTime = THINK_MS_MIN + Math.random() * (THINK_MS_MAX - THINK_MS_MIN);
-      setTimeout(() => {
-        if (simRunning && simMode === 'semaphore') startHungerCycle(id);
-      }, thinkTime);
-    }, STEP_MS);
-  }, STEP_MS);
+function simPrevStep() {
+  if (stepIdx <= 0) return;
+  stepIdx--;
+  applyStep(stepList[stepIdx]);
 }
 
-function startSemaphoreMode() {
-  simStartTime = Date.now();
-  addLog('Semáforo(4) inicializado — máximo 4 filósofos intentando a la vez', 'sem');
-  addLog('Regla: adquirir permiso → tomar fork izquierdo → tomar fork derecho → comer', 'sem');
-  updateStatus('Modo semáforo activo — observá los permisos y los tenedores');
-  updatePermits();
-
-  /* Stagger initial hunger so it's not overwhelming */
-  for (let i = 0; i < PHIL_N; i++) {
-    const delay = 600 + i * 700;
-    setTimeout(() => {
-      if (!simRunning) return;
-      startHungerCycle(i);
-    }, delay);
-  }
-}
-
-/* ── Public controls ─────────────────────── */
 function setMode(mode) {
-  if (simRunning) simReset();
+  if (stepIdx >= 0) simReset();
   simMode = mode;
-  document.getElementById('modeDeadlock').classList.toggle('m5simModeActive', mode === 'deadlock');
+  document.getElementById('modeDeadlock').classList.toggle('m5simModeActive',  mode === 'deadlock');
   document.getElementById('modeSemaphore').classList.toggle('m5simModeActive', mode === 'semaphore');
   updatePermits();
 
-  const msg = mode === 'deadlock'
-    ? 'Modo sin control — cada filósofo toma su tenedor izquierdo sin coordinación → deadlock'
-    : 'Modo semáforo — máximo 4 filósofos intentando a la vez → progreso garantizado';
-  updateStatus(msg);
-}
-
-function simToggle() {
-  if (simRunning) { simPause(); } else { simStart(); }
-}
-
-function simStart() {
-  simRunning = true;
-  updatePlayBtn();
-  initPhils();
-  clearSimLog();
-  updateStats();
-  updatePermits();
-
-  for (let i = 0; i < PHIL_N; i++) {
-    setPhilState(i, 'thinking');
-    forks[i].held = null;
-    updateForkEl(i);
-  }
-
-  timeTickId = setInterval(updateTimeTick, 500);
-
-  if (simMode === 'deadlock') {
-    runDeadlockMode();
-  } else {
-    startSemaphoreMode();
-  }
-}
-
-function simPause() {
-  simRunning = false;
-  updatePlayBtn();
-  clearInterval(timeTickId);
-  simDeadlockTimeouts.forEach(t => clearTimeout(t));
-  simDeadlockTimeouts = [];
-  updateStatus('Pausado — presioná Play para continuar');
+  const badge = document.getElementById('simStepBadge');
+  const exEl  = document.getElementById('simStepExplain');
+  if (badge) badge.textContent = mode === 'deadlock' ? 'Modo: Sin control (→ deadlock)' : 'Modo: Con Semáforo(4) (→ estable)';
+  if (exEl) exEl.innerHTML = mode === 'deadlock'
+    ? 'Vas a ver cómo los 5 filósofos generan un deadlock paso a paso. Presioná <strong>Empezar</strong>.'
+    : 'Vas a ver cómo Semaphore(4) previene el deadlock. Presioná <strong>Empezar</strong>.';
 }
 
 function simReset() {
-  simRunning = false;
-  clearInterval(timeTickId);
-  simDeadlockTimeouts.forEach(t => clearTimeout(t));
-  simDeadlockTimeouts = [];
-  updatePlayBtn();
+  stepIdx  = -1;
+  stepList = null;
   initPhils();
+  for (let i = 0; i < PHIL_N; i++) { setPhilState(i,'thinking'); forks[i].held=null; updateForkEl(i); }
+  clearSimLog();
   updatePermits();
 
-  for (let i = 0; i < PHIL_N; i++) {
-    setPhilState(i, 'thinking');
-    forks[i].held = null;
-    updateForkEl(i);
-  }
+  const badge   = document.getElementById('simStepBadge');
+  const titleEl = document.getElementById('simStepTitle');
+  const exEl    = document.getElementById('simStepExplain');
+  const inEl    = document.getElementById('simStepInsight');
+  const counter = document.getElementById('simStepCounter');
+  const prevBtn = document.getElementById('simPrevBtn');
+  const nextBtn = document.getElementById('simNextBtn');
 
-  clearSimLog();
-  ['simTime', 'simMeals', 'simDeadlocks'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = id === 'simTime' ? '0s' : '0';
-  });
-  updateStatus('Sistema reiniciado. Elegí un modo y presioná Play.');
+  if (badge)   badge.textContent  = 'Elegí un modo ↑ y presioná Empezar';
+  if (titleEl) titleEl.textContent = 'Simulador paso a paso';
+  if (exEl)    exEl.innerHTML = 'Seleccioná el modo arriba y explorá paso a paso. Cada paso explica exactamente qué está pasando y por qué.';
+  if (inEl)    inEl.style.display  = 'none';
+  if (counter) counter.textContent = '— / —';
+  if (prevBtn) prevBtn.disabled    = true;
+  if (nextBtn) nextBtn.innerHTML   = 'Empezar <i class="ph-bold ph-arrow-right"></i>';
 }
 
-function clearSimLog() {
-  const log = document.getElementById('simLog');
-  if (log) log.innerHTML = '<div class="m5simLogEntry m5simLogInfo">— Log reiniciado —</div>';
-}
-
-/* Initialize forks as free on load */
+/* Inicializar en carga */
 (function () {
   initPhils();
   updatePermits();
-  for (let i = 0; i < PHIL_N; i++) updateForkEl(i);
+  for (let i = 0; i < PHIL_N; i++) { setPhilState(i,'thinking'); updateForkEl(i); }
 })();
 
 /* ═══════════════════════════════════════════

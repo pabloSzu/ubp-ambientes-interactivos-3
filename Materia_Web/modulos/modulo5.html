@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../assets/css/modulo5.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-one-dark.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" />
     <style>
       :root {
         --accent:        #ff7d54;
@@ -376,14 +376,18 @@
 
             <!-- Controls + log -->
             <div class="m5simPanel">
-              <div class="m5simStatus" id="simStatus">
-                <i class="ph ph-info"></i>
-                Seleccioná un modo y presioná Play
+
+              <!-- ── PASO ACTUAL — panel grande de explicación ── -->
+              <div class="m5simStepPanel">
+                <div class="m5simStepBadge" id="simStepBadge">Elegí un modo ↑ y presioná Empezar</div>
+                <div class="m5simStepTitle" id="simStepTitle">Simulador paso a paso</div>
+                <p class="m5simStepExplain" id="simStepExplain">Seleccioná <strong>Sin control</strong> o <strong>Con Semáforo(4)</strong> arriba, luego presioná <strong>Empezar</strong>. Cada paso explica exactamente qué está pasando — y por qué.</p>
+                <div class="m5simStepInsight" id="simStepInsight" style="display:none"></div>
               </div>
 
-              <!-- Semaphore permit visual — visible only in semaphore mode -->
+              <!-- ── Semaphore permit visual ── -->
               <div class="m5simPermitWrap" id="simPermitWrap" style="display:none">
-                <div class="m5simPermitLabel"><i class="ph ph-ticket"></i> Semáforo(4) — permisos</div>
+                <div class="m5simPermitLabel"><i class="ph ph-ticket"></i> Semáforo(4) — permisos disponibles</div>
                 <div class="m5simPermitRow">
                   <div class="m5simPermitDots">
                     <div class="m5simPermitDot m5permFree" id="perm0" title="Permiso 1"></div>
@@ -393,43 +397,29 @@
                     <span class="m5simPermitCount" id="permCount">4/4</span>
                   </div>
                 </div>
-                <div class="m5simPermitDesc">Punto morado = permiso libre. Solo 4 filósofos pueden intentar comer a la vez.</div>
+                <div class="m5simPermitDesc">Punto morado = permiso libre. Máximo 4 filósofos pueden intentar comer a la vez.</div>
               </div>
 
-              <div class="m5simCtrlRow">
-                <button class="m5simBtn m5simBtnAccent" id="simPlayBtn" onclick="simToggle()">
-                  <i class="ph-bold ph-play"></i> Play
+              <!-- ── Navegación paso a paso ── -->
+              <div class="m5simNavRow">
+                <button class="m5simBtn" id="simPrevBtn" onclick="simPrevStep()" disabled>
+                  <i class="ph-bold ph-arrow-left"></i> Anterior
                 </button>
-                <button class="m5simBtn" onclick="simReset()">
-                  <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset
+                <span class="m5simStepCounter" id="simStepCounter">— / —</span>
+                <button class="m5simBtn m5simBtnAccent" id="simNextBtn" onclick="simNextStep()">
+                  Empezar <i class="ph-bold ph-arrow-right"></i>
                 </button>
               </div>
 
-              <!-- Step card — visible only in semaphore mode while running -->
-              <div class="m5simStepCard" id="simStepCard" style="display:none">
-                <div class="m5simStepLabel"><i class="ph ph-play-circle"></i> Paso actual</div>
-                <div class="m5simStepText" id="simStepText">...</div>
-              </div>
+              <button class="m5simBtn" onclick="simReset()" style="width:100%;justify-content:center">
+                <i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar desde el principio
+              </button>
 
-              <div class="m5simScoreRow" id="simScoreRow">
-                <div class="m5simScoreBox">
-                  <span class="m5simScoreNum" id="simMeals">0</span>
-                  <span class="m5simScoreLabel">comidas</span>
-                </div>
-                <div class="m5simScoreBox">
-                  <span class="m5simScoreNum" id="simDeadlocks">0</span>
-                  <span class="m5simScoreLabel">deadlocks</span>
-                </div>
-                <div class="m5simScoreBox">
-                  <span class="m5simScoreNum" id="simTime">0s</span>
-                  <span class="m5simScoreLabel">tiempo</span>
-                </div>
-              </div>
-
+              <!-- ── Historial ── -->
               <div class="m5simLogWrap">
-                <div class="m5simLogLabel"><i class="ph ph-terminal"></i> Log de eventos</div>
+                <div class="m5simLogLabel"><i class="ph ph-list-bullets"></i> Historial de pasos</div>
                 <div class="m5simLog" id="simLog">
-                  <div class="m5simLogEntry m5simLogInfo">Sistema listo. Elegí un modo y presioná Play.</div>
+                  <div class="m5simLogEntry m5simLogInfo">Sistema listo. Elegí un modo y presioná Empezar.</div>
                 </div>
               </div>
             </div>
@@ -806,11 +796,16 @@ public class DeadlockFix {
             <!-- Right: Java editor -->
             <div class="m5labEmbed">
               <iframe
-                src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
-                width="100%" height="100%"
-                style="border:none; border-radius: 12px; min-height:560px;"
-                title="Java lab — Deadlock Demo"
+                src="https://onecompiler.com/embed/java?hideTitle=true&theme=dark"
+                style="width:100%;height:560px;border:none;border-radius:12px;display:block"
+                allowfullscreen
+                allow="clipboard-read; clipboard-write"
+                loading="eager"
+                title="Editor Java"
               ></iframe>
+              <a class="m5labFallback" href="https://onecompiler.com/java" target="_blank" rel="noopener">
+                <i class="ph ph-arrow-square-out"></i> Si no carga el editor, abrilo en nueva pestaña
+              </a>
             </div>
           </div>
         </div>

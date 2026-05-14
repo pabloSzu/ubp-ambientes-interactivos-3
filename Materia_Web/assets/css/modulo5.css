@@ -775,27 +775,70 @@
   font-size: 11px; color: var(--sub); margin-top: 6px; line-height: 1.5;
 }
 
-/* ─── Step announcement card (semaphore mode) ── */
-.m5simStepCard {
-  padding: 14px 16px; border-radius: 10px;
-  background: rgba(0,232,198,0.08);
-  border: 1px solid rgba(0,232,198,0.3);
-  border-left: 4px solid #00e8c6;
-  animation: stepIn 0.3s ease;
+/* ─── Panel paso a paso (nuevo diseño) ──────── */
+.m5simStepPanel {
+  padding: 18px 20px; border-radius: 12px;
+  background: rgba(255,125,84,0.06);
+  border: 1px solid var(--accent-border);
+  border-left: 4px solid var(--accent);
+  display: flex; flex-direction: column; gap: 10px;
+  animation: stepIn 0.35s ease;
 }
 @keyframes stepIn {
-  from { opacity: 0; transform: translateY(-6px); }
+  from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.m5simStepLabel {
+.m5simStepBadge {
   font-size: 10px; font-weight: 900; text-transform: uppercase;
-  letter-spacing: 0.12em; color: #00e8c6;
-  display: flex; align-items: center; gap: 5px; margin-bottom: 8px;
+  letter-spacing: 0.12em; color: var(--accent);
 }
-.m5simStepText {
-  font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.55;
+.m5simStepTitle {
+  font-size: 15px; font-weight: 800; color: var(--text); line-height: 1.4;
 }
-.m5simStepText strong { color: var(--accent); }
+.m5simStepExplain {
+  font-size: 13px; color: var(--text); line-height: 1.65; margin: 0;
+}
+.m5simStepExplain strong { color: var(--accent); }
+.m5simStepExplain code {
+  background: rgba(0,0,0,0.35); color: #00e8c6;
+  padding: 1px 5px; border-radius: 4px; font-size: 12px;
+}
+.m5simStepInsight {
+  padding: 10px 14px; border-radius: 8px;
+  background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.25);
+  border-left: 3px solid #a855f7;
+  font-size: 13px; color: var(--text); line-height: 1.6;
+  animation: stepIn 0.35s ease;
+}
+.m5simStepInsight strong { color: #a855f7; }
+.m5simStepInsight code {
+  background: rgba(0,0,0,0.35); color: #00e8c6;
+  padding: 1px 5px; border-radius: 4px; font-size: 12px;
+}
+
+/* ─── Navegación paso a paso ─────────────── */
+.m5simNavRow {
+  display: flex; align-items: center; gap: 10px;
+}
+.m5simNavRow .m5simBtn { flex-shrink: 0; }
+.m5simNavRow .m5simBtn:first-child { min-width: 100px; }
+.m5simNavRow .m5simBtn:last-child  { min-width: 120px; }
+.m5simStepCounter {
+  flex: 1; text-align: center;
+  font-size: 13px; font-weight: 900; color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+/* ─── Lab fallback link ──────────────────── */
+.m5labFallback {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 8px; font-size: 12px; font-weight: 600;
+  color: var(--sub); text-decoration: none;
+  justify-content: center; padding: 6px;
+  border-radius: 8px; border: 1px dashed var(--border);
+  transition: color 0.2s, border-color 0.2s;
+}
+.m5labFallback:hover { color: var(--accent); border-color: var(--accent-border); }
 
 /* ─── Lab code block ─────────────────────── */
 .m5labWrap {
