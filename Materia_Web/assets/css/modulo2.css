@@ -1,0 +1,611 @@
+/* ═══════════════════════════════════════════
+   PAI3 · Módulo 2 · Estilos específicos
+═══════════════════════════════════════════ */
+
+/* ─── Reading progress ───────────────────── */
+.readProgress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: var(--accent);
+  width: 0%;
+  z-index: 999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* ─── Reveal on scroll ───────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+  transition-delay: var(--delay, 0ms);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ─── HERO ───────────────────────────────── */
+.m2hero {
+  position: relative;
+  min-height: 88vh;
+  display: flex;
+  align-items: flex-end;
+  padding-block: 80px 60px;
+  overflow: hidden;
+}
+.m2heroBg { position: absolute; inset: 0; z-index: 0; }
+.m2heroImg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  filter: saturate(0.55) brightness(0.38);
+}
+.m2heroOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(6,8,15,0.2) 0%,
+    rgba(6,8,15,0.55) 40%,
+    rgba(6,8,15,0.97) 100%
+  );
+}
+.m2heroContent { position: relative; z-index: 1; }
+.m2heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-sub);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+.m2heroTitle {
+  font-size: clamp(38px, 6.5vw, 84px);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 22px;
+}
+.m2heroTitle span { color: var(--accent); }
+.m2heroIntro {
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: var(--sub);
+  line-height: 1.65;
+  max-width: 620px;
+  margin-bottom: 40px;
+}
+.m2heroStats {
+  display: flex;
+  gap: 0;
+  flex-wrap: wrap;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  background: rgba(6,8,15,0.5);
+  max-width: 580px;
+}
+.m2heroStat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 26px;
+  flex: 1;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s;
+}
+.m2heroStat:last-child { border-right: none; }
+.m2heroStat:hover { background: rgba(255,255,255,0.03); }
+.m2heroStatTop { display: flex; align-items: baseline; gap: 2px; }
+.m2heroStatNum {
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.m2heroStatSuf {
+  font-size: clamp(20px, 3vw, 30px);
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+}
+.m2heroStatLabel {
+  font-size: 13px;
+  color: var(--sub);
+  max-width: 150px;
+  line-height: 1.45;
+}
+
+/* ─── Pull quote ─────────────────────────── */
+.m2pullQuote {
+  padding: 36px 40px;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-sub);
+  border-radius: 0 var(--r) var(--r) 0;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.m2pullQuote .ph-bold { font-size: 28px; color: var(--accent); opacity: 0.5; display: block; margin-bottom: 12px; }
+.m2pullQuote p {
+  font-size: clamp(17px, 2vw, 22px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.5;
+  font-style: italic;
+  margin-bottom: 14px;
+}
+.m2pullQuote cite { font-size: 15px; color: var(--sub); font-style: normal; font-weight: 600; }
+
+/* ─── Objectives grid ────────────────────── */
+.m2objGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 32px;
+}
+.m2objCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px;
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.m2objCard:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+.m2objIcon {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  border: 1px solid color-mix(in srgb, var(--oc) 30%, transparent);
+  background: color-mix(in srgb, var(--oc) 10%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+  color: var(--oc);
+}
+.m2objCard strong { display: block; font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.m2objCard p { font-size: 14px; color: var(--sub); line-height: 1.6; margin: 0; }
+
+/* ─── Split layout ───────────────────────── */
+.m2splitLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-top: 32px;
+}
+.m2splitImg {
+  position: relative;
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.m2splitImg img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.7) brightness(0.8);
+}
+.m2splitImgBadge {
+  position: absolute;
+  bottom: 14px; left: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(6,8,15,0.85);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+.m2blogText { font-size: 16px; color: var(--sub); line-height: 1.8; margin-bottom: 16px; }
+.m2blogText strong { color: var(--text); }
+.m2callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 22px;
+  border-radius: var(--r);
+  border: 1px solid rgba(74,142,240,0.3);
+  background: rgba(74,142,240,0.06);
+  margin-top: 16px;
+}
+.m2calloutIcon { font-size: 22px; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+.m2callout strong { display: block; font-size: 13px; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+.m2callout p { font-size: 15px; color: var(--sub); line-height: 1.7; margin: 0; }
+.m2callout p strong { display: inline; color: var(--text); }
+
+/* ─── Pilares de jerarquía visual ─────────── */
+.m2pilarRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: stretch;
+  gap: 0;
+  margin-top: 32px;
+}
+.m2pilarCard {
+  padding: 28px 24px;
+  border-radius: var(--r);
+  border: 1px solid color-mix(in srgb, var(--pc) 25%, transparent);
+  background: color-mix(in srgb, var(--pc) 7%, rgba(6,8,15,0.6));
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.m2pilarCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--pc);
+}
+.m2pilarCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--pc) 20%, transparent);
+}
+.m2pilarCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.m2pilarNum { font-size: 11px; font-weight: 900; color: var(--pc); opacity: 0.7; letter-spacing: 0.06em; }
+.m2pilarIcon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--pc) 30%, transparent);
+  background: color-mix(in srgb, var(--pc) 12%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  color: var(--pc);
+}
+.m2pilarCard h3 { font-size: 20px; font-weight: 900; color: var(--text); margin-bottom: 10px; }
+.m2pilarCard p { font-size: 15px; color: var(--sub); line-height: 1.7; margin-bottom: 16px; }
+.m2pilarTag {
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--pc);
+  border: 1px solid color-mix(in srgb, var(--pc) 30%, transparent);
+  background: color-mix(in srgb, var(--pc) 8%, transparent);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.m2pilarArrow {
+  font-size: 18px;
+  color: var(--sub);
+  opacity: 0.25;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Heurísticas selector ───────────────── */
+.m2heuristic { display: flex; flex-direction: column; gap: 12px; }
+.m2heuristicTabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.m2hTab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.m2hTab:hover { border-color: var(--border-hover); color: var(--sub); }
+.m2hTab.active {
+  border-color: var(--accent-border);
+  background: var(--accent-sub);
+  color: var(--accent);
+}
+.m2hTabNum { font-size: 10px; font-weight: 900; letter-spacing: 0.04em; opacity: 0.7; }
+.m2heuristicPanel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 28px;
+  border-radius: var(--r);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-sub);
+  backdrop-filter: blur(20px);
+}
+.m2hPanelLeft {}
+.m2hEye { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 6px; }
+.m2hTitle { font-size: clamp(18px, 2.2vw, 26px); font-weight: 900; color: var(--text); margin-bottom: 10px; letter-spacing: -0.01em; }
+.m2hDesc { font-size: 15px; color: var(--sub); line-height: 1.7; margin-bottom: 20px; }
+.m2hExamples { display: flex; flex-direction: column; gap: 10px; }
+.m2hExample {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(6,8,15,0.5);
+}
+.m2hExampleLabel {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 5px;
+}
+.m2hExampleLabel.bad { color: #ff5050; }
+.m2hExampleLabel.good { color: #00e8c6; }
+.m2hExampleText { font-size: 14px; color: var(--sub); line-height: 1.55; }
+
+/* ─── Nav pipeline ───────────────────────── */
+.pipeline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+  margin-top: 24px;
+}
+.pipeBtn {
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pipeBtn:hover { border-color: var(--border-hover); color: var(--sub); }
+.pipeBtn.active { border-color: var(--accent-border); background: var(--accent-sub); color: var(--accent); }
+.pipeConnector { color: var(--muted); font-size: 14px; opacity: 0.3; }
+.pipePanel {
+  padding: 22px 24px;
+  border-radius: var(--r);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-sub);
+  backdrop-filter: blur(16px);
+  margin-top: 8px;
+}
+.pipeEye { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 5px; }
+.pipeTitle { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+.pipeText { font-size: 15px; color: var(--sub); line-height: 1.7; }
+.m2navDetail { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+.m2navWhen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.m2navWhenBox {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(6,8,15,0.4);
+}
+.m2navWhenLabel {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+.m2navWhenLabel.yes { color: #00e8c6; }
+.m2navWhenLabel.no { color: #ff5050; }
+.m2navWhenText { font-size: 14px; color: var(--sub); line-height: 1.55; }
+
+/* ─── Minijuego (reutiliza clases de M1) ─── */
+.m1game {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 28px;
+  backdrop-filter: blur(12px);
+  margin-top: 24px;
+}
+.m1gameScore { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--sub); margin-bottom: 20px; }
+.m1gameScore strong { color: var(--text); font-size: 18px; }
+.m1gameBadge {
+  font-size: 12px; font-weight: 800; color: var(--accent);
+  border: 1px solid var(--accent-border); background: var(--accent-sub);
+  padding: 3px 12px; border-radius: 999px;
+}
+.m1gameCards { display: flex; flex-direction: column; gap: 16px; }
+.m1gameCard { padding: 22px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+.m1gameCard.answered { border-color: var(--accent-border); }
+.m1gameScenario { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+.m1gameOptions { display: flex; flex-wrap: wrap; gap: 8px; }
+.m1gameOption {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.m1gameOption:hover:not(:disabled) { border-color: var(--border-hover); color: var(--sub); }
+.m1gameOption.correct { border-color: rgba(0,232,198,0.5); background: rgba(0,232,198,0.1); color: #00e8c6; }
+.m1gameOption.wrong { border-color: rgba(255,80,80,0.5); background: rgba(255,80,80,0.08); color: #ff5050; }
+.m1gameHint { margin-top: 12px; font-size: 14px; color: var(--sub); padding: 10px 14px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); display: none; line-height: 1.6; }
+.m1gameHint.show { display: block; }
+.m1gameReset {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 20px; padding: 10px 22px;
+  border-radius: 999px; border: 1px solid var(--accent-border);
+  background: var(--accent-sub); color: var(--accent);
+  font-size: 13px; font-weight: 800; font-family: inherit; cursor: pointer; transition: all 0.2s;
+}
+.m1gameReset:hover { background: var(--accent-mid); }
+
+/* ─── Quiz (reutiliza clases de M1) ─────── */
+.m1quiz { border-radius: var(--r); border: 1px solid var(--border); overflow: hidden; margin-top: 24px; }
+.m1quizHeader { padding: 20px 28px 0; background: var(--surface); backdrop-filter: blur(12px); }
+.m1quizMeta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.m1quizMetaLabel { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); }
+.m1quizMetaNum { font-size: 13px; font-weight: 700; color: var(--accent); }
+.m1quizProgress { height: 6px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.m1quizProgressBar { height: 100%; background: var(--accent); transition: width 0.4s ease; box-shadow: 0 0 8px var(--accent); }
+.m1quizBody { padding: 28px; background: rgba(6,8,15,0.4); }
+.m1quizQ { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 20px; line-height: 1.4; }
+.m1quizOptions { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.m1quizOption {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; border-radius: 12px;
+  border: 1px solid var(--border); background: rgba(255,255,255,0.025);
+  color: var(--sub); font-size: 15px; font-family: inherit; cursor: pointer; text-align: left; transition: all 0.2s;
+}
+.m1quizOption::before {
+  content: attr(data-opt); font-size: 12px; font-weight: 900; color: var(--muted);
+  width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s;
+}
+.m1quizOption:hover:not(:disabled) { border-color: var(--accent-border); color: var(--text); background: var(--accent-sub); }
+.m1quizOption:hover:not(:disabled)::before { border-color: var(--accent); color: var(--accent); }
+.m1quizOption.correct { border-color: rgba(0,232,198,0.5); background: rgba(0,232,198,0.08); color: #00e8c6; }
+.m1quizOption.correct::before { border-color: #00e8c6; color: #00e8c6; background: rgba(0,232,198,0.12); }
+.m1quizOption.wrong { border-color: rgba(255,80,80,0.4); background: rgba(255,80,80,0.07); color: #ff5050; }
+.m1quizOption.wrong::before { border-color: #ff5050; color: #ff5050; }
+.m1quizExplain { font-size: 15px; color: var(--sub); padding: 16px 18px; border-radius: 10px; background: rgba(255,255,255,0.03); border-left: 3px solid var(--accent); margin-bottom: 20px; line-height: 1.7; }
+.m1quizNext { padding: 12px 28px; border-radius: 999px; border: 1px solid var(--accent-border); background: var(--accent-sub); color: var(--accent); font-size: 15px; font-weight: 800; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+.m1quizNext:hover { background: var(--accent-mid); }
+.m1quizResult { text-align: center; padding: 48px 20px; }
+.m1quizResultScore { font-size: clamp(64px, 10vw, 96px); font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 6px; text-shadow: 0 0 40px var(--accent-mid); }
+.m1quizResultLabel { font-size: 16px; color: var(--sub); margin-bottom: 20px; }
+.m1quizResultMsg { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 28px; max-width: 400px; margin-inline: auto; line-height: 1.5; }
+.m1quizRetry { padding: 12px 28px; border-radius: 999px; border: 1px solid var(--accent-border); background: var(--accent-sub); color: var(--accent); font-size: 15px; font-weight: 800; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+.m1quizRetry:hover { background: var(--accent-mid); }
+
+/* ─── Flip cards (reutiliza clases de M1) ── */
+@keyframes flipHintPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+.m1flipGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+.m1flipCard { height: 200px; perspective: 1000px; cursor: pointer; }
+.m1flipInner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1); }
+.m1flipCard.flipped .m1flipInner { transform: rotateY(180deg); }
+.m1flipFront, .m1flipBack {
+  position: absolute; inset: 0; border-radius: var(--r);
+  border: 1px solid var(--border); backface-visibility: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 22px 18px; text-align: center; gap: 10px;
+}
+.m1flipFront { background: var(--surface); backdrop-filter: blur(12px); transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s; }
+.m1flipCard:hover .m1flipFront { border-color: var(--accent-border); box-shadow: 0 0 20px var(--accent-sub), inset 0 0 20px var(--accent-sub); transform: translateY(-3px); }
+.m1flipFront strong { font-size: 16px; font-weight: 800; color: var(--text); }
+.m1flipHint { font-size: 12px; color: var(--accent); display: flex; align-items: center; gap: 5px; font-weight: 700; animation: flipHintPulse 2s ease-in-out infinite; }
+.m1flipCard.flipped .m1flipHint { animation: none; }
+.m1flipBack { background: linear-gradient(135deg, var(--accent-sub) 0%, rgba(6,8,15,0.8) 100%); border-color: var(--accent-border); backdrop-filter: blur(16px); transform: rotateY(180deg); }
+.m1flipBack p { font-size: 14px; color: var(--text); line-height: 1.65; margin: 0; }
+
+/* ─── Activity blocks (reutiliza clases M1) ─ */
+.m1actTheory { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; margin-top: 28px; margin-bottom: 28px; }
+.m1actTheoryEye { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 10px; }
+.m1actTheoryText h3 { font-size: clamp(16px,1.8vw,22px); font-weight: 900; color: var(--text); margin-bottom: 12px; letter-spacing: -0.01em; }
+.m1actTheoryText p { font-size: 16px; color: var(--sub); line-height: 1.8; margin-bottom: 12px; }
+.m1actTheoryText p strong { color: var(--text); }
+.m1actTheoryTips { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.m1actTheoryTip { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--sub); line-height: 1.5; }
+.m1actTheoryTip i { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+.m1actTheoryTip strong { color: var(--text); }
+.m1actTheoryExample { position: sticky; top: 70px; }
+.m1actTheoryExampleLabel { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 12px; }
+.m1actDiagram { border-radius: var(--r); border: 1px solid var(--accent-border); background: rgba(6,8,15,0.6); backdrop-filter: blur(20px); overflow: hidden; }
+.m1actDiagramHeader { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--accent-sub); }
+.m1actDiagramAppName { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+.m1actDiagramInteraction { font-size: 12px; color: var(--sub); }
+
+/* ─── Audit flow (nuevo en M2) ───────────── */
+.m2auditFlow { display: flex; flex-direction: column; gap: 0; }
+.m2auditRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.m2auditRow:last-child { border-bottom: none; }
+.m2auditRowIcon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.m2auditGood .m2auditRowIcon { color: #00e8c6; }
+.m2auditBad .m2auditRowIcon { color: #ff5050; }
+.m2auditFix .m2auditRowIcon { color: var(--accent); }
+.m2auditRowLabel { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+.m2auditGood .m2auditRowLabel { color: #00e8c6; }
+.m2auditBad .m2auditRowLabel { color: #ff5050; }
+.m2auditFix .m2auditRowLabel { color: var(--accent); }
+.m2auditRowText { font-size: 14px; color: var(--sub); line-height: 1.55; }
+
+/* ─── Mission box (reutiliza clases M1) ──── */
+.m1missionBox { border-radius: var(--r); border: 1px solid var(--border); background: var(--surface); backdrop-filter: blur(12px); overflow: hidden; margin-top: 24px; }
+.m1missionHeader { padding: 24px 28px 20px; border-bottom: 1px solid var(--border); }
+.m1missionBadge { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); border: 1px solid var(--accent-border); background: var(--accent-sub); padding: 4px 12px; border-radius: 999px; margin-bottom: 10px; }
+.m1missionHeader h3 { font-size: clamp(18px,2.2vw,26px); font-weight: 900; color: var(--text); letter-spacing: -0.01em; }
+.m1missionSteps { padding: 20px 28px; display: flex; flex-direction: column; gap: 0; }
+.m1missionStep { display: flex; align-items: flex-start; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+.m1missionStep:last-child { border-bottom: none; }
+.m1missionStepIcon { width: 42px; height: 42px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--sc) 30%, transparent); background: color-mix(in srgb, var(--sc) 10%, transparent); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--sc); flex-shrink: 0; }
+.m1missionStepBody strong { display: block; font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+.m1missionStepBody p { font-size: 15px; color: var(--sub); line-height: 1.7; margin: 0; }
+
+/* ─── Rubric (reutiliza clases M1) ───────── */
+.m1rubric { margin-top: 24px; padding: 28px; border-radius: var(--r); border: 1px solid var(--border); background: rgba(255,255,255,0.015); }
+.m1rubricTitle { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 22px; }
+.m1rubricItems { display: flex; flex-direction: column; gap: 16px; }
+.m1rubricItem { display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: center; padding: 16px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); }
+.m1rubricPct { font-size: 24px; font-weight: 900; color: var(--accent); line-height: 1; text-align: center; }
+.m1rubricInfo strong { display: block; font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.m1rubricInfo span { font-size: 14px; color: var(--sub); line-height: 1.5; }
+.m1rubricBar { margin-top: 10px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.m1rubricFill { height: 100%; border-radius: 999px; background: var(--accent); width: var(--pct); transition: width 0.9s cubic-bezier(0.4,0,0.2,1); }
+
+/* ─── Footer nav ─────────────────────────── */
+.mfootNav { display: flex; align-items: center; gap: 8px; }
+.mfootBtnDisabled { opacity: 0.3; pointer-events: none; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--sub); padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border); }
+
+/* ─── Responsive ─────────────────────────── */
+@media (max-width: 1100px) {
+  .m1flipGrid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 960px) {
+  .m2heuristicPanel { grid-template-columns: 1fr; }
+  .m2navWhen { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .m2objGrid { grid-template-columns: 1fr; }
+  .m2pilarRow { grid-template-columns: 1fr; gap: 16px; }
+  .m2pilarArrow { display: none; }
+  .m2splitLayout { grid-template-columns: 1fr; }
+  .m1flipGrid { grid-template-columns: repeat(2, 1fr); }
+  .m1actTheory { grid-template-columns: 1fr; }
+  .m1actTheoryExample { position: static; }
+  .m2heroStats { max-width: 100%; }
+  .m2heroStat { padding: 18px 20px; }
+}
+@media (max-width: 600px) {
+  .m1flipGrid { grid-template-columns: repeat(2, 1fr); }
+  .pipeConnector { display: none; }
+  .pipeline { justify-content: center; }
+  .m1quizBody { padding: 18px; }
+  .m1missionSteps { padding: 16px 20px; }
+  .m1missionHeader { padding: 20px; }
+}

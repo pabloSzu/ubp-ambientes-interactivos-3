@@ -357,6 +357,7 @@ function setText(id, value) {
 
 function moduleUrl(targetId) {
   if (targetId === 1) return 'modulo1.html';
+  if (targetId === 2) return 'modulo2.html';
   return `modulo.html?m=${targetId}`;
 }
 
