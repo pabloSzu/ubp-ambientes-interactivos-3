@@ -291,7 +291,7 @@
         </div>
         <div class="m1splitLayout reveal">
           <div class="m1splitImg">
-            <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f4834c?w=700&q=80&fit=crop" alt="TV digital" />
+            <img src="https://images.unsplash.com/photo-1461151304267-38231e7dbc47?w=700&q=80&fit=crop" alt="TV digital pantalla" />
             <div class="m1splitImgBadge">Estándar ISDB-Tb · Argentina desde 2009</div>
           </div>
           <div class="m1splitContent">
@@ -529,6 +529,58 @@
           <span class="msecEye"><i class="ph ph-pencil-line"></i> Tu turno</span>
           <h2>Actividad Práctica</h2>
           <p class="msecSub">Esta actividad vale <strong>10 puntos</strong> y la subís al Campus Virtual antes de la próxima clase. No hay respuestas únicas — hay análisis bien fundamentados.</p>
+        </div>
+
+        <!-- Marco teórico para el análisis -->
+        <div class="m1actTheory reveal">
+          <div class="m1actTheoryText">
+            <div class="m1actTheoryEye"><i class="ph-bold ph-book-bookmark"></i> Antes de arrancar</div>
+            <h3>¿Cómo analizás un sistema interactivo?</h3>
+            <p>Un buen análisis no describe lo que hace la app — describe <strong>cómo dialoga con el usuario</strong>. La diferencia parece sutil pero es enorme. "El botón reproduce el video" no es un análisis. "El usuario presiona Play → el sistema decodifica el stream y actualiza el buffer → la barra de progreso avanza en tiempo real" sí lo es.</p>
+            <p>Para cada interacción que elijas, preguntate tres cosas: ¿<strong>qué hizo el usuario exactamente</strong>? ¿<strong>qué procesó el sistema</strong> por dentro? ¿<strong>cómo le avisó</strong> al usuario que algo pasó? Si no podés responder las tres, el ciclo está incompleto.</p>
+            <div class="m1actTheoryTips">
+              <div class="m1actTheoryTip">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <span>Elegí interacciones donde el feedback sea <strong>visible y medible</strong></span>
+              </div>
+              <div class="m1actTheoryTip">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <span>Distinguí entre feedback <strong>inmediato</strong> (animación) y <strong>diferido</strong> (notificación al día siguiente)</span>
+              </div>
+              <div class="m1actTheoryTip">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <span>Justificá el nivel con <strong>evidencia del sistema</strong>, no con intuición</span>
+              </div>
+            </div>
+          </div>
+          <div class="m1actTheoryExample">
+            <div class="m1actTheoryExampleLabel">Ejemplo de diagrama esperado</div>
+            <div class="m1actDiagram">
+              <div class="m1actDiagramTitle">Instagram Stories — Interacción: "Me gusta"</div>
+              <div class="m1actDiagramFlow">
+                <div class="m1actDiagramNode" style="--nc:#ffd166">
+                  <div class="m1actDiagramNodeIcon"><i class="ph-bold ph-hand-tap"></i></div>
+                  <div class="m1actDiagramNodeLabel">ACCIÓN</div>
+                  <div class="m1actDiagramNodeText">Usuario toca dos veces la pantalla sobre la story</div>
+                </div>
+                <div class="m1actDiagramArrow"><i class="ph-bold ph-arrow-down"></i></div>
+                <div class="m1actDiagramNode" style="--nc:#00e8c6">
+                  <div class="m1actDiagramNodeIcon"><i class="ph-bold ph-cpu"></i></div>
+                  <div class="m1actDiagramNodeLabel">PROCESO</div>
+                  <div class="m1actDiagramNodeText">API registra la reacción, actualiza el contador y notifica al creador</div>
+                </div>
+                <div class="m1actDiagramArrow"><i class="ph-bold ph-arrow-down"></i></div>
+                <div class="m1actDiagramNode" style="--nc:#9b6fff">
+                  <div class="m1actDiagramNodeIcon"><i class="ph-bold ph-heart"></i></div>
+                  <div class="m1actDiagramNodeLabel">FEEDBACK</div>
+                  <div class="m1actDiagramNodeText">Corazón animado aparece en pantalla + vibración háptica</div>
+                </div>
+              </div>
+              <div class="m1actDiagramLevel">
+                <i class="ph-bold ph-chart-bar"></i> Nivel: <strong>Cocreación (N4)</strong> — el usuario produce una reacción que otros ven
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="m1missionBox reveal">
