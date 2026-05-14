@@ -287,214 +287,148 @@ function renderFlashQuiz() {
   });
 }
 
-/* ─── Race Condition Simulator ───────────── */
+/* ─── Race Condition Step-by-Step Simulator ─── */
 
-/**
- * Genuine simulation of read-modify-write race condition.
- * Models 3 threads each doing 100 increments on a shared counter.
- * Random interleaving causes lost updates, producing values < 300.
- */
-function simulateRaceCondition() {
-  let counter = 0;
-  const THREADS = 3;
-  const INCREMENTS = 100;
-  const ops = [];
+const SIM_STEPS = [
+  { type:'read',   actor:1, r1:0,    r2:null, ctr:0, lost:0, op1:'READ counter',         op2:'En espera',
+    desc:'Thread 1 ejecuta <code>int temp = counter</code> — lee <b>counter = 0</b> y lo copia en su registro local (<b>temp = 0</b>)' },
+  { type:'write',  actor:1, r1:0,    r2:null, ctr:1, lost:0, op1:'WRITE counter = 1',    op2:'En espera',
+    desc:'Thread 1 ejecuta <code>counter = temp + 1</code> — escribe <b>counter = 1</b>. Primer incremento exitoso ✓' },
+  { type:'read',   actor:2, r1:null, r2:1,    ctr:1, lost:0, op1:'En espera',            op2:'READ counter',
+    desc:'Thread 2 ejecuta <code>int temp = counter</code> — lee <b>counter = 1</b> → <b>temp = 1</b>' },
+  { type:'switch', actor:0, r1:null, r2:1,    ctr:1, lost:0, op1:'Interrumpido',         op2:'Bloqueado (temp=1 guardado)',
+    desc:'⚡ <b>Context switch</b> — el scheduler interrumpe Thread 2 <i>después del READ, antes del WRITE</i>. Thread 2 guarda su estado (temp=1) y espera.' },
+  { type:'read',   actor:1, r1:1,    r2:1,    ctr:1, lost:0, op1:'READ counter',         op2:'Bloqueado (temp=1 guardado)',
+    desc:'⚠️ Thread 1 lee <b>counter = 1</b> → <b>temp = 1</b>. <span class="sim-warn">Thread 2 también tiene temp = 1 — ¡los dos leyeron el mismo valor!</span>' },
+  { type:'write',  actor:1, r1:1,    r2:1,    ctr:2, lost:0, op1:'WRITE counter = 2',   op2:'Bloqueado (temp=1 guardado)',
+    desc:'Thread 1 calcula <code>temp + 1 = 2</code> y escribe → <b>counter = 2</b>' },
+  { type:'switch', actor:0, r1:1,    r2:1,    ctr:2, lost:0, op1:'Listo',               op2:'Retomando (temp=1)',
+    desc:'⚡ <b>Context switch</b> — el scheduler vuelve a Thread 2. Thread 2 recupera su estado guardado: <b>temp = 1</b> (el valor que leyó antes de ser interrumpido).' },
+  { type:'lost',   actor:2, r1:null, r2:1,    ctr:2, lost:1, op1:'Listo',               op2:'WRITE counter = 2 ← ERROR',
+    desc:'💥 Thread 2 calcula <code>temp + 1 = 2</code> y escribe counter = 2. <b>¡Pero counter ya era 2!</b> El incremento de Thread 1 (del paso 6) fue sobreescrito. Counter debería ser <b>3</b> pero queda en <b>2</b>. <b>Se perdió 1 incremento.</b>' },
+  { type:'read',   actor:1, r1:2,    r2:null, ctr:2, lost:1, op1:'READ counter',        op2:'Listo',
+    desc:'Thread 1 lee <b>counter = 2</b> → temp = 2' },
+  { type:'write',  actor:1, r1:2,    r2:null, ctr:3, lost:1, op1:'WRITE counter = 3',  op2:'Listo',
+    desc:'Thread 1 calcula <code>2 + 1 = 3</code> → <b>counter = 3</b>. Thread 1 completó sus 3 incrementos.' },
+  { type:'read',   actor:2, r1:null, r2:3,    ctr:3, lost:1, op1:'Terminado',          op2:'READ counter',
+    desc:'Thread 2 lee <b>counter = 3</b> → temp = 3' },
+  { type:'write',  actor:2, r1:null, r2:3,    ctr:4, lost:1, op1:'Terminado',          op2:'WRITE counter = 4',
+    desc:'Thread 2 escribe <b>counter = 4</b>' },
+  { type:'read',   actor:2, r1:null, r2:4,    ctr:4, lost:1, op1:'Terminado',          op2:'READ counter',
+    desc:'Thread 2 lee <b>counter = 4</b> → temp = 4' },
+  { type:'write',  actor:2, r1:null, r2:4,    ctr:5, lost:1, op1:'Terminado',          op2:'WRITE counter = 5',
+    desc:'Thread 2 escribe <b>counter = 5</b>. Thread 2 completó sus 3 incrementos.' },
+  { type:'done',   actor:0, r1:null, r2:null, ctr:5, lost:1, op1:'Terminado',          op2:'Terminado',
+    desc:'🏁 <b>Simulación completa.</b> T1 hizo 3 incrementos, T2 hizo 3 incrementos = 6 esperados. Resultado: <b>counter = 5</b>. Se perdió <b>1 incremento</b> — el del paso 8 sobreescribió el paso 6.' },
+];
 
-  // Build a list of all operations: [threadId, 'read'/'write', value_at_time]
-  // Simulate with a micro-scheduler: each increment = READ then WRITE
-  // We interleave randomly — at any READ point, another thread may READ the same value
-  // before the first thread WRITEs
+let simCurrentStep = -1;
+let simPlayInterval = null;
 
-  // Represent each thread's pending writes as a queue
-  // For realism: each increment of each thread is one event (read+modify+write trio)
-  // Randomly, the WRITE of one event may be delayed past another thread's READ
+function simRender(idx) {
+  if (idx < 0 || idx >= SIM_STEPS.length) return;
+  const s = SIM_STEPS[idx];
 
-  const threadRegs = [0, 0, 0];    // each thread's local register
-  const threadIter = [0, 0, 0];    // how many increments done per thread
-  const threadPhase = ['read', 'read', 'read']; // current step per thread
+  const ctrEl = document.getElementById('simCtrVal');
+  if (ctrEl) {
+    ctrEl.textContent = s.ctr;
+    ctrEl.className = 'm3simSharedVarVal' + (s.type === 'lost' ? ' lost' : '');
+    if (s.type === 'lost' && typeof anime !== 'undefined') {
+      anime({ targets: ctrEl, scale: [1.2, 1], color: ['#ff5050', '#ff5050'], duration: 600, easing: 'easeOutBack' });
+    }
+  }
+  const box = document.getElementById('simSharedBox');
+  if (box) box.className = 'm3simSharedBox' + (s.type === 'lost' ? ' lostState' : '');
 
-  let sharedCounter = 0;
-  let totalOps = THREADS * INCREMENTS * 2; // each increment = read + write
+  const r1El = document.getElementById('simRegVal1');
+  const r2El = document.getElementById('simRegVal2');
+  if (r1El) r1El.textContent = s.r1 !== null ? s.r1 : '?';
+  if (r2El) r2El.textContent = s.r2 !== null ? s.r2 : '?';
 
-  // Run until all threads complete
-  let safetyLimit = totalOps * 5;
-  while (threadIter.some((v, i) => v < INCREMENTS) && safetyLimit-- > 0) {
-    // Pick a random thread that still has work
-    const active = [0, 1, 2].filter(t => threadIter[t] < INCREMENTS);
-    if (active.length === 0) break;
-    const t = active[Math.floor(Math.random() * active.length)];
+  const op1El = document.getElementById('simOp1');
+  const op2El = document.getElementById('simOp2');
+  if (op1El) op1El.textContent = s.op1;
+  if (op2El) op2El.textContent = s.op2;
 
-    if (threadPhase[t] === 'read') {
-      // READ: thread reads current shared counter into its register
-      threadRegs[t] = sharedCounter;
-      threadPhase[t] = 'write';
-    } else {
-      // WRITE: thread writes register + 1 back to shared counter
-      sharedCounter = threadRegs[t] + 1;
-      threadPhase[t] = 'read';
-      threadIter[t]++;
+  const lostEl = document.getElementById('simLost');
+  if (lostEl) {
+    const prev = parseInt(lostEl.textContent) || 0;
+    lostEl.textContent = s.lost;
+    if (s.lost > prev && typeof anime !== 'undefined') {
+      anime({ targets: lostEl, scale: [1.5, 1], duration: 500, easing: 'easeOutBack' });
     }
   }
 
-  // Ensure remaining threads finish their writes
-  [0, 1, 2].forEach(t => {
-    if (threadPhase[t] === 'write') {
-      sharedCounter = threadRegs[t] + 1;
-      threadIter[t]++;
-    }
-  });
+  const a1 = document.getElementById('simActor1');
+  const a2 = document.getElementById('simActor2');
+  if (a1) a1.classList.remove('active', 'dim');
+  if (a2) a2.classList.remove('active', 'dim');
+  if (s.actor === 1) { a1 && a1.classList.add('active'); a2 && a2.classList.add('dim'); }
+  else if (s.actor === 2) { a2 && a2.classList.add('active'); a1 && a1.classList.add('dim'); }
 
-  // Add some natural variance based on actual interleaving patterns
-  // The simulation above captures most races but add realistic noise
-  const naturalLoss = Math.floor(Math.random() * 45);
-  const result = Math.max(THREADS * INCREMENTS - naturalLoss - Math.floor(Math.random() * 20), THREADS * INCREMENTS - 120);
+  const stepBox = document.getElementById('simStepBox');
+  if (stepBox) stepBox.className = 'm3simStepBox ' + s.type;
+  const descEl = document.getElementById('simStepDesc');
+  if (descEl) descEl.innerHTML = s.desc;
+  const numEl = document.getElementById('simStepNum');
+  if (numEl) numEl.textContent = `Paso ${idx + 1} / ${SIM_STEPS.length}`;
 
-  // Occasionally (5% chance) it's "perfect" — lucky scheduling
-  if (Math.random() < 0.05) return THREADS * INCREMENTS;
-  return result;
+  const log = document.getElementById('simLog');
+  if (log && !document.getElementById(`simLog${idx}`)) {
+    const entry = document.createElement('div');
+    entry.id = `simLog${idx}`;
+    entry.className = 'm3simLogEntry ' + s.type;
+    entry.innerHTML = `<span class="m3simLogIdx">${idx + 1}</span><span class="m3simLogText">${s.desc}</span>`;
+    log.appendChild(entry);
+    entry.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
 
-let simRunning = false;
-
-function runSimulation() {
-  if (simRunning) return;
-  simRunning = true;
-
-  const fills = [
-    document.getElementById('t1Fill'),
-    document.getElementById('t2Fill'),
-    document.getElementById('t3Fill'),
-  ];
-  const phases = [
-    document.getElementById('t1Phase'),
-    document.getElementById('t2Phase'),
-    document.getElementById('t3Phase'),
-  ];
-  const counterEl = document.getElementById('simCounter');
-
-  // Reset
-  fills.forEach(f => { if (f) f.style.width = '0%'; });
-  phases.forEach((p, i) => { if (p) p.textContent = 'Iniciando...'; });
-  if (counterEl) { counterEl.textContent = '—'; counterEl.className = 'm3simCounterVal'; }
-  document.getElementById('simResults').style.display = 'none';
-
-  const result = simulateRaceCondition();
-  const expected = 300;
-  const duration = 1800;
-  const start = performance.now();
-
-  const phaseNames = [
-    ['Leyendo counter...', 'Modificando valor...', 'Escribiendo...', 'Completado'],
-    ['READ counter=?', 'MODIFY +1', 'WRITE resultado', 'Terminado'],
-    ['Esperando CPU...', 'READ', 'WRITE', 'Join'],
-  ];
-  let phaseTick = 0;
-  const phaseInterval = setInterval(() => {
-    phaseTick++;
-    phases.forEach((p, i) => {
-      if (p) p.textContent = phaseNames[i][Math.min(phaseTick, phaseNames[i].length - 1)];
-    });
-    if (phaseTick >= 3) clearInterval(phaseInterval);
-  }, 500);
-
-  function tick(now) {
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-
-    // Each thread moves at different rates to show race
-    const t1p = Math.min(progress * 1.3, 1);
-    const t2p = Math.min(progress * 0.9 + (progress > 0.3 ? 0.1 : 0), 1);
-    const t3p = Math.min(progress * 1.1 - (progress > 0.5 ? 0.05 : 0), 1);
-
-    if (fills[0]) fills[0].style.width = `${t1p * 100}%`;
-    if (fills[1]) fills[1].style.width = `${t2p * 100}%`;
-    if (fills[2]) fills[2].style.width = `${Math.max(t3p, 0) * 100}%`;
-
-    // Animate counter value increasing (show wrong intermediate values)
-    const displayed = Math.floor(progress * result);
-    if (counterEl) counterEl.textContent = displayed;
-
-    if (progress < 1) {
-      requestAnimationFrame(tick);
-    } else {
-      // Show final result
-      if (counterEl) {
-        counterEl.textContent = result;
-        if (result !== expected) {
-          counterEl.classList.add('race');
-        } else {
-          counterEl.classList.add('correct');
-        }
-      }
-      fills.forEach(f => { if (f) f.style.width = '100%'; });
-      phases.forEach(p => { if (p) p.textContent = 'Completado'; });
-      simRunning = false;
-    }
-  }
-
-  requestAnimationFrame(tick);
+function simNext() {
+  if (simCurrentStep >= SIM_STEPS.length - 1) { simStopPlay(); return; }
+  simCurrentStep++;
+  simRender(simCurrentStep);
 }
 
-function runMultiple() {
-  const resultsEl = document.getElementById('simResults');
-  if (!resultsEl) return;
-
-  const runs = [];
-  for (let i = 0; i < 6; i++) {
-    runs.push(simulateRaceCondition());
-  }
-
-  // Quick progress bar animation
-  const fills = [
-    document.getElementById('t1Fill'),
-    document.getElementById('t2Fill'),
-    document.getElementById('t3Fill'),
-  ];
-  fills.forEach(f => { if (f) f.style.width = '100%'; });
-
-  const phases = ['t1Phase', 't2Phase', 't3Phase'];
-  phases.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = 'Simulación múltiple completada';
-  });
-
-  const counterEl = document.getElementById('simCounter');
-  if (counterEl) {
-    const last = runs[runs.length - 1];
-    counterEl.textContent = last;
-    counterEl.className = 'm3simCounterVal ' + (last !== 300 ? 'race' : 'correct');
-  }
-
-  const itemsHtml = runs.map((v, i) => `
-    <div class="m3simResultItem ${v !== 300 ? 'race' : 'ok'}">
-      <div class="run">Ejecución ${i + 1}</div>
-      <div class="val">${v}</div>
-    </div>
-  `).join('');
-
-  resultsEl.innerHTML = `
-    <div class="m3simResultsTitle">Resultados de 6 ejecuciones (esperado: 300 en todas)</div>
-    <div class="m3simResultsGrid">${itemsHtml}</div>
-  `;
-  resultsEl.style.display = 'block';
+function simTogglePlay() {
+  if (simPlayInterval) simStopPlay(); else simStartPlay();
 }
 
-function resetSim() {
-  simRunning = false;
-  const fills = ['t1Fill', 't2Fill', 't3Fill'];
-  fills.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.width = '0%';
-  });
-  const phases = ['t1Phase', 't2Phase', 't3Phase'];
-  phases.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = 'Esperando...';
-  });
-  const counterEl = document.getElementById('simCounter');
-  if (counterEl) { counterEl.textContent = '—'; counterEl.className = 'm3simCounterVal'; }
-  const resultsEl = document.getElementById('simResults');
-  if (resultsEl) resultsEl.style.display = 'none';
+function simStartPlay() {
+  const btn = document.getElementById('simPlayBtn');
+  if (btn) btn.innerHTML = '<i class="ph-bold ph-pause"></i> Pausar';
+  simPlayInterval = setInterval(() => {
+    if (simCurrentStep >= SIM_STEPS.length - 1) { simStopPlay(); return; }
+    simNext();
+  }, 1700);
+}
+
+function simStopPlay() {
+  if (simPlayInterval) { clearInterval(simPlayInterval); simPlayInterval = null; }
+  const btn = document.getElementById('simPlayBtn');
+  if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Auto-play';
+}
+
+function simReset() {
+  simStopPlay();
+  simCurrentStep = -1;
+  const ctrEl = document.getElementById('simCtrVal');
+  if (ctrEl) { ctrEl.textContent = '0'; ctrEl.className = 'm3simSharedVarVal'; }
+  const box = document.getElementById('simSharedBox');
+  if (box) box.className = 'm3simSharedBox';
+  ['simRegVal1','simRegVal2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = '?'; });
+  ['simOp1','simOp2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = 'En espera'; });
+  const lostEl = document.getElementById('simLost');
+  if (lostEl) lostEl.textContent = '0';
+  ['simActor1','simActor2'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active','dim'); });
+  const stepBox = document.getElementById('simStepBox');
+  if (stepBox) stepBox.className = 'm3simStepBox';
+  const descEl = document.getElementById('simStepDesc');
+  if (descEl) descEl.innerHTML = 'Presioná <strong>Siguiente</strong> o <strong>Auto-play</strong> para ver la race condition en slow motion.';
+  const numEl = document.getElementById('simStepNum');
+  if (numEl) numEl.textContent = `Paso 0 / ${SIM_STEPS.length}`;
+  const log = document.getElementById('simLog');
+  if (log) log.innerHTML = '';
 }
 
 /* ─── Copy lab code ──────────────────────── */

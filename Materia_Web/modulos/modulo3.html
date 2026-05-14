@@ -454,54 +454,71 @@ stateDiagram-v2
           </div>
         </div>
 
-        <div class="m3simulator reveal">
-          <div class="m3simTitle">Simulador de Race Condition</div>
-          <div class="m3simThreads">
-            <div class="m3simThread">
-              <div class="m3simThreadHeader">
-                <span class="m3simThreadName" style="--tn:#00e8c6">Thread 1</span>
-                <span class="m3simThreadPhase" id="t1Phase">Esperando...</span>
+        <div class="m3simNew reveal">
+          <div class="m3simNewTitle">
+            <i class="ph-bold ph-film-strip"></i>
+            Paso a paso: ¿cómo se pierde un incremento?
+          </div>
+          <p class="m3simNewSub">El scheduler puede interrumpir un hilo entre el READ y el WRITE. Seguí cada paso para ver exactamente cómo dos hilos compiten por el mismo dato y uno sobreescribe el trabajo del otro.</p>
+
+          <div class="m3simArena">
+            <div class="m3simActor" id="simActor1">
+              <div class="m3simActorChip" style="--ac:#00e8c6">Thread 1</div>
+              <div class="m3simActorReg">
+                <span class="m3simRegLabel">registro local (temp)</span>
+                <span class="m3simRegVal" id="simRegVal1">?</span>
               </div>
-              <div class="m3simBar">
-                <div class="m3simBarFill" id="t1Fill" style="--tc:#00e8c6; width:0%"></div>
+              <span class="m3simActorOp" id="simOp1">En espera</span>
+            </div>
+
+            <div class="m3simSharedMem">
+              <span class="m3simSharedLabel">Memoria Compartida</span>
+              <div class="m3simSharedBox" id="simSharedBox">
+                <span class="m3simSharedVarName">counter</span>
+                <span class="m3simSharedVarVal" id="simCtrVal">0</span>
+              </div>
+              <div class="m3simSharedStats">
+                <div class="m3simSharedStat">
+                  <span class="slabel">Esperado</span>
+                  <span class="sval">6</span>
+                </div>
+                <div class="m3simSharedStat danger">
+                  <span class="slabel">Perdidos</span>
+                  <span class="sval" id="simLost">0</span>
+                </div>
               </div>
             </div>
-            <div class="m3simThread">
-              <div class="m3simThreadHeader">
-                <span class="m3simThreadName" style="--tn:#4a8ef0">Thread 2</span>
-                <span class="m3simThreadPhase" id="t2Phase">Esperando...</span>
+
+            <div class="m3simActor" id="simActor2">
+              <div class="m3simActorChip" style="--ac:#4a8ef0">Thread 2</div>
+              <div class="m3simActorReg">
+                <span class="m3simRegLabel">registro local (temp)</span>
+                <span class="m3simRegVal" id="simRegVal2">?</span>
               </div>
-              <div class="m3simBar">
-                <div class="m3simBarFill" id="t2Fill" style="--tc:#4a8ef0; width:0%"></div>
-              </div>
-            </div>
-            <div class="m3simThread">
-              <div class="m3simThreadHeader">
-                <span class="m3simThreadName" style="--tn:#a855f7">Thread 3</span>
-                <span class="m3simThreadPhase" id="t3Phase">Esperando...</span>
-              </div>
-              <div class="m3simBar">
-                <div class="m3simBarFill" id="t3Fill" style="--tc:#a855f7; width:0%"></div>
-              </div>
+              <span class="m3simActorOp" id="simOp2">En espera</span>
             </div>
           </div>
-          <div class="m3simCounter">
-            <div class="m3simCounterLabel">Valor de <code>counter</code></div>
-            <div class="m3simCounterVal" id="simCounter">—</div>
-            <div class="m3simCounterExpected">Esperado: <strong>300</strong></div>
+
+          <div class="m3simStepBox" id="simStepBox">
+            <div class="m3simStepNum" id="simStepNum">Paso 0 / 15</div>
+            <div class="m3simStepDesc" id="simStepDesc">Presioná <strong>Siguiente</strong> o <strong>Auto-play</strong> para ver la race condition en slow motion.</div>
           </div>
-          <div class="m3simBtns">
-            <button class="m3btn m3btnAccent" onclick="runSimulation()">
-              <i class="ph-bold ph-play"></i> Simular (1 vez)
+
+          <div class="m3simLogWrap">
+            <div class="m3simLog" id="simLog"></div>
+          </div>
+
+          <div class="m3simCtrlBtns">
+            <button class="m3btn m3btnAccent" id="simPlayBtn" onclick="simTogglePlay()">
+              <i class="ph-bold ph-play"></i> Auto-play
             </button>
-            <button class="m3btn" onclick="runMultiple()">
-              <i class="ph-bold ph-repeat"></i> Simular (6 veces)
+            <button class="m3btn" onclick="simNext()">
+              Siguiente <i class="ph-bold ph-arrow-right"></i>
             </button>
-            <button class="m3btn m3btnGhost" onclick="resetSim()">
-              <i class="ph-bold ph-arrow-counter-clockwise"></i> Resetear
+            <button class="m3btn m3btnGhost" onclick="simReset()">
+              <i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar
             </button>
           </div>
-          <div class="m3simResults" id="simResults" style="display:none"></div>
         </div>
 
         <div class="m3codeSection reveal">
@@ -716,7 +733,7 @@ public class EjecutorDemo {
 
           <div class="m3labEmbed">
             <iframe
-              src="https://onecompiler.com/java/embed?theme=dark&hideTitle=true"
+              src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
               width="100%"
               height="480"
               frameborder="0"
@@ -734,18 +751,22 @@ public class EjecutorDemo {
               </button>
             </div>
             <pre class="language-java" id="labCodeBlock"><code class="language-java">public class RaceConditionDemo {
-    static int counter = 0;
+    // volatile: fuerza lecturas/escrituras en RAM real (sin cache en registros CPU)
+    // PERO no garantiza atomicidad del read-modify-write — la race sigue ocurriendo
+    static volatile int counter = 0;
 
     public static void main(String[] args) throws InterruptedException {
         int HILOS = 3;
-        int INCREMENTOS = 1000;
+        int INCREMENTOS = 200;
         Thread[] threads = new Thread[HILOS];
 
         for (int t = 0; t &lt; HILOS; t++) {
             final int id = t + 1;
             threads[t] = new Thread(() -> {
                 for (int i = 0; i &lt; INCREMENTOS; i++) {
-                    counter++; // SIN sincronización — race condition aquí
+                    int temp = counter;   // PASO 1: READ — lee el valor actual
+                    Thread.yield();       // fuerza context switch aqui (el scheduler puede interrumpir)
+                    counter = temp + 1;  // PASO 2: WRITE — otro hilo pudo leer el mismo valor entre medio!
                 }
             }, "Thread-" + id);
         }
@@ -755,16 +776,17 @@ public class EjecutorDemo {
         for (Thread t : threads) t.join();
         long fin = System.currentTimeMillis();
 
+        int esperado = HILOS * INCREMENTOS;
         System.out.println("=== Race Condition Demo ===");
-        System.out.println("Resultado: " + counter);
-        System.out.println("Esperado:  " + (HILOS * INCREMENTOS));
-        System.out.println("Diferencia: " + (HILOS * INCREMENTOS - counter));
-        System.out.println("Tiempo: " + (fin - inicio) + "ms");
+        System.out.println("Resultado:  " + counter);
+        System.out.println("Esperado:   " + esperado);
+        System.out.println("Perdidos:   " + (esperado - counter) + " incrementos");
+        System.out.println("Tiempo:     " + (fin - inicio) + "ms");
 
-        if (counter == HILOS * INCREMENTOS) {
-            System.out.println("Tuviste suerte esta vez. Corré de nuevo.");
+        if (counter == esperado) {
+            System.out.println("Tuviste suerte esta vez. Corre de nuevo.");
         } else {
-            System.out.println("Race condition confirmada. Se perdieron incrementos.");
+            System.out.println("Race condition confirmada: " + (esperado - counter) + " incrementos se perdieron.");
         }
     }
 }</code></pre>

@@ -937,6 +937,168 @@
 }
 .m3rubricDesc { font-size: 13px; color: var(--sub); line-height: 1.6; }
 
+/* ─── Step-by-step simulator ────────────── */
+.m3simNew {
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  padding: 28px;
+  overflow: hidden;
+}
+.m3simNewTitle {
+  font-size: 17px; font-weight: 800; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 6px;
+}
+.m3simNewSub {
+  font-size: 14px; color: var(--sub); line-height: 1.65;
+  margin: 0 0 24px;
+}
+.m3simArena {
+  display: grid;
+  grid-template-columns: 1fr 140px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.m3simActor {
+  padding: 18px 16px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s, opacity 0.3s;
+}
+.m3simActor.active {
+  border-color: var(--accent-border);
+  background: var(--accent-sub);
+  transform: scale(1.02);
+}
+.m3simActor.dim { opacity: 0.35; }
+
+.m3simActorChip {
+  display: inline-flex; align-items: center;
+  font-size: 11px; font-weight: 800;
+  color: var(--ac, var(--accent));
+  padding: 3px 10px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--ac, var(--accent)) 35%, transparent);
+  background: color-mix(in srgb, var(--ac, var(--accent)) 12%, transparent);
+  width: fit-content;
+}
+.m3simActorReg { display: flex; flex-direction: column; gap: 3px; }
+.m3simRegLabel {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--muted);
+}
+.m3simRegVal {
+  font-size: 30px; font-weight: 900; color: var(--text);
+  font-family: 'Courier New', monospace; line-height: 1;
+}
+.m3simActorOp {
+  font-size: 11px; color: var(--sub); font-style: italic;
+  min-height: 16px;
+}
+
+.m3simSharedMem {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.m3simSharedLabel {
+  font-size: 8px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--muted); text-align: center;
+}
+.m3simSharedBox {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 2px solid var(--accent-border);
+  background: var(--accent-sub);
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  min-width: 90px;
+  transition: border-color 0.3s, background 0.3s;
+}
+.m3simSharedBox.lostState {
+  border-color: rgba(255,80,80,0.5);
+  background: rgba(255,80,80,0.08);
+}
+.m3simSharedVarName {
+  font-size: 10px; font-weight: 700;
+  color: var(--accent); font-family: 'Courier New', monospace;
+}
+.m3simSharedVarVal {
+  font-size: 40px; font-weight: 900; color: var(--accent);
+  font-family: 'Courier New', monospace; line-height: 1;
+  transition: color 0.3s;
+}
+.m3simSharedVarVal.lost {
+  color: #ff5050;
+  animation: simLostPulse 0.5s ease;
+}
+@keyframes simLostPulse {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.2); }
+}
+.m3simSharedStats {
+  display: flex; gap: 12px;
+}
+.m3simSharedStat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.m3simSharedStat .slabel {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--muted);
+}
+.m3simSharedStat .sval { font-size: 16px; font-weight: 900; color: var(--sub); }
+.m3simSharedStat.danger .sval { color: #ff5050; }
+
+.m3simStepBox {
+  padding: 14px 18px;
+  border-radius: 10px;
+  border-left: 3px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  margin-bottom: 14px;
+  transition: border-color 0.3s, background 0.3s;
+}
+.m3simStepBox.read   { border-color: #4a8ef0; background: rgba(74,142,240,0.06); }
+.m3simStepBox.write  { border-color: #00e8c6; background: rgba(0,232,198,0.06); }
+.m3simStepBox.switch { border-color: #ff9b6b; background: rgba(255,155,107,0.07); }
+.m3simStepBox.lost   { border-color: #ff5050; background: rgba(255,80,80,0.08); }
+.m3simStepBox.done   { border-color: #a855f7; background: rgba(168,85,247,0.06); }
+
+.m3simStepNum {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--muted); margin-bottom: 5px;
+}
+.m3simStepDesc { font-size: 14px; color: var(--text); line-height: 1.65; }
+.m3simStepDesc code { color: var(--accent); font-size: 13px; }
+.m3simStepDesc .sim-warn { color: #ff9b6b; font-weight: 700; }
+
+.m3simLogWrap {
+  max-height: 160px; overflow-y: auto; margin-bottom: 16px;
+  border-radius: 8px; border: 1px solid var(--border);
+}
+.m3simLog { display: flex; flex-direction: column; }
+.m3simLogEntry {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 12px; color: var(--sub); line-height: 1.5;
+}
+.m3simLogEntry:last-child { border-bottom: none; }
+.m3simLogEntry.lost  { background: rgba(255,80,80,0.06); color: var(--text); }
+.m3simLogEntry.done  { background: rgba(168,85,247,0.06); color: var(--text); font-weight: 700; }
+.m3simLogIdx {
+  font-size: 9px; font-weight: 900; color: var(--muted);
+  min-width: 18px; margin-top: 3px; flex-shrink: 0;
+}
+.m3simLogText code { color: var(--accent); font-size: 11px; }
+
+.m3simCtrlBtns {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .m3simArena { grid-template-columns: 1fr; }
+  .m3simSharedMem { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+}
+
 /* ─── Footer overrides ───────────────────── */
 .mfootLink {
   display: inline-flex; align-items: center; gap: 6px;
