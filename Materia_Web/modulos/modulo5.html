@@ -292,11 +292,47 @@
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-play-circle"></i> Simulador interactivo</span>
           <h2>¿Deadlock o sincronización? Vos elegís</h2>
-          <p class="msecSub">Seleccioná el modo y presioná Play. Observá cómo la misma mesa, los mismos filósofos y los mismos tenedores producen resultados radicalmente distintos según la estrategia de sincronización.</p>
+          <p class="msecSub">Los mismos 5 filósofos, los mismos 5 tenedores. Solo cambia si hay o no un semáforo de control. El resultado es radicalmente distinto.</p>
+        </div>
+
+        <!-- ── Cómo usar el simulador ─────────── -->
+        <div class="m5simGuide reveal">
+          <div class="m5simGuideStep">
+            <div class="m5simGuideNum">1</div>
+            <div class="m5simGuideText">
+              <strong>Elegí un modo</strong>
+              <span>Sin control → deadlock | Con Semáforo(4) → estable</span>
+            </div>
+          </div>
+          <i class="ph ph-arrow-right m5simGuideArrow"></i>
+          <div class="m5simGuideStep">
+            <div class="m5simGuideNum">2</div>
+            <div class="m5simGuideText">
+              <strong>Presioná Empezar</strong>
+              <span>El primer paso aparece con su explicación</span>
+            </div>
+          </div>
+          <i class="ph ph-arrow-right m5simGuideArrow"></i>
+          <div class="m5simGuideStep">
+            <div class="m5simGuideNum">3</div>
+            <div class="m5simGuideText">
+              <strong>Avanzá con Siguiente →</strong>
+              <span>Cada paso tiene una explicación detallada abajo</span>
+            </div>
+          </div>
+          <i class="ph ph-arrow-right m5simGuideArrow"></i>
+          <div class="m5simGuideStep">
+            <div class="m5simGuideNum">4</div>
+            <div class="m5simGuideText">
+              <strong>Probá los dos modos</strong>
+              <span>Compará deadlock vs semáforo paso a paso</span>
+            </div>
+          </div>
         </div>
 
         <div class="m5simWrap reveal">
-          <!-- Mode selector -->
+
+          <!-- ── 1. Selector de modo ── -->
           <div class="m5simModes">
             <button class="m5simModeBtn m5simModeActive" id="modeDeadlock" onclick="setMode('deadlock')">
               <i class="ph-bold ph-skull"></i>
@@ -310,120 +346,110 @@
             </button>
           </div>
 
-          <div class="m5simMain">
-            <!-- Dining table visual -->
-            <div class="m5simTableWrap">
-              <div class="m5simTable" id="simTable">
-                <div class="m5simTableCenter">
-                  <span class="m5simTableIcon"><i class="ph-bold ph-fork-knife"></i></span>
-                  <span class="m5simTableLabel">Mesa</span>
-                </div>
-
-                <!-- Philosophers -->
-                <div class="m5simPhil" id="sp0" style="--angle:270deg">
-                  <div class="m5simPhilBubble">
-                    <span class="m5simPhilId">F0</span>
-                    <span class="m5simPhilEmoji" id="se0">💭</span>
-                  </div>
-                  <span class="m5simPhilState" id="ss0">pensando</span>
-                </div>
-                <div class="m5simPhil" id="sp1" style="--angle:342deg">
-                  <div class="m5simPhilBubble">
-                    <span class="m5simPhilId">F1</span>
-                    <span class="m5simPhilEmoji" id="se1">💭</span>
-                  </div>
-                  <span class="m5simPhilState" id="ss1">pensando</span>
-                </div>
-                <div class="m5simPhil" id="sp2" style="--angle:54deg">
-                  <div class="m5simPhilBubble">
-                    <span class="m5simPhilId">F2</span>
-                    <span class="m5simPhilEmoji" id="se2">💭</span>
-                  </div>
-                  <span class="m5simPhilState" id="ss2">pensando</span>
-                </div>
-                <div class="m5simPhil" id="sp3" style="--angle:126deg">
-                  <div class="m5simPhilBubble">
-                    <span class="m5simPhilId">F3</span>
-                    <span class="m5simPhilEmoji" id="se3">💭</span>
-                  </div>
-                  <span class="m5simPhilState" id="ss3">pensando</span>
-                </div>
-                <div class="m5simPhil" id="sp4" style="--angle:198deg">
-                  <div class="m5simPhilBubble">
-                    <span class="m5simPhilId">F4</span>
-                    <span class="m5simPhilEmoji" id="se4">💭</span>
-                  </div>
-                  <span class="m5simPhilState" id="ss4">pensando</span>
-                </div>
-
-                <!-- Forks (between each pair) -->
-                <div class="m5simFork" id="sf0" style="--angle:306deg"><i class="ph-bold ph-fork-knife"></i></div>
-                <div class="m5simFork" id="sf1" style="--angle:18deg"><i class="ph-bold ph-fork-knife"></i></div>
-                <div class="m5simFork" id="sf2" style="--angle:90deg"><i class="ph-bold ph-fork-knife"></i></div>
-                <div class="m5simFork" id="sf3" style="--angle:162deg"><i class="ph-bold ph-fork-knife"></i></div>
-                <div class="m5simFork" id="sf4" style="--angle:234deg"><i class="ph-bold ph-fork-knife"></i></div>
+          <!-- ── 2. Mesa de filósofos (centrada, ancha) ── -->
+          <div class="m5simTableSection">
+            <div class="m5simTable" id="simTable">
+              <div class="m5simTableCenter">
+                <span class="m5simTableIcon"><i class="ph-bold ph-fork-knife"></i></span>
+                <span class="m5simTableLabel">Mesa</span>
               </div>
-
-              <!-- Legend -->
-              <div class="m5simLegend">
-                <span class="m5simLegendItem m5simLegThinking"><i class="ph ph-circle-dashed"></i> Pensando</span>
-                <span class="m5simLegendItem m5simLegHungry"><i class="ph ph-circle"></i> Hambriento</span>
-                <span class="m5simLegendItem m5simLegWaiting"><i class="ph ph-clock"></i> Esperando</span>
-                <span class="m5simLegendItem m5simLegEating"><i class="ph-bold ph-check-circle"></i> Comiendo</span>
-                <span class="m5simLegendItem m5simLegDead"><i class="ph-bold ph-skull"></i> Deadlock</span>
+              <div class="m5simPhil" id="sp0" style="--angle:270deg">
+                <div class="m5simPhilBubble"><span class="m5simPhilId">F0</span><span class="m5simPhilEmoji" id="se0">💭</span></div>
+                <span class="m5simPhilState" id="ss0">pensando</span>
               </div>
+              <div class="m5simPhil" id="sp1" style="--angle:342deg">
+                <div class="m5simPhilBubble"><span class="m5simPhilId">F1</span><span class="m5simPhilEmoji" id="se1">💭</span></div>
+                <span class="m5simPhilState" id="ss1">pensando</span>
+              </div>
+              <div class="m5simPhil" id="sp2" style="--angle:54deg">
+                <div class="m5simPhilBubble"><span class="m5simPhilId">F2</span><span class="m5simPhilEmoji" id="se2">💭</span></div>
+                <span class="m5simPhilState" id="ss2">pensando</span>
+              </div>
+              <div class="m5simPhil" id="sp3" style="--angle:126deg">
+                <div class="m5simPhilBubble"><span class="m5simPhilId">F3</span><span class="m5simPhilEmoji" id="se3">💭</span></div>
+                <span class="m5simPhilState" id="ss3">pensando</span>
+              </div>
+              <div class="m5simPhil" id="sp4" style="--angle:198deg">
+                <div class="m5simPhilBubble"><span class="m5simPhilId">F4</span><span class="m5simPhilEmoji" id="se4">💭</span></div>
+                <span class="m5simPhilState" id="ss4">pensando</span>
+              </div>
+              <div class="m5simFork" id="sf0" style="--angle:306deg"><i class="ph-bold ph-fork-knife"></i></div>
+              <div class="m5simFork" id="sf1" style="--angle:18deg"><i class="ph-bold ph-fork-knife"></i></div>
+              <div class="m5simFork" id="sf2" style="--angle:90deg"><i class="ph-bold ph-fork-knife"></i></div>
+              <div class="m5simFork" id="sf3" style="--angle:162deg"><i class="ph-bold ph-fork-knife"></i></div>
+              <div class="m5simFork" id="sf4" style="--angle:234deg"><i class="ph-bold ph-fork-knife"></i></div>
             </div>
 
-            <!-- Controls + log -->
-            <div class="m5simPanel">
-
-              <!-- ── PASO ACTUAL — panel grande de explicación ── -->
-              <div class="m5simStepPanel">
-                <div class="m5simStepBadge" id="simStepBadge">Elegí un modo ↑ y presioná Empezar</div>
-                <div class="m5simStepTitle" id="simStepTitle">Simulador paso a paso</div>
-                <p class="m5simStepExplain" id="simStepExplain">Seleccioná <strong>Sin control</strong> o <strong>Con Semáforo(4)</strong> arriba, luego presioná <strong>Empezar</strong>. Cada paso explica exactamente qué está pasando — y por qué.</p>
-                <div class="m5simStepInsight" id="simStepInsight" style="display:none"></div>
-              </div>
-
-              <!-- ── Semaphore permit visual ── -->
-              <div class="m5simPermitWrap" id="simPermitWrap" style="display:none">
-                <div class="m5simPermitLabel"><i class="ph ph-ticket"></i> Semáforo(4) — permisos disponibles</div>
-                <div class="m5simPermitRow">
-                  <div class="m5simPermitDots">
-                    <div class="m5simPermitDot m5permFree" id="perm0" title="Permiso 1"></div>
-                    <div class="m5simPermitDot m5permFree" id="perm1" title="Permiso 2"></div>
-                    <div class="m5simPermitDot m5permFree" id="perm2" title="Permiso 3"></div>
-                    <div class="m5simPermitDot m5permFree" id="perm3" title="Permiso 4"></div>
-                    <span class="m5simPermitCount" id="permCount">4/4</span>
-                  </div>
-                </div>
-                <div class="m5simPermitDesc">Punto morado = permiso libre. Máximo 4 filósofos pueden intentar comer a la vez.</div>
-              </div>
-
-              <!-- ── Navegación paso a paso ── -->
-              <div class="m5simNavRow">
-                <button class="m5simBtn" id="simPrevBtn" onclick="simPrevStep()" disabled>
-                  <i class="ph-bold ph-arrow-left"></i> Anterior
-                </button>
-                <span class="m5simStepCounter" id="simStepCounter">— / —</span>
-                <button class="m5simBtn m5simBtnAccent" id="simNextBtn" onclick="simNextStep()">
-                  Empezar <i class="ph-bold ph-arrow-right"></i>
-                </button>
-              </div>
-
-              <button class="m5simBtn" onclick="simReset()" style="width:100%;justify-content:center">
-                <i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar desde el principio
-              </button>
-
-              <!-- ── Historial ── -->
-              <div class="m5simLogWrap">
-                <div class="m5simLogLabel"><i class="ph ph-list-bullets"></i> Historial de pasos</div>
-                <div class="m5simLog" id="simLog">
-                  <div class="m5simLogEntry m5simLogInfo">Sistema listo. Elegí un modo y presioná Empezar.</div>
-                </div>
-              </div>
+            <div class="m5simLegend">
+              <span class="m5simLegendItem m5simLegThinking"><i class="ph ph-circle-dashed"></i> Pensando</span>
+              <span class="m5simLegendItem m5simLegHungry"><i class="ph ph-circle"></i> Hambriento</span>
+              <span class="m5simLegendItem m5simLegWaiting"><i class="ph ph-clock"></i> Esperando tenedor</span>
+              <span class="m5simLegendItem m5simLegEating"><i class="ph-bold ph-check-circle"></i> Comiendo</span>
+              <span class="m5simLegendItem m5simLegDead"><i class="ph-bold ph-skull"></i> Deadlock</span>
             </div>
           </div>
+
+          <!-- ── 3. Semáforo (solo en modo semáforo) ── -->
+          <div class="m5simPermitBar" id="simPermitWrap" style="display:none">
+            <div class="m5simPermitBarLeft">
+              <i class="ph-bold ph-ticket" style="font-size:20px;color:#a855f7"></i>
+              <div>
+                <div class="m5simPermitLabel">Semáforo(4) — permisos disponibles</div>
+                <div class="m5simPermitDesc">Punto morado = permiso libre. Solo 4 filósofos pueden intentar comer simultáneamente.</div>
+              </div>
+            </div>
+            <div class="m5simPermitBarRight">
+              <div class="m5simPermitDots">
+                <div class="m5simPermitDot m5permFree" id="perm0" title="Permiso 1"></div>
+                <div class="m5simPermitDot m5permFree" id="perm1" title="Permiso 2"></div>
+                <div class="m5simPermitDot m5permFree" id="perm2" title="Permiso 3"></div>
+                <div class="m5simPermitDot m5permFree" id="perm3" title="Permiso 4"></div>
+              </div>
+              <span class="m5simPermitCount" id="permCount">4/4</span>
+            </div>
+          </div>
+
+          <!-- ── 4. Explicación del paso (altura fija — sin saltos) ── -->
+          <div class="m5simExplainSection">
+            <div class="m5simExplainTop">
+              <div class="m5simExplainProgressWrap">
+                <div class="m5simExplainProgressBar">
+                  <div class="m5simExplainProgressFill" id="simProgressFill" style="width:0%"></div>
+                </div>
+              </div>
+              <span class="m5simStepBadge" id="simStepBadge">Elegí un modo y presioná Empezar</span>
+            </div>
+            <div class="m5simStepTitle" id="simStepTitle">¿Qué vas a ver?</div>
+            <p class="m5simStepExplain" id="simStepExplain">
+              Seleccioná <strong>Sin control</strong> para ver cómo los 5 filósofos generan un deadlock paso a paso. Seleccioná <strong>Con Semáforo(4)</strong> para ver cómo el semáforo lo resuelve. Luego usá los botones de abajo para avanzar. Cada paso tiene una explicación detallada.
+            </p>
+            <div class="m5simStepInsight" id="simStepInsight" style="display:none"></div>
+          </div>
+
+          <!-- ── 5. Controles de navegación ── -->
+          <div class="m5simNavBar">
+            <button class="m5simBtn" id="simPrevBtn" onclick="simPrevStep()" disabled>
+              <i class="ph-bold ph-arrow-left"></i> Anterior
+            </button>
+            <div class="m5simNavMid">
+              <span class="m5simStepCounter" id="simStepCounter">— / —</span>
+              <button class="m5simBtnGhost" onclick="simReset()">
+                <i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar
+              </button>
+            </div>
+            <button class="m5simBtn m5simBtnAccent" id="simNextBtn" onclick="simNextStep()">
+              Empezar <i class="ph-bold ph-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- ── 6. Historial compacto ── -->
+          <div class="m5simLogBar">
+            <div class="m5simLogLabel"><i class="ph ph-list-bullets"></i> Historial de pasos</div>
+            <div class="m5simLog" id="simLog">
+              <div class="m5simLogEntry m5simLogInfo">Sistema listo. Elegí un modo y presioná Empezar.</div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -796,16 +822,13 @@ public class DeadlockFix {
             <!-- Right: Java editor -->
             <div class="m5labEmbed">
               <iframe
-                src="https://onecompiler.com/embed/java?hideTitle=true&theme=dark"
-                style="width:100%;height:560px;border:none;border-radius:12px;display:block"
+                src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
+                width="100%"
+                height="520"
+                frameborder="0"
                 allowfullscreen
-                allow="clipboard-read; clipboard-write"
-                loading="eager"
-                title="Editor Java"
+                title="Editor Java — Deadlock Demo"
               ></iframe>
-              <a class="m5labFallback" href="https://onecompiler.com/java" target="_blank" rel="noopener">
-                <i class="ph ph-arrow-square-out"></i> Si no carga el editor, abrilo en nueva pestaña
-              </a>
             </div>
           </div>
         </div>

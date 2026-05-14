@@ -154,7 +154,7 @@ function updateForkEl(id) {
 
 function updatePermits() {
   const wrap = document.getElementById('simPermitWrap');
-  if (wrap) wrap.style.display = (simMode === 'semaphore' && stepIdx >= 0) ? 'block' : 'none';
+  if (wrap) wrap.style.display = (simMode === 'semaphore' && stepIdx >= 0) ? 'flex' : 'none';
   const count = document.getElementById('permCount');
   if (count) count.textContent = `${semPermits}/4`;
   for (let i = 0; i < 4; i++) {
@@ -339,6 +339,8 @@ function applyStep(step) {
 
   if (badge)   badge.textContent = `Paso ${stepIdx + 1} de ${stepList.length}`;
   if (counter) counter.textContent = `${stepIdx + 1} / ${stepList.length}`;
+  const fill = document.getElementById('simProgressFill');
+  if (fill) fill.style.width = `${((stepIdx + 1) / stepList.length) * 100}%`;
   if (titleEl) titleEl.innerHTML = step.title;
   if (exEl)    exEl.innerHTML    = step.explain;
   if (inEl) {

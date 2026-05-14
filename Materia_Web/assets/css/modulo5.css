@@ -299,87 +299,99 @@
 .m5philDiagFk3 { transform: translate(-50%,-50%) rotate(252deg) translateY(-80px); }
 .m5philDiagFk4 { transform: translate(-50%,-50%) rotate(324deg) translateY(-80px); }
 
-/* ─── SIMULATOR ──────────────────────────── */
+/* ─── SIMULATOR — layout vertical, sin saltos ── */
+
+/* Guía de uso (4 pasos encima del simulador) */
+.m5simGuide {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 28px; margin-bottom: 20px;
+  padding: 18px 24px; border-radius: 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  backdrop-filter: blur(14px); flex-wrap: wrap;
+}
+.m5simGuideStep {
+  display: flex; align-items: center; gap: 12px; flex: 1; min-width: 160px;
+}
+.m5simGuideNum {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  background: var(--accent-sub); border: 1.5px solid var(--accent-border);
+  color: var(--accent); font-size: 14px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+}
+.m5simGuideText { display: flex; flex-direction: column; gap: 2px; }
+.m5simGuideText strong { font-size: 13px; color: var(--text); font-weight: 800; }
+.m5simGuideText span   { font-size: 11px; color: var(--sub); }
+.m5simGuideArrow { font-size: 16px; color: var(--border); flex-shrink: 0; }
+
+/* Contenedor principal */
 .m5simWrap {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 18px; overflow: hidden;
-  backdrop-filter: blur(16px); margin-top: 32px;
+  border-radius: 20px; overflow: hidden;
+  backdrop-filter: blur(16px);
 }
+
+/* ── 1. Selector de modo ── */
 .m5simModes {
   display: flex; border-bottom: 1px solid var(--border);
 }
 .m5simModeBtn {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 20px; cursor: pointer; border: none;
+  padding: 22px; cursor: pointer; border: none;
   background: transparent; color: var(--sub);
   transition: background 0.2s, color 0.2s; font-family: inherit;
   border-right: 1px solid var(--border);
 }
 .m5simModeBtn:last-child { border-right: none; }
-.m5simModeBtn span { font-size: 16px; font-weight: 800; }
-.m5simModeBtn i { font-size: 22px; }
+.m5simModeBtn span  { font-size: 16px; font-weight: 800; }
+.m5simModeBtn i     { font-size: 24px; }
 .m5simModeBtn small { font-size: 12px; opacity: 0.7; }
 .m5simModeBtn:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.m5simModeActive { background: var(--accent-sub) !important; color: var(--accent) !important; }
+.m5simModeActive    { background: var(--accent-sub) !important; color: var(--accent) !important; }
 
-.m5simMain {
-  display: grid; grid-template-columns: 1fr 340px; gap: 0;
+/* ── 2. Mesa de filósofos centrada ── */
+.m5simTableSection {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 36px 32px 28px; gap: 22px;
+  border-bottom: 1px solid var(--border);
 }
-
-/* Table visual */
-.m5simTableWrap {
-  padding: 32px; border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; align-items: center; gap: 24px;
-}
-.m5simTable {
-  position: relative; width: 340px; height: 340px;
-}
+.m5simTable { position: relative; width: 380px; height: 380px; }
 .m5simTableCenter {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%,-50%);
-  width: 100px; height: 100px; border-radius: 50%;
-  background: rgba(255,125,84,0.06);
-  border: 2px solid rgba(255,125,84,0.2);
+  width: 110px; height: 110px; border-radius: 50%;
+  background: rgba(255,125,84,0.06); border: 2px solid rgba(255,125,84,0.2);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 4px;
 }
-.m5simTableIcon { font-size: 22px; color: var(--accent); opacity: 0.5; }
-.m5simTableLabel { font-size: 10px; font-weight: 800; text-transform: uppercase;
-  letter-spacing: 0.1em; color: var(--sub); }
+.m5simTableIcon  { font-size: 24px; color: var(--accent); opacity: 0.5; }
+.m5simTableLabel { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--sub); }
 
-/* Philosopher bubbles */
+/* Filósofos en la mesa (radio 165px) */
 .m5simPhil {
   position: absolute; top: 50%; left: 50%;
   transform:
     translate(-50%, -50%)
     rotate(var(--angle))
-    translateY(-148px)
+    translateY(-165px)
     rotate(calc(-1 * var(--angle)));
   display: flex; flex-direction: column; align-items: center; gap: 6px;
-  transition: filter 0.3s;
 }
 .m5simPhilBubble {
-  width: 54px; height: 54px; border-radius: 50%;
+  width: 60px; height: 60px; border-radius: 50%;
   background: var(--surface); border: 2px solid var(--border);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 0; transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-  position: relative;
+  transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
 }
-.m5simPhilId   { font-size: 10px; font-weight: 900; color: var(--sub); line-height: 1; }
-.m5simPhilEmoji { font-size: 18px; line-height: 1; }
-.m5simPhilState {
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.05em; color: var(--sub);
-  white-space: nowrap;
-}
+.m5simPhilId    { font-size: 11px; font-weight: 900; color: var(--sub); line-height: 1; }
+.m5simPhilEmoji { font-size: 20px; line-height: 1; }
+.m5simPhilState { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--sub); white-space: nowrap; }
 
-/* Philosopher state classes */
+/* Estados de filósofos */
 .m5simPhil.m5sThinking .m5simPhilBubble { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
-.m5simPhil.m5sHungry   .m5simPhilBubble { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.5); box-shadow: 0 0 14px rgba(245,158,11,0.2); }
-.m5simPhil.m5sWaiting  .m5simPhilBubble { background: rgba(255,125,84,0.12); border-color: rgba(255,125,84,0.5); animation: waitPulse 1.2s infinite; }
-.m5simPhil.m5sEating   .m5simPhilBubble { background: rgba(0,232,198,0.12);  border-color: rgba(0,232,198,0.6);  box-shadow: 0 0 18px rgba(0,232,198,0.3); }
-.m5simPhil.m5sDead     .m5simPhilBubble { background: rgba(239,68,68,0.18);  border-color: rgba(239,68,68,0.7);  animation: deadPulse 0.8s infinite; }
-
+.m5simPhil.m5sHungry   .m5simPhilBubble { background: rgba(245,158,11,0.12);  border-color: rgba(245,158,11,0.5);  box-shadow: 0 0 16px rgba(245,158,11,0.2); }
+.m5simPhil.m5sWaiting  .m5simPhilBubble { background: rgba(255,125,84,0.12);  border-color: rgba(255,125,84,0.5);  animation: waitPulse 1.2s infinite; }
+.m5simPhil.m5sEating   .m5simPhilBubble { background: rgba(0,232,198,0.14);   border-color: rgba(0,232,198,0.6);   box-shadow: 0 0 22px rgba(0,232,198,0.35); }
+.m5simPhil.m5sDead     .m5simPhilBubble { background: rgba(239,68,68,0.18);   border-color: rgba(239,68,68,0.7);   animation: deadPulse 0.8s infinite; }
 .m5simPhil.m5sThinking .m5simPhilState { color: var(--sub); }
 .m5simPhil.m5sHungry   .m5simPhilState { color: #f59e0b; }
 .m5simPhil.m5sWaiting  .m5simPhilState { color: var(--accent); }
@@ -388,84 +400,142 @@
 
 @keyframes waitPulse {
   0%, 100% { box-shadow: 0 0 8px rgba(255,125,84,0.2); }
-  50%       { box-shadow: 0 0 22px rgba(255,125,84,0.5); }
+  50%       { box-shadow: 0 0 24px rgba(255,125,84,0.55); }
 }
 @keyframes deadPulse {
-  0%, 100% { box-shadow: 0 0 10px rgba(239,68,68,0.3); }
-  50%       { box-shadow: 0 0 28px rgba(239,68,68,0.7); }
+  0%, 100% { box-shadow: 0 0 12px rgba(239,68,68,0.3); }
+  50%       { box-shadow: 0 0 32px rgba(239,68,68,0.75); }
 }
 
-/* Fork indicators */
+/* Tenedores (radio 112px) */
 .m5simFork {
   position: absolute; top: 50%; left: 50%;
-  width: 28px; height: 28px; border-radius: 50%;
+  width: 32px; height: 32px; border-radius: 50%;
   transform:
     translate(-50%, -50%)
     rotate(var(--angle))
-    translateY(-100px)
+    translateY(-112px)
     rotate(calc(-1 * var(--angle)));
   display: flex; align-items: center; justify-content: center;
-  font-size: 13px; color: var(--sub);
+  font-size: 14px; color: var(--sub);
   background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  transition: background 0.3s, border-color 0.3s, color 0.3s;
+  transition: background 0.4s, border-color 0.4s, color 0.4s;
 }
-.m5simFork.m5fkHeld {
-  background: rgba(255,125,84,0.2); border-color: rgba(255,125,84,0.6);
-  color: var(--accent);
-}
-.m5simFork.m5fkFree {
-  background: rgba(0,232,198,0.1); border-color: rgba(0,232,198,0.3);
-  color: #00e8c6;
-}
+.m5simFork.m5fkHeld { background: rgba(255,125,84,0.25); border-color: rgba(255,125,84,0.7); color: var(--accent); }
+.m5simFork.m5fkFree { background: rgba(0,232,198,0.1);   border-color: rgba(0,232,198,0.35); color: #00e8c6; }
 
-/* Legend */
-.m5simLegend {
-  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
-}
-.m5simLegendItem {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 11px; font-weight: 700; color: var(--sub);
-}
+/* Leyenda */
+.m5simLegend { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.m5simLegendItem { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--sub); }
 .m5simLegThinking { color: var(--sub); }
 .m5simLegHungry   { color: #f59e0b; }
 .m5simLegWaiting  { color: var(--accent); }
 .m5simLegEating   { color: #00e8c6; }
 .m5simLegDead     { color: #ef4444; }
 
-/* Panel */
-.m5simPanel {
-  padding: 24px; display: flex; flex-direction: column; gap: 16px;
+/* ── 3. Semáforo (full width, horizontal) ── */
+.m5simPermitBar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 32px; gap: 20px;
+  background: rgba(168,85,247,0.06);
+  border-bottom: 1px solid rgba(168,85,247,0.2);
+  flex-wrap: wrap;
 }
-.m5simStatus {
+.m5simPermitBarLeft {
+  display: flex; align-items: center; gap: 14px; flex: 1;
+}
+.m5simPermitLabel { font-size: 12px; font-weight: 800; color: #a855f7; margin-bottom: 3px; }
+.m5simPermitDesc  { font-size: 11px; color: var(--sub); line-height: 1.4; }
+.m5simPermitBarRight { display: flex; align-items: center; gap: 14px; }
+.m5simPermitDots  { display: flex; gap: 10px; }
+.m5simPermitDot {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.15);
+  transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
+}
+.m5simPermitDot.m5permFree {
+  background: rgba(168,85,247,0.4); border-color: rgba(168,85,247,0.9);
+  box-shadow: 0 0 12px rgba(168,85,247,0.4);
+}
+.m5simPermitCount { font-size: 22px; font-weight: 900; color: #a855f7; min-width: 44px; text-align: center; }
+
+/* ── 4. Sección de explicación (ALTURA FIJA para evitar saltos) ── */
+.m5simExplainSection {
+  padding: 28px 32px; border-bottom: 1px solid var(--border);
+  min-height: 240px;          /* altura fija — no cambia cuando aparece el insight */
+  display: flex; flex-direction: column; gap: 14px;
+}
+.m5simExplainTop {
+  display: flex; align-items: center; gap: 16px;
+}
+.m5simExplainProgressWrap {
+  flex: 1; height: 5px; background: rgba(255,255,255,0.08);
+  border-radius: 5px; overflow: hidden;
+}
+.m5simExplainProgressBar { width: 100%; height: 100%; }
+.m5simExplainProgressFill {
+  height: 100%; background: var(--accent); border-radius: 5px;
+  transition: width 0.4s ease;
+}
+.m5simStepBadge {
+  font-size: 11px; font-weight: 900; text-transform: uppercase;
+  letter-spacing: 0.11em; color: var(--accent); white-space: nowrap;
+}
+.m5simStepTitle {
+  font-size: 19px; font-weight: 800; color: var(--text); line-height: 1.35;
+}
+.m5simStepExplain {
+  font-size: 14px; color: var(--text); line-height: 1.7; margin: 0;
+}
+.m5simStepExplain strong { color: var(--accent); }
+.m5simStepExplain code {
+  background: rgba(0,0,0,0.35); color: #00e8c6;
+  padding: 1px 6px; border-radius: 4px; font-size: 12.5px;
+}
+.m5simStepInsight {
   padding: 12px 16px; border-radius: 10px;
-  background: var(--accent-sub); border: 1px solid var(--accent-border);
-  display: flex; align-items: center; gap: 8px;
-  font-size: 13px; font-weight: 600;
+  background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.25);
+  border-left: 4px solid #a855f7;
+  font-size: 13px; color: var(--text); line-height: 1.65;
 }
-.m5simCtrlRow { display: flex; gap: 10px; flex-wrap: wrap; }
+.m5simStepInsight strong { color: #a855f7; }
+.m5simStepInsight code {
+  background: rgba(0,0,0,0.35); color: #00e8c6;
+  padding: 1px 5px; border-radius: 4px; font-size: 12px;
+}
 
-.m5simScoreRow {
-  display: flex; gap: 8px;
+/* ── 5. Barra de controles (siempre en el mismo lugar) ── */
+.m5simNavBar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 32px; border-bottom: 1px solid var(--border);
+  gap: 14px;
 }
-.m5simScoreBox {
-  flex: 1; padding: 12px; border-radius: 10px;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  text-align: center;
+.m5simNavMid {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
 }
-.m5simScoreNum {
-  font-size: 22px; font-weight: 900; color: var(--accent); line-height: 1;
+.m5simStepCounter {
+  font-size: 16px; font-weight: 900; color: var(--accent); letter-spacing: 0.05em;
 }
-.m5simScoreLabel { font-size: 11px; color: var(--sub); font-weight: 700; }
+.m5simBtnGhost {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 7px; font-size: 11px;
+  font-weight: 700; cursor: pointer; border: 1px solid var(--border);
+  background: transparent; color: var(--sub); font-family: inherit;
+  transition: color 0.2s, border-color 0.2s;
+}
+.m5simBtnGhost:hover { color: var(--text); border-color: var(--border-hover); }
 
-.m5simLogWrap { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+/* ── 6. Log compacto ── */
+.m5simLogBar {
+  padding: 14px 32px 20px;
+}
 .m5simLogLabel {
   font-size: 11px; font-weight: 800; text-transform: uppercase;
   letter-spacing: 0.1em; color: var(--sub);
-  display: flex; align-items: center; gap: 6px;
+  display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
 }
 .m5simLog {
-  flex: 1; max-height: 220px; overflow-y: auto;
+  max-height: 110px; overflow-y: auto;
   display: flex; flex-direction: column; gap: 3px;
   scrollbar-width: thin; scrollbar-color: var(--accent-border) transparent;
 }
@@ -474,11 +544,11 @@
   font-size: 12px; font-family: 'Fira Code', 'Courier New', monospace;
   line-height: 1.5;
 }
-.m5simLogInfo     { background: rgba(255,255,255,0.04); color: var(--sub); }
-.m5simLogEat      { background: rgba(0,232,198,0.08);  color: #00e8c6; }
-.m5simLogWait     { background: rgba(255,125,84,0.08); color: var(--accent); }
-.m5simLogDead     { background: rgba(239,68,68,0.12);  color: #ef4444; font-weight: 700; }
-.m5simLogSem      { background: rgba(168,85,247,0.08); color: #a855f7; }
+.m5simLogInfo  { background: rgba(255,255,255,0.04); color: var(--sub); }
+.m5simLogEat   { background: rgba(0,232,198,0.08);  color: #00e8c6; }
+.m5simLogWait  { background: rgba(255,125,84,0.08); color: var(--accent); }
+.m5simLogDead  { background: rgba(239,68,68,0.12);  color: #ef4444; font-weight: 700; }
+.m5simLogSem   { background: rgba(168,85,247,0.08); color: #a855f7; }
 
 /* ─── Coffman conditions ─────────────────── */
 .m5coffmanGrid {
@@ -914,34 +984,52 @@
 
 /* ─── Responsive ─────────────────────────── */
 @media (max-width: 900px) {
-  .m5conceptGrid     { grid-template-columns: 1fr 1fr; }
-  .m5philProblem     { grid-template-columns: 1fr; }
+  .m5conceptGrid       { grid-template-columns: 1fr 1fr; }
+  .m5philProblem       { grid-template-columns: 1fr; }
   .m5philProblemVisual { display: none; }
-  .m5simMain         { grid-template-columns: 1fr; }
-  .m5simTableWrap    { border-right: none; border-bottom: 1px solid var(--border); }
-  .m5coffmanGrid     { grid-template-columns: repeat(2, 1fr); }
-  .m5labMain         { grid-template-columns: 1fr; }
-  .m5labLeft         { order: 2; }
-  .m5labEmbed        { order: 1; min-height: 400px; }
-  .m5flipGrid        { grid-template-columns: repeat(2, 1fr); }
-  .m5objGrid         { grid-template-columns: 1fr; }
-  .m5realGrid        { grid-template-columns: 1fr; }
+  .m5coffmanGrid       { grid-template-columns: repeat(2, 1fr); }
+  .m5labMain           { grid-template-columns: 1fr; }
+  .m5labLeft           { order: 2; }
+  .m5labEmbed          { order: 1; min-height: 400px; }
+  .m5flipGrid          { grid-template-columns: repeat(2, 1fr); }
+  .m5objGrid           { grid-template-columns: 1fr; }
+  .m5realGrid          { grid-template-columns: 1fr; }
+  /* Simulator: reduce side padding on tablets */
+  .m5simTableSection   { padding: 28px 20px 20px; }
+  .m5simExplainSection { padding: 22px 20px; }
+  .m5simNavBar         { padding: 14px 20px; }
+  .m5simLogBar         { padding: 12px 20px 16px; }
+  .m5simPermitBar      { padding: 12px 20px; }
 }
 @media (max-width: 600px) {
   .m5conceptGrid   { grid-template-columns: 1fr; }
   .m5coffmanGrid   { grid-template-columns: 1fr; }
   .m5flipGrid      { grid-template-columns: repeat(2, 1fr); }
   .m5gameOptions   { grid-template-columns: 1fr; }
+  /* Simulator table shrinks to 280px — radii scale proportionally */
   .m5simTable      { width: 280px; height: 280px; }
   .m5simPhil       { transform:
     translate(-50%, -50%)
     rotate(var(--angle))
-    translateY(-118px)
+    translateY(-121px)
     rotate(calc(-1 * var(--angle))); }
   .m5simFork       { transform:
     translate(-50%, -50%)
     rotate(var(--angle))
-    translateY(-78px)
+    translateY(-82px)
     rotate(calc(-1 * var(--angle))); }
-  .m5simTableCenter { width: 80px; height: 80px; }
+  .m5simTableCenter  { width: 80px; height: 80px; }
+  .m5simPhilBubble   { width: 48px; height: 48px; }
+  .m5simPhilEmoji    { font-size: 16px; }
+  /* Guide arrows hidden on small screens */
+  .m5simGuideArrow   { display: none; }
+  .m5simGuide        { gap: 10px; padding: 14px 16px; }
+  /* Simulator sections: tighter padding */
+  .m5simTableSection   { padding: 20px 14px 16px; }
+  .m5simExplainSection { padding: 18px 16px; min-height: 200px; }
+  .m5simNavBar         { padding: 12px 14px; gap: 8px; }
+  .m5simLogBar         { padding: 10px 14px 14px; }
+  .m5simPermitBar      { flex-direction: column; align-items: flex-start; gap: 12px; padding: 12px 16px; }
+  .m5simStepTitle      { font-size: 16px; }
+  .m5simStepExplain    { font-size: 13px; }
 }
