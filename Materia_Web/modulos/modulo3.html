@@ -3,247 +3,1077 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAI3 | Modulo 3 interactivo</title>
+    <title>PAI3 · Módulo 3 · Programación Concurrente</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../assets/css/modulo.css" />
     <link rel="stylesheet" href="../assets/css/modulo3.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-one-dark.min.css" />
+    <style>
+      :root {
+        --accent:        #00e8c6;
+        --accent-sub:    rgba(0, 232, 198, 0.10);
+        --accent-border: rgba(0, 232, 198, 0.30);
+        --accent-mid:    rgba(0, 232, 198, 0.45);
+      }
+    </style>
   </head>
   <body>
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">Programacion para Ambientes Interactivos III</p>
-        <h1>Modulo 3: Concurrencia en Java</h1>
-      </div>
-      <nav aria-label="Secciones">
-        <a href="../index.html">Inicio</a>
-        <a href="../index.html#modulos">Módulos</a>
-        <a href="../evaluacion.html">Evaluación</a>
-        <a href="modulo1.html">Modulo 1</a>
-        <a href="#simulador">Simulador</a>
-        <a href="#clase">Clase</a>
-        <a href="#actividad">Actividad</a>
-        <button id="tourBtn" class="nav-button" type="button">Guia</button>
+
+    <div class="readProgress" id="readProgress"></div>
+    <div class="mglow" id="mglow"></div>
+
+    <!-- ── HEADER ──────────────────────────── -->
+    <header class="mhdr">
+      <a class="mhdrBack" href="../index.html">
+        <i class="ph ph-arrow-left"></i> Campus
+      </a>
+      <span class="mhdrBrand">PAI3</span>
+      <span class="mhdrLabel">Módulo 3 · Programación Concurrente</span>
+      <nav class="mhdrSections">
+        <a href="#conceptos">Conceptos</a>
+        <a href="#scheduler">Scheduler</a>
+        <a href="#race">Race Condition</a>
+        <a href="#laboratorio">Laboratorio</a>
+        <a href="#actividades">Actividad</a>
       </nav>
     </header>
 
-    <main>
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="tag">Laboratorio vivo</p>
-          <h2>Tu programa tiene varias vidas al mismo tiempo.</h2>
-          <p>
-            En este modulo los estudiantes no memorizan hilos: los ven competir,
-            chocar, bloquearse y coordinarse. La pregunta central es simple:
-            que pasa cuando muchos agentes creen tener el control del mismo recurso?
-          </p>
-          <div class="actions">
-            <a class="button primary" href="#simulador">Probar simulador</a>
-            <a class="button" href="#actividad">Ver consigna</a>
-            <button id="startTourHero" class="button" type="button">Explicamelo desde cero</button>
+    <!-- ── HERO ─────────────────────────────── -->
+    <section class="m3hero">
+      <div class="m3heroBg">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1400&q=80&fit=crop" alt="" aria-hidden="true" class="m3heroImg" />
+        <div class="m3heroOverlay"></div>
+      </div>
+      <div class="m3heroThread" style="--td:0s;  --tc:#00e8c6; top:18%"></div>
+      <div class="m3heroThread" style="--td:1.2s; --tc:#4a8ef0; top:34%"></div>
+      <div class="m3heroThread" style="--td:2.1s; --tc:#a855f7; top:52%"></div>
+      <div class="m3heroThread" style="--td:0.7s; --tc:#ff9b6b; top:68%"></div>
+      <div class="m3heroThread" style="--td:1.8s; --tc:#00e8c6; top:82%"></div>
+      <div class="m3heroContent msecWrap">
+        <div class="m3heroBadge">
+          <i class="ph-bold ph-cpu"></i> Bloque 02
+        </div>
+        <h1 class="m3heroTitle">Programación<br/><span>Concurrente</span></h1>
+        <p class="m3heroIntro">El software moderno no espera. Coordina. Aprende a pensar en hilos, a entender el scheduler y a diseñar programas que exploten al máximo el hardware sin romper los datos en el camino.</p>
+        <div class="m3heroStats">
+          <div class="m3heroStat">
+            <div class="m3heroStatTop">
+              <span class="m3heroStatNum" id="counter1">0</span>
+            </div>
+            <span class="m3heroStatLabel">cores tiene un CPU moderno de consumo corriendo hilos en paralelo</span>
           </div>
-        </div>
-        <div class="hero-visual" aria-hidden="true">
-          <div class="thread-line t1"></div>
-          <div class="thread-line t2"></div>
-          <div class="thread-line t3"></div>
-          <div class="node n1">A1</div>
-          <div class="node n2">A2</div>
-          <div class="node n3">A3</div>
-          <div class="lock">LOCK</div>
-        </div>
-      </section>
-
-      <section class="panel intro-grid">
-        <article>
-          <span class="num">01</span>
-          <h3>Concepto formal</h3>
-          <p>Proceso, hilo, concurrencia, paralelismo y scheduler.</p>
-        </article>
-        <article>
-          <span class="num">02</span>
-          <h3>Experimento</h3>
-          <p>Agentes compiten por una grilla compartida y generan colisiones.</p>
-        </article>
-        <article>
-          <span class="num">03</span>
-          <h3>Explicacion Java</h3>
-          <p>La simulacion conecta con <code>Thread</code>, <code>Runnable</code>, <code>join</code> y race conditions.</p>
-        </article>
-      </section>
-
-      <section class="plain-guide">
-        <div class="section-head compact">
-          <p class="eyebrow">Antes de tocar botones</p>
-          <h2>Explicado bien simple</h2>
-          <p>
-            Si nunca programaste concurrencia, empezá por acá. La idea no es sonar técnico:
-            es entender la película.
-          </p>
-        </div>
-        <div class="explain-grid">
-          <article>
-            <div class="mini-icon">1</div>
-            <h3>Un hilo es un trabajador</h3>
-            <p>Tu programa es una cocina. Un hilo es una persona haciendo una tarea. Varios hilos pueden trabajar durante el mismo tiempo.</p>
-          </article>
-          <article>
-            <div class="mini-icon">2</div>
-            <h3>El recurso compartido es la mesa</h3>
-            <p>Si todos usan la misma mesa sin reglas, se pisan. En código, esa mesa puede ser una variable, lista, celda o cola.</p>
-          </article>
-          <article>
-            <div class="mini-icon">3</div>
-            <h3>Una carrera es decidir tarde</h3>
-            <p>Dos hilos ven una celda libre al mismo tiempo. Ambos creen que pueden entrar. Cuando llegan, chocan.</p>
-          </article>
-          <article>
-            <div class="mini-icon">4</div>
-            <h3>Un lock es pedir permiso</h3>
-            <p>El lock hace que revisar y ocupar el recurso ocurra sin interrupciones. Evita choques, pero puede generar espera.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="simulador" class="sim-section">
-        <div class="section-head">
-          <p class="eyebrow">Simulador interactivo</p>
-          <h2>Agentes que chocan</h2>
-          <p>
-            Cada agente intenta ocupar celdas de una memoria compartida. En modo
-            sin sincronizacion, dos agentes pueden elegir el mismo destino. En modo
-            con lock, el acceso se coordina y las colisiones bajan.
-          </p>
-        </div>
-
-        <div class="lab">
-          <aside class="controls">
-            <div class="coach">
-              <strong>Que estas viendo</strong>
-              <p id="modeCoach">
-                En modo sin lock, cada agente decide a la vez. Si dos eligen la misma celda, aparece una colision.
-              </p>
+          <div class="m3heroStat">
+            <div class="m3heroStatTop">
+              <span class="m3heroStatNum" id="counter2">0</span>
+              <span class="m3heroStatSuf">ns</span>
             </div>
-            <label>
-              Modo
-              <select id="mode">
-                <option value="unsafe">Sin lock: carrera</option>
-                <option value="locked">Con lock: coordinado</option>
-              </select>
-            </label>
-            <label>
-              Agentes
-              <input id="agents" type="range" min="4" max="18" value="10" />
-              <span id="agentsValue">10</span>
-            </label>
-            <label>
-              Velocidad
-              <input id="speed" type="range" min="1" max="10" value="5" />
-              <span id="speedValue">5</span>
-            </label>
-            <div class="control-row">
-              <button id="start" class="primary">Iniciar</button>
-              <button id="step">Paso</button>
-              <button id="reset">Reset</button>
-            </div>
-            <div class="metrics">
-              <div><strong id="ticks">0</strong><span>ticks</span></div>
-              <div><strong id="collisions">0</strong><span>colisiones</span></div>
-              <div><strong id="blocked">0</strong><span>bloqueos</span></div>
-            </div>
-            <button id="explainCurrent" class="wide" type="button">Que significa esto?</button>
-          </aside>
-
-          <div class="board-wrap">
-            <div class="legend">
-              <span><i class="dot teal"></i>Agente/hilo</span>
-              <span><i class="cell-sample"></i>Celda compartida</span>
-              <span><i class="danger-sample"></i>Choque</span>
-            </div>
-            <div id="board" class="board" aria-label="Grilla de memoria compartida"></div>
+            <span class="m3heroStatLabel">dura un context switch — invisible para el usuario, crítico para el SO</span>
           </div>
-
-          <aside class="log-panel">
-            <h3>Log de ejecucion</h3>
-            <div id="log" class="log" aria-live="polite"></div>
-          </aside>
-        </div>
-      </section>
-
-      <section id="clase" class="content-section">
-        <div class="section-head">
-          <p class="eyebrow">Clase breve</p>
-          <h2>Lo que tienen que llevarse</h2>
-        </div>
-        <div class="cards">
-          <article>
-            <h3>Proceso vs hilo</h3>
-            <p>
-              Un proceso tiene memoria propia. Un hilo vive dentro de un proceso y
-              comparte memoria con otros hilos. Esa memoria compartida hace que la
-              comunicacion sea rapida, pero tambien peligrosa.
-            </p>
-          </article>
-          <article>
-            <h3>Race condition</h3>
-            <p>
-              Hay condicion de carrera cuando el resultado depende del orden de
-              ejecucion. Si el orden cambia entre corridas, el bug aparece y
-              desaparece como si fuera aleatorio.
-            </p>
-          </article>
-          <article>
-            <h3>Java mental model</h3>
-            <p>
-              <code>Thread.start()</code> lanza una ejecucion concurrente.
-              <code>join()</code> espera. <code>sleep()</code> pausa. La
-              sincronizacion define quien puede tocar un recurso compartido.
-            </p>
-          </article>
-        </div>
-        <div class="timeline">
-          <h3>La historia de un tick</h3>
-          <ol>
-            <li><strong>El scheduler da turno.</strong> Cada hilo intenta avanzar.</li>
-            <li><strong>El hilo mira el recurso.</strong> Pregunta si una celda parece libre.</li>
-            <li><strong>Sin lock:</strong> otro hilo puede mirar lo mismo antes de que el primero escriba.</li>
-            <li><strong>Con lock:</strong> revisar y ocupar se vuelven una operación protegida.</li>
-            <li><strong>Resultado:</strong> menos choques, pero algunos hilos esperan.</li>
-          </ol>
-        </div>
-      </section>
-
-      <section id="actividad" class="activity">
-        <div>
-          <p class="eyebrow">Actividad evaluable</p>
-          <h2>Choque de agentes concurrentes</h2>
-          <p>
-            Implementar en Java una simulacion con al menos 10 agentes ejecutados
-            como hilos. Primero debe observarse el problema sin sincronizacion.
-            Luego se debe proponer una estrategia para reducir o eliminar colisiones.
-          </p>
-        </div>
-        <ol>
-          <li>Crear una grilla compartida y agentes que intenten moverse.</li>
-          <li>Ejecutar 5 corridas sin sincronizacion y registrar resultados.</li>
-          <li>Explicar por que el resultado no es determinista.</li>
-          <li>Agregar una solucion con <code>synchronized</code>, <code>Lock</code> o control equivalente.</li>
-          <li>Entregar codigo, capturas, tabla de colisiones y conclusion.</li>
-        </ol>
-      </section>
-    </main>
-
-    <div id="modal" class="modal" aria-hidden="true">
-      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <button id="modalClose" class="modal-close" type="button" aria-label="Cerrar">×</button>
-        <p class="eyebrow" id="modalStep">Guia interactiva</p>
-        <h2 id="modalTitle">Concurrencia desde cero</h2>
-        <p id="modalText"></p>
-        <div id="modalExample" class="modal-example"></div>
-        <div class="modal-actions">
-          <button id="modalPrev" type="button">Anterior</button>
-          <button id="modalNext" class="primary" type="button">Siguiente</button>
+          <div class="m3heroStat">
+            <div class="m3heroStatTop">
+              <span class="m3heroStatNum" id="counter3">0</span>
+              <span class="m3heroStatSuf">%</span>
+            </div>
+            <span class="m3heroStatLabel">de los bugs de concurrencia son race conditions no detectadas en testing</span>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
+    <!-- ── PULL QUOTE ────────────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <blockquote class="m3pullQuote reveal">
+          <i class="ph-bold ph-quotes"></i>
+          <p>"La concurrencia es sobre lidiar con muchas cosas a la vez. El paralelismo es sobre hacer muchas cosas a la vez."</p>
+          <cite>— Rob Pike, cocreador de Go y UNIX</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ── MICROOBJETIVOS ────────────────────── -->
+    <section class="msec" id="microobjetivos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-target"></i> Objetivos del módulo</span>
+          <h2>¿Qué vas a aprender?</h2>
+          <p class="msecSub">Al terminar este módulo vas a poder diseñar programas Java multihilo, identificar race conditions antes de que lleguen a producción y elegir la herramienta de concurrencia correcta para cada escenario.</p>
+        </div>
+        <div class="m3objGrid">
+          <div class="m3objCard reveal" style="--delay:0ms">
+            <div class="m3objIcon" style="--oc:#4a8ef0"><i class="ph-bold ph-house-line"></i></div>
+            <div>
+              <strong>Distinguir proceso de hilo</strong>
+              <p>Comprender qué comparten y qué aisla cada unidad de ejecución con el fin de tomar decisiones arquitectónicas correctas en sistemas concurrentes.</p>
+            </div>
+          </div>
+          <div class="m3objCard reveal" style="--delay:80ms">
+            <div class="m3objIcon" style="--oc:#00e8c6"><i class="ph-bold ph-shuffle"></i></div>
+            <div>
+              <strong>Explicar el scheduler de Java</strong>
+              <p>Entender cómo el SO asigna tiempo de CPU a los hilos con el fin de predecir el comportamiento del programa bajo carga real.</p>
+            </div>
+          </div>
+          <div class="m3objCard reveal" style="--delay:160ms">
+            <div class="m3objIcon" style="--oc:#a855f7"><i class="ph-bold ph-fork-knife"></i></div>
+            <div>
+              <strong>Concurrencia vs Paralelismo</strong>
+              <p>Diferenciar ambos conceptos con el fin de diseñar arquitecturas apropiadas según el hardware y los requerimientos del sistema.</p>
+            </div>
+          </div>
+          <div class="m3objCard reveal" style="--delay:240ms">
+            <div class="m3objIcon" style="--oc:#ff9b6b"><i class="ph-bold ph-warning-diamond"></i></div>
+            <div>
+              <strong>Implementar y detectar race conditions</strong>
+              <p>Reproducir el problema read-modify-write con el fin de comprender por qué ocurre y cómo prevenirlo con sincronización adecuada.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PROCESO vs HILO ────────────────────── -->
+    <section class="msec alt" id="conceptos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-circles-three-plus"></i> La unidad de ejecución</span>
+          <h2>Proceso vs Hilo: ¿cuál es la diferencia?</h2>
+          <p class="msecSub">Entender qué comparte y qué aisla cada unidad de ejecución es el punto de partida de cualquier análisis serio de concurrencia.</p>
+        </div>
+
+        <div class="m3pvhLayout reveal">
+          <div class="m3pvhCard m3pvhCardProc">
+            <div class="m3pvhCardTop">
+              <div class="m3pvhIcon" style="--ic:#4a8ef0"><i class="ph-bold ph-house-line"></i></div>
+              <span class="m3pvhLabel" style="--lc:#4a8ef0">PROCESO</span>
+            </div>
+            <h3>Unidad aislada</h3>
+            <p class="m3pvhDesc">Un proceso es una instancia de programa con su propio espacio de memoria. Tiene todo lo que necesita: código, datos, heap y stack independiente. Si falla, no arrastra a los demás.</p>
+            <div class="m3pvhHouse">
+              <div class="m3pvhHouseLabel">Espacio de memoria propio</div>
+              <div class="m3pvhRooms">
+                <div class="m3pvhRoom" style="--rc:#4a8ef0">
+                  <span class="m3pvhRoomName">Stack</span>
+                  <span class="m3pvhRoomDesc">Variables locales, llamadas</span>
+                </div>
+                <div class="m3pvhRoom" style="--rc:#4a8ef0">
+                  <span class="m3pvhRoomName">Heap</span>
+                  <span class="m3pvhRoomDesc">Objetos dinámicos</span>
+                </div>
+                <div class="m3pvhRoom" style="--rc:#4a8ef0">
+                  <span class="m3pvhRoomName">Recursos</span>
+                  <span class="m3pvhRoomDesc">Archivos, sockets, I/O</span>
+                </div>
+              </div>
+            </div>
+            <ul class="m3pvhList">
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Aislamiento total de memoria</li>
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Fallo independiente</li>
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Seguridad por separación</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Creación costosa (&gt;1ms)</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Comunicación vía IPC (lenta)</li>
+            </ul>
+          </div>
+
+          <div class="m3pvhSep">
+            <div class="m3pvhSepLine"></div>
+            <span>vs</span>
+            <div class="m3pvhSepLine"></div>
+          </div>
+
+          <div class="m3pvhCard m3pvhCardThread">
+            <div class="m3pvhCardTop">
+              <div class="m3pvhIcon" style="--ic:#00e8c6"><i class="ph-bold ph-path"></i></div>
+              <span class="m3pvhLabel" style="--lc:#00e8c6">HILO</span>
+            </div>
+            <h3>Unidad compartida</h3>
+            <p class="m3pvhDesc">Un hilo es un flujo de ejecución dentro de un proceso. Comparte heap, código y recursos con sus hermanos. Solo tiene su propio stack. Son livianos pero peligrosos si no se sincronizan.</p>
+            <div class="m3pvhHouseShared">
+              <div class="m3pvhSharedLabel">Heap y código compartido</div>
+              <div class="m3pvhThreadBoxes">
+                <div class="m3pvhThreadBox" style="--tbc:#00e8c6">
+                  <span>T1</span><span class="m3pvhThreadStack">stack</span>
+                </div>
+                <div class="m3pvhThreadBox" style="--tbc:#4a8ef0">
+                  <span>T2</span><span class="m3pvhThreadStack">stack</span>
+                </div>
+                <div class="m3pvhThreadBox" style="--tbc:#a855f7">
+                  <span>T3</span><span class="m3pvhThreadStack">stack</span>
+                </div>
+              </div>
+            </div>
+            <ul class="m3pvhList">
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Creación muy rápida (&lt;0.1ms)</li>
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Comunicación directa en memoria</li>
+              <li class="good"><i class="ph-bold ph-check-circle"></i> Menor overhead del SO</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Race conditions posibles</li>
+              <li class="warn"><i class="ph-bold ph-warning"></i> Un bug puede afectar a todos</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="m3compareWrap reveal">
+          <table class="m3compareTable">
+            <thead>
+              <tr>
+                <th>Característica</th>
+                <th class="proc">Proceso</th>
+                <th class="thread">Hilo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Costo de creación</td>
+                <td class="warn">Alto (&gt;1ms, fork syscall)</td>
+                <td class="good">Bajo (&lt;0.1ms)</td>
+              </tr>
+              <tr>
+                <td>Espacio de memoria</td>
+                <td class="good">Completamente separado</td>
+                <td class="warn">Heap compartido</td>
+              </tr>
+              <tr>
+                <td>Comunicación</td>
+                <td class="warn">IPC — pipes, sockets, memoria compartida</td>
+                <td class="good">Variables compartidas directamente</td>
+              </tr>
+              <tr>
+                <td>Si uno falla</td>
+                <td class="good">Los demás procesos siguen</td>
+                <td class="warn">Puede derribar el proceso entero</td>
+              </tr>
+              <tr>
+                <td>Race conditions</td>
+                <td class="good">No (memoria separada)</td>
+                <td class="warn">Sí — requiere sincronización</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SCHEDULER ─────────────────────────── -->
+    <section class="msec" id="scheduler">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-shuffle"></i> El director de tráfico</span>
+          <h2>El Scheduler: quién decide quién corre</h2>
+          <p class="msecSub">El scheduler del SO asigna tiempo de CPU entre hilos usando políticas de prioridad, round-robin y preemption. El resultado es que el orden de ejecución de tus hilos es impredecible.</p>
+        </div>
+
+        <div class="m3schedulerWrap reveal">
+          <div class="m3schedulerViz" id="schedulerViz">
+            <div class="m3schZone">
+              <div class="m3schZoneLabel">Cola de Listos</div>
+              <div class="m3schQueue" id="schQueue">
+                <div class="m3schBlock" style="--bc:#00e8c6" data-name="T1">T1</div>
+                <div class="m3schBlock" style="--bc:#4a8ef0" data-name="T2">T2</div>
+                <div class="m3schBlock" style="--bc:#a855f7" data-name="T3">T3</div>
+                <div class="m3schBlock" style="--bc:#ff9b6b" data-name="T4">T4</div>
+              </div>
+            </div>
+            <div class="m3schArrow"><i class="ph-bold ph-arrow-right"></i></div>
+            <div class="m3schZone m3schCpuZone">
+              <div class="m3schZoneLabel">CPU</div>
+              <div class="m3schCpu" id="schCpu">
+                <div class="m3schCpuInner">
+                  <i class="ph-bold ph-cpu"></i>
+                  <span id="schCpuLabel">Esperando...</span>
+                </div>
+              </div>
+            </div>
+            <div class="m3schArrow"><i class="ph-bold ph-arrow-right"></i></div>
+            <div class="m3schZone">
+              <div class="m3schZoneLabel">Completados</div>
+              <div class="m3schDone" id="schDone"></div>
+            </div>
+          </div>
+          <div class="m3schPhaseLabel" id="schPhase">Presioná Iniciar para ver el scheduler en acción</div>
+          <div class="m3schBtns">
+            <button class="m3btn m3btnAccent" id="btnScheduler" onclick="toggleScheduler()">
+              <i class="ph-bold ph-play"></i> Iniciar
+            </button>
+            <button class="m3btn" onclick="resetScheduler()">
+              <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset
+            </button>
+          </div>
+        </div>
+
+        <div class="m3stateSection reveal">
+          <div class="m3stateDiagramWrap">
+            <div class="m3stateDiagramLabel">Ciclo de vida de un hilo en Java</div>
+            <div class="mermaid">
+stateDiagram-v2
+    [*] --> NEW : new Thread()
+    NEW --> RUNNABLE : start()
+    RUNNABLE --> RUNNING : scheduler selects
+    RUNNING --> RUNNABLE : time slice expired
+    RUNNING --> BLOCKED : waiting for lock
+    RUNNING --> WAITING : wait() / join()
+    BLOCKED --> RUNNABLE : lock acquired
+    WAITING --> RUNNABLE : notify() / interrupt()
+    RUNNING --> TERMINATED : run() returns
+    TERMINATED --> [*]
+            </div>
+          </div>
+          <div class="m3stateList">
+            <div class="m3stateItem" style="--si:#4a8ef0">
+              <div class="m3stateItemDot"></div>
+              <div>
+                <strong>NEW</strong>
+                <p>El hilo fue creado con <code>new Thread()</code> pero <code>start()</code> no fue llamado. Existe en memoria pero no tiene tiempo de CPU asignado.</p>
+              </div>
+            </div>
+            <div class="m3stateItem" style="--si:#00e8c6">
+              <div class="m3stateItemDot"></div>
+              <div>
+                <strong>RUNNABLE</strong>
+                <p>Listo para correr. Puede estar ejecutándose o esperando su turno de CPU. El scheduler decide cuándo le toca.</p>
+              </div>
+            </div>
+            <div class="m3stateItem" style="--si:#ff9b6b">
+              <div class="m3stateItemDot"></div>
+              <div>
+                <strong>BLOCKED</strong>
+                <p>Esperando adquirir un lock <code>synchronized</code> que otro hilo tiene. No consume CPU. Pasa a RUNNABLE cuando obtiene el lock.</p>
+              </div>
+            </div>
+            <div class="m3stateItem" style="--si:#a855f7">
+              <div class="m3stateItemDot"></div>
+              <div>
+                <strong>WAITING / TIMED_WAITING</strong>
+                <p>Esperando una condición externa: <code>wait()</code>, <code>join()</code> o <code>sleep(ms)</code>. Sale cuando alguien llama <code>notify()</code> o vence el tiempo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONCURRENCIA vs PARALELISMO ────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-git-branch"></i> Dos palabras, un error muy común</span>
+          <h2>Concurrencia vs Paralelismo</h2>
+          <p class="msecSub">La mayoría de los programadores los confunde. Son conceptos distintos con implicaciones distintas en diseño de software.</p>
+        </div>
+
+        <div class="m3cpLayout reveal">
+          <div class="m3cpCard" style="--cpc:#4a8ef0">
+            <div class="m3cpCardTop">
+              <div class="m3cpIcon"><i class="ph-bold ph-intersect"></i></div>
+              <span class="m3cpTitle">Concurrencia</span>
+            </div>
+            <p class="m3cpDesc">Múltiples tareas en progreso al mismo tiempo en <strong>una sola CPU</strong>. El scheduler las intercala tan rápido que parecen simultáneas — pero no lo son.</p>
+            <div class="m3cpTimeline">
+              <div class="m3cpTrackLabel">CPU Core 1</div>
+              <div class="m3cpTrack">
+                <div class="m3cpBar" style="--tl:0%;  --tw:18%; --tb:#4a8ef0">T1</div>
+                <div class="m3cpBar" style="--tl:20%; --tw:14%; --tb:#a855f7">T2</div>
+                <div class="m3cpBar" style="--tl:36%; --tw:18%; --tb:#4a8ef0">T1</div>
+                <div class="m3cpBar" style="--tl:56%; --tw:12%; --tb:#ff9b6b">T3</div>
+                <div class="m3cpBar" style="--tl:70%; --tw:14%; --tb:#a855f7">T2</div>
+                <div class="m3cpBar" style="--tl:86%; --tw:14%; --tb:#4a8ef0">T1</div>
+              </div>
+            </div>
+            <div class="m3cpCallout">
+              <i class="ph-bold ph-info"></i>
+              1 core — muchas tareas intercaladas. El progreso parece simultáneo pero es secuencial a nivel de instrucción.
+            </div>
+          </div>
+
+          <div class="m3cpCard" style="--cpc:#00e8c6">
+            <div class="m3cpCardTop">
+              <div class="m3cpIcon"><i class="ph-bold ph-rows"></i></div>
+              <span class="m3cpTitle">Paralelismo</span>
+            </div>
+            <p class="m3cpDesc">Múltiples tareas ejecutándose <strong>literalmente al mismo tiempo</strong> en múltiples cores. Requiere hardware con más de un core disponible.</p>
+            <div class="m3cpTimeline">
+              <div class="m3cpTrackLabel">CPU Core 1</div>
+              <div class="m3cpTrack">
+                <div class="m3cpBar" style="--tl:0%; --tw:100%; --tb:#4a8ef0">T1 — corriendo todo el tiempo</div>
+              </div>
+              <div class="m3cpTrackLabel" style="margin-top:10px">CPU Core 2</div>
+              <div class="m3cpTrack">
+                <div class="m3cpBar" style="--tl:0%; --tw:100%; --tb:#00e8c6">T2 — corriendo todo el tiempo</div>
+              </div>
+            </div>
+            <div class="m3cpCallout">
+              <i class="ph-bold ph-check-circle"></i>
+              2+ cores — tareas verdaderamente simultáneas. El speedup es real. Requiere hardware y buen particionado del trabajo.
+            </div>
+          </div>
+        </div>
+
+        <div class="m3flashQuizWrap reveal">
+          <div class="m3flashQuizHead">
+            <i class="ph-bold ph-lightning"></i> Flash Quiz — ¿Concurrente o Paralelo?
+          </div>
+          <div class="m3flashQuiz" id="flashCards"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── RACE CONDITION ────────────────────── -->
+    <section class="msec" id="race">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-warning-diamond"></i> El bug más difícil de reproducir</span>
+          <h2>Race Condition: cuando el orden importa</h2>
+          <p class="msecSub">Una race condition ocurre cuando el resultado de un programa depende del orden de ejecución de los hilos — un orden que el programador no controla y el scheduler no garantiza.</p>
+        </div>
+
+        <div class="m3rmwBox reveal">
+          <div class="m3rmwTitle">El problema: Read-Modify-Write no es atómico</div>
+          <div class="m3rmwSteps">
+            <div class="m3rmwStep" style="--rs:#4a8ef0">
+              <div class="m3rmwStepNum">1</div>
+              <div class="m3rmwStepName">READ</div>
+              <div class="m3rmwStepDesc">Hilo lee <code>counter = 5</code> desde memoria</div>
+            </div>
+            <div class="m3rmwArrow"><i class="ph-bold ph-arrow-right"></i></div>
+            <div class="m3rmwStep" style="--rs:#a855f7">
+              <div class="m3rmwStepNum">2</div>
+              <div class="m3rmwStepName">MODIFY</div>
+              <div class="m3rmwStepDesc">Calcula <code>5 + 1 = 6</code> en su registro</div>
+            </div>
+            <div class="m3rmwArrow"><i class="ph-bold ph-arrow-right"></i></div>
+            <div class="m3rmwStep" style="--rs:#ff9b6b">
+              <div class="m3rmwStepNum">3</div>
+              <div class="m3rmwStepName">WRITE</div>
+              <div class="m3rmwStepDesc">Escribe <code>counter = 6</code> en memoria</div>
+            </div>
+          </div>
+          <div class="m3rmwDanger">
+            <i class="ph-bold ph-warning"></i>
+            Si otro hilo hace READ después del paso 1 pero antes del paso 3, <strong>ambos escriben 6</strong>. Se pierden incrementos. Con 3 hilos y 100 incrementos cada uno, el resultado debería ser 300 — pero no lo es.
+          </div>
+        </div>
+
+        <div class="m3simulator reveal">
+          <div class="m3simTitle">Simulador de Race Condition</div>
+          <div class="m3simThreads">
+            <div class="m3simThread">
+              <div class="m3simThreadHeader">
+                <span class="m3simThreadName" style="--tn:#00e8c6">Thread 1</span>
+                <span class="m3simThreadPhase" id="t1Phase">Esperando...</span>
+              </div>
+              <div class="m3simBar">
+                <div class="m3simBarFill" id="t1Fill" style="--tc:#00e8c6; width:0%"></div>
+              </div>
+            </div>
+            <div class="m3simThread">
+              <div class="m3simThreadHeader">
+                <span class="m3simThreadName" style="--tn:#4a8ef0">Thread 2</span>
+                <span class="m3simThreadPhase" id="t2Phase">Esperando...</span>
+              </div>
+              <div class="m3simBar">
+                <div class="m3simBarFill" id="t2Fill" style="--tc:#4a8ef0; width:0%"></div>
+              </div>
+            </div>
+            <div class="m3simThread">
+              <div class="m3simThreadHeader">
+                <span class="m3simThreadName" style="--tn:#a855f7">Thread 3</span>
+                <span class="m3simThreadPhase" id="t3Phase">Esperando...</span>
+              </div>
+              <div class="m3simBar">
+                <div class="m3simBarFill" id="t3Fill" style="--tc:#a855f7; width:0%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="m3simCounter">
+            <div class="m3simCounterLabel">Valor de <code>counter</code></div>
+            <div class="m3simCounterVal" id="simCounter">—</div>
+            <div class="m3simCounterExpected">Esperado: <strong>300</strong></div>
+          </div>
+          <div class="m3simBtns">
+            <button class="m3btn m3btnAccent" onclick="runSimulation()">
+              <i class="ph-bold ph-play"></i> Simular (1 vez)
+            </button>
+            <button class="m3btn" onclick="runMultiple()">
+              <i class="ph-bold ph-repeat"></i> Simular (6 veces)
+            </button>
+            <button class="m3btn m3btnGhost" onclick="resetSim()">
+              <i class="ph-bold ph-arrow-counter-clockwise"></i> Resetear
+            </button>
+          </div>
+          <div class="m3simResults" id="simResults" style="display:none"></div>
+        </div>
+
+        <div class="m3codeSection reveal">
+          <div class="m3codeSectionHeader">
+            <div class="m3codeSectionTitle"><i class="ph-bold ph-code"></i> El código con el bug</div>
+            <div class="m3codeBadge m3codeBadgeDanger">Race Condition</div>
+          </div>
+          <pre class="language-java"><code class="language-java">public class RaceCounter {
+    static int counter = 0; // variable compartida, SIN sincronización
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i &lt; 100; i++) {
+                counter++; // read → modify → write: NO es atómico
+            }
+        });
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i &lt; 100; i++) {
+                counter++; // otro hilo hace exactamente lo mismo
+            }
+        });
+        Thread t3 = new Thread(() -> {
+            for (int i = 0; i &lt; 100; i++) {
+                counter++; // y otro más
+            }
+        });
+
+        t1.start(); t2.start(); t3.start();
+        t1.join();  t2.join();  t3.join();
+
+        // Debería ser 300. Casi nunca lo es.
+        System.out.println("counter = " + counter);
+    }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HILOS EN JAVA ──────────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-code"></i> La sintaxis de la concurrencia</span>
+          <h2>Tres formas de crear hilos en Java</h2>
+          <p class="msecSub">Java evolucionó la API de hilos a lo largo de las versiones. Cada enfoque tiene su contexto ideal — saber cuál usar es parte del criterio profesional.</p>
+        </div>
+
+        <div class="m3javaTabsWrap reveal">
+          <div class="m3javaTabs" role="tablist">
+            <button class="m3javaTab active" role="tab" aria-selected="true" onclick="showJavaTab(0)">
+              <i class="ph-bold ph-git-branch"></i> Thread
+            </button>
+            <button class="m3javaTab" role="tab" aria-selected="false" onclick="showJavaTab(1)">
+              <i class="ph-bold ph-plugs-connected"></i> Runnable
+            </button>
+            <button class="m3javaTab" role="tab" aria-selected="false" onclick="showJavaTab(2)">
+              <i class="ph-bold ph-stack"></i> ExecutorService
+              <span class="m3javaBadgeProd">Producción</span>
+            </button>
+          </div>
+
+          <div class="m3javaPanel" id="javaPanel0">
+            <pre class="language-java"><code class="language-java">// Opción 1: Extender Thread
+public class MiHilo extends Thread {
+    private String nombre;
+
+    public MiHilo(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public void run() {
+        // Este código corre en un hilo separado
+        for (int i = 1; i &lt;= 5; i++) {
+            System.out.println(nombre + " → paso " + i);
+            try {
+                Thread.sleep(200); // simula trabajo
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
+            }
+        }
+    }
+}
+
+// En main():
+MiHilo h1 = new MiHilo("Hilo-A");
+MiHilo h2 = new MiHilo("Hilo-B");
+h1.start(); // NO llamar run() — start() crea el hilo real
+h2.start();
+h1.join(); h2.join(); // esperar a que terminen</code></pre>
+            <div class="m3javaWhenBox">
+              <div class="m3javaWhenTitle"><i class="ph-bold ph-question"></i> ¿Cuándo usarlo?</div>
+              <p>Código educativo o scripts simples donde necesitás control total sobre el hilo. En producción, evitalo — extender Thread limita la herencia de otras clases y no escala bien.</p>
+            </div>
+          </div>
+
+          <div class="m3javaPanel hidden" id="javaPanel1">
+            <pre class="language-java"><code class="language-java">// Opción 2: Implementar Runnable (preferida sobre Thread)
+public class MiTarea implements Runnable {
+    private String nombre;
+
+    public MiTarea(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i &lt;= 5; i++) {
+            System.out.println(nombre + " → paso " + i +
+                " [" + Thread.currentThread().getName() + "]");
+        }
+    }
+}
+
+// Con lambda (Java 8+) — más limpio y conciso
+Runnable tarea1 = () -> {
+    for (int i = 0; i &lt; 5; i++) {
+        System.out.println("Lambda hilo: " + i);
+    }
+};
+
+Thread hilo1 = new Thread(new MiTarea("Worker-1"));
+Thread hilo2 = new Thread(tarea1);
+hilo1.start();
+hilo2.start();
+hilo1.join();
+hilo2.join();</code></pre>
+            <div class="m3javaWhenBox">
+              <div class="m3javaWhenTitle"><i class="ph-bold ph-question"></i> ¿Cuándo usarlo?</div>
+              <p>Cuando la tarea es una unidad de trabajo discreta. Permite implementar otras interfaces al mismo tiempo. Las lambdas lo hacen muy conciso. Mejor que extender Thread — separa la tarea del mecanismo de ejecución.</p>
+            </div>
+          </div>
+
+          <div class="m3javaPanel hidden" id="javaPanel2">
+            <pre class="language-java"><code class="language-java">// Opción 3: ExecutorService — el estándar en producción
+import java.util.concurrent.*;
+
+public class EjecutorDemo {
+    public static void main(String[] args) throws Exception {
+        // Pool de 4 hilos reutilizables
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+
+        // Enviar tareas sin preocuparse por la gestión de hilos
+        for (int i = 1; i &lt;= 10; i++) {
+            final int tarea = i;
+            executor.submit(() -> {
+                System.out.println("Tarea " + tarea +
+                    " en " + Thread.currentThread().getName());
+                return tarea * tarea;
+            });
+        }
+
+        // Esperar a que todas las tareas terminen
+        executor.shutdown();
+        boolean terminado = executor.awaitTermination(10, TimeUnit.SECONDS);
+        System.out.println("Completado: " + terminado);
+
+        // Con Callable para obtener resultados tipados
+        ExecutorService exec2 = Executors.newSingleThreadExecutor();
+        Future&lt;Integer&gt; futuro = exec2.submit(() -> {
+            Thread.sleep(500);
+            return 42;
+        });
+        int resultado = futuro.get(); // bloquea hasta tener el valor
+        System.out.println("Resultado: " + resultado);
+        exec2.shutdown();
+    }
+}</code></pre>
+            <div class="m3javaWhenBox">
+              <div class="m3javaWhenTitle"><i class="ph-bold ph-check-circle"></i> ¿Cuándo usarlo?</div>
+              <p>Siempre que sea posible en código real. Reutiliza hilos, controla el pool size, maneja excepciones correctamente y soporta Callable/Future para resultados. Es el estándar de la industria desde Java 5.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LAB INTERACTIVO ───────────────────── -->
+    <section class="msec" id="laboratorio">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-flask"></i> Manos a la obra</span>
+          <h2>Laboratorio Interactivo</h2>
+          <p class="msecSub">Ejecutá el código de race condition directamente en el navegador y observá los resultados impredecibles en tiempo real.</p>
+        </div>
+
+        <div class="m3lab reveal">
+          <div class="m3labInstructions">
+            <div class="m3labStep">
+              <div class="m3labStepNum">1</div>
+              <div class="m3labStepText">
+                <strong>Copiá el código</strong>
+                <p>Usá el botón de copiar debajo para obtener el código Java con la race condition.</p>
+              </div>
+            </div>
+            <div class="m3labStep">
+              <div class="m3labStepNum">2</div>
+              <div class="m3labStepText">
+                <strong>Pegalo en el editor</strong>
+                <p>Reemplazá el contenido del editor de OneCompiler con el código copiado.</p>
+              </div>
+            </div>
+            <div class="m3labStep">
+              <div class="m3labStepNum">3</div>
+              <div class="m3labStepText">
+                <strong>Ejecutá varias veces</strong>
+                <p>Hacé clic en Run repetidamente. Observá que el resultado cambia entre ejecuciones — eso es la race condition.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m3labEmbed">
+            <iframe
+              src="https://onecompiler.com/java/embed?theme=dark&hideTitle=true"
+              width="100%"
+              height="480"
+              frameborder="0"
+              allowfullscreen
+              title="OneCompiler Java IDE"
+            ></iframe>
+          </div>
+
+          <div class="m3labHint">
+            <div class="m3labHintHeader">
+              <i class="ph-bold ph-code-block"></i>
+              Código para copiar — Race Condition Demo
+              <button class="m3btn m3btnSm" onclick="copyLabCode()">
+                <i class="ph-bold ph-copy"></i> Copiar
+              </button>
+            </div>
+            <pre class="language-java" id="labCodeBlock"><code class="language-java">public class RaceConditionDemo {
+    static int counter = 0;
+
+    public static void main(String[] args) throws InterruptedException {
+        int HILOS = 3;
+        int INCREMENTOS = 1000;
+        Thread[] threads = new Thread[HILOS];
+
+        for (int t = 0; t &lt; HILOS; t++) {
+            final int id = t + 1;
+            threads[t] = new Thread(() -> {
+                for (int i = 0; i &lt; INCREMENTOS; i++) {
+                    counter++; // SIN sincronización — race condition aquí
+                }
+            }, "Thread-" + id);
+        }
+
+        long inicio = System.currentTimeMillis();
+        for (Thread t : threads) t.start();
+        for (Thread t : threads) t.join();
+        long fin = System.currentTimeMillis();
+
+        System.out.println("=== Race Condition Demo ===");
+        System.out.println("Resultado: " + counter);
+        System.out.println("Esperado:  " + (HILOS * INCREMENTOS));
+        System.out.println("Diferencia: " + (HILOS * INCREMENTOS - counter));
+        System.out.println("Tiempo: " + (fin - inicio) + "ms");
+
+        if (counter == HILOS * INCREMENTOS) {
+            System.out.println("Tuviste suerte esta vez. Corré de nuevo.");
+        } else {
+            System.out.println("Race condition confirmada. Se perdieron incrementos.");
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── THREAD DETECTIVE GAME ─────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-detective"></i> Modo detective</span>
+          <h2>Thread Detective</h2>
+          <p class="msecSub">Leé el escenario y diagnosticá qué problema de concurrencia ocurrió. Hay 5 casos — ¿podés identificarlos todos?</p>
+        </div>
+        <div class="m3gameWrap reveal">
+          <div class="m3gameScore">
+            Puntaje: <span id="gameScore">0</span> / 5
+          </div>
+          <div class="m3game" id="gameCards"></div>
+          <button class="m3btn m3btnAccent" onclick="buildGame()" style="margin-top:20px">
+            <i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUIZ ──────────────────────────────── -->
+    <section class="msec" id="quiz">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-exam"></i> Autoevaluación</span>
+          <h2>Quiz — Programación Concurrente</h2>
+          <p class="msecSub">8 preguntas para verificar que los conceptos clave quedaron claros. No hay trampas — solo concurrencia.</p>
+        </div>
+        <div class="m3quiz reveal">
+          <div class="m3quizHeader">
+            <span id="quizNum">Pregunta 1 de 8</span>
+            <div class="m3quizProgressWrap">
+              <div class="m3quizProgressBar" id="quizProgress"></div>
+            </div>
+          </div>
+          <div class="m3quizBody" id="quizContent"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GLOSARIO FLIP ──────────────────────── -->
+    <section class="msec alt" id="glosario">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-book-open"></i> Vocabulario técnico</span>
+          <h2>Glosario</h2>
+          <p class="msecSub">Tocá cada tarjeta para ver la definición. Estos son los términos que vas a usar en entrevistas técnicas, revisiones de código y diseño de sistemas concurrentes.</p>
+        </div>
+        <div class="m3flipGrid">
+          <div class="m3flipCard reveal" style="--delay:0ms">
+            <div class="m3flipInner">
+              <div class="m3flipFront">
+                <i class="ph-bold ph-house-line" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Proceso</strong>
+                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m3flipBack">
+                <p>Instancia de un programa en ejecución con su propio espacio de memoria aislado. Tiene código, heap, stack y recursos propios. El SO le asigna un PID único. Ej: cada pestaña del navegador es un proceso.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m3flipCard reveal" style="--delay:60ms">
+            <div class="m3flipInner">
+              <div class="m3flipFront">
+                <i class="ph-bold ph-path" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Hilo (Thread)</strong>
+                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m3flipBack">
+                <p>Unidad de ejecución dentro de un proceso. Comparte heap y código con otros hilos del mismo proceso pero tiene su propio stack. También llamado "proceso liviano". Java crea hilos con <code>Thread</code> o <code>ExecutorService</code>.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m3flipCard reveal" style="--delay:120ms">
+            <div class="m3flipInner">
+              <div class="m3flipFront">
+                <i class="ph-bold ph-shuffle" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Scheduler</strong>
+                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m3flipBack">
+                <p>Componente del SO que decide qué hilo recibe tiempo de CPU y por cuánto tiempo. Java no controla al scheduler — el SO es el árbitro. Por eso el orden de ejecución de los hilos no está garantizado.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m3flipCard reveal" style="--delay:180ms">
+            <div class="m3flipInner">
+              <div class="m3flipFront">
+                <i class="ph-bold ph-intersect" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Concurrencia</strong>
+                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m3flipBack">
+                <p>Múltiples tareas en progreso simultáneo, intercaladas por el scheduler en uno o más cores. Es un concepto de diseño: el programa está estructurado para manejar múltiples tareas a la vez, aunque no corran exactamente al mismo tiempo.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m3flipCard reveal" style="--delay:240ms">
+            <div class="m3flipInner">
+              <div class="m3flipFront">
+                <i class="ph-bold ph-rows" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Paralelismo</strong>
+                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m3flipBack">
+                <p>Ejecución verdaderamente simultánea de múltiples tareas en múltiples cores. Requiere hardware (más de 1 core) y software bien particionado. Un programa con un solo core puede ser concurrente pero nunca paralelo.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m3flipCard reveal" style="--delay:300ms">
+            <div class="m3flipInner">
+              <div class="m3flipFront">
+                <i class="ph-bold ph-warning-diamond" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Race Condition</strong>
+                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m3flipBack">
+                <p>Bug donde el resultado de un programa depende del orden de ejecución de los hilos. Ocurre cuando dos o más hilos acceden y modifican datos compartidos sin sincronización. El resultado es impredecible y difícil de reproducir.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m3flipCard reveal" style="--delay:360ms">
+            <div class="m3flipInner">
+              <div class="m3flipFront">
+                <i class="ph-bold ph-swap" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Context Switch</strong>
+                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m3flipBack">
+                <p>Operación del SO donde guarda el estado de un hilo (registros, stack pointer, program counter) y carga el estado de otro. Dura ~1000ns. Demasiados context switches pueden degradar el rendimiento más que el trabajo real.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m3flipCard reveal" style="--delay:420ms">
+            <div class="m3flipInner">
+              <div class="m3flipFront">
+                <i class="ph-bold ph-stack" style="font-size:28px;color:var(--accent)"></i>
+                <strong>ExecutorService</strong>
+                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m3flipBack">
+                <p>API de alto nivel de Java para gestionar pools de hilos. Reutiliza hilos en lugar de crear y destruir, controla el tamaño del pool, maneja excepciones y soporta Callable/Future para tareas con resultados. Estándar desde Java 5.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACTIVIDAD ──────────────────────────── -->
+    <section class="msec" id="actividades">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-code-simple"></i> Tu turno</span>
+          <h2>Actividad — Race Condition en Producción</h2>
+          <p class="msecSub">Esta actividad vale <strong>10 puntos</strong>. Vas a implementar, observar y corregir una race condition real en Java.</p>
+        </div>
+
+        <div class="m3actTheory reveal">
+          <div class="m3actTheoryText">
+            <div class="m3actTheoryEye"><i class="ph-bold ph-book-bookmark"></i> Antes de arrancar</div>
+            <h3>¿Cómo se investiga una race condition?</h3>
+            <p>Una race condition no es un error que se ve a simple vista. Aparece de forma intermitente, con valores incorrectos que varían entre ejecuciones. La clave es <strong>reproducirla consistentemente</strong> y luego corregirla con la herramienta de sincronización correcta.</p>
+            <p>En Java, la solución básica es <code>synchronized</code>. La solución de alto nivel es <code>AtomicInteger</code> del paquete <code>java.util.concurrent.atomic</code>. Ambas garantizan atomicidad del read-modify-write.</p>
+            <div class="m3actTheoryTips">
+              <div class="m3actTheoryTip">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <span>Corré el código <strong>sin sincronización</strong> al menos 5 veces y anotá todos los valores distintos</span>
+              </div>
+              <div class="m3actTheoryTip">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <span>Usá <code>AtomicInteger</code> como primera corrección y verificá que siempre da 3000</span>
+              </div>
+              <div class="m3actTheoryTip">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <span>Medí el tiempo con ambas versiones — la corrección tiene un costo de rendimiento</span>
+              </div>
+              <div class="m3actTheoryTip">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <span>Documentá: ¿en qué momento exacto del read-modify-write ocurre la interrupción?</span>
+              </div>
+            </div>
+          </div>
+          <div class="m3actTheoryExample">
+            <div class="m3actTheoryExampleLabel">Ejemplo de resultados esperados</div>
+            <table class="m3actResultTable">
+              <thead>
+                <tr>
+                  <th>Ejecución</th>
+                  <th>Sin sync</th>
+                  <th>AtomicInteger</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td class="warn">2847</td><td class="good">3000</td></tr>
+                <tr><td>2</td><td class="warn">2991</td><td class="good">3000</td></tr>
+                <tr><td>3</td><td class="warn">2634</td><td class="good">3000</td></tr>
+                <tr><td>4</td><td class="warn">2999</td><td class="good">3000</td></tr>
+                <tr><td>5</td><td class="warn">2756</td><td class="good">3000</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="m3missionBox reveal">
+          <div class="m3missionHeader">
+            <div class="m3missionBadge"><i class="ph-bold ph-code-simple"></i> Misión 03</div>
+            <h3>Reproducí y solucioná la race condition</h3>
+          </div>
+          <div class="m3missionSteps">
+            <div class="m3missionStep">
+              <div class="m3missionStepIcon" style="--sc:#4a8ef0"><i class="ph-bold ph-copy"></i></div>
+              <div class="m3missionStepBody">
+                <strong>Paso 1 — Implementá el contador sin sincronización</strong>
+                <p>Creá una clase <code>RaceCounter</code> con un <code>int counter</code> estático. Usá 3 hilos, cada uno con 1000 incrementos. Ejecutá 5 veces y anotá los resultados. El valor debería ser 3000 pero no lo será.</p>
+              </div>
+            </div>
+            <div class="m3missionStep">
+              <div class="m3missionStepIcon" style="--sc:#00e8c6"><i class="ph-bold ph-wrench"></i></div>
+              <div class="m3missionStepBody">
+                <strong>Paso 2 — Corregí con AtomicInteger</strong>
+                <p>Reemplazá el <code>int counter</code> por <code>AtomicInteger counter = new AtomicInteger(0)</code> y usá <code>counter.incrementAndGet()</code>. Verificá que ahora siempre da 3000.</p>
+              </div>
+            </div>
+            <div class="m3missionStep">
+              <div class="m3missionStepIcon" style="--sc:#a855f7"><i class="ph-bold ph-clock"></i></div>
+              <div class="m3missionStepBody">
+                <strong>Paso 3 — Medí el impacto en rendimiento</strong>
+                <p>Usá <code>System.currentTimeMillis()</code> para medir el tiempo de ambas versiones con 10 hilos × 10.000 incrementos. Documentá la diferencia y explicá por qué existe.</p>
+              </div>
+            </div>
+            <div class="m3missionStep">
+              <div class="m3missionStepIcon" style="--sc:#ff9b6b"><i class="ph-bold ph-file-text"></i></div>
+              <div class="m3missionStepBody">
+                <strong>Paso 4 — Documentá tus hallazgos</strong>
+                <p>Entregá: el código de ambas versiones, una tabla con los resultados de al menos 5 ejecuciones de cada versión, y un párrafo explicando por qué ocurre la race condition en términos del ciclo read-modify-write.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m3rubric reveal">
+          <div class="m3rubricTitle"><i class="ph-bold ph-list-checks"></i> Rúbrica de evaluación</div>
+          <div class="m3rubricItems">
+            <div class="m3rubricItem">
+              <div class="m3rubricItemHeader">
+                <span class="m3rubricItemName">Reproducción y documentación de la race condition</span>
+                <span class="m3rubricPct">40%</span>
+              </div>
+              <div class="m3rubricBar"><div class="m3rubricBarFill" style="--pct:40%;--bc:#00e8c6"></div></div>
+              <p class="m3rubricDesc">5+ ejecuciones documentadas con valores distintos. Captura o log del output. Identificación del momento exacto de la race condition.</p>
+            </div>
+            <div class="m3rubricItem">
+              <div class="m3rubricItemHeader">
+                <span class="m3rubricItemName">Implementación correcta con AtomicInteger</span>
+                <span class="m3rubricPct">30%</span>
+              </div>
+              <div class="m3rubricBar"><div class="m3rubricBarFill" style="--pct:30%;--bc:#4a8ef0"></div></div>
+              <p class="m3rubricDesc">Código funcional con AtomicInteger. Siempre produce el resultado correcto (3000). Sin errores de compilación.</p>
+            </div>
+            <div class="m3rubricItem">
+              <div class="m3rubricItemHeader">
+                <span class="m3rubricItemName">Análisis de rendimiento comparativo</span>
+                <span class="m3rubricPct">20%</span>
+              </div>
+              <div class="m3rubricBar"><div class="m3rubricBarFill" style="--pct:20%;--bc:#a855f7"></div></div>
+              <p class="m3rubricDesc">Medición de tiempo con ambas versiones bajo carga alta. Tabla comparativa y explicación técnica de la diferencia.</p>
+            </div>
+            <div class="m3rubricItem">
+              <div class="m3rubricItemHeader">
+                <span class="m3rubricItemName">Explicación conceptual del read-modify-write</span>
+                <span class="m3rubricPct">10%</span>
+              </div>
+              <div class="m3rubricBar"><div class="m3rubricBarFill" style="--pct:10%;--bc:#ff9b6b"></div></div>
+              <p class="m3rubricDesc">Párrafo propio que explique con precisión técnica qué ocurre en los 3 pasos y en qué momento exacto puede haber interrupción.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ─────────────────────────────── -->
+    <footer class="mfoot">
+      <a href="modulo2.html" class="mfootLink">
+        <i class="ph ph-arrow-left"></i> Módulo 2
+      </a>
+      <a href="../index.html" class="mfootBrand">Campus PAI3</a>
+      <a href="modulo4.html" class="mfootLink">
+        Módulo 4 <i class="ph ph-arrow-right"></i>
+      </a>
+    </footer>
+
+    <!-- ── SCRIPTS ────────────────────────────── -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'dark', darkMode: true });
+    </script>
+    <script src="../assets/js/campus.js"></script>
     <script src="../assets/js/modulo3.js"></script>
   </body>
 </html>
