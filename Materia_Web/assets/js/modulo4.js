@@ -5,10 +5,10 @@
 /* Force violet accent — overrides campus.js default */
 (function () {
   const r = document.documentElement;
-  r.style.setProperty('--accent',        '#9b6fff');
-  r.style.setProperty('--accent-sub',    'rgba(155,111,255,0.10)');
-  r.style.setProperty('--accent-border', 'rgba(155,111,255,0.30)');
-  r.style.setProperty('--accent-mid',    'rgba(155,111,255,0.45)');
+  r.style.setProperty('--accent',        '#b040ff');
+  r.style.setProperty('--accent-sub',    'rgba(176,64,255,0.13)');
+  r.style.setProperty('--accent-border', 'rgba(176,64,255,0.38)');
+  r.style.setProperty('--accent-mid',    'rgba(176,64,255,0.55)');
 })();
 
 /* ─── Reading progress ───────────────────── */

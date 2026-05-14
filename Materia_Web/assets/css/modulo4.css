@@ -6,6 +6,52 @@
 .msecEye { color: var(--accent); }
 .msecHead h2 { font-size: clamp(22px, 2.6vw, 34px); }
 
+/* ─── Color & contrast boost ─────────────── */
+/* IPC cards — stronger tint + bigger text */
+.m4ipcCard {
+  border-color: color-mix(in srgb, var(--cc) 35%, transparent);
+  background: color-mix(in srgb, var(--cc) 10%, rgba(6,8,15,0.45));
+}
+.m4ipcDesc            { font-size: 14px; color: var(--text); }
+.m4ipcList li:not(.good):not(.warn) { font-size: 14px; color: var(--text); }
+.m4ipcList li.good, .m4ipcList li.warn { font-size: 14px; }
+.m4ipcSpeedLabel      { color: var(--sub); }
+.m4ipcSpeedNum        { color: var(--text); font-weight: 900; }
+.m4ipcUso             { color: var(--text); font-size: 13px; }
+/* Isolation */
+.m4isoDesc            { color: var(--text); }
+.m4isoList li:not(.good):not(.warn) { color: var(--text); }
+.m4isoRoomName        { font-size: 14px; }
+.m4isoRoomDesc        { font-size: 12px; color: var(--sub); }
+/* Objectives */
+.m4objCard p          { color: var(--text); font-size: 15px; }
+/* Compare table */
+.m4compareTable td    { color: var(--text); font-size: 14px; }
+/* PC Scenarios */
+.m4pcScenarioDesc     { font-size: 15px; color: var(--text); }
+/* Flash quiz */
+.m4flashScenario      { color: var(--text); font-size: 15px; }
+.m4flashBtn           { color: var(--text); font-size: 13px; border-color: rgba(255,255,255,0.1); }
+.m4flashBtn:hover     { border-color: var(--border-hover); }
+.m4flashAnswer        { color: var(--text); font-size: 14px; }
+/* BlockingQueue simulator */
+.m4bqStatLabel        { color: var(--sub); font-size: 12px; }
+.m4bqSliderLabel      { color: var(--text); font-size: 13px; }
+.m4bqQueueLabel       { color: var(--text); font-size: 13px; }
+/* Game */
+.m4gameCardNum        { color: var(--sub); }
+.m4gameScenario       { color: var(--text); font-size: 15px; }
+.m4gameOpt            { color: var(--text); font-size: 13px; border-color: rgba(255,255,255,0.1); }
+.m4gameOpt:hover      { background: rgba(255,255,255,0.07); border-color: var(--border-hover); }
+/* Lab */
+.m4labStepText p      { font-size: 14px; color: var(--text); }
+/* Java when box */
+.m4javaWhenBox p      { color: var(--text); font-size: 15px; }
+/* Hero stat label */
+.m4heroStatLabel      { font-size: 14px; }
+/* Pipe actor role */
+.m4pipeActorRole      { color: var(--sub); }
+
 /* ─── Reading progress ───────────────────── */
 .readProgress {
   position: fixed; top: 0; left: 0;
