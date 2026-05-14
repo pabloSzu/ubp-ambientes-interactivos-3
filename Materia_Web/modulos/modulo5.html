@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PAI3 · Módulo 5 · Sincronización</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../assets/css/modulo.css" />
+    <link rel="stylesheet" href="../assets/css/modulo5.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-one-dark.min.css" />
+    <style>
+      :root {
+        --accent:        #ff7d54;
+        --accent-sub:    rgba(255,125,84,0.13);
+        --accent-border: rgba(255,125,84,0.38);
+        --accent-mid:    rgba(255,125,84,0.55);
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="readProgress" id="readProgress"></div>
+    <div class="mglow" id="mglow"></div>
+
+    <!-- ── HEADER ──────────────────────────── -->
+    <header class="mhdr">
+      <a class="mhdrBack" href="../index.html">
+        <i class="ph ph-arrow-left"></i> Campus
+      </a>
+      <span class="mhdrBrand">PAI3</span>
+      <span class="mhdrLabel">Módulo 5 · Sincronización</span>
+      <nav class="mhdrSections">
+        <a href="#conceptos">Conceptos</a>
+        <a href="#simulador">Filósofos</a>
+        <a href="#codigo">Código</a>
+        <a href="#laboratorio">Lab</a>
+        <a href="#actividades">Actividad</a>
+      </nav>
+    </header>
+
+    <!-- ── HERO ─────────────────────────────── -->
+    <section class="m5hero">
+      <div class="m5heroBg">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80&fit=crop" alt="" aria-hidden="true" class="m5heroImg" />
+        <div class="m5heroOverlay"></div>
+      </div>
+      <!-- Animated lock pulses -->
+      <div class="m5heroLock" style="--ld:0s;   --lx:12%; --ly:18%"></div>
+      <div class="m5heroLock" style="--ld:1.2s; --lx:78%; --ly:32%"></div>
+      <div class="m5heroLock" style="--ld:2.4s; --lx:42%; --ly:72%"></div>
+      <div class="m5heroLock" style="--ld:0.6s; --lx:88%; --ly:65%"></div>
+      <div class="m5heroLock" style="--ld:1.8s; --lx:25%; --ly:55%"></div>
+      <div class="m5heroContent msecWrap">
+        <div class="m5heroBadge">
+          <i class="ph-bold ph-lock-key"></i> Bloque 03
+        </div>
+        <h1 class="m5heroTitle">Sincronización entre<br/><span>Procesos e Hilos</span></h1>
+        <p class="m5heroIntro">Sin sincronización, los hilos chocan, los datos se corrompen y el sistema se paraliza sin motivo aparente. Locks, semáforos y monitores son las herramientas para poner orden — sin ellas, la concurrencia es una ruleta rusa.</p>
+        <div class="m5heroStats">
+          <div class="m5heroStat">
+            <div class="m5heroStatTop">
+              <span class="m5heroStatNum" id="counter1">0</span>
+            </div>
+            <span class="m5heroStatLabel">primitivas de sincronización que vas a dominar en este módulo</span>
+          </div>
+          <div class="m5heroStat">
+            <div class="m5heroStatTop">
+              <span class="m5heroStatNum" id="counter2">0</span>
+            </div>
+            <span class="m5heroStatLabel">patologías críticas de concurrencia (deadlock, starvation, livelock)</span>
+          </div>
+          <div class="m5heroStat">
+            <div class="m5heroStatTop">
+              <span class="m5heroStatNum" id="counter3">0</span>
+            </div>
+            <span class="m5heroStatLabel">filósofos en el simulador interactivo — ¿van a lograr comer?</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PULL QUOTE ────────────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <blockquote class="m5pullQuote reveal">
+          <i class="ph-bold ph-quotes"></i>
+          <p>"Un sistema concurrente sin sincronización no falla de forma predecible. Falla justo cuando no lo esperás, en producción, con datos reales."</p>
+          <cite>— Ley no escrita de la programación concurrente · El 73% de los bugs de concurrencia en producción no se reproducen en local.</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ── MICROOBJETIVOS ────────────────────── -->
+    <section class="msec" id="microobjetivos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-target"></i> Objetivos del módulo</span>
+          <h2>¿Qué vas a aprender?</h2>
+          <p class="msecSub">Al terminar este módulo vas a poder implementar código concurrente seguro en Java, identificar las tres grandes patologías de sincronización y aplicar la herramienta correcta para cada problema.</p>
+        </div>
+        <div class="m5objGrid">
+          <div class="m5objCard reveal" style="--delay:0ms">
+            <div class="m5objIcon" style="--oc:#ff7d54"><i class="ph-bold ph-lock-key"></i></div>
+            <div>
+              <strong>Dominar las primitivas de sincronización</strong>
+              <p>Comprender los mecanismos de mutex, semáforo y monitor con el fin de implementar secciones críticas que garanticen exclusión mutua y consistencia de datos compartidos.</p>
+            </div>
+          </div>
+          <div class="m5objCard reveal" style="--delay:80ms">
+            <div class="m5objIcon" style="--oc:#4a8ef0"><i class="ph-bold ph-warning-circle"></i></div>
+            <div>
+              <strong>Identificar las patologías de concurrencia</strong>
+              <p>Distinguir deadlock, starvation y livelock con el fin de diagnosticar y prevenir fallos en sistemas concurrentes que impidan el progreso del sistema.</p>
+            </div>
+          </div>
+          <div class="m5objCard reveal" style="--delay:160ms">
+            <div class="m5objIcon" style="--oc:#00e8c6"><i class="ph-bold ph-code-simple"></i></div>
+            <div>
+              <strong>Aplicar Java concurrente: synchronized, Semaphore, ReentrantLock</strong>
+              <p>Usar las primitivas de Java con el fin de resolver problemas reales de acceso concurrente sin introducir deadlocks ni condiciones de carrera.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONCEPTOS CLAVE ─────────────────────── -->
+    <section class="msec alt" id="conceptos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-book-open"></i> Las herramientas y las amenazas</span>
+          <h2>6 conceptos que definen la sincronización</h2>
+          <p class="msecSub">Tres son tus herramientas para proteger los datos. Tres son las patologías que aparecen cuando usás mal esas herramientas. Conocé ambos lados.</p>
+        </div>
+
+        <div class="m5conceptGrid">
+          <!-- HERRAMIENTAS -->
+          <div class="m5conceptCard m5conceptTool reveal" style="--delay:0ms">
+            <div class="m5conceptTop">
+              <div class="m5conceptIcon" style="--ic:#ff7d54"><i class="ph-bold ph-lock-key"></i></div>
+              <div class="m5conceptMeta">
+                <span class="m5conceptTag m5conceptTagTool">HERRAMIENTA</span>
+                <span class="m5conceptName">Mutex / Lock</span>
+              </div>
+            </div>
+            <p class="m5conceptDesc">Garantiza <strong>exclusión mutua</strong>: solo un hilo puede estar en la sección crítica a la vez. El resto espera en cola. En Java: bloque <code>synchronized</code> o <code>ReentrantLock</code>.</p>
+            <div class="m5conceptCode"><code>synchronized(obj) { /* sección crítica */ }</code></div>
+          </div>
+
+          <div class="m5conceptCard m5conceptTool reveal" style="--delay:60ms">
+            <div class="m5conceptTop">
+              <div class="m5conceptIcon" style="--ic:#ff7d54"><i class="ph-bold ph-ticket"></i></div>
+              <div class="m5conceptMeta">
+                <span class="m5conceptTag m5conceptTagTool">HERRAMIENTA</span>
+                <span class="m5conceptName">Semáforo</span>
+              </div>
+            </div>
+            <p class="m5conceptDesc">Contador de permisos: N hilos pueden acceder simultáneamente. <strong>Binario (1)</strong> = mutex. <strong>Counting (N)</strong> = controla cuántos entran a la vez. En Java: <code>Semaphore(N)</code>.</p>
+            <div class="m5conceptCode"><code>sem.acquire(); // toma permiso<br>sem.release(); // devuelve permiso</code></div>
+          </div>
+
+          <div class="m5conceptCard m5conceptTool reveal" style="--delay:120ms">
+            <div class="m5conceptTop">
+              <div class="m5conceptIcon" style="--ic:#ff7d54"><i class="ph-bold ph-bell-ringing"></i></div>
+              <div class="m5conceptMeta">
+                <span class="m5conceptTag m5conceptTagTool">HERRAMIENTA</span>
+                <span class="m5conceptName">Monitor</span>
+              </div>
+            </div>
+            <p class="m5conceptDesc">Mutex + variable de condición. El hilo puede <strong>ceder el lock temporalmente</strong> con <code>wait()</code> y esperar una señal. <code>notify()</code> despierta un hilo en espera. En Java: <code>synchronized</code> + <code>wait</code>/<code>notifyAll</code>.</p>
+            <div class="m5conceptCode"><code>synchronized(this) { while(!cond) wait(); }</code></div>
+          </div>
+
+          <!-- PATOLOGÍAS -->
+          <div class="m5conceptCard m5conceptBug reveal" style="--delay:180ms">
+            <div class="m5conceptTop">
+              <div class="m5conceptIcon" style="--ic:#ef4444"><i class="ph-bold ph-chain"></i></div>
+              <div class="m5conceptMeta">
+                <span class="m5conceptTag m5conceptTagBug">PATOLOGÍA</span>
+                <span class="m5conceptName">Deadlock</span>
+              </div>
+            </div>
+            <p class="m5conceptDesc">Ciclo de espera circular: T1 tiene A y espera B; T2 tiene B y espera A. <strong>Nadie avanza</strong>. Requiere las 4 condiciones de Coffman simultáneamente para ocurrir.</p>
+            <div class="m5conceptBullets">
+              <span class="m5conceptBullet">Exclusión mutua</span>
+              <span class="m5conceptBullet">Hold &amp; Wait</span>
+              <span class="m5conceptBullet">No preempción</span>
+              <span class="m5conceptBullet">Espera circular</span>
+            </div>
+          </div>
+
+          <div class="m5conceptCard m5conceptBug reveal" style="--delay:240ms">
+            <div class="m5conceptTop">
+              <div class="m5conceptIcon" style="--ic:#f59e0b"><i class="ph-bold ph-ghost"></i></div>
+              <div class="m5conceptMeta">
+                <span class="m5conceptTag m5conceptTagBug">PATOLOGÍA</span>
+                <span class="m5conceptName">Starvation</span>
+              </div>
+            </div>
+            <p class="m5conceptDesc"><strong>Inanición</strong>: el sistema sigue funcionando, pero un hilo de baja prioridad nunca puede acceder al recurso porque otros siempre llegan antes. El hilo existe pero jamás progresa.</p>
+            <div class="m5conceptBullets">
+              <span class="m5conceptBullet">Sistema activo</span>
+              <span class="m5conceptBullet">Injusticia de prioridades</span>
+              <span class="m5conceptBullet">Un hilo excluido</span>
+            </div>
+          </div>
+
+          <div class="m5conceptCard m5conceptBug reveal" style="--delay:300ms">
+            <div class="m5conceptTop">
+              <div class="m5conceptIcon" style="--ic:#a855f7"><i class="ph-bold ph-arrows-counter-clockwise"></i></div>
+              <div class="m5conceptMeta">
+                <span class="m5conceptTag m5conceptTagBug">PATOLOGÍA</span>
+                <span class="m5conceptName">Livelock</span>
+              </div>
+            </div>
+            <p class="m5conceptDesc">Los hilos están <strong>activos</strong> pero se bloquean mutuamente sin avanzar. Como dos personas en un pasillo angosto que se corren hacia el mismo lado repetidamente.</p>
+            <div class="m5conceptBullets">
+              <span class="m5conceptBullet">Hilos activos (no bloqueados)</span>
+              <span class="m5conceptBullet">Responden entre sí</span>
+              <span class="m5conceptBullet">Sin progreso real</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PROBLEMA DE LOS FILÓSOFOS ─────────── -->
+    <section class="msec" id="filosofos-intro">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-fork-knife"></i> El problema clásico</span>
+          <h2>Los Filósofos de la Cena</h2>
+          <p class="msecSub">Formulado por Dijkstra en 1965. Simple de enunciar, difícil de resolver — perfectamente diseñado para mostrar todos los problemas de sincronización de una vez.</p>
+        </div>
+
+        <div class="m5philProblem reveal">
+          <div class="m5philProblemText">
+            <div class="m5philProblemRule">
+              <div class="m5philRuleIcon"><i class="ph-bold ph-number-circle-one"></i></div>
+              <div>
+                <strong>5 filósofos, 5 tenedores</strong>
+                <p>Los filósofos están sentados alrededor de una mesa circular. Entre cada par hay exactamente un tenedor. No puede crearse ni quitarse ningún tenedor.</p>
+              </div>
+            </div>
+            <div class="m5philProblemRule">
+              <div class="m5philRuleIcon"><i class="ph-bold ph-number-circle-two"></i></div>
+              <div>
+                <strong>Para comer: necesitás los dos tenedores</strong>
+                <p>Un filósofo solo puede comer si tiene el tenedor de su izquierda Y el de su derecha al mismo tiempo. Uno solo no alcanza.</p>
+              </div>
+            </div>
+            <div class="m5philProblemRule">
+              <div class="m5philRuleIcon"><i class="ph-bold ph-number-circle-three"></i></div>
+              <div>
+                <strong>¿Qué pasa si cada uno toma el izquierdo?</strong>
+                <p>Si los 5 filósofos toman su tenedor izquierdo simultáneamente, ninguno puede tomar el derecho. Todos esperan. <strong>Deadlock total.</strong></p>
+              </div>
+            </div>
+            <div class="m5philProblemRule m5philProblemRuleHighlight">
+              <div class="m5philRuleIcon"><i class="ph-bold ph-question"></i></div>
+              <div>
+                <strong>El desafío: garantizar que todos coman sin deadlock</strong>
+                <p>¿Cómo sincronizamos el acceso a los tenedores para que el sistema progrese y nadie muera de hambre?</p>
+              </div>
+            </div>
+          </div>
+          <div class="m5philProblemVisual">
+            <div class="m5philProblemDiagram">
+              <div class="m5philDiagTable"></div>
+              <div class="m5philDiagPhil m5philDiagP0"><span>F0</span></div>
+              <div class="m5philDiagPhil m5philDiagP1"><span>F1</span></div>
+              <div class="m5philDiagPhil m5philDiagP2"><span>F2</span></div>
+              <div class="m5philDiagPhil m5philDiagP3"><span>F3</span></div>
+              <div class="m5philDiagPhil m5philDiagP4"><span>F4</span></div>
+              <div class="m5philDiagFork m5philDiagFk0"></div>
+              <div class="m5philDiagFork m5philDiagFk1"></div>
+              <div class="m5philDiagFork m5philDiagFk2"></div>
+              <div class="m5philDiagFork m5philDiagFk3"></div>
+              <div class="m5philDiagFork m5philDiagFk4"></div>
+              <div class="m5philDiagLabel">Mesa de los filósofos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SIMULADOR FILÓSOFOS ──────────────── -->
+    <section class="msec alt" id="simulador">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-play-circle"></i> Simulador interactivo</span>
+          <h2>¿Deadlock o sincronización? Vos elegís</h2>
+          <p class="msecSub">Seleccioná el modo y presioná Play. Observá cómo la misma mesa, los mismos filósofos y los mismos tenedores producen resultados radicalmente distintos según la estrategia de sincronización.</p>
+        </div>
+
+        <div class="m5simWrap reveal">
+          <!-- Mode selector -->
+          <div class="m5simModes">
+            <button class="m5simModeBtn m5simModeActive" id="modeDeadlock" onclick="setMode('deadlock')">
+              <i class="ph-bold ph-skull"></i>
+              <span>Sin control</span>
+              <small>→ Deadlock garantizado</small>
+            </button>
+            <button class="m5simModeBtn" id="modeSemaphore" onclick="setMode('semaphore')">
+              <i class="ph-bold ph-ticket"></i>
+              <span>Con Semáforo(4)</span>
+              <small>→ Sistema estable</small>
+            </button>
+          </div>
+
+          <div class="m5simMain">
+            <!-- Dining table visual -->
+            <div class="m5simTableWrap">
+              <div class="m5simTable" id="simTable">
+                <div class="m5simTableCenter">
+                  <span class="m5simTableIcon"><i class="ph-bold ph-fork-knife"></i></span>
+                  <span class="m5simTableLabel">Mesa</span>
+                </div>
+
+                <!-- Philosophers -->
+                <div class="m5simPhil" id="sp0" style="--angle:270deg">
+                  <div class="m5simPhilBubble">
+                    <span class="m5simPhilId">F0</span>
+                    <span class="m5simPhilEmoji" id="se0">💭</span>
+                  </div>
+                  <span class="m5simPhilState" id="ss0">pensando</span>
+                </div>
+                <div class="m5simPhil" id="sp1" style="--angle:342deg">
+                  <div class="m5simPhilBubble">
+                    <span class="m5simPhilId">F1</span>
+                    <span class="m5simPhilEmoji" id="se1">💭</span>
+                  </div>
+                  <span class="m5simPhilState" id="ss1">pensando</span>
+                </div>
+                <div class="m5simPhil" id="sp2" style="--angle:54deg">
+                  <div class="m5simPhilBubble">
+                    <span class="m5simPhilId">F2</span>
+                    <span class="m5simPhilEmoji" id="se2">💭</span>
+                  </div>
+                  <span class="m5simPhilState" id="ss2">pensando</span>
+                </div>
+                <div class="m5simPhil" id="sp3" style="--angle:126deg">
+                  <div class="m5simPhilBubble">
+                    <span class="m5simPhilId">F3</span>
+                    <span class="m5simPhilEmoji" id="se3">💭</span>
+                  </div>
+                  <span class="m5simPhilState" id="ss3">pensando</span>
+                </div>
+                <div class="m5simPhil" id="sp4" style="--angle:198deg">
+                  <div class="m5simPhilBubble">
+                    <span class="m5simPhilId">F4</span>
+                    <span class="m5simPhilEmoji" id="se4">💭</span>
+                  </div>
+                  <span class="m5simPhilState" id="ss4">pensando</span>
+                </div>
+
+                <!-- Forks (between each pair) -->
+                <div class="m5simFork" id="sf0" style="--angle:306deg"><i class="ph-bold ph-fork-knife"></i></div>
+                <div class="m5simFork" id="sf1" style="--angle:18deg"><i class="ph-bold ph-fork-knife"></i></div>
+                <div class="m5simFork" id="sf2" style="--angle:90deg"><i class="ph-bold ph-fork-knife"></i></div>
+                <div class="m5simFork" id="sf3" style="--angle:162deg"><i class="ph-bold ph-fork-knife"></i></div>
+                <div class="m5simFork" id="sf4" style="--angle:234deg"><i class="ph-bold ph-fork-knife"></i></div>
+              </div>
+
+              <!-- Legend -->
+              <div class="m5simLegend">
+                <span class="m5simLegendItem m5simLegThinking"><i class="ph ph-circle-dashed"></i> Pensando</span>
+                <span class="m5simLegendItem m5simLegHungry"><i class="ph ph-circle"></i> Hambriento</span>
+                <span class="m5simLegendItem m5simLegWaiting"><i class="ph ph-clock"></i> Esperando</span>
+                <span class="m5simLegendItem m5simLegEating"><i class="ph-bold ph-check-circle"></i> Comiendo</span>
+                <span class="m5simLegendItem m5simLegDead"><i class="ph-bold ph-skull"></i> Deadlock</span>
+              </div>
+            </div>
+
+            <!-- Controls + log -->
+            <div class="m5simPanel">
+              <div class="m5simStatus" id="simStatus">
+                <i class="ph ph-info"></i>
+                Seleccioná un modo y presioná Play
+              </div>
+
+              <div class="m5simCtrlRow">
+                <button class="m5simBtn m5simBtnAccent" id="simPlayBtn" onclick="simToggle()">
+                  <i class="ph-bold ph-play"></i> Play
+                </button>
+                <button class="m5simBtn" onclick="simReset()">
+                  <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset
+                </button>
+              </div>
+
+              <div class="m5simScoreRow" id="simScoreRow">
+                <div class="m5simScoreBox">
+                  <span class="m5simScoreNum" id="simMeals">0</span>
+                  <span class="m5simScoreLabel">comidas</span>
+                </div>
+                <div class="m5simScoreBox">
+                  <span class="m5simScoreNum" id="simDeadlocks">0</span>
+                  <span class="m5simScoreLabel">deadlocks</span>
+                </div>
+                <div class="m5simScoreBox">
+                  <span class="m5simScoreNum" id="simTime">0s</span>
+                  <span class="m5simScoreLabel">tiempo</span>
+                </div>
+              </div>
+
+              <div class="m5simLogWrap">
+                <div class="m5simLogLabel"><i class="ph ph-terminal"></i> Log de eventos</div>
+                <div class="m5simLog" id="simLog">
+                  <div class="m5simLogEntry m5simLogInfo">Sistema listo. Elegí un modo y presioná Play.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LAS 4 CONDICIONES DE COFFMAN ─────── -->
+    <section class="msec" id="coffman">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-warning-octagon"></i> Las 4 condiciones de Coffman</span>
+          <h2>¿Cuándo ocurre un deadlock?</h2>
+          <p class="msecSub">Un deadlock solo puede ocurrir si se cumplen las 4 condiciones de Coffman <strong>simultáneamente</strong>. Eliminar cualquiera de las cuatro previene el deadlock.</p>
+        </div>
+
+        <div class="m5coffmanGrid">
+          <div class="m5coffmanCard reveal" style="--delay:0ms; --cc:#ef4444">
+            <div class="m5coffmanNum">1</div>
+            <div class="m5coffmanIcon"><i class="ph-bold ph-lock"></i></div>
+            <h3>Exclusión mutua</h3>
+            <p>Al menos un recurso es de uso exclusivo — solo un hilo puede usarlo a la vez. Si el recurso fuera compartible, no habría deadlock.</p>
+            <div class="m5coffmanBreak"><strong>¿Cómo romperla?</strong> Hacer el recurso compartible (ej: usar locks de lectura múltiple).</div>
+          </div>
+          <div class="m5coffmanCard reveal" style="--delay:80ms; --cc:#f59e0b">
+            <div class="m5coffmanNum">2</div>
+            <div class="m5coffmanIcon"><i class="ph-bold ph-hand-grabbing"></i></div>
+            <h3>Hold &amp; Wait</h3>
+            <p>El hilo retiene recursos ya adquiridos mientras espera recursos adicionales. No suelta lo que tiene hasta conseguir todo.</p>
+            <div class="m5coffmanBreak"><strong>¿Cómo romperla?</strong> Solicitar todos los recursos de una sola vez, o liberar los adquiridos antes de pedir nuevos.</div>
+          </div>
+          <div class="m5coffmanCard reveal" style="--delay:160ms; --cc:#8b5cf6">
+            <div class="m5coffmanNum">3</div>
+            <div class="m5coffmanIcon"><i class="ph-bold ph-prohibit"></i></div>
+            <h3>No preempción</h3>
+            <p>Un recurso no puede ser quitado a la fuerza. El hilo lo libera solo voluntariamente. Nadie puede arrebatárselo.</p>
+            <div class="m5coffmanBreak"><strong>¿Cómo romperla?</strong> Permitir que el SO "robe" recursos (<code>tryLock</code> con timeout fuerza liberación).</div>
+          </div>
+          <div class="m5coffmanCard reveal" style="--delay:240ms; --cc:#ef4444">
+            <div class="m5coffmanNum">4</div>
+            <div class="m5coffmanIcon"><i class="ph-bold ph-arrows-clockwise"></i></div>
+            <h3>Espera circular</h3>
+            <p>Existe un ciclo cerrado de hilos donde cada uno espera un recurso retenido por el siguiente del ciclo: T1→T2→T3→T1.</p>
+            <div class="m5coffmanBreak"><strong>¿Cómo romperla?</strong> Ordenar los locks globalmente y adquirirlos siempre en el mismo orden.</div>
+          </div>
+        </div>
+
+        <div class="m5coffmanTip reveal">
+          <i class="ph-bold ph-lightbulb"></i>
+          <div>
+            <strong>La solución más práctica en Java:</strong> usar <code>ReentrantLock.tryLock(timeout)</code>. Si no podés tomar todos los locks en un tiempo, los soltás y reintentás. Esto rompe la condición 3 (no preempción) y el deadlock se vuelve imposible.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CÓDIGO JAVA ───────────────────────── -->
+    <section class="msec alt" id="codigo">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-code"></i> Java concurrente</span>
+          <h2>Código de referencia — 3 implementaciones</h2>
+          <p class="msecSub">Tres técnicas para proteger secciones críticas. Cada una tiene su lugar: elegir bien es parte del oficio.</p>
+        </div>
+
+        <div class="m5codeTabs reveal">
+          <div class="m5codeTabBar">
+            <button class="m5codeTab m5codeTabActive" onclick="switchTab(this,'tab-sync')">
+              <i class="ph ph-lock"></i> synchronized
+            </button>
+            <button class="m5codeTab" onclick="switchTab(this,'tab-sem')">
+              <i class="ph ph-ticket"></i> Semaphore
+            </button>
+            <button class="m5codeTab" onclick="switchTab(this,'tab-rlock')">
+              <i class="ph ph-shield-check"></i> ReentrantLock
+            </button>
+          </div>
+
+          <div class="m5codePanel" id="tab-sync">
+            <div class="m5codeWhen">
+              <div class="m5codeWhenBox">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <p>Usá <code>synchronized</code> cuando necesitás la solución más simple. Java maneja el lock automáticamente — no podés olvidarte de liberarlo. Ideal para contadores, listas compartidas y estado básico.</p>
+              </div>
+            </div>
+            <pre><code class="language-java">public class ContadorSeguro {
+    private int valor = 0;
+
+    // synchronized garantiza exclusión mutua en este método
+    public synchronized void incrementar() {
+        valor++;  // sección crítica — solo un hilo a la vez
+    }
+
+    public synchronized int getValor() {
+        return valor;
+    }
+
+    public static void main(String[] args) throws Exception {
+        ContadorSeguro c = new ContadorSeguro();
+        Thread[] hilos = new Thread[10];
+
+        for (int i = 0; i &lt; 10; i++) {
+            hilos[i] = new Thread(() -> {
+                for (int j = 0; j &lt; 100; j++) c.incrementar();
+            });
+            hilos[i].start();
+        }
+
+        for (Thread h : hilos) h.join();
+        System.out.println("Resultado: " + c.getValor()); // Siempre 1000
+    }
+}</code></pre>
+          </div>
+
+          <div class="m5codePanel m5codePanelHidden" id="tab-sem">
+            <div class="m5codeWhen">
+              <div class="m5codeWhenBox">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <p>Usá <code>Semaphore(N)</code> cuando querés limitar el acceso a N hilos simultáneos. Perfecto para el problema de los filósofos: <code>Semaphore(4)</code> permite 4 filósofos intentando a la vez → al menos uno siempre puede comer.</p>
+              </div>
+            </div>
+            <pre><code class="language-java">import java.util.concurrent.Semaphore;
+
+public class FilosofosConSemaforo {
+    static final int N = 5;
+    // Solo N-1 filósofos pueden intentar comer simultáneamente
+    static Semaphore permiso = new Semaphore(N - 1);
+    static Semaphore[] tenedor = new Semaphore[N];
+
+    static {
+        for (int i = 0; i &lt; N; i++) tenedor[i] = new Semaphore(1);
+    }
+
+    static void comer(int id) throws Exception {
+        permiso.acquire();                  // paso 1: pido lugar en la mesa
+        tenedor[id].acquire();              // paso 2: tenedor izquierdo
+        tenedor[(id + 1) % N].acquire();    // paso 3: tenedor derecho
+
+        System.out.printf("Filósofo %d come%n", id);
+        Thread.sleep(500);
+
+        tenedor[id].release();
+        tenedor[(id + 1) % N].release();
+        permiso.release();                  // libero lugar en la mesa
+        System.out.printf("Filósofo %d terminó%n", id);
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i &lt; N; i++) {
+            final int id = i;
+            new Thread(() -> {
+                try {
+                    while (true) {
+                        System.out.printf("Filósofo %d piensa%n", id);
+                        Thread.sleep(300);
+                        comer(id);
+                    }
+                } catch (Exception e) {}
+            }).start();
+        }
+    }
+}</code></pre>
+          </div>
+
+          <div class="m5codePanel m5codePanelHidden" id="tab-rlock">
+            <div class="m5codeWhen">
+              <div class="m5codeWhenBox">
+                <i class="ph-bold ph-check-circle" style="color:#00e8c6"></i>
+                <p>Usá <code>ReentrantLock</code> cuando necesitás <code>tryLock</code> con timeout. Esto rompe la condición de "no preempción" de Coffman — si no podés tomar ambos locks en tiempo, los soltás y reintentás. <strong>Deadlock imposible.</strong></p>
+              </div>
+            </div>
+            <pre><code class="language-java">import java.util.concurrent.locks.ReentrantLock;
+
+public class DeadlockFix {
+    static ReentrantLock lockA = new ReentrantLock();
+    static ReentrantLock lockB = new ReentrantLock();
+
+    static void tareaSegura(String nombre,
+            ReentrantLock primero, ReentrantLock segundo)
+            throws Exception {
+
+        while (true) {
+            // Intentá tomar el primero (no bloqueante)
+            if (primero.tryLock()) {
+                try {
+                    // Intentá tomar el segundo con timeout
+                    if (segundo.tryLock(50, java.util.concurrent.TimeUnit.MILLISECONDS)) {
+                        try {
+                            System.out.println(nombre + " accede al recurso");
+                            Thread.sleep(100);
+                            return; // éxito — salimos del bucle
+                        } finally {
+                            segundo.unlock();
+                        }
+                    }
+                } finally {
+                    primero.unlock(); // siempre libera el primero
+                }
+            }
+            // No consiguió ambos — backoff antes de reintentar
+            System.out.println(nombre + " reintenta...");
+            Thread.sleep(20 + (int)(Math.random() * 30));
+        }
+    }
+
+    public static void main(String[] args) {
+        // T1 pide A→B, T2 pide B→A — sin tryLock sería deadlock
+        new Thread(() -> {
+            try { tareaSegura("T1", lockA, lockB); } catch(Exception e) {}
+        }).start();
+        new Thread(() -> {
+            try { tareaSegura("T2", lockB, lockA); } catch(Exception e) {}
+        }).start();
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LAB ONECOMPILER ───────────────────── -->
+    <section class="msec" id="laboratorio">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-flask"></i> Laboratorio Java</span>
+          <h2>Deadlock en vivo — ejecutalo</h2>
+          <p class="msecSub">Este programa <strong>reproduce un deadlock clásico</strong>. T1 toma LOCK_A y espera LOCK_B. T2 toma LOCK_B y espera LOCK_A. Ninguno puede avanzar. Vas a ver los prints iniciales y luego el programa se congela.</p>
+        </div>
+
+        <div class="m5labWrap reveal">
+          <div class="m5labSteps">
+            <div class="m5labStep">
+              <div class="m5labStepDot" style="--dc:#ff7d54">1</div>
+              <div class="m5labStepText">
+                <strong>Ejecutá el código</strong>
+                <p>Presioná Run. Vas a ver los prints de "tomó LOCK_X". El programa luego se congela — eso <em>es</em> el deadlock.</p>
+              </div>
+            </div>
+            <div class="m5labStep">
+              <div class="m5labStepDot" style="--dc:#4a8ef0">2</div>
+              <div class="m5labStepText">
+                <strong>Observá el orden de adquisición</strong>
+                <p>T1 toma A primero; T2 toma B primero. Ese orden cruzado crea el ciclo de espera circular.</p>
+              </div>
+            </div>
+            <div class="m5labStep">
+              <div class="m5labStepDot" style="--dc:#00e8c6">3</div>
+              <div class="m5labStepText">
+                <strong>Desafío: ¡arreglalo!</strong>
+                <p>Modificá T2 para que también pida LOCK_A primero y luego LOCK_B. El deadlock desaparece. ¿Por qué?</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m5labEmbed">
+            <iframe
+              src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true&code=public%20class%20DeadlockDemo%20%7B%0A%20%20%20%20static%20final%20Object%20LOCK_A%20%3D%20new%20Object()%3B%0A%20%20%20%20static%20final%20Object%20LOCK_B%20%3D%20new%20Object()%3B%0A%0A%20%20%20%20public%20static%20void%20main(String%5B%5D%20args)%20throws%20Exception%20%7B%0A%20%20%20%20%20%20%20%20Thread%20t1%20%3D%20new%20Thread(()%20-%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20synchronized%20(LOCK_A)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(%22T1%20tom%C3%B3%20LOCK_A%2C%20espera%20LOCK_B...%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20try%20%7B%20Thread.sleep(100)%3B%20%7D%20catch%20(Exception%20e)%20%7B%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20synchronized%20(LOCK_B)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(%22T1%20consigui%C3%B3%20LOCK_B%20%E2%80%94%20%C3%A9xito%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D)%3B%0A%0A%20%20%20%20%20%20%20%20Thread%20t2%20%3D%20new%20Thread(()%20-%3E%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20synchronized%20(LOCK_B)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(%22T2%20tom%C3%B3%20LOCK_B%2C%20espera%20LOCK_A...%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20try%20%7B%20Thread.sleep(100)%3B%20%7D%20catch%20(Exception%20e)%20%7B%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20synchronized%20(LOCK_A)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20System.out.println(%22T2%20consigui%C3%B3%20LOCK_A%20%E2%80%94%20%C3%A9xito%22)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D)%3B%0A%0A%20%20%20%20%20%20%20%20t1.start()%3B%0A%20%20%20%20%20%20%20%20t2.start()%3B%0A%20%20%20%20%20%20%20%20Thread.sleep(3000)%3B%0A%20%20%20%20%20%20%20%20System.out.println(%22%F0%9F%94%92%20DEADLOCK%3A%20ninguno%20pudo%20terminar%22)%3B%0A%20%20%20%20%7D%0A%7D"
+              width="100%" height="500"
+              style="border:none; border-radius: 12px;"
+              title="Java lab — Deadlock Demo"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── JUEGO: DEADLOCK DOCTOR ────────────── -->
+    <section class="msec alt" id="juego">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-stethoscope"></i> Deadlock Doctor</span>
+          <h2>Diagnosticá el problema</h2>
+          <p class="msecSub">5 escenarios de código o situación concurrente. Cada uno tiene una patología (o no). Tu misión: identificarla correctamente.</p>
+        </div>
+
+        <div class="m5gameWrap reveal">
+          <div class="m5gameCard" id="gameCard">
+            <div class="m5gameCardHeader">
+              <span class="m5gameCardNum" id="gameNum">Caso 1 / 5</span>
+              <span class="m5gameScore" id="gameScore">0 correctas</span>
+            </div>
+            <div class="m5gameScenario" id="gameScenario">Cargando escenario...</div>
+            <div class="m5gameOptions" id="gameOptions"></div>
+            <div class="m5gameFeedback" id="gameFeedback" style="display:none"></div>
+            <button class="m5simBtn m5simBtnAccent" id="gameNext" style="display:none" onclick="gameNext()">
+              Siguiente caso <i class="ph-bold ph-arrow-right"></i>
+            </button>
+          </div>
+          <div class="m5gameResult" id="gameResult" style="display:none">
+            <div class="m5gameResultIcon"><i class="ph-bold ph-check-circle"></i></div>
+            <h3>¡Diagnóstico completo!</h3>
+            <p>Resultado: <span id="gameFinalScore">0</span> / 5 correctas</p>
+            <button class="m5simBtn m5simBtnAccent" onclick="gameRestart()">
+              <i class="ph-bold ph-arrow-counter-clockwise"></i> Jugar de nuevo
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUIZ ──────────────────────────────── -->
+    <section class="msec" id="quiz">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-check-square"></i> Quiz</span>
+          <h2>¿Cuánto aprendiste?</h2>
+          <p class="msecSub">8 preguntas de sincronización concurrente. Navegá entre ellas y verificá tu comprensión antes de la actividad final.</p>
+        </div>
+
+        <div class="m5quizWrap reveal" id="quizWrap">
+          <div class="m5quizProgress">
+            <div class="m5quizProgressBar"><div class="m5quizProgressFill" id="quizProgressFill"></div></div>
+            <span class="m5quizProgressLabel" id="quizProgressLabel">Pregunta 1 de 8</span>
+          </div>
+          <div class="m5quizCard" id="quizCard">
+            <p class="m5quizQuestion" id="quizQuestion">Cargando...</p>
+            <div class="m5quizOptions" id="quizOptions"></div>
+          </div>
+          <div class="m5quizFeedback" id="quizFeedback" style="display:none"></div>
+          <div class="m5quizNav">
+            <button class="m5simBtn" id="quizPrev" onclick="quizNav(-1)">
+              <i class="ph ph-arrow-left"></i> Anterior
+            </button>
+            <button class="m5simBtn m5simBtnAccent" id="quizNext" onclick="quizNav(1)">
+              Siguiente <i class="ph ph-arrow-right"></i>
+            </button>
+          </div>
+          <div class="m5quizResult" id="quizResult" style="display:none">
+            <div class="m5quizResultIcon"><i class="ph-bold ph-trophy"></i></div>
+            <h3 id="quizResultTitle">Resultado</h3>
+            <p id="quizResultMsg"></p>
+            <button class="m5simBtn m5simBtnAccent" onclick="quizRestart()">
+              <i class="ph-bold ph-arrow-counter-clockwise"></i> Repetir quiz
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GLOSARIO ──────────────────────────── -->
+    <section class="msec alt" id="glosario">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-book-bookmark"></i> Glosario</span>
+          <h2>Los términos clave — tocá para ver la definición</h2>
+          <p class="msecSub">8 conceptos fundamentales de sincronización. Tocá cada tarjeta para ver la definición completa. Perfecto para repasar antes del parcial.</p>
+        </div>
+
+        <div class="m5flipGrid">
+          <div class="m5flipCard reveal" style="--delay:0ms">
+            <div class="m5flipInner">
+              <div class="m5flipFront">
+                <i class="ph-bold ph-lock" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Mutex</strong>
+                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m5flipBack">
+                <p><strong>Mutual Exclusion</strong>: mecanismo que garantiza que solo un hilo puede estar en la sección crítica a la vez. El hilo que lo adquiere es el único que puede liberarlo. En Java: <code>synchronized</code> o <code>ReentrantLock</code>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m5flipCard reveal" style="--delay:60ms">
+            <div class="m5flipInner">
+              <div class="m5flipFront">
+                <i class="ph-bold ph-ticket" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Semáforo</strong>
+                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m5flipBack">
+                <p>Contador entero protegido con dos operaciones atómicas: <code>acquire()</code> decrementa (bloquea si llega a 0) y <code>release()</code> incrementa. Permite controlar cuántos hilos acceden simultáneamente. Binario (1) = mutex, Counting (N) = límite de concurrencia.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m5flipCard reveal" style="--delay:120ms">
+            <div class="m5flipInner">
+              <div class="m5flipFront">
+                <i class="ph-bold ph-bell-ringing" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Monitor</strong>
+                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m5flipBack">
+                <p>Abstracción de alto nivel que combina un mutex con variables de condición. El hilo puede entrar al monitor (<code>synchronized</code>), suspenderse liberando el lock (<code>wait()</code>), y ser despertado por otro hilo (<code>notify()</code> / <code>notifyAll()</code>).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m5flipCard reveal" style="--delay:180ms">
+            <div class="m5flipInner">
+              <div class="m5flipFront">
+                <i class="ph-bold ph-chain" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Deadlock</strong>
+                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m5flipBack">
+                <p>Bloqueo permanente donde un conjunto de hilos esperan indefinidamente recursos retenidos entre sí. El sistema no progresa. Requiere las 4 condiciones de Coffman simultáneas: exclusión mutua, hold &amp; wait, no preempción y espera circular.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m5flipCard reveal" style="--delay:240ms">
+            <div class="m5flipInner">
+              <div class="m5flipFront">
+                <i class="ph-bold ph-ghost" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Starvation</strong>
+                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m5flipBack">
+                <p>Inanición: un hilo nunca obtiene los recursos que necesita porque otros con mayor prioridad siempre llegan antes. El sistema <em>sí progresa</em> — pero para ese hilo no. Solución: scheduling justo (fair queuing) con <code>ReentrantLock(true)</code>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m5flipCard reveal" style="--delay:300ms">
+            <div class="m5flipInner">
+              <div class="m5flipFront">
+                <i class="ph-bold ph-arrows-counter-clockwise" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Livelock</strong>
+                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m5flipBack">
+                <p>Los hilos no están bloqueados (están activos), pero se responden mutuamente sin avanzar. Típico de algoritmos de backoff mal implementados: ambos liberan el recurso al verse, ambos lo toman de vuelta, y el ciclo se repite infinitamente.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m5flipCard reveal" style="--delay:360ms">
+            <div class="m5flipInner">
+              <div class="m5flipFront">
+                <i class="ph-bold ph-list-numbers" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Condiciones de Coffman</strong>
+                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m5flipBack">
+                <p>Las 4 condiciones necesarias y suficientes para que ocurra un deadlock, formuladas por Edward G. Coffman en 1971: (1) exclusión mutua, (2) hold &amp; wait, (3) no preempción, (4) espera circular. Eliminar cualquiera previene el deadlock.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m5flipCard reveal" style="--delay:420ms">
+            <div class="m5flipInner">
+              <div class="m5flipFront">
+                <i class="ph-bold ph-shield-warning" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Sección crítica</strong>
+                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m5flipBack">
+                <p>Región de código que accede a recursos compartidos (variables, archivos, conexiones) y que debe ejecutarse en exclusión mutua para evitar race conditions. Minimizar su tamaño y tiempo de ejecución es clave para maximizar la concurrencia útil.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACTIVIDAD ──────────────────────────── -->
+    <section class="msec" id="actividades">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-code-simple"></i> Tu turno</span>
+          <h2>Actividad — Corregí el sistema concurrente defectuoso</h2>
+          <p class="msecSub">Esta actividad vale <strong>10 puntos</strong>. Vas a analizar, diagnosticar y corregir un sistema concurrente con deadlock potencial, implementar la solución con Semaphore y documentar el razonamiento.</p>
+        </div>
+
+        <div class="m5actMission reveal">
+          <div class="m5missionHeader">
+            <div class="m5missionBadge"><i class="ph-bold ph-wrench"></i> Misión 05</div>
+            <h3>Reparación de sistema con deadlock — los filósofos</h3>
+          </div>
+          <div class="m5missionSteps">
+            <div class="m5missionStep">
+              <div class="m5missionStepIcon" style="--sc:#ff7d54"><i class="ph-bold ph-bug"></i></div>
+              <div class="m5missionStepBody">
+                <strong>Paso 1 — Reproducir el deadlock</strong>
+                <p>Implementá la versión <em>sin sincronización</em> del problema de los filósofos en Java: 5 hilos (filósofos), 5 Semaphore(1) (tenedores), cada filósofo toma el tenedor izquierdo (<code>izq.acquire()</code>) y luego el derecho (<code>der.acquire()</code>). Ejecutá el programa y verificá que se produce deadlock (el programa se congela). Capturá la salida parcial.</p>
+              </div>
+            </div>
+            <div class="m5missionStep">
+              <div class="m5missionStepIcon" style="--sc:#4a8ef0"><i class="ph-bold ph-stethoscope"></i></div>
+              <div class="m5missionStepBody">
+                <strong>Paso 2 — Diagnosticar con las condiciones de Coffman</strong>
+                <p>Para tu implementación con deadlock, identificá en el código exactamente cuál línea satisface cada una de las 4 condiciones de Coffman. Completá una tabla con: condición, línea de código responsable, y propuesta para romperla.</p>
+              </div>
+            </div>
+            <div class="m5missionStep">
+              <div class="m5missionStepIcon" style="--sc:#00e8c6"><i class="ph-bold ph-wrench"></i></div>
+              <div class="m5missionStepBody">
+                <strong>Paso 3 — Implementar la solución con Semaphore(N-1)</strong>
+                <p>Agregá un <code>Semaphore permiso = new Semaphore(4)</code> global. Antes de tomar cualquier tenedor, el filósofo debe hacer <code>permiso.acquire()</code>. Al terminar de comer, <code>permiso.release()</code>. Verificá que el programa ahora corre durante al menos 10 segundos sin congelarse.</p>
+              </div>
+            </div>
+            <div class="m5missionStep">
+              <div class="m5missionStepIcon" style="--sc:#f59e0b"><i class="ph-bold ph-file-text"></i></div>
+              <div class="m5missionStepBody">
+                <strong>Paso 4 — Analizar starvation potencial</strong>
+                <p>Con la solución de Semaphore(4), ¿es posible que algún filósofo nunca coma? ¿Qué condición del scheduler podría causarlo? Proponé al menos una modificación (ej: delay aleatorio entre intentos, orden rotativo) que reduzca la probabilidad de starvation. Justificá con los conceptos del módulo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m5rubric reveal">
+          <div class="m5rubricTitle"><i class="ph-bold ph-list-checks"></i> Rúbrica de evaluación</div>
+          <div class="m5rubricItems">
+            <div class="m5rubricItem">
+              <div class="m5rubricItemHeader">
+                <span class="m5rubricItemName">Deadlock reproducido con código funcional</span>
+                <span class="m5rubricPct">30%</span>
+              </div>
+              <div class="m5rubricBar"><div class="m5rubricBarFill" style="--pct:30%;--bc:#ff7d54"></div></div>
+              <p class="m5rubricDesc">Código Java compilable que reproduce el deadlock de los 5 filósofos. Salida parcial capturada que muestra que los hilos iniciaron pero el programa no terminó.</p>
+            </div>
+            <div class="m5rubricItem">
+              <div class="m5rubricItemHeader">
+                <span class="m5rubricItemName">Análisis de las 4 condiciones de Coffman</span>
+                <span class="m5rubricPct">25%</span>
+              </div>
+              <div class="m5rubricBar"><div class="m5rubricBarFill" style="--pct:25%;--bc:#4a8ef0"></div></div>
+              <p class="m5rubricDesc">Tabla completa con las 4 condiciones identificadas en el código, línea exacta y propuesta de ruptura para cada una.</p>
+            </div>
+            <div class="m5rubricItem">
+              <div class="m5rubricItemHeader">
+                <span class="m5rubricItemName">Solución con Semaphore(4) funcional</span>
+                <span class="m5rubricPct">30%</span>
+              </div>
+              <div class="m5rubricBar"><div class="m5rubricBarFill" style="--pct:30%;--bc:#00e8c6"></div></div>
+              <p class="m5rubricDesc">Código corregido con Semaphore(N-1) que corre sin congelarse. Evidencia de ejecución durante al menos 10 segundos con múltiples comidas registradas.</p>
+            </div>
+            <div class="m5rubricItem">
+              <div class="m5rubricItemHeader">
+                <span class="m5rubricItemName">Análisis de starvation y propuesta de mejora</span>
+                <span class="m5rubricPct">15%</span>
+              </div>
+              <div class="m5rubricBar"><div class="m5rubricBarFill" style="--pct:15%;--bc:#f59e0b"></div></div>
+              <p class="m5rubricDesc">Párrafo propio que identifica el riesgo de starvation en la solución y propone con justificación técnica una estrategia para mitigarlo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ─────────────────────────────── -->
+    <footer class="mfoot">
+      <a href="modulo4.html" class="mfootLink">
+        <i class="ph ph-arrow-left"></i> Módulo 4
+      </a>
+      <a href="../index.html" class="mfootBrand">Campus PAI3</a>
+      <a href="modulo6.html" class="mfootLink">
+        Módulo 6 <i class="ph ph-arrow-right"></i>
+      </a>
+    </footer>
+
+    <!-- ── SCRIPTS ────────────────────────────── -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="../assets/js/campus.js"></script>
+    <script src="../assets/js/modulo5.js"></script>
+  </body>
+</html>

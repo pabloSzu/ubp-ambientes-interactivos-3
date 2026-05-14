@@ -1,0 +1,779 @@
+/* ═══════════════════════════════════════════
+   PAI3 · Módulo 5 · Sincronización
+═══════════════════════════════════════════ */
+
+/* Override base */
+.msecEye { color: var(--accent); }
+.msecHead h2 { font-size: clamp(22px, 2.6vw, 34px); }
+
+/* ─── Contrast boost overrides ───────────── */
+.m5conceptDesc     { color: var(--text); font-size: 14px; }
+.m5philProblemRule p { color: var(--text); font-size: 14px; }
+.m5coffmanCard p   { color: var(--text); font-size: 14px; }
+.m5coffmanBreak    { color: var(--text); font-size: 13px; }
+.m5gameScenario    { color: var(--text); font-size: 15px; }
+.m5labStepText p   { color: var(--text); font-size: 14px; }
+.m5missionStepBody p { color: var(--text); font-size: 14px; }
+.m5rubricDesc      { color: var(--text); font-size: 14px; }
+.m5simStatus       { color: var(--text); font-size: 14px; }
+.m5simLogEntry     { font-size: 13px; color: var(--text); }
+.m5heroStatLabel   { font-size: 14px; }
+.m5codeWhenBox p   { color: var(--text); font-size: 15px; }
+
+/* ─── Reading progress ───────────────────── */
+.readProgress {
+  position: fixed; top: 0; left: 0;
+  height: 3px; width: 0%;
+  background: var(--accent);
+  z-index: 999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* ─── Reveal on scroll ───────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+  transition-delay: var(--delay, 0ms);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ─── Shared buttons ─────────────────────── */
+.m5simBtn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 20px; border-radius: 10px; font-size: 14px;
+  font-weight: 700; cursor: pointer; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text);
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  backdrop-filter: blur(12px);
+}
+.m5simBtn:hover { background: var(--surface-hover); border-color: var(--border-hover); transform: translateY(-1px); }
+.m5simBtnAccent {
+  background: var(--accent-sub); border-color: var(--accent-border); color: var(--accent);
+}
+.m5simBtnAccent:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+
+/* ─── HERO ───────────────────────────────── */
+.m5hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: flex-end;
+  padding-block: 80px 60px;
+  overflow: hidden;
+}
+.m5heroBg { position: absolute; inset: 0; z-index: 0; }
+.m5heroImg {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 40%;
+  filter: saturate(0.35) brightness(0.28);
+}
+.m5heroOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(6,8,15,0.1) 0%,
+    rgba(6,8,15,0.55) 40%,
+    rgba(6,8,15,0.97) 100%);
+}
+
+/* Animated lock pulse rings */
+.m5heroLock {
+  position: absolute;
+  left: var(--lx); top: var(--ly);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  z-index: 1;
+  pointer-events: none;
+  animation: lockPulse 3.5s var(--ld, 0s) infinite ease-out;
+}
+.m5heroLock::before, .m5heroLock::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  animation: lockRing 3.5s var(--ld, 0s) infinite ease-out;
+}
+.m5heroLock::after { animation-delay: calc(var(--ld, 0s) + 0.6s); }
+@keyframes lockPulse {
+  0%   { transform: scale(1); opacity: 0.9; }
+  60%  { opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.9; }
+}
+@keyframes lockRing {
+  0%   { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(18); opacity: 0; }
+}
+
+.m5heroContent { position: relative; z-index: 2; }
+.m5heroBadge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--accent); border: 1px solid var(--accent-border);
+  background: var(--accent-sub); padding: 4px 12px; border-radius: 999px; margin-bottom: 20px;
+}
+.m5heroTitle {
+  font-size: clamp(38px, 6.5vw, 84px); font-weight: 900;
+  line-height: 1.0; letter-spacing: -0.03em; color: var(--text); margin-bottom: 22px;
+}
+.m5heroTitle span { color: var(--accent); }
+.m5heroIntro {
+  font-size: clamp(15px, 1.8vw, 18px); color: var(--sub);
+  line-height: 1.65; max-width: 640px; margin-bottom: 40px;
+}
+.m5heroStats {
+  display: flex; gap: 0; flex-wrap: wrap;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+  overflow: hidden; backdrop-filter: blur(20px);
+  background: rgba(6,8,15,0.55); max-width: 600px;
+}
+.m5heroStat {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 22px 26px; flex: 1;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s;
+}
+.m5heroStat:last-child { border-right: none; }
+.m5heroStat:hover { background: rgba(255,255,255,0.03); }
+.m5heroStatTop { display: flex; align-items: baseline; gap: 2px; }
+.m5heroStatNum {
+  font-size: clamp(30px, 4vw, 46px); font-weight: 900;
+  color: var(--accent); line-height: 1; letter-spacing: -0.03em;
+}
+
+/* ─── Pull quote ─────────────────────────── */
+.m5pullQuote {
+  padding: 36px 40px;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-sub);
+  border-radius: 0 var(--r) var(--r) 0;
+  max-width: 700px; margin: 0 auto;
+}
+.m5pullQuote .ph-bold {
+  font-size: 28px; color: var(--accent); opacity: 0.5;
+  display: block; margin-bottom: 12px;
+}
+.m5pullQuote p {
+  font-size: clamp(16px, 2vw, 21px); font-weight: 700;
+  color: var(--text); line-height: 1.5; font-style: italic; margin-bottom: 14px;
+}
+.m5pullQuote cite { font-size: 14px; color: var(--sub); font-style: normal; font-weight: 600; }
+
+/* ─── Objectives ─────────────────────────── */
+.m5objGrid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; margin-top: 32px;
+}
+.m5objCard {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 22px; border-radius: var(--r);
+  border: 1px solid var(--border); background: var(--surface);
+  backdrop-filter: blur(12px); transition: border-color 0.2s, transform 0.2s;
+}
+.m5objCard:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+.m5objIcon {
+  width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0;
+  border: 1px solid color-mix(in srgb, var(--oc) 30%, transparent);
+  background: color-mix(in srgb, var(--oc) 10%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--oc);
+}
+.m5objCard strong { display: block; font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.m5objCard p { font-size: 14px; color: var(--sub); line-height: 1.6; margin: 0; }
+
+/* ─── Concepts grid ──────────────────────── */
+.m5conceptGrid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 32px;
+}
+.m5conceptCard {
+  padding: 24px; border-radius: var(--r);
+  border: 1px solid var(--border); background: var(--surface);
+  backdrop-filter: blur(14px); transition: border-color 0.25s, transform 0.25s;
+}
+.m5conceptCard:hover { transform: translateY(-3px); border-color: var(--border-hover); }
+.m5conceptTool { border-top: 2px solid var(--accent); }
+.m5conceptBug  { border-top: 2px solid rgba(239,68,68,0.6); }
+
+.m5conceptTop {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.m5conceptIcon {
+  width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+  background: color-mix(in srgb, var(--ic) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ic) 30%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--ic);
+}
+.m5conceptMeta { display: flex; flex-direction: column; gap: 2px; }
+.m5conceptTag {
+  font-size: 9px; font-weight: 900; text-transform: uppercase;
+  letter-spacing: 0.12em; padding: 2px 7px; border-radius: 4px;
+  display: inline-block;
+}
+.m5conceptTagTool { background: var(--accent-sub); color: var(--accent); }
+.m5conceptTagBug  { background: rgba(239,68,68,0.12); color: #ef4444; }
+.m5conceptName { font-size: 15px; font-weight: 800; color: var(--text); }
+.m5conceptCode {
+  margin-top: 12px; padding: 10px 12px; border-radius: 8px;
+  background: rgba(0,0,0,0.4); font-size: 12px;
+  color: #00e8c6; font-family: 'Fira Code', 'Courier New', monospace;
+  border: 1px solid rgba(255,255,255,0.07); line-height: 1.7;
+}
+.m5conceptBullets {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;
+}
+.m5conceptBullet {
+  font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 5px;
+  background: rgba(255,255,255,0.06); color: var(--sub);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ─── Philosophers Problem ───────────────── */
+.m5philProblem {
+  display: grid; grid-template-columns: 1fr 340px;
+  gap: 40px; margin-top: 32px; align-items: start;
+}
+.m5philProblemRule {
+  display: flex; gap: 16px; padding: 20px;
+  border-radius: var(--r); border: 1px solid var(--border);
+  background: var(--surface); margin-bottom: 12px;
+  backdrop-filter: blur(12px); transition: border-color 0.2s;
+}
+.m5philProblemRule:hover { border-color: var(--border-hover); }
+.m5philProblemRuleHighlight {
+  border-color: var(--accent-border);
+  background: var(--accent-sub);
+}
+.m5philRuleIcon {
+  font-size: 24px; color: var(--accent); flex-shrink: 0; line-height: 1;
+}
+.m5philProblemRule strong { display: block; font-size: 15px; color: var(--text); margin-bottom: 6px; }
+
+/* Static diagram of the table */
+.m5philProblemVisual { display: flex; align-items: center; justify-content: center; }
+.m5philProblemDiagram {
+  position: relative; width: 280px; height: 280px;
+}
+.m5philDiagTable {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 110px; height: 110px; border-radius: 50%;
+  background: rgba(255,125,84,0.07);
+  border: 2px solid rgba(255,125,84,0.25);
+}
+.m5philDiagLabel {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--accent); text-align: center;
+  pointer-events: none;
+}
+/* Philosophers at 5 positions */
+.m5philDiagPhil {
+  position: absolute; width: 44px; height: 44px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 900; color: var(--text);
+  background: rgba(255,125,84,0.12); border: 2px solid rgba(255,125,84,0.4);
+  top: 50%; left: 50%;
+}
+.m5philDiagPhil span { position: relative; z-index: 1; }
+.m5philDiagP0 { transform: translate(-50%,-50%) rotate(0deg)   translateY(-118px) rotate(0deg); }
+.m5philDiagP1 { transform: translate(-50%,-50%) rotate(72deg)  translateY(-118px) rotate(-72deg); }
+.m5philDiagP2 { transform: translate(-50%,-50%) rotate(144deg) translateY(-118px) rotate(-144deg); }
+.m5philDiagP3 { transform: translate(-50%,-50%) rotate(216deg) translateY(-118px) rotate(-216deg); }
+.m5philDiagP4 { transform: translate(-50%,-50%) rotate(288deg) translateY(-118px) rotate(-288deg); }
+
+/* Forks between philosophers */
+.m5philDiagFork {
+  position: absolute; width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--sub);
+  top: 50%; left: 50%;
+}
+.m5philDiagFk0 { transform: translate(-50%,-50%) rotate(36deg)  translateY(-80px); }
+.m5philDiagFk1 { transform: translate(-50%,-50%) rotate(108deg) translateY(-80px); }
+.m5philDiagFk2 { transform: translate(-50%,-50%) rotate(180deg) translateY(-80px); }
+.m5philDiagFk3 { transform: translate(-50%,-50%) rotate(252deg) translateY(-80px); }
+.m5philDiagFk4 { transform: translate(-50%,-50%) rotate(324deg) translateY(-80px); }
+
+/* ─── SIMULATOR ──────────────────────────── */
+.m5simWrap {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; overflow: hidden;
+  backdrop-filter: blur(16px); margin-top: 32px;
+}
+.m5simModes {
+  display: flex; border-bottom: 1px solid var(--border);
+}
+.m5simModeBtn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 20px; cursor: pointer; border: none;
+  background: transparent; color: var(--sub);
+  transition: background 0.2s, color 0.2s; font-family: inherit;
+  border-right: 1px solid var(--border);
+}
+.m5simModeBtn:last-child { border-right: none; }
+.m5simModeBtn span { font-size: 16px; font-weight: 800; }
+.m5simModeBtn i { font-size: 22px; }
+.m5simModeBtn small { font-size: 12px; opacity: 0.7; }
+.m5simModeBtn:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.m5simModeActive { background: var(--accent-sub) !important; color: var(--accent) !important; }
+
+.m5simMain {
+  display: grid; grid-template-columns: 1fr 340px; gap: 0;
+}
+
+/* Table visual */
+.m5simTableWrap {
+  padding: 32px; border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+}
+.m5simTable {
+  position: relative; width: 340px; height: 340px;
+}
+.m5simTableCenter {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 100px; height: 100px; border-radius: 50%;
+  background: rgba(255,125,84,0.06);
+  border: 2px solid rgba(255,125,84,0.2);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+}
+.m5simTableIcon { font-size: 22px; color: var(--accent); opacity: 0.5; }
+.m5simTableLabel { font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--sub); }
+
+/* Philosopher bubbles */
+.m5simPhil {
+  position: absolute; top: 50%; left: 50%;
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--angle))
+    translateY(-148px)
+    rotate(calc(-1 * var(--angle)));
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: filter 0.3s;
+}
+.m5simPhilBubble {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0; transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+.m5simPhilId   { font-size: 10px; font-weight: 900; color: var(--sub); line-height: 1; }
+.m5simPhilEmoji { font-size: 18px; line-height: 1; }
+.m5simPhilState {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--sub);
+  white-space: nowrap;
+}
+
+/* Philosopher state classes */
+.m5simPhil.m5sThinking .m5simPhilBubble { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
+.m5simPhil.m5sHungry   .m5simPhilBubble { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.5); box-shadow: 0 0 14px rgba(245,158,11,0.2); }
+.m5simPhil.m5sWaiting  .m5simPhilBubble { background: rgba(255,125,84,0.12); border-color: rgba(255,125,84,0.5); animation: waitPulse 1.2s infinite; }
+.m5simPhil.m5sEating   .m5simPhilBubble { background: rgba(0,232,198,0.12);  border-color: rgba(0,232,198,0.6);  box-shadow: 0 0 18px rgba(0,232,198,0.3); }
+.m5simPhil.m5sDead     .m5simPhilBubble { background: rgba(239,68,68,0.18);  border-color: rgba(239,68,68,0.7);  animation: deadPulse 0.8s infinite; }
+
+.m5simPhil.m5sThinking .m5simPhilState { color: var(--sub); }
+.m5simPhil.m5sHungry   .m5simPhilState { color: #f59e0b; }
+.m5simPhil.m5sWaiting  .m5simPhilState { color: var(--accent); }
+.m5simPhil.m5sEating   .m5simPhilState { color: #00e8c6; }
+.m5simPhil.m5sDead     .m5simPhilState { color: #ef4444; }
+
+@keyframes waitPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255,125,84,0.2); }
+  50%       { box-shadow: 0 0 22px rgba(255,125,84,0.5); }
+}
+@keyframes deadPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(239,68,68,0.3); }
+  50%       { box-shadow: 0 0 28px rgba(239,68,68,0.7); }
+}
+
+/* Fork indicators */
+.m5simFork {
+  position: absolute; top: 50%; left: 50%;
+  width: 28px; height: 28px; border-radius: 50%;
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--angle))
+    translateY(-100px)
+    rotate(calc(-1 * var(--angle)));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--sub);
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+.m5simFork.m5fkHeld {
+  background: rgba(255,125,84,0.2); border-color: rgba(255,125,84,0.6);
+  color: var(--accent);
+}
+.m5simFork.m5fkFree {
+  background: rgba(0,232,198,0.1); border-color: rgba(0,232,198,0.3);
+  color: #00e8c6;
+}
+
+/* Legend */
+.m5simLegend {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+}
+.m5simLegendItem {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; color: var(--sub);
+}
+.m5simLegThinking { color: var(--sub); }
+.m5simLegHungry   { color: #f59e0b; }
+.m5simLegWaiting  { color: var(--accent); }
+.m5simLegEating   { color: #00e8c6; }
+.m5simLegDead     { color: #ef4444; }
+
+/* Panel */
+.m5simPanel {
+  padding: 24px; display: flex; flex-direction: column; gap: 16px;
+}
+.m5simStatus {
+  padding: 12px 16px; border-radius: 10px;
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600;
+}
+.m5simCtrlRow { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.m5simScoreRow {
+  display: flex; gap: 8px;
+}
+.m5simScoreBox {
+  flex: 1; padding: 12px; border-radius: 10px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  text-align: center;
+}
+.m5simScoreNum {
+  font-size: 22px; font-weight: 900; color: var(--accent); line-height: 1;
+}
+.m5simScoreLabel { font-size: 11px; color: var(--sub); font-weight: 700; }
+
+.m5simLogWrap { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.m5simLogLabel {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--sub);
+  display: flex; align-items: center; gap: 6px;
+}
+.m5simLog {
+  flex: 1; max-height: 220px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 3px;
+  scrollbar-width: thin; scrollbar-color: var(--accent-border) transparent;
+}
+.m5simLogEntry {
+  padding: 5px 10px; border-radius: 6px;
+  font-size: 12px; font-family: 'Fira Code', 'Courier New', monospace;
+  line-height: 1.5;
+}
+.m5simLogInfo     { background: rgba(255,255,255,0.04); color: var(--sub); }
+.m5simLogEat      { background: rgba(0,232,198,0.08);  color: #00e8c6; }
+.m5simLogWait     { background: rgba(255,125,84,0.08); color: var(--accent); }
+.m5simLogDead     { background: rgba(239,68,68,0.12);  color: #ef4444; font-weight: 700; }
+.m5simLogSem      { background: rgba(168,85,247,0.08); color: #a855f7; }
+
+/* ─── Coffman conditions ─────────────────── */
+.m5coffmanGrid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 14px; margin-top: 32px;
+}
+.m5coffmanCard {
+  padding: 24px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--border);
+  border-top: 3px solid color-mix(in srgb, var(--cc) 70%, transparent);
+  backdrop-filter: blur(12px); transition: transform 0.2s, border-color 0.2s;
+  position: relative;
+}
+.m5coffmanCard:hover { transform: translateY(-3px); }
+.m5coffmanNum {
+  position: absolute; top: 16px; right: 16px;
+  font-size: 32px; font-weight: 900; color: var(--cc);
+  opacity: 0.2; line-height: 1;
+}
+.m5coffmanIcon { font-size: 28px; color: var(--cc); margin-bottom: 12px; display: block; }
+.m5coffmanCard h3 { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.m5coffmanBreak {
+  margin-top: 14px; padding: 10px 12px;
+  border-radius: 8px; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  font-size: 13px;
+}
+.m5coffmanTip {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-top: 24px; padding: 20px 24px; border-radius: var(--r);
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+}
+.m5coffmanTip i { font-size: 22px; color: var(--accent); flex-shrink: 0; }
+.m5coffmanTip strong { display: block; margin-bottom: 6px; color: var(--text); }
+.m5coffmanTip div { color: var(--text); font-size: 14px; line-height: 1.6; }
+
+/* ─── Code tabs ──────────────────────────── */
+.m5codeTabs {
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--border); margin-top: 32px;
+}
+.m5codeTabBar {
+  display: flex; background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+}
+.m5codeTab {
+  display: flex; align-items: center; gap: 7px;
+  padding: 13px 22px; cursor: pointer; border: none;
+  background: transparent; color: var(--sub); font-family: inherit;
+  font-size: 13px; font-weight: 700; transition: background 0.2s, color 0.2s;
+  border-right: 1px solid var(--border);
+}
+.m5codeTab:last-child { border-right: none; }
+.m5codeTab:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+.m5codeTabActive { background: var(--accent-sub) !important; color: var(--accent) !important; }
+
+.m5codePanel { padding: 0; }
+.m5codePanelHidden { display: none; }
+.m5codeWhen { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.m5codeWhenBox {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14px; line-height: 1.6;
+}
+.m5codeWhenBox i { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+/* ─── Lab ────────────────────────────────── */
+.m5labWrap {
+  display: grid; grid-template-columns: 300px 1fr;
+  gap: 28px; margin-top: 32px; align-items: start;
+}
+.m5labSteps { display: flex; flex-direction: column; gap: 16px; }
+.m5labStep {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 16px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+.m5labStepDot {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  background: color-mix(in srgb, var(--dc) 12%, transparent);
+  border: 2px solid color-mix(in srgb, var(--dc) 45%, transparent);
+  color: var(--dc); display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900;
+}
+.m5labStepText strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 5px; }
+.m5labEmbed { border-radius: var(--r); overflow: hidden; }
+
+/* ─── Game: Deadlock Doctor ──────────────── */
+.m5gameWrap { margin-top: 32px; }
+.m5gameCard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; padding: 28px; backdrop-filter: blur(14px);
+}
+.m5gameCardHeader {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+}
+.m5gameCardNum { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--sub); letter-spacing: 0.1em; }
+.m5gameScore   { font-size: 13px; font-weight: 800; color: var(--accent); }
+.m5gameScenario {
+  padding: 18px; border-radius: 10px; margin-bottom: 18px;
+  background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08);
+  font-size: 14px; line-height: 1.7; font-family: 'Fira Code', 'Courier New', monospace;
+}
+.m5gameOptions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+.m5gameOpt {
+  padding: 12px 16px; border-radius: 10px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+  color: var(--text); font-size: 13px; font-weight: 700;
+  text-align: center; transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  font-family: inherit;
+}
+.m5gameOpt:hover { background: rgba(255,255,255,0.08); border-color: var(--border-hover); transform: translateY(-1px); }
+.m5gameOpt.correct  { background: rgba(0,232,198,0.15); border-color: rgba(0,232,198,0.6); color: #00e8c6; }
+.m5gameOpt.wrong    { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.5); color: #ef4444; }
+.m5gameOpt.disabled { opacity: 0.5; pointer-events: none; }
+.m5gameFeedback {
+  padding: 14px 16px; border-radius: 10px; margin-bottom: 16px;
+  font-size: 14px; line-height: 1.6; color: var(--text);
+}
+.m5gameFeedback.correct { background: rgba(0,232,198,0.1); border: 1px solid rgba(0,232,198,0.35); }
+.m5gameFeedback.wrong   { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.35); }
+.m5gameResult {
+  text-align: center; padding: 40px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; backdrop-filter: blur(14px);
+}
+.m5gameResultIcon { font-size: 48px; color: var(--accent); margin-bottom: 16px; }
+.m5gameResult h3  { font-size: 22px; color: var(--text); margin-bottom: 8px; }
+.m5gameResult p   { color: var(--sub); font-size: 16px; margin-bottom: 20px; }
+
+/* ─── Quiz ───────────────────────────────── */
+.m5quizWrap { margin-top: 32px; }
+.m5quizProgress { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.m5quizProgressBar {
+  flex: 1; height: 4px; border-radius: 4px;
+  background: rgba(255,255,255,0.08); overflow: hidden;
+}
+.m5quizProgressFill {
+  height: 100%; background: var(--accent); border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.m5quizProgressLabel { font-size: 12px; font-weight: 700; color: var(--sub); white-space: nowrap; }
+.m5quizCard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px; backdrop-filter: blur(14px); margin-bottom: 16px;
+}
+.m5quizQuestion {
+  font-size: 18px; font-weight: 700; color: var(--text);
+  line-height: 1.5; margin-bottom: 22px;
+}
+.m5quizOptions { display: flex; flex-direction: column; gap: 10px; }
+.m5quizOpt {
+  padding: 13px 18px; border-radius: 10px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+  color: var(--text); font-size: 14px; text-align: left;
+  transition: background 0.2s, border-color 0.2s; font-family: inherit;
+}
+.m5quizOpt:hover { background: rgba(255,255,255,0.08); border-color: var(--border-hover); }
+.m5quizOpt.correct  { background: rgba(0,232,198,0.14); border-color: rgba(0,232,198,0.55); color: #00e8c6; pointer-events: none; }
+.m5quizOpt.wrong    { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.5); color: #ef4444; pointer-events: none; }
+.m5quizOpt.disabled { pointer-events: none; }
+.m5quizFeedback {
+  padding: 12px 16px; border-radius: 10px; margin-bottom: 16px;
+  font-size: 14px; color: var(--text); line-height: 1.6;
+}
+.m5quizFeedback.correct { background: rgba(0,232,198,0.1); border: 1px solid rgba(0,232,198,0.35); }
+.m5quizFeedback.wrong   { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.35); }
+.m5quizNav { display: flex; gap: 10px; justify-content: space-between; margin-bottom: 16px; }
+.m5quizResult {
+  text-align: center; padding: 32px;
+  background: var(--surface); border: 1px solid var(--accent-border);
+  border-radius: 16px; backdrop-filter: blur(14px);
+}
+.m5quizResultIcon { font-size: 44px; color: var(--accent); margin-bottom: 12px; }
+.m5quizResult h3  { font-size: 20px; color: var(--text); margin-bottom: 8px; }
+.m5quizResult p   { color: var(--sub); margin-bottom: 20px; }
+
+/* ─── Flip cards ─────────────────────────── */
+.m5flipGrid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 14px; margin-top: 32px;
+}
+.m5flipCard {
+  height: 170px; perspective: 1000px; cursor: pointer;
+}
+.m5flipInner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.m5flipCard.flipped .m5flipInner { transform: rotateY(180deg); }
+.m5flipFront, .m5flipBack {
+  position: absolute; inset: 0;
+  backface-visibility: hidden; border-radius: var(--r);
+  border: 1px solid var(--border); background: var(--surface);
+  backdrop-filter: blur(12px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 20px; text-align: center; gap: 8px;
+  transition: border-color 0.2s;
+}
+.m5flipCard:hover .m5flipFront { border-color: var(--accent-border); }
+.m5flipFront strong { font-size: 15px; font-weight: 800; color: var(--text); }
+.m5flipHint { font-size: 11px; color: var(--sub); display: flex; align-items: center; gap: 4px; }
+.m5flipBack {
+  transform: rotateY(180deg);
+  background: var(--accent-sub);
+  border-color: var(--accent-border);
+}
+.m5flipBack p { font-size: 12px; color: var(--text); line-height: 1.6; margin: 0; }
+
+/* ─── Activity ───────────────────────────── */
+.m5actMission {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; overflow: hidden; margin-top: 32px;
+  backdrop-filter: blur(14px);
+}
+.m5missionHeader {
+  padding: 24px 28px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 16px;
+}
+.m5missionBadge {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 14px; border-radius: 8px;
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  color: var(--accent); font-size: 12px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.1em; flex-shrink: 0;
+}
+.m5missionHeader h3 { font-size: 18px; font-weight: 800; color: var(--text); }
+.m5missionSteps { padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+.m5missionStep {
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.m5missionStepIcon {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  background: color-mix(in srgb, var(--sc) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sc) 35%, transparent);
+  color: var(--sc); display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.m5missionStepBody strong { display: block; font-size: 15px; color: var(--text); margin-bottom: 6px; }
+
+/* ─── Rubric ─────────────────────────────── */
+.m5rubric {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px; margin-top: 24px;
+  backdrop-filter: blur(14px);
+}
+.m5rubricTitle {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 800; color: var(--text);
+  margin-bottom: 20px;
+}
+.m5rubricItems { display: flex; flex-direction: column; gap: 18px; }
+.m5rubricItem {}
+.m5rubricItemHeader {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+}
+.m5rubricItemName { font-size: 14px; font-weight: 700; color: var(--text); }
+.m5rubricPct { font-size: 15px; font-weight: 900; color: var(--accent); }
+.m5rubricBar {
+  height: 6px; border-radius: 3px; background: rgba(255,255,255,0.07);
+  overflow: hidden; margin-bottom: 7px;
+}
+.m5rubricBarFill {
+  height: 100%; width: var(--pct); border-radius: 3px;
+  background: var(--bc);
+}
+
+/* ─── Responsive ─────────────────────────── */
+@media (max-width: 900px) {
+  .m5conceptGrid     { grid-template-columns: 1fr 1fr; }
+  .m5philProblem     { grid-template-columns: 1fr; }
+  .m5philProblemVisual { display: none; }
+  .m5simMain         { grid-template-columns: 1fr; }
+  .m5simTableWrap    { border-right: none; border-bottom: 1px solid var(--border); }
+  .m5coffmanGrid     { grid-template-columns: repeat(2, 1fr); }
+  .m5labWrap         { grid-template-columns: 1fr; }
+  .m5flipGrid        { grid-template-columns: repeat(2, 1fr); }
+  .m5objGrid         { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .m5conceptGrid   { grid-template-columns: 1fr; }
+  .m5coffmanGrid   { grid-template-columns: 1fr; }
+  .m5flipGrid      { grid-template-columns: repeat(2, 1fr); }
+  .m5gameOptions   { grid-template-columns: 1fr; }
+  .m5simTable      { width: 280px; height: 280px; }
+  .m5simPhil       { transform:
+    translate(-50%, -50%)
+    rotate(var(--angle))
+    translateY(-118px)
+    rotate(calc(-1 * var(--angle))); }
+  .m5simFork       { transform:
+    translate(-50%, -50%)
+    rotate(var(--angle))
+    translateY(-78px)
+    rotate(calc(-1 * var(--angle))); }
+  .m5simTableCenter { width: 80px; height: 80px; }
+}
