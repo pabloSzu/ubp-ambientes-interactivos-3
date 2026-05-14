@@ -31,14 +31,14 @@
       <span class="mhdrBrand">PAI3</span>
       <span class="mhdrLabel">Módulo 2 · Interfaces y UX</span>
       <nav class="mhdrSections">
-        <a href="#microobjetivos">Objetivos</a>
-        <a href="#glosario">Glosario</a>
-        <a href="#contenidos">Contenido</a>
-        <a href="#actividades">Actividades</a>
+        <a href="#conceptos">Conceptos</a>
+        <a href="#leyes">Leyes UX</a>
+        <a href="#heuristicas">Heurísticas</a>
+        <a href="#actividades">Actividad</a>
       </nav>
     </header>
 
-    <!-- ── HERO ───────────────────────────── -->
+    <!-- ── HERO ─────────────────────────────── -->
     <section class="m2hero">
       <div class="m2heroBg">
         <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1400&q=80&fit=crop" alt="" aria-hidden="true" class="m2heroImg" />
@@ -49,7 +49,7 @@
           <i class="ph-bold ph-layout"></i> Bloque 01
         </div>
         <h1 class="m2heroTitle">Interfaces,<br/><span>Navegabilidad y UX</span></h1>
-        <p class="m2heroIntro">Una pantalla no es una interfaz. Una interfaz es el diálogo entre un sistema y una persona. Este módulo te enseña a leer, evaluar y mejorar ese diálogo con criterio técnico.</p>
+        <p class="m2heroIntro">Una pantalla no es una interfaz. Una interfaz es el diálogo entre un sistema y una persona. Este módulo te enseña a leer, evaluar y mejorar ese diálogo con criterio técnico y herramientas reales de la industria.</p>
         <div class="m2heroStats">
           <div class="m2heroStat">
             <div class="m2heroStatTop">
@@ -60,7 +60,7 @@
           <div class="m2heroStat">
             <div class="m2heroStatTop">
               <span class="m2heroStatNum" id="counter2">0</span>
-              <span class="m2heroStatSuf">s</span>
+              <span class="m2heroStatSuf">ms</span>
             </div>
             <span class="m2heroStatLabel">tarda un usuario en formarse su primera impresión</span>
           </div>
@@ -75,31 +75,31 @@
       </div>
     </section>
 
-    <!-- ── PULL QUOTE ─────────────────────── -->
+    <!-- ── PULL QUOTE ────────────────────────── -->
     <section class="msec alt">
       <div class="msecWrap">
         <blockquote class="m2pullQuote reveal">
           <i class="ph-bold ph-quotes"></i>
           <p>"El diseño no es solo cómo se ve. El diseño es cómo funciona."</p>
-          <cite>— Steve Jobs</cite>
+          <cite>— Steve Jobs, cofundador de Apple</cite>
         </blockquote>
       </div>
     </section>
 
-    <!-- ── MICROOBJETIVOS ─────────────────── -->
+    <!-- ── MICROOBJETIVOS ────────────────────── -->
     <section class="msec" id="microobjetivos">
       <div class="msecWrap">
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-target"></i> Objetivos del módulo</span>
           <h2>¿Qué vas a aprender?</h2>
-          <p class="msecSub">Al terminar este módulo vas a poder auditar cualquier interfaz con criterio técnico, identificar violaciones de usabilidad y proponer mejoras fundamentadas.</p>
+          <p class="msecSub">Al terminar este módulo vas a poder auditar cualquier interfaz con criterio técnico, identificar violaciones de usabilidad y proponer mejoras fundamentadas en los principios de la industria.</p>
         </div>
         <div class="m2objGrid">
           <div class="m2objCard reveal" style="--delay:0ms">
             <div class="m2objIcon" style="--oc:#4a8ef0"><i class="ph-bold ph-eye"></i></div>
             <div>
-              <strong>Definir interfaz y UX</strong>
-              <p>Distinguir interfaz, usabilidad, experiencia de usuario y modelo mental con el fin de analizar sistemas interactivos reales.</p>
+              <strong>Definir UX, UI e interfaz</strong>
+              <p>Distinguir UI, UX e interacción con el fin de analizar sistemas interactivos con vocabulario técnico preciso.</p>
             </div>
           </div>
           <div class="m2objCard reveal" style="--delay:80ms">
@@ -112,8 +112,8 @@
           <div class="m2objCard reveal" style="--delay:160ms">
             <div class="m2objIcon" style="--oc:#9b6fff"><i class="ph-bold ph-path"></i></div>
             <div>
-              <strong>Analizar flujos de navegación</strong>
-              <p>Mapear y evaluar patrones de navegación con el fin de detectar fricciones en la experiencia del usuario.</p>
+              <strong>Interpretar leyes de UX</strong>
+              <p>Aplicar Hick, Fitts, Miller y Gestalt con el fin de fundamentar decisiones de diseño en evidencia cognitiva.</p>
             </div>
           </div>
           <div class="m2objCard reveal" style="--delay:240ms">
@@ -127,12 +127,142 @@
       </div>
     </section>
 
-    <!-- ── MODELO MENTAL ──────────────────── -->
-    <section class="msec alt" id="contenidos">
+    <!-- ── UX vs UI vs IX ────────────────────── -->
+    <section class="msec alt" id="conceptos">
       <div class="msecWrap">
         <div class="msecHead reveal">
-          <span class="msecEye"><i class="ph ph-brain"></i> El concepto clave</span>
-          <h2>Interfaces y modelos mentales</h2>
+          <span class="msecEye"><i class="ph ph-circles-three"></i> El primer concepto clave</span>
+          <h2>UX, UI e Interacción: ¿cuál es la diferencia?</h2>
+          <p class="msecSub">Estos tres términos se usan juntos y a veces mal. Entender la diferencia es el punto de partida de cualquier análisis serio de interfaz.</p>
+        </div>
+        <div class="m2triLayer reveal">
+          <div class="m2triCard" style="--tc:#ffd166">
+            <div class="m2triCardTop">
+              <div class="m2triIcon"><i class="ph-bold ph-palette"></i></div>
+              <span class="m2triLabel">UI — User Interface</span>
+            </div>
+            <h3>La capa visual</h3>
+            <p>Todo lo que el usuario <em>ve</em>: colores, tipografía, íconos, layout, animaciones. La UI es la piel del sistema. Puede ser hermosa y aún así tener una UX horrible.</p>
+            <div class="m2triExample"><strong>Analogía:</strong> El tablero de un auto — agujas, pantallas, controles visuales</div>
+          </div>
+          <div class="m2triArrow"><i class="ph-bold ph-arrow-right"></i></div>
+          <div class="m2triCard" style="--tc:#4a8ef0">
+            <div class="m2triCardTop">
+              <div class="m2triIcon"><i class="ph-bold ph-hand-tap"></i></div>
+              <span class="m2triLabel">IX — Interaction Design</span>
+            </div>
+            <h3>La capa del comportamiento</h3>
+            <p>Cómo el sistema <em>responde</em> a las acciones del usuario. Flujos, estados, feedback, transiciones. El IX define lo que pasa cuando tocás algo.</p>
+            <div class="m2triExample"><strong>Analogía:</strong> Cómo responde el auto cuando girás el volante</div>
+          </div>
+          <div class="m2triArrow"><i class="ph-bold ph-arrow-right"></i></div>
+          <div class="m2triCard" style="--tc:#00e8c6">
+            <div class="m2triCardTop">
+              <div class="m2triIcon"><i class="ph-bold ph-heart"></i></div>
+              <span class="m2triLabel">UX — User Experience</span>
+            </div>
+            <h3>La capa completa</h3>
+            <p>Todo lo que el usuario <em>siente</em> antes, durante y después de usar el sistema. La UX incluye la UI y el IX, más el contexto, las emociones y las expectativas.</p>
+            <div class="m2triExample"><strong>Analogía:</strong> La experiencia completa de tener ese auto — desde comprarlo hasta revenderlo</div>
+          </div>
+        </div>
+
+        <!-- Don Norman box -->
+        <div class="m2normBox reveal">
+          <div class="m2normBoxImg">
+            <img src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=500&q=80&fit=crop" alt="Design thinking" />
+          </div>
+          <div class="m2normBoxText">
+            <div class="m2normBoxEye"><i class="ph-bold ph-book-open"></i> El origen del término</div>
+            <h3>"User Experience" — Don Norman, 1993</h3>
+            <p>Don Norman acuñó el término "User Experience" mientras trabajaba en Apple en los 90s. Quería capturar algo más amplio que "ergonomía" o "usabilidad": <strong>todo el aspecto de la interacción de una persona con una compañía, sus servicios y sus productos</strong>.</p>
+            <p>Su libro <em>The Design of Everyday Things</em> (1988) sigue siendo lectura obligatoria en cualquier carrera de diseño del mundo. En él introduce los conceptos de affordance, signifier, feedback y modelo mental que usamos hasta hoy.</p>
+            <div class="m2normBoxQuote">"Un buen diseño es en realidad mucho más difícil de notar que un diseño pobre, porque los buenos diseños encajan con nuestras necesidades tan bien que la solución parece obvia." — Don Norman</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HISTORIA DE LAS INTERFACES ─────────── -->
+    <section class="msec">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-clock-countdown"></i> Del pasado al futuro</span>
+          <h2>La evolución de las interfaces</h2>
+          <p class="msecSub">Cada era redefinió qué significa "interactuar con un sistema". Entender esta historia ayuda a predecir hacia dónde va la próxima generación de interfaces.</p>
+        </div>
+        <div class="m2timeline reveal">
+          <div class="m2timelineItem" style="--ti:#ffd166">
+            <div class="m2timelineYear">1960s</div>
+            <div class="m2timelineDot"></div>
+            <div class="m2timelineCard">
+              <div class="m2timelineIcon"><i class="ph-bold ph-terminal"></i></div>
+              <h4>CLI — Command Line</h4>
+              <p>Solo texto. Solo comandos. Si no sabías la sintaxis exacta, el sistema no respondía. La interfaz era exclusivamente para expertos técnicos.</p>
+              <div class="m2timelineTag">Solo para técnicos</div>
+            </div>
+          </div>
+          <div class="m2timelineItem" style="--ti:#4a8ef0">
+            <div class="m2timelineYear">1984</div>
+            <div class="m2timelineDot"></div>
+            <div class="m2timelineCard">
+              <div class="m2timelineIcon"><i class="ph-bold ph-desktop"></i></div>
+              <h4>GUI — Macintosh</h4>
+              <p>Apple popularizó el mouse y el escritorio con íconos. La metáfora del mundo real (carpetas, papeleras, ventanas) permitió que millones de personas usaran una computadora por primera vez.</p>
+              <div class="m2timelineTag">Democratización</div>
+            </div>
+          </div>
+          <div class="m2timelineItem" style="--ti:#9b6fff">
+            <div class="m2timelineYear">1994</div>
+            <div class="m2timelineDot"></div>
+            <div class="m2timelineCard">
+              <div class="m2timelineIcon"><i class="ph-bold ph-globe"></i></div>
+              <h4>Web — Hipertexto</h4>
+              <p>Tim Berners-Lee inventó la web. Las interfaces pasaron a estar en red. El link fue la nueva metáfora: conectar información con un clic. La navegación como concepto nació aquí.</p>
+              <div class="m2timelineTag">Conexión global</div>
+            </div>
+          </div>
+          <div class="m2timelineItem" style="--ti:#ff7d54">
+            <div class="m2timelineYear">2007</div>
+            <div class="m2timelineDot"></div>
+            <div class="m2timelineCard">
+              <div class="m2timelineIcon"><i class="ph-bold ph-device-mobile"></i></div>
+              <h4>Touch — iPhone</h4>
+              <p>Steve Jobs eliminó el teclado físico. Multi-touch, gestos, pantalla completa. La interfaz pasó a ser el propio dedo del usuario. Todo el diseño UX tuvo que reinventarse para el pulgar.</p>
+              <div class="m2timelineTag">El dedo como cursor</div>
+            </div>
+          </div>
+          <div class="m2timelineItem" style="--ti:#00e8c6">
+            <div class="m2timelineYear">2016</div>
+            <div class="m2timelineDot"></div>
+            <div class="m2timelineCard">
+              <div class="m2timelineIcon"><i class="ph-bold ph-microphone"></i></div>
+              <h4>Voice — Alexa / Siri</h4>
+              <p>La interfaz se volvió invisible. Sin pantalla, sin teclado, sin mouse. Solo la voz natural. El desafío: diseñar experiencias completas sin ningún elemento visual.</p>
+              <div class="m2timelineTag">Sin pantalla</div>
+            </div>
+          </div>
+          <div class="m2timelineItem" style="--ti:#ff5050">
+            <div class="m2timelineYear">2023</div>
+            <div class="m2timelineDot"></div>
+            <div class="m2timelineCard">
+              <div class="m2timelineIcon"><i class="ph-bold ph-eye"></i></div>
+              <h4>Spatial — Apple Vision Pro</h4>
+              <p>La interfaz se superpone al mundo real. Gaze tracking, gestos en el aire, ventanas flotantes. El espacio físico se convierte en el canvas de la interfaz.</p>
+              <div class="m2timelineTag">El mundo como pantalla</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MODELO MENTAL + AFFORDANCES ─────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-brain"></i> El concepto fundamental</span>
+          <h2>Modelos mentales y affordances</h2>
+          <p class="msecSub">Por qué algunos sistemas se usan intuitivamente y otros frustran hasta al más experto. Todo está en el modelo mental.</p>
         </div>
         <div class="m2splitLayout reveal">
           <div class="m2splitImg">
@@ -142,26 +272,183 @@
           <div class="m2splitContent">
             <p class="m2blogText">Una interfaz no es una pantalla — es un <strong>contrato implícito</strong> entre el sistema y la persona que lo usa. Ese contrato dice: "si hacés esto, va a pasar aquello". Cuando el contrato se rompe, la experiencia falla.</p>
             <p class="m2blogText">El concepto clave es el <strong>modelo mental</strong>: la representación interna que el usuario construye de cómo funciona el sistema. Si la interfaz no coincide con ese modelo, el usuario se pierde, se frustra y abandona.</p>
-            <p class="m2blogText">El trabajo del diseñador de interfaces no es hacer algo bonito — es hacer que el sistema y el modelo mental del usuario se alineen perfectamente.</p>
+            <p class="m2blogText">El trabajo del diseñador de interfaces no es hacer algo bonito — es hacer que el sistema y el modelo mental del usuario se <strong>alineen perfectamente</strong>.</p>
             <div class="m2callout">
-              <div class="m2calloutIcon"><i class="ph-bold ph-lightbulb"></i></div>
+              <div class="m2calloutIcon"><i class="ph-bold ph-door"></i></div>
               <div>
-                <strong>¿Sabías esto?</strong>
-                <p>Los usuarios forman su primera impresión de una interfaz en solo <strong>50 milisegundos</strong>. Antes de leer una sola palabra, ya decidieron si confían en ese sistema o no.</p>
+                <strong>Norman Doors — el ejemplo más famoso</strong>
+                <p>¿Alguna vez empujaste una puerta que había que jalar? Eso es una Norman Door: una puerta tan mal diseñada que necesita un cartel que diga "JALAR". Si necesitás instrucciones para una puerta, el diseño falló. Lo mismo aplica exactamente a las interfaces digitales.</p>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="m2conceptGrid reveal">
+          <div class="m2conceptCard" style="--cc:#4a8ef0">
+            <div class="m2conceptCardTop">
+              <div class="m2conceptIcon"><i class="ph-bold ph-hand-pointing"></i></div>
+              <strong>Affordance</strong>
+            </div>
+            <p>La <em>posibilidad real</em> de acción que ofrece un objeto. Un botón físico SE PUEDE presionar — ese es su affordance. Existe aunque no lo veas. James Gibson (1979), retomado por Don Norman en diseño.</p>
+            <div class="m2conceptEg">Ej: un botón en código puede "clickearse" — tiene affordance aunque lo hagas invisible</div>
+          </div>
+          <div class="m2conceptCard" style="--cc:#9b6fff">
+            <div class="m2conceptCardTop">
+              <div class="m2conceptIcon"><i class="ph-bold ph-tag"></i></div>
+              <strong>Signifier</strong>
+            </div>
+            <p>La <em>señal perceptible</em> que comunica que una acción es posible. El botón PARECE presionable gracias a su sombra, borde elevado y color. El signifier hace visible el affordance.</p>
+            <div class="m2conceptEg">Ej: la sombra de un botón comunica "soy presionable" — eso es el signifier</div>
+          </div>
+          <div class="m2conceptCard" style="--cc:#00e8c6">
+            <div class="m2conceptCardTop">
+              <div class="m2conceptIcon"><i class="ph-bold ph-arrow-u-up-left"></i></div>
+              <strong>Feedback</strong>
+            </div>
+            <p>La <em>respuesta del sistema</em> a una acción del usuario. Sin feedback, el usuario no sabe si su acción tuvo efecto. El feedback cierra el loop de la interacción y genera confianza.</p>
+            <div class="m2conceptEg">Ej: el botón cambia de color y dice "Enviado ✓" — eso es feedback</div>
+          </div>
+          <div class="m2conceptCard" style="--cc:#ffd166">
+            <div class="m2conceptCardTop">
+              <div class="m2conceptIcon"><i class="ph-bold ph-brain"></i></div>
+              <strong>Modelo mental</strong>
+            </div>
+            <p>La <em>imagen interna</em> que el usuario tiene de cómo funciona el sistema. Si la interfaz coincide con ese modelo, la experiencia fluye. Si no, hay fricción y errores constantes.</p>
+            <div class="m2conceptEg">Ej: el usuario asume que el carrito guarda mientras navega — el sistema debe cumplir eso</div>
+          </div>
+        </div>
+
+        <div class="m2callout reveal" style="margin-top:20px">
+          <div class="m2calloutIcon"><i class="ph-bold ph-lightbulb"></i></div>
+          <div>
+            <strong>¿Sabías esto?</strong>
+            <p>Los usuarios forman su primera impresión de una interfaz en solo <strong>50 milisegundos</strong>. Antes de leer una sola palabra, ya decidieron si confían en ese sistema o no. El poder de la primera impresión visual es total — y casi imposible de revertir.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── JERARQUÍA VISUAL ───────────────── -->
-    <section class="msec">
+    <!-- ── LEYES DE UX ───────────────────────── -->
+    <section class="msec" id="leyes">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-math-operations"></i> Ciencia aplicada al diseño</span>
+          <h2>Las leyes de UX</h2>
+          <p class="msecSub">El diseño de interfaces no es arte libre — tiene fundamentos científicos. Estas leyes vienen de la psicología cognitiva y la física del movimiento. Son las mismas que usan Google, Apple y cualquier equipo de producto serio del mundo.</p>
+        </div>
+        <div class="m2lawsGrid reveal">
+
+          <div class="m2lawCard" style="--lc:#4a8ef0">
+            <div class="m2lawCardHead">
+              <div class="m2lawNum">01</div>
+              <div class="m2lawIcon"><i class="ph-bold ph-fork-knife"></i></div>
+            </div>
+            <h3>Ley de Hick</h3>
+            <div class="m2lawFormula">Tiempo ∝ log₂(N opciones)</div>
+            <p>El tiempo para tomar una decisión aumenta logarítmicamente con el número de opciones disponibles. Más opciones = más tiempo de decisión = más frustración. Aplica directamente a menús, formularios y botones de acción.</p>
+            <div class="m2lawExample">
+              <div class="m2lawExBad">
+                <span class="m2lawExLabel bad"><i class="ph-bold ph-x"></i> Muchas opciones</span>
+                <p>Un control remoto con 80 botones. El usuario tarda varios segundos en encontrar el volumen — aunque lo haya usado 1000 veces.</p>
+              </div>
+              <div class="m2lawExGood">
+                <span class="m2lawExLabel good"><i class="ph-bold ph-check"></i> Pocas opciones</span>
+                <p>Apple TV remote: 5 botones. La acción es inmediata porque no hay que decidir entre opciones.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m2lawCard" style="--lc:#9b6fff">
+            <div class="m2lawCardHead">
+              <div class="m2lawNum">02</div>
+              <div class="m2lawIcon"><i class="ph-bold ph-crosshair"></i></div>
+            </div>
+            <h3>Ley de Fitts</h3>
+            <div class="m2lawFormula">Tiempo ∝ distancia / tamaño_target</div>
+            <p>El tiempo para alcanzar un objetivo depende de su distancia y su tamaño. Targets más grandes y más cercanos son más fáciles de tocar. Es la ley más aplicada en diseño de botones para dispositivos móviles.</p>
+            <div class="m2lawExample">
+              <div class="m2lawExBad">
+                <span class="m2lawExLabel bad"><i class="ph-bold ph-x"></i> Problema</span>
+                <p>Botón "Aceptar" de 16×16px en la esquina de la pantalla. Los usuarios lo tocan errado constantemente.</p>
+              </div>
+              <div class="m2lawExGood">
+                <span class="m2lawExLabel good"><i class="ph-bold ph-check"></i> Solución</span>
+                <p>WCAG exige mínimo 44×44px para touch targets. Botones primarios ocupan el ancho completo en mobile.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m2lawCard" style="--lc:#00e8c6">
+            <div class="m2lawCardHead">
+              <div class="m2lawNum">03</div>
+              <div class="m2lawIcon"><i class="ph-bold ph-brain"></i></div>
+            </div>
+            <h3>Ley de Miller</h3>
+            <div class="m2lawFormula">Memoria de trabajo: 7 ± 2 ítems</div>
+            <p>La memoria de trabajo humana puede retener entre 5 y 9 ítems simultáneamente. Por eso los teléfonos se escriben en grupos de 3-4 dígitos, los menús tienen máximo 7 ítems y los formularios se dividen en pasos.</p>
+            <div class="m2lawExample">
+              <div class="m2lawExBad">
+                <span class="m2lawExLabel bad"><i class="ph-bold ph-x"></i> Sobrecarga</span>
+                <p>Formulario con 15 campos en una sola pantalla. El usuario se satura y abandona antes de terminar.</p>
+              </div>
+              <div class="m2lawExGood">
+                <span class="m2lawExLabel good"><i class="ph-bold ph-check"></i> Chunking</span>
+                <p>Amazon divide el checkout en 3 pasos: dirección, pago, confirmación. Nunca más de 5 campos por pantalla.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m2lawCard" style="--lc:#ffd166">
+            <div class="m2lawCardHead">
+              <div class="m2lawNum">04</div>
+              <div class="m2lawIcon"><i class="ph-bold ph-squares-four"></i></div>
+            </div>
+            <h3>Leyes de Gestalt</h3>
+            <div class="m2lawFormula">El todo > suma de las partes</div>
+            <p>El cerebro agrupa automáticamente los elementos visuales. <strong>Proximidad:</strong> lo cercano se percibe junto. <strong>Similitud:</strong> lo parecido se agrupa. <strong>Continuidad:</strong> el ojo sigue líneas implícitas. El diseño usa estas leyes para crear orden sin texto.</p>
+            <div class="m2lawExample">
+              <div class="m2lawExBad">
+                <span class="m2lawExLabel bad"><i class="ph-bold ph-x"></i> Sin Gestalt</span>
+                <p>Formulario sin separación visual entre secciones. El usuario no sabe qué campos van juntos temáticamente.</p>
+              </div>
+              <div class="m2lawExGood">
+                <span class="m2lawExLabel good"><i class="ph-bold ph-check"></i> Con Gestalt</span>
+                <p>Google Forms agrupa campos relacionados con separaciones y colores. El ojo navega naturalmente por la jerarquía.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m2lawCard" style="--lc:#ff7d54">
+            <div class="m2lawCardHead">
+              <div class="m2lawNum">05</div>
+              <div class="m2lawIcon"><i class="ph-bold ph-star"></i></div>
+            </div>
+            <h3>Efecto Estético-Usabilidad</h3>
+            <div class="m2lawFormula">Lo bonito parece más fácil de usar</div>
+            <p>Los usuarios perciben los diseños más atractivos como más fáciles de usar — incluso cuando no lo son. Las interfaces bien diseñadas visualmente generan más tolerancia a errores y mayor fidelidad del usuario.</p>
+            <div class="m2lawExample">
+              <div class="m2lawExBad">
+                <span class="m2lawExLabel bad"><i class="ph-bold ph-x"></i> El riesgo</span>
+                <p>Puede ocultar problemas reales de usabilidad. Los usuarios toleran más bugs en apps que tienen buen diseño visual.</p>
+              </div>
+              <div class="m2lawExGood">
+                <span class="m2lawExLabel good"><i class="ph-bold ph-check"></i> El beneficio</span>
+                <p>Spotify y Airbnb: el diseño cuidado genera confianza inmediata y hace que el producto parezca más capaz.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── JERARQUÍA VISUAL ──────────────────── -->
+    <section class="msec alt">
       <div class="msecWrap">
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-stack"></i> Diseño visual</span>
           <h2>Los tres pilares de la jerarquía visual</h2>
-          <p class="msecSub">Antes de evaluar una interfaz, hay que entender cómo el ojo humano lee una pantalla. Estos tres principios determinan todo.</p>
+          <p class="msecSub">Antes de evaluar una interfaz, hay que entender cómo el ojo humano lee una pantalla. Estos tres principios determinan todo lo que pasa en la capa visual.</p>
         </div>
         <div class="m2pilarRow reveal">
           <div class="m2pilarCard" style="--pc:#4a8ef0">
@@ -170,7 +457,7 @@
               <div class="m2pilarIcon"><i class="ph-bold ph-text-aa"></i></div>
             </div>
             <h3>Tipografía y peso</h3>
-            <p>El tamaño y el peso tipográfico crean orden de lectura. El ojo sigue jerarquías: H1 → H2 → body. Una interfaz sin jerarquía tipográfica es ruido visual.</p>
+            <p>El tamaño y el peso tipográfico crean orden de lectura. El ojo sigue jerarquías: H1 → H2 → body. Una interfaz sin jerarquía tipográfica es ruido visual. La tipografía hace el 70% del trabajo de diseño.</p>
             <div class="m2pilarTag">Tamaño · Peso · Contraste</div>
           </div>
           <div class="m2pilarArrow"><i class="ph-bold ph-plus"></i></div>
@@ -180,7 +467,7 @@
               <div class="m2pilarIcon"><i class="ph-bold ph-palette"></i></div>
             </div>
             <h3>Color y contraste</h3>
-            <p>El color guía la atención, comunica estado y crea grupos visuales. El contraste asegura legibilidad. Sin suficiente contraste, la interfaz excluye a millones de usuarios.</p>
+            <p>El color guía la atención, comunica estado (success, error, warning) y crea grupos visuales. El contraste asegura legibilidad. Sin suficiente contraste, la interfaz excluye a millones de usuarios con baja visión.</p>
             <div class="m2pilarTag">Atención · Estado · Accesibilidad</div>
           </div>
           <div class="m2pilarArrow"><i class="ph-bold ph-plus"></i></div>
@@ -190,20 +477,51 @@
               <div class="m2pilarIcon"><i class="ph-bold ph-squares-four"></i></div>
             </div>
             <h3>Espacio y Gestalt</h3>
-            <p>El espacio en blanco no es vacío — es separación intencional. La Gestalt explica cómo el cerebro agrupa elementos: proximidad, similitud y continuidad.</p>
+            <p>El espacio en blanco no es vacío — es separación intencional. La Gestalt explica cómo el cerebro agrupa elementos: proximidad, similitud y continuidad. El espacio dice "estos elementos van juntos" sin una sola palabra.</p>
             <div class="m2pilarTag">Proximidad · Agrupación · Ritmo</div>
+          </div>
+        </div>
+
+        <div class="m2eyeBox reveal">
+          <div class="m2eyeBoxText">
+            <div class="m2eyeBoxEye"><i class="ph-bold ph-eye"></i> Eye Tracking</div>
+            <h3>¿Cómo lee el ojo una pantalla?</h3>
+            <p>Estudios de eye tracking revelan que el ojo no lee linealmente — escanea primero, lee después. Los diseñadores usan estos patrones para ubicar el contenido más importante donde el ojo naturalmente va a mirar.</p>
+            <ul class="m2eyeList">
+              <li><strong>Patrón F:</strong> páginas de texto largo. Lee la primera línea completa, luego barre hacia abajo dejando de leer a la derecha. El contenido importante siempre va a la izquierda.</li>
+              <li><strong>Patrón Z:</strong> páginas con poco texto. El ojo va de arriba-izquierda a arriba-derecha, baja en diagonal, y continúa de izquierda a derecha. Landing pages usan este patrón para guiar al Call to Action.</li>
+            </ul>
+          </div>
+          <div class="m2eyePatterns">
+            <div class="m2eyePattern">
+              <div class="m2eyePatternLabel">Patrón F</div>
+              <div class="m2eyeFPattern">
+                <div class="m2fLine m2fLine1"></div>
+                <div class="m2fLine m2fLine2"></div>
+                <div class="m2fLine m2fLine3"></div>
+                <div class="m2fLine m2fLine4"></div>
+              </div>
+            </div>
+            <div class="m2eyePattern">
+              <div class="m2eyePatternLabel">Patrón Z</div>
+              <div class="m2eyeZPattern">
+                <div class="m2zLine m2zLine1"></div>
+                <div class="m2zLine m2zLine2"></div>
+                <div class="m2zLine m2zLine3"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── 10 HEURÍSTICAS DE NIELSEN ────── -->
-    <section class="msec alt">
+    <!-- ── 10 HEURÍSTICAS DE NIELSEN ─────────── -->
+    <section class="msec" id="heuristicas">
       <div class="msecWrap">
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-list-checks"></i> El estándar de la industria</span>
           <h2>Las 10 Heurísticas de Nielsen</h2>
-          <p class="msecSub">Jakob Nielsen publicó estas heurísticas en 1994. Siguen siendo el framework más usado para evaluar interfaces. Cada una es una regla — y cada una se puede violar.</p>
+          <p class="msecSub">Jakob Nielsen publicó estas heurísticas en 1994 con Rolf Molich. Siguen siendo el framework más usado para evaluar interfaces en la industria. Hacé clic en cada número para explorarlas una por una.</p>
         </div>
         <div class="m2heuristic reveal">
           <div class="m2heuristicTabs" role="tablist" id="heuristicTabs"></div>
@@ -212,13 +530,108 @@
       </div>
     </section>
 
-    <!-- ── PATRONES DE NAVEGACIÓN ─────────── -->
+    <!-- ── ACCESIBILIDAD ─────────────────────── -->
+    <section class="msec alt" id="accesibilidad">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-wheelchair"></i> Diseño para todos</span>
+          <h2>Accesibilidad Web — WCAG</h2>
+          <p class="msecSub">Una interfaz accesible no es un lujo ni solo una obligación legal — es la medida real de si un diseño está bien hecho. Si no funciona para todos, no está terminado.</p>
+        </div>
+
+        <div class="m2a11yIntro reveal">
+          <div class="m2a11yStat">
+            <div class="m2a11yStatNum" id="counterA11y">0</div>
+            <div class="m2a11yStatSuf">M</div>
+            <div class="m2a11yStatLabel">personas en el mundo tienen algún tipo de discapacidad (OMS, 2023)</div>
+          </div>
+          <div class="m2a11yStatText">
+            <p class="m2blogText">Eso es el <strong>15% de la población mundial</strong>. No es una minoría que podemos ignorar. Y las discapacidades no son binarias — son un espectro que incluye problemas temporales (un brazo roto), situacionales (sol directo en pantalla) y permanentes.</p>
+            <p class="m2blogText">Diseñar con accesibilidad en mente no solo ayuda a personas con discapacidades. Los subtítulos ayudan a quien ve video en silencio en el subte. El alto contraste ayuda a quien usa el teléfono al sol. La navegación por teclado ayuda a los power users. <strong>La accesibilidad beneficia a todos.</strong></p>
+          </div>
+        </div>
+
+        <div class="m2a11yTypes reveal">
+          <div class="m2a11yType" style="--at:#4a8ef0">
+            <div class="m2a11yTypeIcon"><i class="ph-bold ph-eye"></i></div>
+            <h4>Visual</h4>
+            <p>Baja visión, daltonismo (8% de los hombres), ceguera total. Afecta la lectura de texto, íconos y el uso exclusivo del color como señal.</p>
+            <div class="m2a11yTypeSol"><strong>Soluciones:</strong> contraste mínimo 4.5:1, no depender solo del color para comunicar estado, alt text en imágenes, fuentes escalables.</div>
+          </div>
+          <div class="m2a11yType" style="--at:#9b6fff">
+            <div class="m2a11yTypeIcon"><i class="ph-bold ph-hand"></i></div>
+            <h4>Motora</h4>
+            <p>Temblor, parálisis parcial, distrofia muscular, uso de un solo brazo. Dificulta el uso del mouse, touch fino y gestos complejos.</p>
+            <div class="m2a11yTypeSol"><strong>Soluciones:</strong> targets táctiles grandes (44px mínimo), navegación completa por teclado, sin acciones que requieran doble click rápido o precisión fina.</div>
+          </div>
+          <div class="m2a11yType" style="--at:#00e8c6">
+            <div class="m2a11yTypeIcon"><i class="ph-bold ph-ear"></i></div>
+            <h4>Auditiva</h4>
+            <p>Hipoacusia parcial, sordera total, dificultad con sonidos en ciertos rangos de frecuencia.</p>
+            <div class="m2a11yTypeSol"><strong>Soluciones:</strong> subtítulos en videos, transcripciones de audio, no usar solo el sonido como feedback de acciones importantes.</div>
+          </div>
+          <div class="m2a11yType" style="--at:#ffd166">
+            <div class="m2a11yTypeIcon"><i class="ph-bold ph-brain"></i></div>
+            <h4>Cognitiva</h4>
+            <p>Dislexia, TDAH, autismo, dificultades de procesamiento, deterioro cognitivo relacionado con la edad.</p>
+            <div class="m2a11yTypeSol"><strong>Soluciones:</strong> lenguaje simple, estructura clara y predecible, sin distracciones innecesarias, tiempos ajustables, instrucciones explícitas paso a paso.</div>
+          </div>
+        </div>
+
+        <div class="m2wcagBox reveal">
+          <div class="m2wcagTitle"><i class="ph-bold ph-certificate"></i> WCAG 2.1 — Web Content Accessibility Guidelines</div>
+          <p class="m2wcagIntro">Publicadas por el W3C, las WCAG son el estándar internacional de accesibilidad web. Se organizan en tres niveles de cumplimiento:</p>
+          <div class="m2wcagLevels">
+            <div class="m2wcagLevel" style="--wl:#ffd166">
+              <div class="m2wcagLevelBadge">Nivel A</div>
+              <div class="m2wcagLevelDesc">Mínimo indispensable. Sin esto, la interfaz es inutilizable para muchos usuarios. Incluye: alt text en imágenes, no depender solo del color, formularios con labels correctos.</div>
+            </div>
+            <div class="m2wcagLevel" style="--wl:#4a8ef0">
+              <div class="m2wcagLevelBadge">Nivel AA</div>
+              <div class="m2wcagLevelDesc">El estándar exigido por la mayoría de regulaciones legales (ADA en USA, EN 301 549 en Europa). Incluye: contraste mínimo 4.5:1, texto redimensionable al 200% sin perder funcionalidad, foco visible en teclado.</div>
+            </div>
+            <div class="m2wcagLevel" style="--wl:#00e8c6">
+              <div class="m2wcagLevelBadge">Nivel AAA</div>
+              <div class="m2wcagLevelDesc">El ideal. Contraste 7:1, subtítulos en tiempo real para videos en vivo, lenguaje a nivel de secundaria, sesiones sin límite de tiempo. Pocas apps lo logran completamente — pero es la meta.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m2toolsBox reveal">
+          <div class="m2toolsTitle">Herramientas para testear accesibilidad ahora mismo</div>
+          <div class="m2toolsGrid">
+            <div class="m2toolCard">
+              <div class="m2toolIcon"><i class="ph-bold ph-lighthouse"></i></div>
+              <strong>Lighthouse</strong>
+              <span>Chrome DevTools → pestaña Lighthouse → Accessibility. Auditoría automática gratuita en segundos.</span>
+            </div>
+            <div class="m2toolCard">
+              <div class="m2toolIcon"><i class="ph-bold ph-bug"></i></div>
+              <strong>axe DevTools</strong>
+              <span>Extensión de Chrome. Detecta violaciones WCAG en tiempo real mientras navegás cualquier sitio.</span>
+            </div>
+            <div class="m2toolCard">
+              <div class="m2toolIcon"><i class="ph-bold ph-drop-half"></i></div>
+              <strong>Contrast Checker</strong>
+              <span>webaim.org/resources/contrastchecker — verificá el ratio de contraste entre texto y fondo en segundos.</span>
+            </div>
+            <div class="m2toolCard">
+              <div class="m2toolIcon"><i class="ph-bold ph-keyboard"></i></div>
+              <strong>Solo teclado</strong>
+              <span>Desconectá el mouse y navegá con Tab, Enter y flechas. Si algo no funciona, encontraste un problema real.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PATRONES DE NAVEGACIÓN ─────────────── -->
     <section class="msec">
       <div class="msecWrap">
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-flow-arrow"></i> Cómo se mueve el usuario</span>
           <h2>Patrones de navegación</h2>
-          <p class="msecSub">Hacé clic en cada patrón para entender cuándo usarlo, cuándo no, y qué problemas puede causar.</p>
+          <p class="msecSub">La mejor navegación es la que el usuario no nota. Si el usuario piensa en cómo navegar, algo falló. Hacé clic en cada patrón para entender cuándo usarlo, cuándo no y qué problemas puede causar.</p>
         </div>
         <div class="pipeline reveal" id="navPipeline">
           <button class="pipeBtn" data-nav="menu">Menú global</button>
@@ -237,19 +650,91 @@
           <div class="pipeEye" id="navEye">Seleccioná un patrón</div>
           <div class="pipeTitle" id="navTitle">—</div>
           <div class="m2navDetail" id="navDetail">
-            <span class="pipeText">Hacé clic en cualquier patrón de arriba para ver su análisis.</span>
+            <span class="pipeText">Hacé clic en cualquier patrón de arriba para ver su análisis completo.</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── MINIJUEGO ──────────────────────── -->
-    <section class="msec alt">
+    <!-- ── FLUJOS DE USUARIO ──────────────────── -->
+    <section class="msec alt" id="flujos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-git-branch"></i> Mapear la experiencia</span>
+          <h2>Flujos de usuario</h2>
+          <p class="msecSub">Un flujo de usuario es el mapa de pasos que alguien sigue para completar una tarea. Antes de diseñar una sola pantalla, hay que mapear el flujo completo — incluyendo los errores.</p>
+        </div>
+
+        <div class="m2flowSplit reveal">
+          <div class="m2flowText">
+            <p class="m2blogText">Un flujo de usuario empieza desde la perspectiva del <strong>objetivo del usuario</strong>, no desde la estructura del sistema. La pregunta correcta es: <em>"¿Qué está tratando de lograr esta persona?"</em> — no "¿cómo organizamos las pantallas?".</p>
+            <p class="m2blogText">Todo flujo tiene un <strong>happy path</strong> — el camino ideal cuando todo sale bien — y múltiples <strong>edge cases</strong>: qué pasa si el usuario escribe mal el email, si no tiene conexión, si la sesión expiró. Los errores son tan importantes como el flujo feliz.</p>
+            <div class="m2callout" style="margin-top:16px">
+              <div class="m2calloutIcon"><i class="ph-bold ph-lightbulb"></i></div>
+              <div>
+                <strong>Regla de oro del flujo</strong>
+                <p>El usuario siempre debería saber <em>dónde está</em>, <em>de dónde vino</em> y <em>a dónde puede ir</em>. Si cualquiera de estas tres preguntas no tiene respuesta visible en la interfaz, el flujo está incompleto.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m2flowDiagram">
+            <div class="m2flowDiagramTitle">Flujo de login — Ejemplo</div>
+            <div class="m2flowNodes">
+              <div class="m2flowNode m2flowStart"><i class="ph-bold ph-device-mobile"></i><span>Abre la app</span></div>
+              <div class="m2flowArrowV"><i class="ph ph-arrow-down"></i></div>
+              <div class="m2flowNode"><i class="ph-bold ph-envelope"></i><span>Ingresa email</span></div>
+              <div class="m2flowArrowV"><i class="ph ph-arrow-down"></i></div>
+              <div class="m2flowNode"><i class="ph-bold ph-lock"></i><span>Ingresa contraseña</span></div>
+              <div class="m2flowArrowV"><i class="ph ph-arrow-down"></i></div>
+              <div class="m2flowDecision">
+                <div class="m2flowDecisionBox"><i class="ph ph-question"></i> ¿Credenciales válidas?</div>
+              </div>
+              <div class="m2flowBranches">
+                <div class="m2flowBranch">
+                  <div class="m2flowBranchLabel yes">Sí</div>
+                  <div class="m2flowNode m2flowSuccess"><i class="ph-bold ph-house"></i><span>Dashboard</span></div>
+                </div>
+                <div class="m2flowBranch">
+                  <div class="m2flowBranchLabel no">No</div>
+                  <div class="m2flowNode m2flowError"><i class="ph-bold ph-warning"></i><span>Error + recuperar contraseña</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m2flowTypes reveal">
+          <div class="m2flowType" style="--ft:#4a8ef0">
+            <div class="m2flowTypeIcon"><i class="ph-bold ph-path"></i></div>
+            <h4>Happy Path</h4>
+            <p>El flujo ideal. El usuario ingresa datos correctos, el sistema responde bien, la tarea se completa. Es el primero que se diseña pero no el más importante.</p>
+          </div>
+          <div class="m2flowType" style="--ft:#ff5050">
+            <div class="m2flowTypeIcon"><i class="ph-bold ph-warning"></i></div>
+            <h4>Error Path</h4>
+            <p>Qué pasa cuando algo falla: contraseña incorrecta, sin conexión, formulario incompleto. La calidad de una interfaz se mide por cómo trata al usuario cuando algo sale mal.</p>
+          </div>
+          <div class="m2flowType" style="--ft:#00e8c6">
+            <div class="m2flowTypeIcon"><i class="ph-bold ph-fast-forward"></i></div>
+            <h4>Edge Cases</h4>
+            <p>Casos límite: nombre muy largo, email con caracteres especiales, sesión expirada, timeout de red. Ignorar edge cases garantiza bugs en producción.</p>
+          </div>
+          <div class="m2flowType" style="--ft:#ffd166">
+            <div class="m2flowTypeIcon"><i class="ph-bold ph-arrows-merge"></i></div>
+            <h4>Flujo de retorno</h4>
+            <p>Qué hace el usuario después de completar o abandonar la tarea. ¿Ve un resumen? ¿Recibe confirmación? El flujo no termina con el botón "Confirmar".</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MINIJUEGO ───────────────────────────── -->
+    <section class="msec">
       <div class="msecWrap">
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-detective"></i> Detective de UX</span>
           <h2>¿Qué heurística viola?</h2>
-          <p class="msecSub">Cinco situaciones reales de interfaces que todos usaron alguna vez. Tu misión: identificar qué heurística de Nielsen se está violando.</p>
+          <p class="msecSub">Cinco situaciones reales de interfaces que todos usaron alguna vez. Tu misión: identificar qué heurística de Nielsen se está violando. Cada error viene con explicación.</p>
         </div>
         <div class="m1game reveal" id="gameZone">
           <div class="m1gameScore">
@@ -264,19 +749,19 @@
       </div>
     </section>
 
-    <!-- ── QUIZ ───────────────────────────── -->
-    <section class="msec">
+    <!-- ── QUIZ ────────────────────────────────── -->
+    <section class="msec alt">
       <div class="msecWrap">
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-exam"></i> Autoevaluación</span>
           <h2>Quiz de Módulo</h2>
-          <p class="msecSub">5 preguntas para verificar que los conceptos clave están incorporados. Sin presión — cada error viene con explicación.</p>
+          <p class="msecSub">8 preguntas para verificar que los conceptos clave están incorporados. Sin presión — cada error viene con explicación detallada.</p>
         </div>
         <div class="m1quiz reveal" id="quizZone">
           <div class="m1quizHeader">
             <div class="m1quizMeta">
               <span class="m1quizMetaLabel"><i class="ph ph-exam"></i> Autoevaluación · Módulo 2</span>
-              <span class="m1quizMetaNum" id="quizMeta">Pregunta 1 de 5</span>
+              <span class="m1quizMetaNum" id="quizMeta">Pregunta 1 de 8</span>
             </div>
             <div class="m1quizProgress">
               <div class="m1quizProgressBar" id="quizProgress"></div>
@@ -287,28 +772,40 @@
       </div>
     </section>
 
-    <!-- ── GLOSARIO FLIP ───────────────────── -->
-    <section class="msec alt" id="glosario">
+    <!-- ── GLOSARIO FLIP ──────────────────────── -->
+    <section class="msec" id="glosario">
       <div class="msecWrap">
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-book-open"></i> Vocabulario técnico</span>
           <h2>Glosario</h2>
-          <p class="msecSub">Tocá cada tarjeta para ver la definición. Estos términos son el lenguaje profesional del diseño de interfaces.</p>
+          <p class="msecSub">Tocá cada tarjeta para ver la definición. Estos son los términos que usás en una entrevista, una revisión de diseño o una auditoría profesional.</p>
         </div>
         <div class="m1flipGrid">
           <div class="m1flipCard reveal" style="--delay:0ms">
             <div class="m1flipInner">
               <div class="m1flipFront">
                 <i class="ph-bold ph-monitor" style="font-size:28px;color:var(--accent)"></i>
-                <strong>Interfaz</strong>
+                <strong>UI — User Interface</strong>
                 <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
               <div class="m1flipBack">
-                <p>Punto de contacto entre un sistema y sus usuarios. No es solo la pantalla — es el conjunto de elementos, reglas y comportamientos que median la interacción.</p>
+                <p>Capa visual de un sistema digital: colores, tipografía, íconos, layout y animaciones. La UI es lo que el usuario ve, no lo que siente. Puede ser hermosa y aún así tener una UX terrible.</p>
               </div>
             </div>
           </div>
           <div class="m1flipCard reveal" style="--delay:60ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-heart" style="font-size:28px;color:var(--accent)"></i>
+                <strong>UX — User Experience</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Todo lo que el usuario siente antes, durante y después de usar un sistema. Va más allá de la pantalla: incluye emociones, expectativas, contexto y cada punto de contacto con el producto.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:120ms">
             <div class="m1flipInner">
               <div class="m1flipFront">
                 <i class="ph-bold ph-hand-pointing" style="font-size:28px;color:var(--accent)"></i>
@@ -316,11 +813,11 @@
                 <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
               <div class="m1flipBack">
-                <p>Propiedad de un objeto que sugiere cómo puede ser usado. Un botón elevado sugiere que se puede presionar. Acuñado por Don Norman en "The Design of Everyday Things".</p>
+                <p>Posibilidad real de acción que ofrece un objeto. Un botón SE PUEDE presionar — ese es su affordance. Existe aunque no lo veas. James Gibson (1979), retomado por Don Norman en diseño de interfaces.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:120ms">
+          <div class="m1flipCard reveal" style="--delay:180ms">
             <div class="m1flipInner">
               <div class="m1flipFront">
                 <i class="ph-bold ph-sign-in" style="font-size:28px;color:var(--accent)"></i>
@@ -328,11 +825,11 @@
                 <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
               <div class="m1flipBack">
-                <p>Señal perceptible que comunica al usuario qué acción es posible. Diferencia de affordance: el affordance existe aunque no se vea; el signifier es explícito y visible.</p>
+                <p>Señal perceptible que comunica qué acción es posible. La sombra de un botón dice "soy presionable" — eso es un signifier. Diferencia clave: el affordance existe; el signifier se ve.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:180ms">
+          <div class="m1flipCard reveal" style="--delay:240ms">
             <div class="m1flipInner">
               <div class="m1flipFront">
                 <i class="ph-bold ph-gauge" style="font-size:28px;color:var(--accent)"></i>
@@ -340,11 +837,11 @@
                 <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
               <div class="m1flipBack">
-                <p>Medida en que un sistema puede ser usado por usuarios específicos para lograr objetivos específicos con efectividad, eficiencia y satisfacción. ISO 9241-11.</p>
+                <p>Medida en que usuarios específicos alcanzan objetivos específicos con efectividad, eficiencia y satisfacción en un contexto de uso particular. Definición formal: ISO 9241-11. No es sinónimo de UX.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:240ms">
+          <div class="m1flipCard reveal" style="--delay:300ms">
             <div class="m1flipInner">
               <div class="m1flipFront">
                 <i class="ph-bold ph-list-magnifying-glass" style="font-size:28px;color:var(--accent)"></i>
@@ -352,11 +849,11 @@
                 <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
               <div class="m1flipBack">
-                <p>Regla general o principio para la evaluación de usabilidad. Las 10 heurísticas de Nielsen son el estándar de la industria para auditar interfaces sin necesidad de test con usuarios.</p>
+                <p>Regla general usada para evaluar usabilidad sin necesitar test con usuarios. Las 10 heurísticas de Nielsen (1994) son el estándar de la industria para auditorías de interfaz rápidas y efectivas.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:300ms">
+          <div class="m1flipCard reveal" style="--delay:360ms">
             <div class="m1flipInner">
               <div class="m1flipFront">
                 <i class="ph-bold ph-path" style="font-size:28px;color:var(--accent)"></i>
@@ -364,11 +861,11 @@
                 <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
               <div class="m1flipBack">
-                <p>Secuencia de pasos que un usuario sigue para completar una tarea dentro de un sistema. Visualizar el flujo permite detectar fricciones, pasos innecesarios y puntos de abandono.</p>
+                <p>Secuencia de pasos que un usuario sigue para completar una tarea. El flujo muestra el happy path y los edge cases. Mapear flujos antes de diseñar pantallas es una práctica fundamental en UX.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:360ms">
+          <div class="m1flipCard reveal" style="--delay:420ms">
             <div class="m1flipInner">
               <div class="m1flipFront">
                 <i class="ph-bold ph-wheelchair" style="font-size:28px;color:var(--accent)"></i>
@@ -376,11 +873,11 @@
                 <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
               <div class="m1flipBack">
-                <p>Grado en que un sistema puede ser usado por personas con diversas capacidades físicas, cognitivas o sensoriales. WCAG define los estándares internacionales de accesibilidad web.</p>
+                <p>Grado en que un sistema puede ser usado por personas con diversas capacidades. WCAG 2.1 define los estándares internacionales con tres niveles: A (mínimo), AA (estándar legal) y AAA (ideal).</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:420ms">
+          <div class="m1flipCard reveal" style="--delay:480ms">
             <div class="m1flipInner">
               <div class="m1flipFront">
                 <i class="ph-bold ph-equals" style="font-size:28px;color:var(--accent)"></i>
@@ -388,7 +885,43 @@
                 <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
               <div class="m1flipBack">
-                <p>Principio de diseño que establece que los mismos elementos deben comportarse y verse igual en toda la interfaz. Reduce la carga cognitiva del usuario y genera confianza.</p>
+                <p>Los mismos elementos se ven y se comportan igual en toda la interfaz. La consistencia reduce la carga cognitiva del usuario. Un design system es la herramienta que garantiza consistencia a escala.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:540ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-file-dashed" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Wireframe</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Esquema estructural de una interfaz sin color ni estilo final. Muestra jerarquía, distribución y flujo sin el ruido visual del diseño terminado. Paso previo obligado antes del diseño de alta fidelidad.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:600ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-layout" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Design System</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Colección de componentes reutilizables y reglas que guían el diseño de un producto. Incluye tokens (colores, tipografía, espaciado), componentes y patrones. Ejemplos: Material Design, Human Interface Guidelines.</p>
+              </div>
+            </div>
+          </div>
+          <div class="m1flipCard reveal" style="--delay:660ms">
+            <div class="m1flipInner">
+              <div class="m1flipFront">
+                <i class="ph-bold ph-brain" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Modelo mental</strong>
+                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="m1flipBack">
+                <p>Imagen interna que un usuario construye de cómo funciona un sistema. Si la interfaz coincide con ese modelo, la experiencia fluye naturalmente. Si no coincide, hay fricción, errores y abandono.</p>
               </div>
             </div>
           </div>
@@ -396,22 +929,21 @@
       </div>
     </section>
 
-    <!-- ── ACTIVIDADES ─────────────────────── -->
-    <section class="msec" id="actividades">
+    <!-- ── ACTIVIDADES ─────────────────────────── -->
+    <section class="msec alt" id="actividades">
       <div class="msecWrap">
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-detective"></i> Tu turno</span>
           <h2>Actividad — Auditoría de Interfaz</h2>
-          <p class="msecSub">Esta actividad vale <strong>10 puntos</strong>. Vas a aplicar las heurísticas de Nielsen como herramienta real de evaluación sobre una interfaz que ya conocés.</p>
+          <p class="msecSub">Esta actividad vale <strong>10 puntos</strong>. Vas a aplicar las heurísticas de Nielsen como herramienta real de evaluación sobre una app que ya conocés.</p>
         </div>
 
-        <!-- Marco teórico -->
         <div class="m1actTheory reveal">
           <div class="m1actTheoryText">
             <div class="m1actTheoryEye"><i class="ph-bold ph-book-bookmark"></i> Antes de arrancar</div>
             <h3>¿Cómo se hace una auditoría de UX?</h3>
             <p>Una auditoría de interfaz no es opinar sobre si algo "se ve bien". Es <strong>evaluar sistemáticamente</strong> con criterios técnicos. Las heurísticas de Nielsen son tu lente: cada pantalla la mirás preguntando "¿qué heurística respeta? ¿cuál viola?".</p>
-            <p>La clave es ser <strong>específico</strong>. "La app es confusa" no es una auditoría. "El botón de confirmar no da feedback visual tras el click, violando H1 — Visibilidad del estado" sí lo es. La diferencia es la diferencia entre intuición y criterio profesional.</p>
+            <p>La clave es ser <strong>específico</strong>. "La app es confusa" no es una auditoría. "El botón de confirmar no da feedback visual tras el click, violando H1 — Visibilidad del estado" sí lo es. La diferencia está entre intuición y criterio profesional.</p>
             <div class="m1actTheoryTips">
               <div class="m1actTheoryTip">
                 <i class="ph-bold ph-check-circle" style="color:#4a8ef0"></i>
@@ -419,11 +951,15 @@
               </div>
               <div class="m1actTheoryTip">
                 <i class="ph-bold ph-check-circle" style="color:#4a8ef0"></i>
-                <span>Por cada violación: nombrá la heurística, describí el problema y proponé la solución</span>
+                <span>Por cada violación: nombrá la heurística (H1-H10), describí el problema y proponé la solución</span>
               </div>
               <div class="m1actTheoryTip">
                 <i class="ph-bold ph-check-circle" style="color:#4a8ef0"></i>
                 <span>La propuesta de mejora puede ser un sketch a mano, no necesitás Figma</span>
+              </div>
+              <div class="m1actTheoryTip">
+                <i class="ph-bold ph-check-circle" style="color:#4a8ef0"></i>
+                <span>Revisá también accesibilidad básica: ¿hay contraste suficiente? ¿Los botones son grandes enough?</span>
               </div>
             </div>
           </div>
@@ -441,22 +977,22 @@
                 <div class="m2auditRow m2auditGood">
                   <div class="m2auditRowIcon"><i class="ph-bold ph-check-circle"></i></div>
                   <div class="m2auditRowContent">
-                    <div class="m2auditRowLabel">Heurística respetada · H1</div>
-                    <div class="m2auditRowText">La barra de progreso muestra el avance del envío en tiempo real</div>
+                    <div class="m2auditRowLabel">Heurística respetada · H1 — Visibilidad del estado</div>
+                    <div class="m2auditRowText">La barra de progreso muestra el avance del envío en tiempo real con porcentaje exacto</div>
                   </div>
                 </div>
                 <div class="m2auditRow m2auditBad">
                   <div class="m2auditRowIcon"><i class="ph-bold ph-x-circle"></i></div>
                   <div class="m2auditRowContent">
-                    <div class="m2auditRowLabel">Heurística violada · H5</div>
-                    <div class="m2auditRowText">No hay límite de tamaño visible antes de intentar enviar el archivo</div>
+                    <div class="m2auditRowLabel">Heurística violada · H5 — Prevención de errores</div>
+                    <div class="m2auditRowText">No hay límite de tamaño visible antes de elegir el archivo. El error aparece después de intentar enviarlo</div>
                   </div>
                 </div>
                 <div class="m2auditRow m2auditFix">
                   <div class="m2auditRowIcon"><i class="ph-bold ph-wrench"></i></div>
                   <div class="m2auditRowContent">
                     <div class="m2auditRowLabel">Propuesta de mejora</div>
-                    <div class="m2auditRowText">Mostrar "Máximo 2GB" en el selector de archivos, antes de que el usuario elija</div>
+                    <div class="m2auditRowText">Mostrar "Máximo 2GB" en el selector de archivos antes de que el usuario elija. Deshabilitar archivos más pesados con tooltip explicativo</div>
                   </div>
                 </div>
               </div>
@@ -464,7 +1000,6 @@
           </div>
         </div>
 
-        <!-- Misión -->
         <div class="m1missionBox reveal">
           <div class="m1missionHeader">
             <div class="m1missionBadge"><i class="ph-bold ph-detective"></i> Misión 02</div>
@@ -475,66 +1010,80 @@
               <div class="m1missionStepIcon" style="--sc:#4a8ef0"><i class="ph-bold ph-magnifying-glass"></i></div>
               <div class="m1missionStepBody">
                 <strong>Paso 1 — Elegí tu app</strong>
-                <p>Seleccioná una aplicación o sitio web que usés regularmente. Puede ser una app móvil, un servicio web, una plataforma educativa o un sistema institucional. Tiene que ser algo que conozcas bien.</p>
+                <p>Seleccioná una aplicación o sitio web que usés regularmente. Puede ser una app móvil, un servicio web, una plataforma educativa o un sistema institucional. Tiene que ser algo que conozcás bien para evaluarlo con profundidad.</p>
               </div>
             </div>
             <div class="m1missionStep">
               <div class="m1missionStepIcon" style="--sc:#00e8c6"><i class="ph-bold ph-camera"></i></div>
               <div class="m1missionStepBody">
                 <strong>Paso 2 — Capturá 3 pantallas clave</strong>
-                <p>Elegí 3 pantallas donde <strong>pasan cosas</strong>: una pantalla de login o registro, un formulario o flujo de pago, una pantalla de error o confirmación. Captura de pantalla o foto está perfecto.</p>
+                <p>Elegí 3 pantallas donde <strong>pasan cosas</strong>: login o registro, formulario o flujo de pago, pantalla de error o confirmación. Screenshot o foto está bien.</p>
               </div>
             </div>
             <div class="m1missionStep">
               <div class="m1missionStepIcon" style="--sc:#9b6fff"><i class="ph-bold ph-list-checks"></i></div>
               <div class="m1missionStepBody">
                 <strong>Paso 3 — Aplicá las heurísticas</strong>
-                <p>Por cada pantalla: identificá al menos <strong>2 heurísticas que se respetan</strong> y <strong>1 que se viola</strong>. Nombrá la heurística, describí el problema con precisión y explicá por qué es un problema.</p>
+                <p>Por cada pantalla: identificá al menos <strong>2 heurísticas que se respetan</strong> y <strong>1 que se viola</strong>. Nombrá la heurística con su número (H1-H10) y describí el problema con precisión.</p>
               </div>
             </div>
             <div class="m1missionStep">
-              <div class="m1missionStepIcon" style="--sc:#ffd166"><i class="ph-bold ph-pencil-ruler"></i></div>
+              <div class="m1missionStepIcon" style="--sc:#ffd166"><i class="ph-bold ph-wheelchair"></i></div>
               <div class="m1missionStepBody">
-                <strong>Paso 4 — Proponé mejoras</strong>
-                <p>Para cada violación encontrada, proponé una mejora concreta. Puede ser un sketch a mano, una descripción detallada del cambio o un mockup en Figma/cualquier herramienta. Lo importante es la especificidad.</p>
+                <strong>Paso 4 — Revisá accesibilidad básica</strong>
+                <p>Con Lighthouse o solo mirando: ¿hay suficiente contraste? ¿Los botones son lo suficientemente grandes para tocar? ¿Los campos del formulario tienen labels visibles? Sumá al menos una observación de accesibilidad.</p>
               </div>
             </div>
             <div class="m1missionStep">
-              <div class="m1missionStepIcon" style="--sc:#ff7d54"><i class="ph-bold ph-file-text"></i></div>
+              <div class="m1missionStepIcon" style="--sc:#ff7d54"><i class="ph-bold ph-pencil-ruler"></i></div>
               <div class="m1missionStepBody">
-                <strong>Paso 5 — Armá tu Ficha de Auditoría</strong>
-                <p>Reuní todo en un documento: capturas, análisis heurístico (respetadas + violadas), propuestas de mejora. Formato libre: PDF, Notion, slides o Figma. Subilo al Campus Virtual antes de la próxima clase.</p>
+                <strong>Paso 5 — Proponé mejoras</strong>
+                <p>Para cada violación encontrada, proponé una mejora concreta y específica. "Agrandar el botón" no alcanza. "Aumentar el botón de acción primaria a 44×44px mínimo y agregar estado hover con cambio de color" sí.</p>
+              </div>
+            </div>
+            <div class="m1missionStep">
+              <div class="m1missionStepIcon" style="--sc:#4a8ef0"><i class="ph-bold ph-file-text"></i></div>
+              <div class="m1missionStepBody">
+                <strong>Paso 6 — Armá tu Ficha de Auditoría</strong>
+                <p>Reuní todo en un documento: app elegida, capturas, análisis heurístico (respetadas + violadas), observación de accesibilidad y propuestas de mejora. Formato libre: PDF, Notion, slides o Figma. Subilo al Campus antes de la fecha de entrega.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Rubric -->
         <div class="m1rubric reveal">
           <div class="m1rubricTitle"><i class="ph ph-check-square"></i> Criterios de evaluación</div>
           <div class="m1rubricItems">
             <div class="m1rubricItem">
-              <div class="m1rubricPct">40</div>
+              <div class="m1rubricPct">35</div>
               <div class="m1rubricInfo">
                 <strong>Capturas + análisis heurístico</strong>
-                <span>3 pantallas con identificación correcta de heurísticas respetadas y violadas</span>
-                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:40%"></div></div>
+                <span>3 pantallas con identificación correcta de heurísticas respetadas y violadas (H1-H10 nombradas)</span>
+                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:35%"></div></div>
               </div>
             </div>
             <div class="m1rubricItem">
-              <div class="m1rubricPct">30</div>
+              <div class="m1rubricPct">25</div>
               <div class="m1rubricInfo">
-                <strong>Precisión en la identificación</strong>
-                <span>Las heurísticas están nombradas correctamente y los problemas están bien descritos</span>
-                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:30%"></div></div>
+                <strong>Precisión y fundamentación</strong>
+                <span>Las heurísticas están nombradas correctamente y los problemas están descritos con precisión técnica</span>
+                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:25%"></div></div>
               </div>
             </div>
             <div class="m1rubricItem">
-              <div class="m1rubricPct">30</div>
+              <div class="m1rubricPct">25</div>
               <div class="m1rubricInfo">
                 <strong>Propuestas de mejora</strong>
                 <span>Mejoras específicas, viables y fundamentadas en los principios del módulo</span>
-                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:30%"></div></div>
+                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:25%"></div></div>
+              </div>
+            </div>
+            <div class="m1rubricItem">
+              <div class="m1rubricPct">15</div>
+              <div class="m1rubricInfo">
+                <strong>Observación de accesibilidad</strong>
+                <span>Al menos una observación sobre contraste, tamaño de targets o labels de formulario</span>
+                <div class="m1rubricBar"><div class="m1rubricFill" style="--pct:15%"></div></div>
               </div>
             </div>
           </div>
@@ -542,7 +1091,7 @@
       </div>
     </section>
 
-    <!-- ── FOOTER NAV ─────────────────────── -->
+    <!-- ── FOOTER NAV ──────────────────────────── -->
     <footer class="mfoot">
       <a class="mfootHome" href="../index.html">
         <i class="ph ph-house-simple"></i> Campus
@@ -551,7 +1100,7 @@
         <a class="mfootBtn" href="modulo1.html">
           <i class="ph ph-arrow-left"></i> Anterior
         </a>
-        <a class="mfootBtn" id="btnNext" href="modulo.html?m=3">
+        <a class="mfootBtn" href="modulo.html?m=3">
           Siguiente <i class="ph ph-arrow-right"></i>
         </a>
       </div>
