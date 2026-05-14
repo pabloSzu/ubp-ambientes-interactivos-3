@@ -66,21 +66,43 @@ Materia_Web/
 ├── index.html
 ├── evaluacion.html
 ├── modulos/
-│   ├── modulo1.html
-│   ├── modulo.html?m=2
-│   ├── modulo3.html
-│   ├── modulo.html?m=4
-│   ├── modulo.html?m=5
-│   ├── modulo.html?m=6
-│   └── modulo.html?m=7
+│   ├── modulo1.html        ← pagina dedicada (HECHO)
+│   ├── modulo2.html        ← pagina dedicada (HECHO)
+│   ├── modulo3.html        ← pagina dedicada (HECHO)
+│   ├── modulo4.html        ← pagina dedicada (HECHO)
+│   ├── modulo5.html        ← pagina dedicada (PENDIENTE)
+│   ├── modulo6.html        ← pagina dedicada (PENDIENTE)
+│   ├── modulo7.html        ← pagina dedicada (PENDIENTE)
+│   └── modulo.html         ← plantilla generica (no se usa en produccion)
 └── assets/
     ├── css/
+    │   ├── modulo.css      ← CSS base compartido (NO modificar)
+    │   ├── modulo2.css     ← overrides y estilos propios del modulo 2
+    │   ├── modulo3.css     ← overrides y estilos propios del modulo 3
+    │   └── modulo4.css     ← overrides y estilos propios del modulo 4
     ├── js/
-    ├── m1/
+    │   ├── campus.js       ← datos de todos los modulos + deteccion de acento por URL
+    │   ├── modulo2.js      ← logica interactiva del modulo 2
+    │   ├── modulo3.js      ← logica interactiva del modulo 3
+    │   └── modulo4.js      ← logica interactiva del modulo 4
     └── recursos/
 ```
 
-`modulo.html?m=2`, `modulo.html?m=4`, etc. usan una plantilla comun alimentada por datos en JavaScript. Los modulos mas importantes o mas visuales pueden tener pagina propia, como el Modulo 1 y el Modulo 3.
+Cada modulo tiene su propia pagina HTML, su CSS de overrides y su JS de logica interactiva. El patron es consistente entre modulos: HTML + CSS propio + JS propio, todos enlazando `modulo.css` como base compartida. El acento de color de cada modulo se aplica via IIFE en el JS del modulo para sobreescribir la inyeccion de `campus.js`.
+
+## Acento de color por modulo
+
+Cada modulo tiene su propio color de acento definido en `campus.js` y sobreescrito via IIFE en su JS propio:
+
+| Modulo | Color       | Hex       |
+|--------|-------------|-----------|
+| 1      | Dorado      | `#ffd166` |
+| 2      | Violeta     | `#a855f7` |
+| 3      | Teal        | `#00e8c6` |
+| 4      | Violeta electrico | `#b040ff` |
+| 5      | Naranja     | `#ff7d54` |
+| 6      | (por definir) |         |
+| 7      | (por definir) |         |
 
 ## Modulos
 
