@@ -631,26 +631,46 @@
 .m5codeWhenBox i { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
 
 /* ─── Lab ────────────────────────────────── */
-.m5labWrap {
-  display: grid; grid-template-columns: 300px 1fr;
-  gap: 28px; margin-top: 32px; align-items: start;
-}
-.m5labSteps { display: flex; flex-direction: column; gap: 16px; }
+.m5lab { margin-top: 32px; display: flex; flex-direction: column; gap: 24px; }
+.m5labInstructions { display: flex; gap: 16px; flex-wrap: wrap; }
 .m5labStep {
-  display: flex; gap: 14px; align-items: flex-start;
-  padding: 16px; border-radius: var(--r);
-  background: var(--surface); border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
+  display: flex; align-items: flex-start; gap: 14px; flex: 1;
+  min-width: 200px; padding: 18px; border-radius: var(--r);
+  border: 1px solid var(--border); background: var(--surface);
+  backdrop-filter: blur(10px);
 }
-.m5labStepDot {
+.m5labStepNum {
   width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
-  background: color-mix(in srgb, var(--dc) 12%, transparent);
-  border: 2px solid color-mix(in srgb, var(--dc) 45%, transparent);
-  color: var(--dc); display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 900;
+  border: 1px solid var(--accent-border); background: var(--accent-sub);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; color: var(--accent);
 }
-.m5labStepText strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 5px; }
-.m5labEmbed { border-radius: var(--r); overflow: hidden; }
+.m5labStepText strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.m5labStepText p { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m5labEmbed {
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--border); background: #1e1e1e;
+}
+.m5labHint {
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--border);
+}
+.m5labHintHeader {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 20px; background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--border);
+  font-size: 14px; font-weight: 700; color: var(--text);
+}
+.m5labHintHeader .m5btn { margin-left: auto; }
+.m5labHint pre { margin: 0; border-radius: 0; }
+.m5btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 700;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); cursor: pointer; transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+.m5btn:hover { background: var(--surface-hover); border-color: var(--border-hover); transform: translateY(-1px); }
+.m5btnSm { padding: 6px 12px; font-size: 12px; }
 
 /* ─── Game: Deadlock Doctor ──────────────── */
 .m5gameWrap { margin-top: 32px; }
@@ -915,41 +935,6 @@
   letter-spacing: 0.05em;
 }
 
-/* ─── Lab fallback link ──────────────────── */
-.m5labFallback {
-  display: flex; align-items: center; gap: 6px;
-  margin-top: 8px; font-size: 12px; font-weight: 600;
-  color: var(--sub); text-decoration: none;
-  justify-content: center; padding: 6px;
-  border-radius: 8px; border: 1px dashed var(--border);
-  transition: color 0.2s, border-color 0.2s;
-}
-.m5labFallback:hover { color: var(--accent); border-color: var(--accent-border); }
-
-/* ─── Lab code block ─────────────────────── */
-.m5labWrap {
-  margin-top: 32px;
-}
-.m5labMain {
-  display: grid; grid-template-columns: 380px 1fr;
-  gap: 20px; align-items: stretch;
-}
-.m5labLeft {
-  display: flex; flex-direction: column; gap: 14px;
-}
-.m5labCodeBlock {
-  border-radius: var(--r); overflow: hidden; border: 1px solid var(--border);
-  background: var(--surface); backdrop-filter: blur(12px);
-}
-.m5labCodeHeader {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 18px; background: rgba(255,255,255,0.04);
-  border-bottom: 1px solid var(--border);
-  font-size: 13px; color: var(--sub); font-weight: 600;
-  gap: 12px; flex-wrap: wrap;
-}
-.m5labCodeHeader span { display: flex; align-items: center; gap: 7px; }
-.m5labCodeBlock pre { margin: 0 !important; border-radius: 0 !important; }
 
 /* ─── Vida real section ──────────────────── */
 .m5realGrid {
@@ -1331,9 +1316,8 @@
   .m5philProblem       { grid-template-columns: 1fr; }
   .m5philProblemVisual { display: none; }
   .m5coffmanGrid       { grid-template-columns: repeat(2, 1fr); }
-  .m5labMain           { grid-template-columns: 1fr; }
-  .m5labLeft           { order: 2; }
-  .m5labEmbed          { order: 1; min-height: 400px; }
+  .m5labInstructions   { flex-direction: column; }
+  .m5labEmbed          { min-height: 400px; }
   .m5flipGrid          { grid-template-columns: repeat(2, 1fr); }
   .m5objGrid           { grid-template-columns: 1fr; }
   .m5realGrid          { grid-template-columns: 1fr; }

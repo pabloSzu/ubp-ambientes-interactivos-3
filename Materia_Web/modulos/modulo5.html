@@ -769,50 +769,61 @@ public class DeadlockFix {
     <section class="msec" id="laboratorio">
       <div class="msecWrap">
         <div class="msecHead reveal">
-          <span class="msecEye"><i class="ph ph-flask"></i> Laboratorio Java</span>
-          <h2>Deadlock en vivo — ejecutalo</h2>
-          <p class="msecSub">Este programa <strong>reproduce un deadlock clásico</strong>. T1 toma LOCK_A y espera LOCK_B. T2 toma LOCK_B y espera LOCK_A. Ninguno puede avanzar. Vas a ver los prints iniciales y luego el programa se congela.</p>
+          <span class="msecEye"><i class="ph ph-flask"></i> Manos a la obra</span>
+          <h2>Laboratorio Interactivo</h2>
+          <p class="msecSub">Ejecutá el deadlock clásico de dos hilos en el navegador y observá cómo el programa se congela. Después, arreglalo con un simple cambio de orden.</p>
         </div>
 
-        <div class="m5labWrap reveal">
-          <div class="m5labMain">
-            <!-- Left: steps + code to copy -->
-            <div class="m5labLeft">
-              <div class="m5labStep">
-                <div class="m5labStepDot" style="--dc:#ff7d54">1</div>
-                <div class="m5labStepText">
-                  <strong>Copiá el código</strong>
-                  <p>Usá el botón "Copiar código" y pegalo en el editor de Java de la derecha con Ctrl+V.</p>
-                </div>
+        <div class="m5lab reveal">
+          <div class="m5labInstructions">
+            <div class="m5labStep">
+              <div class="m5labStepNum">1</div>
+              <div class="m5labStepText">
+                <strong>Copiá el código</strong>
+                <p>Usá el botón de copiar para obtener el DeadlockDemo — es el código de la Actividad.</p>
               </div>
-              <div class="m5labStep">
-                <div class="m5labStepDot" style="--dc:#4a8ef0">2</div>
-                <div class="m5labStepText">
-                  <strong>Ejecutá y observá</strong>
-                  <p>Presioná Run. Vas a ver los prints de "tomó LOCK_X". Luego se congela — eso <em>es</em> el deadlock.</p>
-                </div>
+            </div>
+            <div class="m5labStep">
+              <div class="m5labStepNum">2</div>
+              <div class="m5labStepText">
+                <strong>Pegalo en el editor</strong>
+                <p>Reemplazá el contenido del editor de OneCompiler con el código copiado.</p>
               </div>
-              <div class="m5labStep">
-                <div class="m5labStepDot" style="--dc:#00e8c6">3</div>
-                <div class="m5labStepText">
-                  <strong>Desafío: arreglalo</strong>
-                  <p>Modificá T2 para que pida LOCK_A primero (igual que T1). El deadlock desaparece. ¿Por qué?</p>
-                </div>
+            </div>
+            <div class="m5labStep">
+              <div class="m5labStepNum">3</div>
+              <div class="m5labStepText">
+                <strong>Ejecutá y observá</strong>
+                <p>Presioná Run. Vas a ver los prints iniciales y luego el programa se congela. Eso <em>es</em> el deadlock. Desafío: modificá T2 para que pida LOCK_A primero — el deadlock desaparece.</p>
               </div>
+            </div>
+          </div>
 
-              <div class="m5labCodeBlock">
-                <div class="m5labCodeHeader">
-                  <span><i class="ph ph-file-code"></i> DeadlockDemo.java</span>
-                  <button class="m5simBtn m5simBtnAccent" onclick="copyLabCode()" style="padding:5px 12px;font-size:12px">
-                    <i class="ph ph-copy"></i> Copiar
-                  </button>
-                </div>
-                <pre id="labCodePre"><code class="language-java">public class DeadlockDemo {
+          <div class="m5labEmbed">
+            <iframe
+              src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
+              width="100%"
+              height="480"
+              frameborder="0"
+              allowfullscreen
+              title="OneCompiler Java IDE"
+            ></iframe>
+          </div>
+
+          <div class="m5labHint">
+            <div class="m5labHintHeader">
+              <i class="ph-bold ph-code-block"></i>
+              Código para copiar — DeadlockDemo.java (Actividad)
+              <button class="m5btn m5btnSm" onclick="copyLabCode()">
+                <i class="ph-bold ph-copy"></i> Copiar
+              </button>
+            </div>
+            <pre class="language-java" id="labCodePre"><code class="language-java">public class DeadlockDemo {
     static final Object LOCK_A = new Object();
     static final Object LOCK_B = new Object();
 
     public static void main(String[] args) throws Exception {
-        Thread t1 = new Thread(() -> {
+        Thread t1 = new Thread(() -&gt; {
             synchronized (LOCK_A) {
                 System.out.println("T1 tomó LOCK_A — espera LOCK_B...");
                 try { Thread.sleep(100); } catch (Exception e) {}
@@ -822,8 +833,8 @@ public class DeadlockFix {
             }
         });
 
-        Thread t2 = new Thread(() -> {
-            synchronized (LOCK_B) { // ← orden INVERTIDO
+        Thread t2 = new Thread(() -&gt; {
+            synchronized (LOCK_B) { // ← orden INVERTIDO — causa deadlock
                 System.out.println("T2 tomó LOCK_B — espera LOCK_A...");
                 try { Thread.sleep(100); } catch (Exception e) {}
                 synchronized (LOCK_A) {
@@ -835,23 +846,9 @@ public class DeadlockFix {
         t1.start();
         t2.start();
         Thread.sleep(3000);
-        System.out.println("DEADLOCK: ninguno terminó");
+        System.out.println("DEADLOCK: ninguno terminó.");
     }
 }</code></pre>
-              </div>
-            </div>
-
-            <!-- Right: Java editor -->
-            <div class="m5labEmbed">
-              <iframe
-                src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
-                width="100%"
-                height="520"
-                frameborder="0"
-                allowfullscreen
-                title="Editor Java — Deadlock Demo"
-              ></iframe>
-            </div>
           </div>
         </div>
       </div>
