@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PAI3 · Módulo 6 · Paralelismo</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../assets/css/modulo.css" />
+    <link rel="stylesheet" href="../assets/css/modulo6.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" />
+    <style>
+      :root {
+        --accent:        #38bdf8;
+        --accent-sub:    rgba(56,189,248,0.13);
+        --accent-border: rgba(56,189,248,0.38);
+        --accent-mid:    rgba(56,189,248,0.55);
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="readProgress" id="readProgress"></div>
+    <div class="mglow" id="mglow"></div>
+
+    <!-- ── HEADER ──────────────────────────── -->
+    <header class="mhdr">
+      <a class="mhdrBack" href="../index.html">
+        <i class="ph ph-arrow-left"></i> Campus
+      </a>
+      <span class="mhdrBrand">PAI3</span>
+      <span class="mhdrLabel">Módulo 6 · Paralelismo</span>
+      <nav class="mhdrSections">
+        <a href="#conceptos">Conceptos</a>
+        <a href="#simulador">Amdahl</a>
+        <a href="#codigo">Código</a>
+        <a href="#laboratorio">Lab</a>
+        <a href="#actividades">Actividad</a>
+      </nav>
+    </header>
+
+    <!-- ── HERO ─────────────────────────────── -->
+    <section class="m6hero">
+      <div class="m6heroBg">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&q=80&fit=crop" alt="" aria-hidden="true" class="m6heroImg" />
+        <div class="m6heroOverlay"></div>
+      </div>
+
+      <!-- Animated cores -->
+      <div class="m6heroCore" style="--cd:1.8s;--dd:0s;  --cx:8%;  --cy:15%"></div>
+      <div class="m6heroCore" style="--cd:2.2s;--dd:0.3s;--cx:18%; --cy:22%"></div>
+      <div class="m6heroCore" style="--cd:1.6s;--dd:0.7s;--cx:82%; --cy:18%"></div>
+      <div class="m6heroCore" style="--cd:2.4s;--dd:0.2s;--cx:91%; --cy:30%"></div>
+      <div class="m6heroCore" style="--cd:2.0s;--dd:1.0s;--cx:75%; --cy:75%"></div>
+      <div class="m6heroCore" style="--cd:1.9s;--dd:0.5s;--cx:12%; --cy:70%"></div>
+      <!-- Data flow lines (decorative) -->
+      <div class="m6heroLine" style="--lx:20%;--ly:28%;--lr:15deg;--ld:0.4s"></div>
+      <div class="m6heroLine" style="--lx:60%;--ly:18%;--lr:-10deg;--ld:0.9s"></div>
+      <div class="m6heroLine" style="--lx:55%;--ly:72%;--lr:8deg;--ld:1.3s"></div>
+
+      <div class="m6heroContent">
+        <div class="m6heroEyebrow"><i class="ph-bold ph-cpu"></i> Módulo 6</div>
+        <h1 class="m6heroTitle">Cuando un núcleo<br><span class="m6heroAccent">no alcanza</span></h1>
+        <p class="m6heroSub">Paralelismo real en sistemas multi-core: taxonomía de Flynn, Ley de Amdahl y Fork/Join en Java.</p>
+
+        <div class="m6heroStats">
+          <div class="m6heroStat">
+            <span class="m6heroStatNum" id="counter1">0</span>
+            <span class="m6heroStatUnit">cores</span>
+            <span class="m6heroStatLabel">en un servidor AWS moderno</span>
+          </div>
+          <div class="m6heroStat">
+            <span class="m6heroStatNum">×</span><span class="m6heroStatNum" id="counter2">0</span>
+            <span class="m6heroStatLabel">speedup máximo con P=90% e ∞ cores</span>
+          </div>
+          <div class="m6heroStat">
+            <span class="m6heroStatNum" id="counter3">0</span>
+            <span class="m6heroStatLabel">paradigmas de la taxonomía de Flynn</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PULL QUOTE ────────────────────────── -->
+    <section class="msec" id="quote">
+      <div class="msecWrap">
+        <div class="m6pullQuote reveal">
+          <i class="ph-bold ph-quotes m6pullIcon"></i>
+          <blockquote>La diferencia entre rápido y muy rápido no es trabajar más duro&nbsp;—&nbsp;es trabajar <em>en paralelo</em>.</blockquote>
+          <cite>Principio del cómputo paralelo moderno</cite>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── OBJETIVOS ─────────────────────────── -->
+    <section class="msec alt" id="microobjetivos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-target"></i> Objetivos del módulo</span>
+          <h2>¿Qué vas a aprender?</h2>
+          <p class="msecSub">Al terminar este módulo vas a poder clasificar arquitecturas paralelas, predecir el speedup máximo antes de escribir una línea de código, e implementar paralelismo en Java usando Fork/Join y Parallel Streams.</p>
+        </div>
+
+        <div class="m6objGrid reveal">
+          <div class="m6objCard">
+            <div class="m6objIcon" style="--oc:#38bdf8"><i class="ph-bold ph-squares-four"></i></div>
+            <strong>Clasificar arquitecturas</strong>
+            <p>Aplicar la taxonomía de Flynn (SISD, SIMD, MIMD) para identificar el modelo de paralelismo de cualquier sistema — CPU, GPU o cluster.</p>
+          </div>
+          <div class="m6objCard">
+            <div class="m6objIcon" style="--oc:#a78bfa"><i class="ph-bold ph-chart-line-up"></i></div>
+            <strong>Aplicar la Ley de Amdahl</strong>
+            <p>Calcular el speedup máximo teórico antes de implementar, identificar el cuello de botella serial y saber cuándo agregar cores ya no ayuda.</p>
+          </div>
+          <div class="m6objCard">
+            <div class="m6objIcon" style="--oc:#34d399"><i class="ph-bold ph-git-branch"></i></div>
+            <strong>Implementar Fork/Join en Java</strong>
+            <p>Escribir tareas divide-y-vencerás con RecursiveTask, ejecutarlas en ForkJoinPool y aprovechar el work-stealing automático de la JVM.</p>
+          </div>
+          <div class="m6objCard">
+            <div class="m6objIcon" style="--oc:#fb923c"><i class="ph-bold ph-scales"></i></div>
+            <strong>Decidir cuándo paralelizar</strong>
+            <p>Reconocer los casos donde el overhead de sincronización supera el beneficio y elegir entre paralelismo de datos vs de tareas según el problema.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TAXONOMÍA DE FLYNN ────────────────── -->
+    <section class="msec" id="conceptos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-cpu"></i> Clasificando el hardware</span>
+          <h2>La taxonomía de Flynn</h2>
+          <p class="msecSub">En 1966, Michael Flynn clasificó todas las arquitecturas de cómputo según dos dimensiones: cuántas instrucciones se ejecutan en paralelo y sobre cuántos datos. Sigue siendo el esquema canónico 60 años después.</p>
+        </div>
+
+        <div class="m6flynnGrid reveal">
+          <div class="m6flynnCard m6flynnSISD">
+            <div class="m6flynnBadge">SISD</div>
+            <div class="m6flynnFull">Single Instruction · Single Data</div>
+            <div class="m6flynnDiagram">
+              <div class="m6flynnCPU"><i class="ph-bold ph-cpu"></i></div>
+              <div class="m6flynnArrow">→</div>
+              <div class="m6flynnData">D</div>
+            </div>
+            <p class="m6flynnDesc">El modelo clásico: una CPU, una instrucción, un dato a la vez. Tu laptop ejecuta miles de programas SISD entrelazados por el scheduler.</p>
+            <div class="m6flynnExample"><i class="ph ph-device-desktop"></i> CPU single-core, programas secuenciales</div>
+          </div>
+
+          <div class="m6flynnCard m6flynnSIMD">
+            <div class="m6flynnBadge m6flynnBadgeAccent">SIMD</div>
+            <div class="m6flynnFull">Single Instruction · Multiple Data</div>
+            <div class="m6flynnDiagram">
+              <div class="m6flynnCPU"><i class="ph-bold ph-cpu"></i></div>
+              <div class="m6flynnArrowGroup">
+                <div class="m6flynnArrow">→</div>
+                <div class="m6flynnArrow">→</div>
+                <div class="m6flynnArrow">→</div>
+              </div>
+              <div class="m6flynnDataGroup">
+                <div class="m6flynnData">D</div>
+                <div class="m6flynnData">D</div>
+                <div class="m6flynnData">D</div>
+              </div>
+            </div>
+            <p class="m6flynnDesc">La misma operación aplicada simultáneamente a N datos. Es el secreto detrás del rendimiento brutal de las GPUs y las instrucciones vectoriales.</p>
+            <div class="m6flynnExample m6flynnExampleAccent"><i class="ph ph-monitor-play"></i> GPU, instrucciones AVX de CPU, shaders</div>
+          </div>
+
+          <div class="m6flynnCard m6flynnMIMD">
+            <div class="m6flynnBadge m6flynnBadgeAccent">MIMD</div>
+            <div class="m6flynnFull">Multiple Instructions · Multiple Data</div>
+            <div class="m6flynnDiagram m6flynnDiagramMIMD">
+              <div class="m6flynnCPUGroup">
+                <div class="m6flynnCPU m6flynnCPUSm"><i class="ph-bold ph-cpu"></i></div>
+                <div class="m6flynnCPU m6flynnCPUSm"><i class="ph-bold ph-cpu"></i></div>
+                <div class="m6flynnCPU m6flynnCPUSm"><i class="ph-bold ph-cpu"></i></div>
+              </div>
+              <div class="m6flynnArrowGroup">
+                <div class="m6flynnArrow">→</div>
+                <div class="m6flynnArrow">→</div>
+                <div class="m6flynnArrow">→</div>
+              </div>
+              <div class="m6flynnDataGroup">
+                <div class="m6flynnData">D₁</div>
+                <div class="m6flynnData">D₂</div>
+                <div class="m6flynnData">D₃</div>
+              </div>
+            </div>
+            <p class="m6flynnDesc">Múltiples cores ejecutando instrucciones distintas sobre datos distintos. El modelo dominante hoy: desde tu laptop de 8 cores hasta clusters de miles de nodos.</p>
+            <div class="m6flynnExample m6flynnExampleAccent"><i class="ph ph-graph"></i> Servidores multicore, clusters HPC, ForkJoin</div>
+          </div>
+
+          <div class="m6flynnCard m6flynnMISD">
+            <div class="m6flynnBadge m6flynnBadgeMuted">MISD</div>
+            <div class="m6flynnFull">Multiple Instructions · Single Data</div>
+            <div class="m6flynnDiagram m6flynnDiagramMIMD">
+              <div class="m6flynnCPUGroup">
+                <div class="m6flynnCPU m6flynnCPUSm"><i class="ph-bold ph-cpu"></i></div>
+                <div class="m6flynnCPU m6flynnCPUSm"><i class="ph-bold ph-cpu"></i></div>
+              </div>
+              <div class="m6flynnArrowGroup">
+                <div class="m6flynnArrow">→</div>
+                <div class="m6flynnArrow">→</div>
+              </div>
+              <div class="m6flynnData">D</div>
+            </div>
+            <p class="m6flynnDesc">Múltiples instrucciones distintas sobre el mismo dato. Raro en la práctica — se usa principalmente en sistemas de tolerancia a fallos por redundancia.</p>
+            <div class="m6flynnExample"><i class="ph ph-warning"></i> Tolerancia a fallos, pipelines especializados</div>
+          </div>
+        </div>
+
+        <!-- Data parallelism vs Task parallelism -->
+        <div class="m6parallelTypes reveal">
+          <div class="m6parallelType">
+            <div class="m6parallelTypeIcon"><i class="ph-bold ph-database"></i></div>
+            <div class="m6parallelTypeBody">
+              <strong>Paralelismo de datos</strong>
+              <p>La misma operación se aplica a subconjuntos distintos de los datos. Escala muy bien porque cada chunk es independiente. Ejemplo: procesar 1M de imágenes — cada thread maneja un subconjunto.</p>
+              <code>LongStream.of(array).parallel().sum()</code>
+            </div>
+          </div>
+          <div class="m6parallelTypeSep">vs</div>
+          <div class="m6parallelType">
+            <div class="m6parallelTypeIcon"><i class="ph-bold ph-git-branch"></i></div>
+            <div class="m6parallelTypeBody">
+              <strong>Paralelismo de tareas</strong>
+              <p>Operaciones distintas ejecutadas en paralelo (a veces sobre los mismos datos). Útil cuando el programa tiene etapas independientes que pueden ejecutar simultáneamente.</p>
+              <code>CompletableFuture.allOf(taskA, taskB)</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LEY DE AMDAHL ─────────────────────── -->
+    <section class="msec alt" id="amdahl">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-chart-line-up"></i> El límite invisible</span>
+          <h2>La Ley de Amdahl</h2>
+          <p class="msecSub">Antes de agregar cores, calculá el límite. La ley de Amdahl (1967) revela algo contraintuitivo: el cuello de botella no es el hardware — es la fracción serial de tu código.</p>
+        </div>
+
+        <div class="m6amdahlTheory reveal">
+          <div class="m6amdahlFormula">
+            <div class="m6amdahlFormulaLabel">Speedup máximo teórico</div>
+            <div class="m6amdahlEq">
+              <span class="m6amdahlEqS">S(N)</span>
+              <span class="m6amdahlEqEq">=</span>
+              <div class="m6amdahlFrac">
+                <div class="m6amdahlNum">1</div>
+                <div class="m6amdahlDen">
+                  <span class="m6amdahlSerial">(1 − P)</span>
+                  <span>+</span>
+                  <span class="m6amdahlPar">P / N</span>
+                </div>
+              </div>
+            </div>
+            <div class="m6amdahlFormulaLegend">
+              <div><span class="m6amdahlLegKey m6amdahlLegSerial">1−P</span> fracción serial (no paralelizable)</div>
+              <div><span class="m6amdahlLegKey m6amdahlLegPar">P</span> fracción paralelizable</div>
+              <div><span class="m6amdahlLegKey">N</span> número de cores</div>
+            </div>
+          </div>
+
+          <div class="m6amdahlTable">
+            <div class="m6amdahlTableTitle">Speedup máximo por combinación P / N</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>P (paralelo)</th>
+                  <th>2 cores</th>
+                  <th>4 cores</th>
+                  <th>8 cores</th>
+                  <th>16 cores</th>
+                  <th>∞ cores</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>50%</td><td>×1.33</td><td>×1.60</td><td>×1.78</td><td>×1.88</td><td class="m6amdahlTdMax">×2.0</td>
+                </tr>
+                <tr>
+                  <td>75%</td><td>×1.60</td><td>×2.29</td><td>×2.91</td><td>×3.37</td><td class="m6amdahlTdMax">×4.0</td>
+                </tr>
+                <tr>
+                  <td>90%</td><td>×1.82</td><td>×3.08</td><td>×4.71</td><td>×6.40</td><td class="m6amdahlTdMax">×10.0</td>
+                </tr>
+                <tr>
+                  <td>95%</td><td>×1.90</td><td>×3.48</td><td>×5.93</td><td>×8.83</td><td class="m6amdahlTdMax">×20.0</td>
+                </tr>
+                <tr class="m6amdahlTrHighlight">
+                  <td>99%</td><td>×1.98</td><td>×3.88</td><td>×7.48</td><td>×13.9</td><td class="m6amdahlTdMax">×100.0</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="m6amdahlTableNote">
+              <i class="ph ph-lightbulb"></i>
+              Con solo 1% de código serial, el máximo teórico es ×100 — independientemente de cuántos cores tengas.
+            </div>
+          </div>
+        </div>
+
+        <div class="m6amdahlInsights reveal">
+          <div class="m6amdahlInsightCard">
+            <div class="m6amdahlInsightIcon"><i class="ph-bold ph-wall"></i></div>
+            <strong>El muro serial</strong>
+            <p>Si el 30% de tu código es inevitablemente serial, el speedup máximo posible es ×3.3, sin importar si usás 8, 64 o 1000 cores.</p>
+          </div>
+          <div class="m6amdahlInsightCard">
+            <div class="m6amdahlInsightIcon"><i class="ph-bold ph-trend-down"></i></div>
+            <strong>Rendimientos decrecientes</strong>
+            <p>El beneficio de agregar el core número N+1 siempre es menor que el core N. La curva de speedup se aplana inevitablemente.</p>
+          </div>
+          <div class="m6amdahlInsightCard">
+            <div class="m6amdahlInsightIcon"><i class="ph-bold ph-lightbulb"></i></div>
+            <strong>Primero optimizá el serial</strong>
+            <p>Reducir la parte serial de 30% a 10% triplica el speedup posible. Es más efectivo que triplicar los cores.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SIMULADOR: AMDAHL INTERACTIVE ──────── -->
+    <section class="msec" id="simulador">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-sliders"></i> Simulador interactivo</span>
+          <h2>Amdahl's Law — en tiempo real</h2>
+          <p class="msecSub">Mové los sliders y observá cómo el speedup cambia. Encontrá el punto donde agregar más cores ya no vale la pena.</p>
+        </div>
+
+        <div class="m6sim reveal">
+          <div class="m6simControls">
+            <div class="m6simSliderGroup">
+              <div class="m6simSliderHeader">
+                <label for="amdahlP"><i class="ph ph-percent"></i> Fracción paralelizable (P)</label>
+                <span class="m6simSliderValue" id="amdahlPLabel">70%</span>
+              </div>
+              <input type="range" class="m6simRange" id="amdahlP" min="0" max="99" value="70" step="1" oninput="updateAmdahl()" />
+              <div class="m6simSliderHint"><span>0% = todo serial</span><span>99% = casi todo paralelo</span></div>
+            </div>
+
+            <div class="m6simSliderGroup">
+              <div class="m6simSliderHeader">
+                <label for="amdahlN"><i class="ph ph-cpu"></i> Número de cores (N)</label>
+                <span class="m6simSliderValue" id="amdahlNLabel">8</span>
+              </div>
+              <input type="range" class="m6simRange" id="amdahlN" min="0" max="6" value="3" step="1" oninput="updateAmdahl()" />
+              <div class="m6simSliderHint"><span>1 core</span><span>64 cores</span></div>
+              <div class="m6simCoreTicks">
+                <span>1</span><span>2</span><span>4</span><span>8</span><span>16</span><span>32</span><span>64</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="m6simResults">
+            <div class="m6simBig">
+              <div class="m6simBigNum" id="amdahlSpeedup">×2.9</div>
+              <div class="m6simBigLbl">speedup actual</div>
+            </div>
+            <div class="m6simBig">
+              <div class="m6simBigNum m6simBigMuted" id="amdahlMax">×3.3</div>
+              <div class="m6simBigLbl">máximo teórico (∞ cores)</div>
+            </div>
+            <div class="m6simBig">
+              <div class="m6simBigNum m6simBigEff" id="amdahlEff">37%</div>
+              <div class="m6simBigLbl">eficiencia (S/N)</div>
+            </div>
+          </div>
+
+          <div class="m6simBar">
+            <div class="m6simBarLabel">Composición del programa</div>
+            <div class="m6simBarTrack">
+              <div class="m6simBarSerial" id="amdahlBarSerial" style="--w:30%">
+                <span id="amdahlBarSerialLbl">serial (30%)</span>
+              </div>
+              <div class="m6simBarParallel" id="amdahlBarParallel" style="--w:70%">
+                <span id="amdahlBarParallelLbl">paralelo (70%)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="m6simChart">
+            <svg id="amdahlSvg" viewBox="0 0 520 270" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+
+          <div class="m6simInsight" id="amdahlInsight">
+            Mové los sliders para ver el análisis.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CÓDIGO JAVA ───────────────────────── -->
+    <section class="msec alt" id="codigo">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-code"></i> Java paralelo</span>
+          <h2>Tres formas de paralelizar</h2>
+          <p class="msecSub">Java ofrece niveles de abstracción para el paralelismo: desde Parallel Streams (una palabra) hasta ForkJoin manual con control total. Elegí según la complejidad del problema.</p>
+        </div>
+
+        <div class="m6codeTabs reveal">
+          <div class="m6codeTabBar">
+            <button class="m6codeTab m6codeTabActive" onclick="switchTab6(this,'tab6-stream')">
+              <i class="ph ph-stack"></i> Parallel Streams
+            </button>
+            <button class="m6codeTab" onclick="switchTab6(this,'tab6-task')">
+              <i class="ph ph-git-branch"></i> RecursiveTask
+            </button>
+            <button class="m6codeTab" onclick="switchTab6(this,'tab6-sort')">
+              <i class="ph ph-sort-ascending"></i> Mergesort Paralelo
+            </button>
+          </div>
+
+          <div class="m6codePanel" id="tab6-stream">
+            <div class="m6codeWhen">
+              <div class="m6codeWhenBox">
+                <i class="ph-bold ph-check-circle" style="color:#34d399"></i>
+                <p>Usá <code>.parallel()</code> cuando el trabajo es sobre colecciones o streams y no necesitás control fino. Es un único cambio en el código — Java elige automáticamente los threads usando el <code>ForkJoinPool.commonPool()</code>.</p>
+              </div>
+            </div>
+            <pre><code class="language-java">import java.util.stream.LongStream;
+
+public class SumaParallelStream {
+    public static void main(String[] args) {
+        long N = 10_000_000L;
+
+        // Secuencial
+        long t0 = System.currentTimeMillis();
+        long seq = LongStream.rangeClosed(1, N).sum();
+        long tSeq = System.currentTimeMillis() - t0;
+
+        // Paralelo — un solo cambio: .parallel()
+        t0 = System.currentTimeMillis();
+        long par = LongStream.rangeClosed(1, N).parallel().sum();
+        long tPar = System.currentTimeMillis() - t0;
+
+        System.out.println("Secuencial: " + seq + " en " + tSeq + "ms");
+        System.out.println("Paralelo:   " + par + " en " + tPar + "ms");
+        System.out.printf("Speedup: %.2fx%n", (double) tSeq / Math.max(tPar, 1));
+    }
+}</code></pre>
+          </div>
+
+          <div class="m6codePanel m6codePanelHidden" id="tab6-task">
+            <div class="m6codeWhen">
+              <div class="m6codeWhenBox">
+                <i class="ph-bold ph-check-circle" style="color:#34d399"></i>
+                <p>Usá <code>RecursiveTask&lt;V&gt;</code> para divide-y-vencerás con resultado. El patrón es: si el problema es pequeño, resolverlo directo. Si no, dividirlo, hacer <code>fork()</code> en uno y <code>compute()</code> + <code>join()</code> en el otro. Work-stealing automático.</p>
+              </div>
+            </div>
+            <pre><code class="language-java">import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.ForkJoinPool;
+
+public class SumaRecursiva {
+    static final int UMBRAL = 10_000; // tamaño mínimo de chunk
+
+    static class SumTask extends RecursiveTask&lt;Long&gt; {
+        final long[] arr;
+        final int desde, hasta;
+
+        SumTask(long[] arr, int desde, int hasta) {
+            this.arr = arr; this.desde = desde; this.hasta = hasta;
+        }
+
+        @Override
+        protected Long compute() {
+            if (hasta - desde &lt;= UMBRAL) {
+                // Caso base: sumar directo (sin más división)
+                long sum = 0;
+                for (int i = desde; i &lt; hasta; i++) sum += arr[i];
+                return sum;
+            }
+            int mid = (desde + hasta) / 2;
+            SumTask izq = new SumTask(arr, desde, mid);
+            SumTask der = new SumTask(arr, mid, hasta);
+
+            izq.fork();                         // lanza izq en otro thread del pool
+            return der.compute() + izq.join();  // der en este thread + espera izq
+        }
+    }
+
+    public static void main(String[] args) {
+        int N = 1_000_000;
+        long[] arr = new long[N];
+        for (int i = 0; i &lt; N; i++) arr[i] = i + 1L;
+
+        long t0 = System.currentTimeMillis();
+        long result = ForkJoinPool.commonPool().invoke(new SumTask(arr, 0, N));
+        long t = System.currentTimeMillis() - t0;
+
+        System.out.println("Suma: " + result + " en " + t + "ms");
+        System.out.println("Cores: " + Runtime.getRuntime().availableProcessors());
+    }
+}</code></pre>
+          </div>
+
+          <div class="m6codePanel m6codePanelHidden" id="tab6-sort">
+            <div class="m6codeWhen">
+              <div class="m6codeWhenBox">
+                <i class="ph-bold ph-check-circle" style="color:#34d399"></i>
+                <p>Usá <code>RecursiveAction</code> (sin valor de retorno) para operaciones in-place. <code>invokeAll()</code> es más limpio que fork+join manual cuando dividís en exactamente dos subtareas del mismo tipo.</p>
+              </div>
+            </div>
+            <pre><code class="language-java">import java.util.concurrent.*;
+import java.util.Arrays;
+
+public class MergesortParalelo {
+    static final int UMBRAL = 5_000;
+
+    static class SortTask extends RecursiveAction {
+        final int[] arr;
+        final int desde, hasta;
+
+        SortTask(int[] arr, int desde, int hasta) {
+            this.arr = arr; this.desde = desde; this.hasta = hasta;
+        }
+
+        @Override
+        protected void compute() {
+            if (hasta - desde &lt;= UMBRAL) {
+                Arrays.sort(arr, desde, hasta); // caso base: sort secuencial
+                return;
+            }
+            int mid = (desde + hasta) / 2;
+            // invokeAll lanza ambas subtareas y espera a que terminen
+            invokeAll(
+                new SortTask(arr, desde, mid),
+                new SortTask(arr, mid,   hasta)
+            );
+            merge(arr, desde, mid, hasta);
+        }
+    }
+
+    static void merge(int[] a, int l, int m, int r) {
+        int[] tmp = Arrays.copyOfRange(a, l, m);
+        int i = 0, j = m, k = l;
+        while (i &lt; tmp.length &amp;&amp; j &lt; r)
+            a[k++] = tmp[i] &lt;= a[j] ? tmp[i++] : a[j++];
+        while (i &lt; tmp.length) a[k++] = tmp[i++];
+    }
+
+    public static void main(String[] args) {
+        int N = 500_000;
+        int[] arr = new int[N];
+        for (int i = 0; i &lt; N; i++) arr[i] = N - i; // invertido = peor caso
+
+        long t0 = System.currentTimeMillis();
+        ForkJoinPool.commonPool().invoke(new SortTask(arr, 0, N));
+        System.out.println("Ordenado en: " + (System.currentTimeMillis() - t0) + "ms");
+        System.out.println("Primeros 5: " + Arrays.toString(Arrays.copyOf(arr, 5)));
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LAB ONECOMPILER ───────────────────── -->
+    <section class="msec" id="laboratorio">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-flask"></i> Manos a la obra</span>
+          <h2>Laboratorio Interactivo</h2>
+          <p class="msecSub">Ejecutá la suma paralela con tres estrategias (secuencial, ForkJoin, ParallelStream) y medí el speedup real en el navegador.</p>
+        </div>
+
+        <div class="m6lab reveal">
+          <div class="m6labInstructions">
+            <div class="m6labStep">
+              <div class="m6labStepNum">1</div>
+              <div class="m6labStepText">
+                <strong>Copiá el código</strong>
+                <p>Usá el botón de copiar para obtener el SumaParalela — compara las tres estrategias en un mismo programa.</p>
+              </div>
+            </div>
+            <div class="m6labStep">
+              <div class="m6labStepNum">2</div>
+              <div class="m6labStepText">
+                <strong>Pegalo en el editor</strong>
+                <p>Reemplazá el contenido del editor de OneCompiler con el código copiado.</p>
+              </div>
+            </div>
+            <div class="m6labStep">
+              <div class="m6labStepNum">3</div>
+              <div class="m6labStepText">
+                <strong>Ejecutá y comparé</strong>
+                <p>Presioná Run. Comparé los tiempos de las tres estrategias y calculá el speedup real. ¿Coincide con la predicción de Amdahl?</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m6labEmbed">
+            <iframe
+              src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
+              width="100%"
+              height="480"
+              frameborder="0"
+              allowfullscreen
+              title="OneCompiler Java IDE"
+            ></iframe>
+          </div>
+
+          <div class="m6labHint">
+            <div class="m6labHintHeader">
+              <i class="ph-bold ph-code-block"></i>
+              Código para copiar — SumaParalela.java (Actividad)
+              <button class="m6btn m6btnSm" onclick="copyLabCode()">
+                <i class="ph-bold ph-copy"></i> Copiar
+              </button>
+            </div>
+            <pre class="language-java" id="labCodePre"><code class="language-java">import java.util.concurrent.*;
+import java.util.stream.LongStream;
+
+public class SumaParalela {
+    static final int UMBRAL = 50_000;
+
+    static class SumTask extends RecursiveTask&lt;Long&gt; {
+        final long[] arr;
+        final int desde, hasta;
+
+        SumTask(long[] arr, int desde, int hasta) {
+            this.arr = arr; this.desde = desde; this.hasta = hasta;
+        }
+
+        @Override
+        protected Long compute() {
+            if (hasta - desde &lt;= UMBRAL) {
+                long sum = 0;
+                for (int i = desde; i &lt; hasta; i++) sum += arr[i];
+                return sum;
+            }
+            int mid = (desde + hasta) / 2;
+            SumTask izq = new SumTask(arr, desde, mid);
+            SumTask der = new SumTask(arr, mid, hasta);
+            izq.fork();
+            return der.compute() + izq.join();
+        }
+    }
+
+    public static void main(String[] args) {
+        int N = 1_000_000;
+        long[] arr = new long[N];
+        for (int i = 0; i &lt; N; i++) arr[i] = i + 1L;
+        long esperado = (long) N * (N + 1) / 2;
+
+        // 1. Secuencial
+        long t0 = System.currentTimeMillis();
+        long sumSeq = 0;
+        for (long x : arr) sumSeq += x;
+        long tSeq = System.currentTimeMillis() - t0;
+
+        // 2. ForkJoin
+        t0 = System.currentTimeMillis();
+        long sumFJ = ForkJoinPool.commonPool().invoke(new SumTask(arr, 0, N));
+        long tFJ = System.currentTimeMillis() - t0;
+
+        // 3. Parallel Stream
+        t0 = System.currentTimeMillis();
+        long sumPS = LongStream.of(arr).parallel().sum();
+        long tPS = System.currentTimeMillis() - t0;
+
+        System.out.println("Esperado:         " + esperado);
+        System.out.println("Secuencial:       " + sumSeq + " (" + tSeq + "ms)");
+        System.out.println("ForkJoin:         " + sumFJ + " (" + tFJ + "ms)");
+        System.out.println("ParallelStream:   " + sumPS + " (" + tPS + "ms)");
+        System.out.println("Cores disponibles: " + Runtime.getRuntime().availableProcessors());
+        if (tSeq &gt; 0)
+            System.out.printf("Speedup FJ: %.2fx%n", (double) tSeq / Math.max(tFJ, 1));
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── JUEGO: ¿PARALELO O SERIE? ────────── -->
+    <section class="msec alt" id="juego">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-game-controller"></i> Pensá como el scheduler</span>
+          <h2>¿Paralelo o serie?</h2>
+          <p class="msecSub">6 escenarios reales. Decidí si conviene paralelizar — y por qué. El overhead importa tanto como el speedup teórico.</p>
+        </div>
+
+        <div class="m6gameWrap reveal">
+          <div class="m6gameCard" id="gameCard">
+            <div class="m6gameHeader">
+              <div class="m6gameCounter" id="gameCounter">Escenario 1 de 6</div>
+              <div class="m6gameScore">Aciertos: <span id="gameScore">0</span></div>
+            </div>
+
+            <div class="m6gameScenario">
+              <div class="m6gameScenarioIcon" id="gameIcon"><i class="ph-bold ph-image"></i></div>
+              <div class="m6gameScenarioTitle" id="gameTitle">Galería de 10 millones de fotos</div>
+              <div class="m6gameScenarioDesc" id="gameDesc">Tenés 10M de fotos de usuarios para redimensionar a miniatura. Cada foto es completamente independiente — no comparte estado con las demás.</div>
+            </div>
+
+            <div class="m6gameOptions">
+              <button class="m6gameOpt" onclick="gameAnswer('si')"><i class="ph-bold ph-check"></i> SÍ — Paralelizar</button>
+              <button class="m6gameOpt" onclick="gameAnswer('no')"><i class="ph-bold ph-x"></i> NO — Dejar serial</button>
+            </div>
+
+            <div class="m6gameFeedback" id="gameFeedback" style="display:none"></div>
+
+            <button class="m6gameNext" id="gameNext" onclick="gameNext()" style="display:none">
+              Siguiente escenario <i class="ph-bold ph-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="m6gameResult" id="gameResult" style="display:none">
+            <div class="m6gameResultIcon"><i class="ph-bold ph-trophy"></i></div>
+            <div class="m6gameResultNum" id="gameResultNum">5 / 6</div>
+            <div class="m6gameResultLbl">escenarios correctos</div>
+            <div class="m6gameResultMsg" id="gameResultMsg"></div>
+            <button class="m6gameRestart" onclick="gameRestart()"><i class="ph-bold ph-arrow-clockwise"></i> Jugar de nuevo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUIZ ──────────────────────────────── -->
+    <section class="msec" id="quiz">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-check-square"></i> Quiz</span>
+          <h2>Poné a prueba lo aprendido</h2>
+          <p class="msecSub">8 preguntas sobre paralelismo, Amdahl y ForkJoin. Cada respuesta viene con explicación.</p>
+        </div>
+
+        <div class="m6quizWrap reveal">
+          <div class="m6quizProgress">
+            <div class="m6quizProgressBar" id="quizProgressBar" style="width:12.5%"></div>
+          </div>
+          <div class="m6quizProgressLabel" id="quizProgressLabel">Pregunta 1 de 8</div>
+
+          <div class="m6quizQuestion" id="quizQuestion"></div>
+
+          <div class="m6quizOptions" id="quizOptions"></div>
+
+          <div class="m6quizFeedback" id="quizFeedback" style="display:none"></div>
+
+          <div class="m6quizFooter">
+            <button class="m6quizNext" id="quizNextBtn" onclick="quizNext()" style="display:none">
+              Siguiente <i class="ph-bold ph-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="m6quizResult" id="quizResult" style="display:none">
+            <div class="m6quizResultIcon"><i class="ph-bold ph-medal"></i></div>
+            <div class="m6quizResultNum" id="quizResultNum">7 / 8</div>
+            <div class="m6quizResultLbl">respuestas correctas</div>
+            <div class="m6quizResultMsg" id="quizResultMsg"></div>
+            <button class="m6quizRestart" onclick="quizRestart()"><i class="ph-bold ph-arrow-clockwise"></i> Reintentar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GLOSARIO ──────────────────────────── -->
+    <section class="msec alt" id="glosario">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-book-bookmark"></i> Glosario</span>
+          <h2>Términos clave</h2>
+          <p class="msecSub">Hacé clic en cada carta para ver la definición.</p>
+        </div>
+
+        <div class="m6flipGrid reveal">
+
+          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
+            <div class="m6flipInner">
+              <div class="m6flipFront"><i class="ph ph-chart-line-up"></i><span>Ley de Amdahl</span></div>
+              <div class="m6flipBack">S(N) = 1/((1-P) + P/N). Define el speedup máximo teórico cuando se paraleliza la fracción P de un programa usando N cores. La parte serial (1-P) es el límite infranqueable.</div>
+            </div>
+          </div>
+
+          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
+            <div class="m6flipInner">
+              <div class="m6flipFront"><i class="ph ph-squares-four"></i><span>SIMD</span></div>
+              <div class="m6flipBack">Single Instruction Multiple Data. La misma operación se aplica simultáneamente a múltiples datos. Modelo de las GPUs y las instrucciones vectoriales (AVX, NEON). Ideal para álgebra lineal y procesamiento de imágenes.</div>
+            </div>
+          </div>
+
+          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
+            <div class="m6flipInner">
+              <div class="m6flipFront"><i class="ph ph-graph"></i><span>MIMD</span></div>
+              <div class="m6flipBack">Multiple Instructions Multiple Data. Múltiples cores ejecutan instrucciones distintas sobre datos distintos de forma independiente. Es el modelo de los servidores multicore modernos y los clusters HPC.</div>
+            </div>
+          </div>
+
+          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
+            <div class="m6flipInner">
+              <div class="m6flipFront"><i class="ph ph-lightning"></i><span>Speedup</span></div>
+              <div class="m6flipBack">Factor de mejora de rendimiento: S = T_secuencial / T_paralelo. Un speedup de ×3 significa que la versión paralela tarda 3 veces menos. El speedup ideal (= N cores) se llama speedup lineal.</div>
+            </div>
+          </div>
+
+          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
+            <div class="m6flipInner">
+              <div class="m6flipFront"><i class="ph ph-git-branch"></i><span>ForkJoinPool</span></div>
+              <div class="m6flipBack">Pool de threads de Java optimizado para tareas divide-y-vencerás. Usa work-stealing: un thread inactivo "roba" tareas de la cola de otro thread ocupado. ForkJoinPool.commonPool() retorna el pool compartido de la JVM.</div>
+            </div>
+          </div>
+
+          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
+            <div class="m6flipInner">
+              <div class="m6flipFront"><i class="ph ph-file-code"></i><span>RecursiveTask</span></div>
+              <div class="m6flipBack">Clase abstracta de Java (java.util.concurrent) para tareas ForkJoin que retornan un valor. Implementar compute(): si el problema es pequeño, resolverlo directo; si no, dividir en subtareas, fork() una y compute()+join() la otra.</div>
+            </div>
+          </div>
+
+          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
+            <div class="m6flipInner">
+              <div class="m6flipFront"><i class="ph ph-warning"></i><span>Overhead</span></div>
+              <div class="m6flipBack">Costo adicional de crear, coordinar y sincronizar threads. Tiene costo fijo: para tareas muy pequeñas, el overhead supera el beneficio del paralelismo. El UMBRAL en ForkJoin define el tamaño mínimo donde paralelizar vale la pena.</div>
+            </div>
+          </div>
+
+          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
+            <div class="m6flipInner">
+              <div class="m6flipFront"><i class="ph ph-ruler"></i><span>Eficiencia</span></div>
+              <div class="m6flipBack">E = Speedup / N. Mide qué fracción de los cores se aprovecha realmente. Con 8 cores y speedup ×4, la eficiencia es 50%. Eficiencia baja indica que el overhead o la parte serial dominan el tiempo.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACTIVIDAD ─────────────────────────── -->
+    <section class="msec" id="actividades">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-code-simple"></i> Tu turno</span>
+          <h2>Actividad práctica — Benchmark paralelo</h2>
+          <p class="msecSub">Implementá tres versiones de suma de 1M elementos, medí tiempos reales y compará con la predicción de Amdahl. Entregá un informe técnico.</p>
+        </div>
+
+        <div class="m6mission reveal">
+          <div class="m6missionSteps">
+            <div class="m6missionStep">
+              <div class="m6missionStepIcon" style="--sc:#38bdf8"><i class="ph-bold ph-list-numbers"></i></div>
+              <div class="m6missionStepBody">
+                <strong>Paso 1 — Benchmark secuencial</strong>
+                <p>Implementá <code>sumaSecuencial(long[] arr)</code> usando un simple for. Medí el tiempo con <code>System.currentTimeMillis()</code> para arrays de tamaño 100K, 500K y 1M. Registrá los 3 tiempos en una tabla.</p>
+              </div>
+            </div>
+            <div class="m6missionStep">
+              <div class="m6missionStepIcon" style="--sc:#a78bfa"><i class="ph-bold ph-git-branch"></i></div>
+              <div class="m6missionStepBody">
+                <strong>Paso 2 — ForkJoin con RecursiveTask</strong>
+                <p>Implementá <code>SumTask extends RecursiveTask&lt;Long&gt;</code>. Probá distintos valores de UMBRAL (1000, 10000, 50000) y elegí el que da mejor tiempo para 1M. Justificá tu elección.</p>
+              </div>
+            </div>
+            <div class="m6missionStep">
+              <div class="m6missionStepIcon" style="--sc:#34d399"><i class="ph-bold ph-stack"></i></div>
+              <div class="m6missionStepBody">
+                <strong>Paso 3 — Parallel Stream</strong>
+                <p>Implementá la misma suma usando <code>LongStream.of(arr).parallel().sum()</code>. Compará el speedup real de ForkJoin vs ParallelStream para los 3 tamaños de array.</p>
+              </div>
+            </div>
+            <div class="m6missionStep">
+              <div class="m6missionStepIcon" style="--sc:#fb923c"><i class="ph-bold ph-chart-bar"></i></div>
+              <div class="m6missionStepBody">
+                <strong>Paso 4 — Análisis con Amdahl</strong>
+                <p>Estimá P (fracción paralela) para tu implementación de ForkJoin. Calculá el speedup teórico con la fórmula de Amdahl usando los cores disponibles. Comparé con el speedup real medido y explicá la diferencia (overhead, caché, JIT warmup).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m6rubric reveal">
+          <div class="m6rubricTitle"><i class="ph-bold ph-list-checks"></i> Rúbrica de evaluación</div>
+          <div class="m6rubricItems">
+            <div class="m6rubricItem">
+              <div class="m6rubricItemHeader">
+                <span class="m6rubricItemName">Benchmark con tabla de tiempos (3 tamaños)</span>
+                <span class="m6rubricPct">25%</span>
+              </div>
+              <div class="m6rubricBar"><div class="m6rubricBarFill" style="--pct:25%;--bc:#38bdf8"></div></div>
+              <p class="m6rubricDesc">Tabla con tiempos para 100K, 500K y 1M elementos en las tres estrategias. Tiempos medidos correctamente (excluir warmup del primer run).</p>
+            </div>
+            <div class="m6rubricItem">
+              <div class="m6rubricItemHeader">
+                <span class="m6rubricItemName">Implementación ForkJoin funcional con UMBRAL justificado</span>
+                <span class="m6rubricPct">30%</span>
+              </div>
+              <div class="m6rubricBar"><div class="m6rubricBarFill" style="--pct:30%;--bc:#a78bfa"></div></div>
+              <p class="m6rubricDesc">Código compilable con RecursiveTask que produce resultado correcto. Comparación de al menos 2 valores de UMBRAL con justificación técnica del elegido.</p>
+            </div>
+            <div class="m6rubricItem">
+              <div class="m6rubricItemHeader">
+                <span class="m6rubricItemName">Comparación ForkJoin vs ParallelStream</span>
+                <span class="m6rubricPct">20%</span>
+              </div>
+              <div class="m6rubricBar"><div class="m6rubricBarFill" style="--pct:20%;--bc:#34d399"></div></div>
+              <p class="m6rubricDesc">Speedup calculado para ambas estrategias en los 3 tamaños. Conclusión sobre cuándo conviene cada una basada en los datos.</p>
+            </div>
+            <div class="m6rubricItem">
+              <div class="m6rubricItemHeader">
+                <span class="m6rubricItemName">Análisis con Ley de Amdahl y explicación de diferencias</span>
+                <span class="m6rubricPct">25%</span>
+              </div>
+              <div class="m6rubricBar"><div class="m6rubricBarFill" style="--pct:25%;--bc:#fb923c"></div></div>
+              <p class="m6rubricDesc">Estimación de P, cálculo del speedup teórico de Amdahl, comparación con speedup real. Párrafo explicando al menos 2 razones de la diferencia (overhead, caché, JIT).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ─────────────────────────────── -->
+    <footer class="mfoot">
+      <a href="modulo5.html" class="mfootLink">
+        <i class="ph ph-arrow-left"></i> Módulo 5
+      </a>
+      <a href="../index.html" class="mfootBrand">Campus PAI3</a>
+      <a href="modulo7.html" class="mfootLink">
+        Módulo 7 <i class="ph ph-arrow-right"></i>
+      </a>
+    </footer>
+
+    <!-- ── SCRIPTS ────────────────────────────── -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="../assets/js/campus.js"></script>
+    <script src="../assets/js/modulo6.js"></script>
+  </body>
+</html>

@@ -1,0 +1,682 @@
+/* ═══════════════════════════════════════════
+   PAI3 · Módulo 6 · Paralelismo
+   Accent: #38bdf8 (electric blue)
+═══════════════════════════════════════════ */
+
+/* ─── Global text contrast overrides ────── */
+.m6flynnDesc p      { color: var(--text); font-size: 14px; }
+.m6objCard p        { color: var(--text); font-size: 14px; }
+.m6amdahlTheory p   { color: var(--text); font-size: 14px; }
+.m6missionStepBody p { color: var(--text); font-size: 14px; }
+.m6rubricDesc       { color: var(--text); font-size: 14px; }
+
+/* ─── Hero ───────────────────────────────── */
+.m6hero {
+  position: relative; min-height: 100svh;
+  display: flex; align-items: center; overflow: hidden;
+}
+.m6heroBg { position: absolute; inset: 0; }
+.m6heroImg {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.28) saturate(1.3);
+}
+.m6heroOverlay {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(56,189,248,0.12) 0%, transparent 70%),
+              linear-gradient(to bottom, transparent 50%, rgba(10,14,26,0.9) 100%);
+}
+
+/* Animated cores */
+.m6heroCore {
+  position: absolute;
+  left: var(--cx); top: var(--cy);
+  width: 10px; height: 10px; border-radius: 3px;
+  background: rgba(56,189,248,0.5);
+  box-shadow: 0 0 12px rgba(56,189,248,0.6);
+  animation: m6corePulse var(--cd,2s) var(--dd,0s) ease-in-out infinite;
+}
+@keyframes m6corePulse {
+  0%,100% { opacity: 0.3; transform: scale(0.8); }
+  50%      { opacity: 1;   transform: scale(1.4); box-shadow: 0 0 22px rgba(56,189,248,0.9); }
+}
+
+/* Data flow lines */
+.m6heroLine {
+  position: absolute;
+  left: var(--lx); top: var(--ly);
+  width: 120px; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(56,189,248,0.4), transparent);
+  transform: rotate(var(--lr,0deg));
+  animation: m6lineFade 3s var(--ld,0s) ease-in-out infinite;
+}
+@keyframes m6lineFade {
+  0%,100% { opacity: 0; } 50% { opacity: 1; }
+}
+
+.m6heroContent {
+  position: relative; z-index: 2;
+  max-width: 860px; margin: 0 auto; padding: 140px 32px 80px;
+}
+.m6heroEyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--accent); background: var(--accent-sub);
+  border: 1px solid var(--accent-border);
+  padding: 6px 14px; border-radius: 100px; margin-bottom: 24px;
+}
+.m6heroTitle {
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  font-weight: 900; line-height: 1.08; letter-spacing: -0.03em;
+  color: var(--text); margin: 0 0 20px;
+}
+.m6heroAccent { color: var(--accent); }
+.m6heroSub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--sub); max-width: 560px; line-height: 1.6; margin-bottom: 48px;
+}
+.m6heroStats {
+  display: flex; gap: 40px; flex-wrap: wrap;
+}
+.m6heroStat {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.m6heroStatNum {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 900; color: var(--accent); line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.m6heroStatUnit {
+  font-size: 14px; font-weight: 700; color: var(--accent); margin-top: -4px;
+}
+.m6heroStatLabel {
+  font-size: 12px; color: var(--sub); max-width: 180px; line-height: 1.4;
+}
+
+/* ─── Pull quote ─────────────────────────── */
+.m6pullQuote {
+  max-width: 720px; margin: 0 auto; text-align: center;
+  padding: 48px 40px; border-radius: 20px;
+  background: var(--surface); border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+}
+.m6pullIcon { font-size: 36px; color: var(--accent); display: block; margin-bottom: 20px; }
+.m6pullQuote blockquote {
+  font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+  font-weight: 600; line-height: 1.5; color: var(--text);
+  margin: 0 0 16px; font-style: normal;
+}
+.m6pullQuote blockquote em { color: var(--accent); font-style: normal; }
+.m6pullQuote cite { font-size: 13px; color: var(--sub); font-style: normal; }
+
+/* ─── Objetivos ──────────────────────────── */
+.m6objGrid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 16px; margin-top: 32px;
+}
+.m6objCard {
+  padding: 22px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--border);
+  backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.m6objCard:hover { border-color: var(--accent-border); transform: translateY(-2px); }
+.m6objIcon {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: color-mix(in srgb, var(--oc) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--oc) 30%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--oc);
+}
+.m6objCard strong { font-size: 14px; font-weight: 800; color: var(--text); }
+.m6objCard p { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
+
+/* ─── Flynn taxonomy ─────────────────────── */
+.m6flynnGrid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px; margin-top: 32px;
+}
+.m6flynnCard {
+  padding: 24px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--border);
+  backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 14px;
+}
+.m6flynnBadge {
+  display: inline-block; font-size: 11px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 4px 10px; border-radius: 6px;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+  color: var(--sub); width: fit-content;
+}
+.m6flynnBadgeAccent {
+  background: var(--accent-sub); border-color: var(--accent-border); color: var(--accent);
+}
+.m6flynnBadgeMuted {
+  background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); color: var(--muted);
+}
+.m6flynnFull { font-size: 11px; color: var(--sub); font-weight: 600; letter-spacing: 0.05em; }
+.m6flynnDiagram {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px; border-radius: 10px;
+  background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06);
+}
+.m6flynnDiagramMIMD { flex-direction: row; }
+.m6flynnCPU {
+  width: 38px; height: 38px; border-radius: 8px;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--sub); flex-shrink: 0;
+}
+.m6flynnCPUSm { width: 28px; height: 28px; font-size: 13px; border-radius: 6px; }
+.m6flynnCPUGroup { display: flex; flex-direction: column; gap: 4px; }
+.m6flynnArrow { color: var(--accent); font-size: 16px; font-weight: 700; }
+.m6flynnArrowGroup { display: flex; flex-direction: column; gap: 8px; }
+.m6flynnData {
+  width: 30px; height: 30px; border-radius: 6px; flex-shrink: 0;
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: var(--accent);
+}
+.m6flynnDataGroup { display: flex; flex-direction: column; gap: 4px; }
+.m6flynnSIMD .m6flynnData, .m6flynnMIMD .m6flynnData { }
+.m6flynnMISD .m6flynnData { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: var(--sub); }
+.m6flynnDesc { font-size: 13px; color: var(--sub); line-height: 1.65; margin: 0; }
+.m6flynnExample {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 600; color: var(--sub);
+  padding: 8px 12px; border-radius: 8px;
+  background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06);
+}
+.m6flynnExampleAccent { color: var(--accent); border-color: var(--accent-border); background: var(--accent-sub); }
+
+/* Data parallelism vs Task parallelism */
+.m6parallelTypes {
+  display: flex; gap: 0; margin-top: 28px;
+  border-radius: var(--r); overflow: hidden; border: 1px solid var(--border);
+}
+.m6parallelType {
+  flex: 1; display: flex; gap: 16px; align-items: flex-start;
+  padding: 24px; background: var(--surface);
+}
+.m6parallelTypeSep {
+  display: flex; align-items: center; justify-content: center;
+  width: 48px; flex-shrink: 0;
+  background: rgba(255,255,255,0.03); border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+  font-size: 12px; font-weight: 800; color: var(--sub); text-transform: uppercase;
+}
+.m6parallelTypeIcon {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--accent);
+}
+.m6parallelTypeBody strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.m6parallelTypeBody p { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0 0 10px; }
+.m6parallelTypeBody code {
+  display: block; font-size: 11px; padding: 8px 12px; border-radius: 6px;
+  background: rgba(0,0,0,0.35); color: var(--accent);
+  border: 1px solid rgba(255,255,255,0.07); font-family: 'Fira Code', monospace;
+}
+
+/* ─── Amdahl Theory ──────────────────────── */
+.m6amdahlTheory {
+  display: grid; grid-template-columns: 1fr 1.5fr;
+  gap: 20px; margin-top: 32px; align-items: start;
+}
+.m6amdahlFormula {
+  padding: 28px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--accent-border);
+  backdrop-filter: blur(12px);
+}
+.m6amdahlFormulaLabel {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--accent); margin-bottom: 20px;
+}
+.m6amdahlEq {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.m6amdahlEqS { font-size: 20px; font-weight: 800; color: var(--accent); }
+.m6amdahlEqEq { font-size: 22px; color: var(--sub); }
+.m6amdahlFrac { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.m6amdahlNum {
+  font-size: 22px; font-weight: 900; color: var(--text);
+  border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 4px;
+  text-align: center; min-width: 60px;
+}
+.m6amdahlDen {
+  font-size: 13px; color: var(--sub); padding-top: 6px;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center;
+}
+.m6amdahlSerial { color: #ef4444; font-weight: 700; }
+.m6amdahlPar { color: var(--accent); font-weight: 700; }
+.m6amdahlFormulaLegend { display: flex; flex-direction: column; gap: 8px; }
+.m6amdahlFormulaLegend > div {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: var(--sub);
+}
+.m6amdahlLegKey {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: 800;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: var(--text);
+}
+.m6amdahlLegSerial { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: #ef4444; }
+.m6amdahlLegPar { background: var(--accent-sub); border-color: var(--accent-border); color: var(--accent); }
+
+/* Amdahl table */
+.m6amdahlTable {
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--border); background: var(--surface);
+}
+.m6amdahlTableTitle {
+  padding: 14px 20px; font-size: 12px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--sub);
+  border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.03);
+}
+.m6amdahlTable table { width: 100%; border-collapse: collapse; }
+.m6amdahlTable th, .m6amdahlTable td {
+  padding: 10px 14px; font-size: 13px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.m6amdahlTable th { font-weight: 800; color: var(--sub); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+.m6amdahlTable td { color: var(--text); }
+.m6amdahlTable tbody tr:hover { background: rgba(255,255,255,0.03); }
+.m6amdahlTdMax { color: var(--accent); font-weight: 800; }
+.m6amdahlTrHighlight td { background: rgba(56,189,248,0.05); }
+.m6amdahlTableNote {
+  padding: 12px 16px; font-size: 12px; color: var(--sub);
+  display: flex; align-items: flex-start; gap: 8px;
+  border-top: 1px solid var(--border); background: rgba(255,255,255,0.02);
+}
+
+/* Amdahl insight cards */
+.m6amdahlInsights {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 16px; margin-top: 28px;
+}
+.m6amdahlInsightCard {
+  padding: 20px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+.m6amdahlInsightIcon {
+  width: 38px; height: 38px; border-radius: 9px; margin-bottom: 12px;
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--accent);
+}
+.m6amdahlInsightCard strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.m6amdahlInsightCard p { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
+
+/* ─── Simulator ──────────────────────────── */
+.m6sim {
+  margin-top: 32px; display: flex; flex-direction: column; gap: 24px;
+  padding: 28px; border-radius: 18px;
+  background: var(--surface); border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+}
+.m6simControls { display: flex; gap: 32px; flex-wrap: wrap; }
+.m6simSliderGroup { flex: 1; min-width: 260px; display: flex; flex-direction: column; gap: 10px; }
+.m6simSliderHeader {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; font-weight: 700; color: var(--text);
+}
+.m6simSliderHeader label { display: flex; align-items: center; gap: 7px; }
+.m6simSliderValue { font-size: 18px; font-weight: 900; color: var(--accent); }
+.m6simRange {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 6px; border-radius: 3px;
+  background: rgba(255,255,255,0.1); outline: none; cursor: pointer;
+}
+.m6simRange::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); border: 2px solid #fff;
+  box-shadow: 0 0 8px rgba(56,189,248,0.5); cursor: pointer;
+}
+.m6simSliderHint {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--sub);
+}
+.m6simCoreTicks {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: rgba(255,255,255,0.25); font-family: monospace;
+}
+
+.m6simResults { display: flex; gap: 20px; flex-wrap: wrap; }
+.m6simBig { flex: 1; min-width: 120px; text-align: center; padding: 18px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+.m6simBigNum { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 900; color: var(--accent); line-height: 1; }
+.m6simBigMuted { color: rgba(255,255,255,0.35); }
+.m6simBigEff { color: #34d399; }
+.m6simBigLbl { font-size: 11px; color: var(--sub); margin-top: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.m6simBar { }
+.m6simBarLabel { font-size: 11px; font-weight: 800; color: var(--sub); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.m6simBarTrack {
+  display: flex; height: 36px; border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.m6simBarSerial {
+  width: var(--w); background: rgba(239,68,68,0.25); border-right: 2px solid rgba(239,68,68,0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #ef4444; min-width: 60px;
+  transition: width 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.m6simBarParallel {
+  flex: 1; background: rgba(56,189,248,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--accent);
+  transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+.m6simChart {
+  border-radius: 12px; overflow: hidden;
+  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07);
+  padding: 4px;
+}
+.m6simChart svg { width: 100%; height: auto; display: block; }
+
+.m6simInsight {
+  padding: 14px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--text);
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  transition: background 0.3s, border-color 0.3s;
+}
+.m6simInsightGood { background: rgba(52,211,153,0.1); border-color: rgba(52,211,153,0.3); color: #34d399; }
+.m6simInsightWarn { background: rgba(251,146,60,0.1); border-color: rgba(251,146,60,0.3); color: #fb923c; }
+
+/* ─── Code tabs ──────────────────────────── */
+.m6codeTabs { margin-top: 32px; }
+.m6codeTabBar {
+  display: flex; gap: 4px; padding: 6px;
+  background: rgba(255,255,255,0.04); border-radius: 12px 12px 0 0;
+  border: 1px solid var(--border); border-bottom: none;
+  flex-wrap: wrap;
+}
+.m6codeTab {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer;
+  font-size: 13px; font-weight: 700; color: var(--sub);
+  background: transparent; transition: all 0.15s; font-family: inherit;
+}
+.m6codeTab:hover { color: var(--text); background: rgba(255,255,255,0.07); }
+.m6codeTabActive { background: var(--accent-sub); border: 1px solid var(--accent-border); color: var(--accent); }
+.m6codePanel {
+  border: 1px solid var(--border); border-radius: 0 0 12px 12px;
+  overflow: hidden;
+}
+.m6codePanelHidden { display: none; }
+.m6codeWhen { padding: 16px 20px; background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border); }
+.m6codeWhenBox {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 13px; color: var(--sub); line-height: 1.6;
+}
+.m6codeWhenBox i { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.m6codePanel pre { margin: 0; border-radius: 0; }
+
+/* ─── Lab ────────────────────────────────── */
+.m6lab { margin-top: 32px; display: flex; flex-direction: column; gap: 24px; }
+.m6labInstructions { display: flex; gap: 16px; flex-wrap: wrap; }
+.m6labStep {
+  display: flex; align-items: flex-start; gap: 14px; flex: 1;
+  min-width: 200px; padding: 18px; border-radius: var(--r);
+  border: 1px solid var(--border); background: var(--surface);
+  backdrop-filter: blur(10px);
+}
+.m6labStepNum {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  border: 1px solid var(--accent-border); background: var(--accent-sub);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; color: var(--accent);
+}
+.m6labStepText strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.m6labStepText p { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m6labEmbed {
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--border); background: #1e1e1e;
+}
+.m6labHint { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
+.m6labHintHeader {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 20px; background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--border);
+  font-size: 14px; font-weight: 700; color: var(--text);
+}
+.m6labHintHeader .m6btn { margin-left: auto; }
+.m6labHint pre { margin: 0; border-radius: 0; }
+.m6btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 700;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); cursor: pointer; transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  font-family: inherit;
+}
+.m6btn:hover { background: var(--surface-hover); border-color: var(--border-hover); transform: translateY(-1px); }
+.m6btnSm { padding: 6px 12px; font-size: 12px; }
+
+/* ─── Game ───────────────────────────────── */
+.m6gameWrap { margin-top: 32px; }
+.m6gameCard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; padding: 28px; backdrop-filter: blur(14px);
+  max-width: 680px; margin: 0 auto;
+}
+.m6gameHeader {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;
+}
+.m6gameCounter { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--sub); }
+.m6gameScore { font-size: 13px; font-weight: 800; color: var(--accent); }
+.m6gameScenario {
+  padding: 20px; border-radius: 12px; margin-bottom: 20px;
+  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.m6gameScenarioIcon { font-size: 32px; color: var(--accent); }
+.m6gameScenarioTitle { font-size: 16px; font-weight: 800; color: var(--text); }
+.m6gameScenarioDesc { font-size: 13px; color: var(--sub); line-height: 1.65; }
+.m6gameOptions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.m6gameOpt {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 20px; border-radius: 10px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+  color: var(--text); font-size: 13px; font-weight: 700;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  font-family: inherit;
+}
+.m6gameOpt:hover { background: rgba(255,255,255,0.08); border-color: var(--border-hover); transform: translateY(-1px); }
+.m6gameOpt.correct  { background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.6); color: #34d399; }
+.m6gameOpt.wrong    { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.5); color: #ef4444; }
+.m6gameOpt.disabled { opacity: 0.45; pointer-events: none; }
+.m6gameFeedback {
+  padding: 14px 16px; border-radius: 10px; margin-bottom: 16px;
+  font-size: 13px; line-height: 1.65; color: var(--text);
+}
+.m6gameFeedback.correct { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.35); }
+.m6gameFeedback.wrong   { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.35); }
+.m6gameNext {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 22px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--accent-border); background: var(--accent-sub);
+  color: var(--accent); font-size: 13px; font-weight: 700;
+  transition: background 0.2s, transform 0.15s; margin: 0 auto;
+  font-family: inherit;
+}
+.m6gameNext:hover { background: rgba(56,189,248,0.2); transform: translateY(-1px); }
+.m6gameResult {
+  text-align: center; padding: 32px 24px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; max-width: 680px; margin: 0 auto;
+}
+.m6gameResultIcon { font-size: 48px; color: #fbbf24; margin-bottom: 12px; }
+.m6gameResultNum { font-size: 3rem; font-weight: 900; color: var(--accent); }
+.m6gameResultLbl { font-size: 14px; color: var(--sub); margin-bottom: 16px; }
+.m6gameResultMsg { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 24px; }
+.m6gameRestart {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--accent-border); background: var(--accent-sub);
+  color: var(--accent); font-size: 13px; font-weight: 700;
+  font-family: inherit; transition: background 0.2s;
+}
+.m6gameRestart:hover { background: rgba(56,189,248,0.2); }
+
+/* ─── Quiz ───────────────────────────────── */
+.m6quizWrap {
+  margin-top: 32px; max-width: 720px; margin-left: auto; margin-right: auto;
+}
+.m6quizProgress {
+  height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); overflow: hidden; margin-bottom: 8px;
+}
+.m6quizProgressBar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s; }
+.m6quizProgressLabel { font-size: 12px; color: var(--sub); font-weight: 700; margin-bottom: 20px; }
+.m6quizQuestion {
+  font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.5;
+  margin-bottom: 20px; padding: 18px 20px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+}
+.m6quizOptions { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.m6quizOpt {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 18px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); font-size: 13px; font-weight: 600; text-align: left;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s;
+  font-family: inherit; line-height: 1.5;
+}
+.m6quizOpt:hover { border-color: var(--accent-border); background: var(--accent-sub); transform: translateX(3px); }
+.m6quizOpt.selected { border-color: var(--accent); background: var(--accent-sub); }
+.m6quizOpt.correct  { border-color: rgba(52,211,153,0.8); background: rgba(52,211,153,0.12); color: #34d399; }
+.m6quizOpt.wrong    { border-color: rgba(239,68,68,0.6); background: rgba(239,68,68,0.1); color: #ef4444; }
+.m6quizOpt.disabled { pointer-events: none; opacity: 0.6; }
+.m6quizFeedback {
+  padding: 16px 18px; border-radius: 10px;
+  font-size: 13px; line-height: 1.7; color: var(--text); margin-bottom: 16px;
+}
+.m6quizFeedback.correct { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.35); }
+.m6quizFeedback.wrong   { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.35); }
+.m6quizFooter { display: flex; justify-content: flex-end; }
+.m6quizNext {
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 22px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--accent-border); background: var(--accent-sub);
+  color: var(--accent); font-size: 13px; font-weight: 700;
+  font-family: inherit; transition: background 0.2s;
+}
+.m6quizNext:hover { background: rgba(56,189,248,0.2); }
+.m6quizResult {
+  text-align: center; padding: 40px 24px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+}
+.m6quizResultIcon { font-size: 48px; color: #fbbf24; margin-bottom: 12px; }
+.m6quizResultNum  { font-size: 3rem; font-weight: 900; color: var(--accent); }
+.m6quizResultLbl  { font-size: 14px; color: var(--sub); margin-bottom: 12px; }
+.m6quizResultMsg  { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 24px; }
+.m6quizRestart {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--accent-border); background: var(--accent-sub);
+  color: var(--accent); font-size: 13px; font-weight: 700;
+  font-family: inherit; transition: background 0.2s;
+}
+.m6quizRestart:hover { background: rgba(56,189,248,0.2); }
+
+/* ─── Glosario flip cards ────────────────── */
+.m6flipGrid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 16px; margin-top: 32px;
+}
+.m6flip { perspective: 1000px; height: 160px; cursor: pointer; }
+.m6flipInner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d; transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.m6flip.m6flipFlipped .m6flipInner { transform: rotateY(180deg); }
+.m6flipFront, .m6flipBack {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  border-radius: var(--r); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  padding: 18px; backdrop-filter: blur(10px);
+}
+.m6flipFront {
+  background: var(--surface); flex-direction: column; gap: 10px; text-align: center;
+  transition: border-color 0.2s;
+}
+.m6flip:hover .m6flipFront { border-color: var(--accent-border); }
+.m6flipFront i { font-size: 26px; color: var(--accent); }
+.m6flipFront span { font-size: 14px; font-weight: 800; color: var(--text); }
+.m6flipBack {
+  background: var(--accent-sub); border-color: var(--accent-border);
+  transform: rotateY(180deg); font-size: 12px; color: var(--text);
+  line-height: 1.65; text-align: left;
+}
+
+/* ─── Actividad / Mission ────────────────── */
+.m6mission { margin-top: 32px; }
+.m6missionSteps { display: flex; flex-direction: column; gap: 16px; }
+.m6missionStep {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: 20px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+.m6missionStepIcon {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  background: color-mix(in srgb, var(--sc) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sc) 35%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--sc);
+}
+.m6missionStepBody strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.m6missionStepBody p { font-size: 13px; color: var(--sub); line-height: 1.65; margin: 0; }
+.m6missionStepBody code {
+  font-family: 'Fira Code', monospace; font-size: 12px;
+  background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: var(--accent);
+}
+
+/* ─── Rúbrica ────────────────────────────── */
+.m6rubric { margin-top: 28px; }
+.m6rubricTitle {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 16px;
+}
+.m6rubricItems { display: flex; flex-direction: column; gap: 12px; }
+.m6rubricItem {
+  padding: 18px 20px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+.m6rubricItemHeader {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+}
+.m6rubricItemName { font-size: 14px; font-weight: 700; color: var(--text); }
+.m6rubricPct { font-size: 15px; font-weight: 900; color: var(--accent); }
+.m6rubricBar { height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
+.m6rubricBarFill {
+  height: 100%; width: var(--pct); background: var(--bc, var(--accent)); border-radius: 3px;
+  transition: width 1s ease-out;
+}
+.m6rubricDesc { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
+
+/* ─── Responsive ─────────────────────────── */
+@media (max-width: 1024px) {
+  .m6objGrid        { grid-template-columns: repeat(2, 1fr); }
+  .m6flynnGrid      { grid-template-columns: repeat(2, 1fr); }
+  .m6amdahlTheory   { grid-template-columns: 1fr; }
+  .m6amdahlInsights { grid-template-columns: repeat(2, 1fr); }
+  .m6flipGrid       { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .m6heroStats      { gap: 24px; }
+  .m6objGrid        { grid-template-columns: 1fr 1fr; }
+  .m6flynnGrid      { grid-template-columns: 1fr; }
+  .m6parallelTypes  { flex-direction: column; }
+  .m6parallelTypeSep { width: 100%; height: 36px; border-left: none; border-right: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .m6simControls    { flex-direction: column; }
+  .m6amdahlInsights { grid-template-columns: 1fr; }
+  .m6flipGrid       { grid-template-columns: repeat(2, 1fr); }
+  .m6labInstructions { flex-direction: column; }
+  .m6gameOptions    { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .m6objGrid  { grid-template-columns: 1fr; }
+  .m6flipGrid { grid-template-columns: 1fr 1fr; }
+}
