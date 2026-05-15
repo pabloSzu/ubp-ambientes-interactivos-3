@@ -454,8 +454,10 @@
                 <span class="m7racePanelSub" id="cpuWorkerLbl">8 cores · alto rendimiento individual</span>
               </div>
               <div class="m7raceCores" id="cpuCores"></div>
-              <div class="m7raceTimer">
-                <i class="ph ph-timer"></i> <span id="cpuTime">0.0s</span>
+              <div class="m7raceDesc" id="cpuDesc">Listo para correr…</div>
+              <div class="m7raceTimerRow">
+                <div class="m7raceTimer"><i class="ph ph-timer"></i> <span id="cpuTime">0.0s</span></div>
+                <div class="m7raceDoneBadge" id="cpuDone" style="display:none"><i class="ph-bold ph-check-circle"></i> LISTO</div>
               </div>
             </div>
 
@@ -464,19 +466,30 @@
             <div class="m7racePanel m7racePanelGpu">
               <div class="m7racePanelHead">
                 <span class="m7racePanelName" style="color:var(--accent)">GPU</span>
-                <span class="m7racePanelSub" id="gpuWorkerLbl">64 cores simulados · SIMD masivo</span>
+                <span class="m7racePanelSub" id="gpuWorkerLbl">64 cores · SIMD masivo</span>
               </div>
               <div class="m7raceGpuGrid" id="gpuCores"></div>
-              <div class="m7raceTimer" style="color:var(--accent)">
-                <i class="ph ph-timer"></i> <span id="gpuTime">0.0s</span>
+              <div class="m7raceDesc m7raceDescGpu" id="gpuDesc">Listo para correr…</div>
+              <div class="m7raceTimerRow">
+                <div class="m7raceTimer" style="color:var(--accent)"><i class="ph ph-timer"></i> <span id="gpuTime">0.0s</span></div>
+                <div class="m7raceDoneBadge m7raceDoneBadgeGpu" id="gpuDone" style="display:none"><i class="ph-bold ph-check-circle"></i> LISTO</div>
               </div>
             </div>
           </div>
 
           <div class="m7raceResult" id="raceResult" style="display:none">
             <i class="ph-bold ph-trophy" id="raceWinnerIcon"></i>
-            <span id="raceWinnerText"></span>
-            <strong id="raceSpeedupText"></strong>
+            <div class="m7raceResultBody">
+              <span id="raceWinnerText"></span>
+              <strong id="raceSpeedupText"></strong>
+            </div>
+          </div>
+          <div class="m7raceResultDetail" id="raceResultDetail" style="display:none">
+            <div class="m7raceRealExample" id="raceRealExample"></div>
+            <div class="m7raceWhenRow">
+              <div class="m7raceWhenBox m7raceWhenCpu" id="raceWhenCpu"></div>
+              <div class="m7raceWhenBox m7raceWhenGpu" id="raceWhenGpu"></div>
+            </div>
           </div>
 
           <div class="m7raceExplain" id="raceExplain" style="display:none"></div>
@@ -494,62 +507,64 @@
         </div>
 
         <div class="m7clusterLayout reveal">
+          <!-- SVG Fat-Tree topology diagram -->
           <div class="m7clusterDiagram">
-            <div class="m7clusterTitle">Topología Fat-Tree (TOP500 estándar)</div>
-            <!-- Core switches -->
-            <div class="m7clusterRow">
-              <div class="m7clusterSwitch m7cSwitchCore">Core 1</div>
-              <div class="m7clusterSwitch m7cSwitchCore">Core 2</div>
-            </div>
-            <div class="m7clusterLines m7clusterLinesTop">
-              <div></div><div></div><div></div><div></div>
-            </div>
-            <!-- Aggregation switches -->
-            <div class="m7clusterRow">
-              <div class="m7clusterSwitch m7cSwitchAgg">Agg 1</div>
-              <div class="m7clusterSwitch m7cSwitchAgg">Agg 2</div>
-              <div class="m7clusterSwitch m7cSwitchAgg">Agg 3</div>
-              <div class="m7clusterSwitch m7cSwitchAgg">Agg 4</div>
-            </div>
-            <div class="m7clusterLines">
-              <div></div><div></div><div></div><div></div>
-              <div></div><div></div><div></div><div></div>
-            </div>
-            <!-- Nodes -->
-            <div class="m7clusterRow m7clusterNodeRow">
-              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N1</span></div>
-              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N2</span></div>
-              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N3</span></div>
-              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N4</span></div>
-              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N5</span></div>
-              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N6</span></div>
-              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N7</span></div>
-              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N8</span></div>
+            <div class="m7clusterTitle"><i class="ph ph-graph"></i> Topología Fat-Tree — estándar TOP500</div>
+            <svg id="clusterSvg" class="m7clusterSvg" viewBox="0 0 520 260"></svg>
+            <div class="m7clusterLegend">
+              <div class="m7clusterLegItem"><span class="m7clusterLegDot" style="background:#a3e635"></span>Core switches</div>
+              <div class="m7clusterLegItem"><span class="m7clusterLegDot" style="background:#38bdf8"></span>Aggregation switches</div>
+              <div class="m7clusterLegItem"><span class="m7clusterLegDot" style="background:#8a9bb8"></span>Nodos de cómputo</div>
             </div>
           </div>
 
-          <div class="m7clusterInfo">
-            <div class="m7clusterInfoCard" style="--cc:#a3e635">
-              <div class="m7clusterInfoHead"><i class="ph-bold ph-lightning"></i> InfiniBand HDR</div>
-              <div class="m7clusterInfoStat"><span>Bandwidth</span><strong>200 Gb/s</strong></div>
-              <div class="m7clusterInfoStat"><span>Latencia</span><strong>&lt; 0.5 µs</strong></div>
-              <div class="m7clusterInfoStat"><span>Uso típico</span><strong>HPC / ML training</strong></div>
-              <p>Protocolo de red diseñado para clusters. La latencia de 0.5µs hace que 1000 nodos se coordinen casi sin overhead de comunicación. Frontier usa InfiniBand.</p>
+          <!-- Interconnect comparison table -->
+          <div class="m7interTable">
+            <div class="m7interHead">
+              <div class="m7interHeadCell m7interHeadLabel">Métrica</div>
+              <div class="m7interHeadCell" style="color:#a3e635"><i class="ph-bold ph-lightning"></i><br/>InfiniBand HDR</div>
+              <div class="m7interHeadCell" style="color:#38bdf8"><i class="ph-bold ph-globe"></i><br/>Ethernet 100G</div>
+              <div class="m7interHeadCell" style="color:#f59e0b"><i class="ph-bold ph-link"></i><br/>NVLink 4.0</div>
             </div>
-            <div class="m7clusterInfoCard" style="--cc:#38bdf8">
-              <div class="m7clusterInfoHead"><i class="ph-bold ph-globe"></i> Ethernet 100GbE</div>
-              <div class="m7clusterInfoStat"><span>Bandwidth</span><strong>100 Gb/s</strong></div>
-              <div class="m7clusterInfoStat"><span>Latencia</span><strong>~5 µs</strong></div>
-              <div class="m7clusterInfoStat"><span>Uso típico</span><strong>Cloud / Web scale</strong></div>
-              <p>Más barato y universal. Suficiente para cloud computing donde las apps son stateless. La latencia mayor penaliza las computaciones tightly-coupled del HPC.</p>
+            <div class="m7interRow">
+              <div class="m7interLabel">Bandwidth</div>
+              <div class="m7interVal m7interBest">200 Gb/s</div>
+              <div class="m7interVal">100 Gb/s</div>
+              <div class="m7interVal m7interBest">900 GB/s</div>
             </div>
-            <div class="m7clusterInfoCard" style="--cc:#f59e0b">
-              <div class="m7clusterInfoHead"><i class="ph-bold ph-link"></i> NVLink 4.0 (GPU-GPU)</div>
-              <div class="m7clusterInfoStat"><span>Bandwidth</span><strong>900 GB/s</strong></div>
-              <div class="m7clusterInfoStat"><span>Latencia</span><strong>&lt; 1 µs</strong></div>
-              <div class="m7clusterInfoStat"><span>Uso típico</span><strong>Multi-GPU ML</strong></div>
-              <p>Conecta GPUs directamente en el mismo servidor (hasta 8 GPUs). Las 8 H100 de un DGX H100 comparten 900 GB/s — crucial para LLMs que no caben en una GPU.</p>
+            <div class="m7interRow">
+              <div class="m7interLabel">Latencia</div>
+              <div class="m7interVal m7interBest">&lt; 0.5 µs</div>
+              <div class="m7interVal">~5 µs</div>
+              <div class="m7interVal m7interBest">&lt; 1 µs</div>
             </div>
+            <div class="m7interRow">
+              <div class="m7interLabel">Costo</div>
+              <div class="m7interVal">Alto</div>
+              <div class="m7interVal m7interBest">Bajo</div>
+              <div class="m7interVal">Muy alto</div>
+            </div>
+            <div class="m7interRow">
+              <div class="m7interLabel">Alcance</div>
+              <div class="m7interVal">Rack a rack</div>
+              <div class="m7interVal">LAN / WAN</div>
+              <div class="m7interVal">Dentro del servidor</div>
+            </div>
+            <div class="m7interRow m7interRowNote">
+              <div class="m7interLabel">Caso real</div>
+              <div class="m7interVal"><strong style="color:#a3e635">Frontier</strong><br/>9.408 nodos</div>
+              <div class="m7interVal"><strong style="color:#38bdf8">AWS Cluster</strong><br/>10K+ nodos</div>
+              <div class="m7interVal"><strong style="color:#f59e0b">NVIDIA DGX</strong><br/>8 × H100</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Why interconnect matters -->
+        <div class="m7latencyCard reveal">
+          <div class="m7latencyCardIcon"><i class="ph-bold ph-clock-countdown"></i></div>
+          <div class="m7latencyCardBody">
+            <strong>¿Por qué 0.5µs vs 5µs importa tanto?</strong>
+            <p>En una simulación MPI con 1000 nodos que se sincronizan 1000 veces por segundo: Ethernet agrega <strong>5 segundos de overhead de red por segundo de cómputo</strong>. InfiniBand lo reduce a <strong>0.5 segundos</strong>. Con una workload de 24 horas, eso son 108 horas de diferencia — más de 4 días extra solo por la red.</p>
           </div>
         </div>
       </div>
@@ -617,33 +632,75 @@
 
         <div class="m7instanceGrid reveal">
           <div class="m7instanceCard" style="--ic:#38bdf8">
-            <i class="ph-bold ph-cpu"></i>
+            <div class="m7instanceCardTop">
+              <i class="ph-bold ph-cpu"></i>
+              <div class="m7instanceBars">
+                <div class="m7instanceBar"><span>CPU</span><div class="m7instanceBarFill" style="width:90%;background:#38bdf8"></div></div>
+                <div class="m7instanceBar"><span>RAM</span><div class="m7instanceBarFill" style="width:40%;background:#38bdf8"></div></div>
+                <div class="m7instanceBar"><span>GPU</span><div class="m7instanceBarFill" style="width:0%;background:#38bdf8"></div></div>
+              </div>
+            </div>
             <strong>Compute-Optimized</strong>
-            <span>c7g, c6i (AWS)</span>
-            <p>Alta relación CPU/RAM. Para cómputo intensivo sin mucha memoria. HPC, batch processing, simulaciones.</p>
+            <span>c7g · c6i (AWS)</span>
+            <p>Alta relación CPU/RAM. Para cómputo intensivo sin mucha memoria. HPC, batch processing, simulaciones CFD.</p>
             <div class="m7instancePrice">desde $0.085/hora</div>
           </div>
           <div class="m7instanceCard" style="--ic:#a3e635">
-            <i class="ph-bold ph-monitor"></i>
+            <div class="m7instanceCardTop">
+              <i class="ph-bold ph-monitor"></i>
+              <div class="m7instanceBars">
+                <div class="m7instanceBar"><span>CPU</span><div class="m7instanceBarFill" style="width:50%;background:#a3e635"></div></div>
+                <div class="m7instanceBar"><span>RAM</span><div class="m7instanceBarFill" style="width:60%;background:#a3e635"></div></div>
+                <div class="m7instanceBar"><span>GPU</span><div class="m7instanceBarFill" style="width:100%;background:#a3e635"></div></div>
+              </div>
+            </div>
             <strong>GPU Instances</strong>
-            <span>p4d, p5 (AWS)</span>
-            <p>8× NVIDIA A100/H100. ML training, inferencia masiva, rendering. DGX en el cloud, por horas.</p>
+            <span>p4d · p5 (AWS)</span>
+            <p>8× NVIDIA A100/H100 por instancia. ML training, inferencia masiva, rendering. Un DGX en el cloud, por horas.</p>
             <div class="m7instancePrice">desde $32/hora (p4d.24xl)</div>
           </div>
           <div class="m7instanceCard" style="--ic:#f59e0b">
-            <i class="ph-bold ph-database"></i>
+            <div class="m7instanceCardTop">
+              <i class="ph-bold ph-database"></i>
+              <div class="m7instanceBars">
+                <div class="m7instanceBar"><span>CPU</span><div class="m7instanceBarFill" style="width:50%;background:#f59e0b"></div></div>
+                <div class="m7instanceBar"><span>RAM</span><div class="m7instanceBarFill" style="width:100%;background:#f59e0b"></div></div>
+                <div class="m7instanceBar"><span>GPU</span><div class="m7instanceBarFill" style="width:0%;background:#f59e0b"></div></div>
+              </div>
+            </div>
             <strong>Memory-Optimized</strong>
-            <span>r7i, x2idn (AWS)</span>
-            <p>Hasta 24TB de RAM. Para bases de datos in-memory, analytics en tiempo real, graphs masivos.</p>
+            <span>r7i · x2idn (AWS)</span>
+            <p>Hasta 24TB de RAM. Para bases de datos in-memory, analytics en tiempo real, graph analytics masivos.</p>
             <div class="m7instancePrice">desde $0.252/hora</div>
           </div>
-          <div class="m7instanceCard" style="--ic:#a855f7">
-            <i class="ph-bold ph-tag"></i>
+          <div class="m7instanceCard m7instanceCardSpot" style="--ic:#a855f7">
+            <div class="m7instanceCardTop">
+              <i class="ph-bold ph-tag"></i>
+              <div class="m7instanceSpotBadge">HASTA 90% OFF</div>
+            </div>
             <strong>Spot Instances</strong>
-            <span>70% descuento</span>
-            <p>Capacidad no utilizada del cloud. Pueden interrumpirse con 2 min de aviso. Ideales para ML training fault-tolerant y batch jobs.</p>
+            <span>Cualquier tipo · 70–90% descuento</span>
+            <p>Capacidad no utilizada del cloud. Pueden interrumpirse con 2 min de aviso. Perfectas con checkpointing para ML training.</p>
             <div class="m7instancePrice">hasta 90% de descuento</div>
           </div>
+        </div>
+
+        <!-- Cost Calculator -->
+        <div class="m7cloudCost reveal">
+          <div class="m7cloudCostHead">
+            <div class="m7cloudCostHeadIcon"><i class="ph-bold ph-calculator"></i></div>
+            <div>
+              <strong>Calculadora de costo: GPU H100 por mes</strong>
+              <span>On-premise vs Cloud bajo demanda vs Spot instance</span>
+            </div>
+          </div>
+          <div class="m7cloudCostSliderGroup">
+            <label>Horas de cómputo GPU por mes: <strong id="cloudHoursLabel">100 horas / mes</strong></label>
+            <input type="range" id="cloudHours" min="10" max="720" value="100" step="10" oninput="updateCloudCost()" />
+            <div class="m7cloudCostSliderHints"><span>10h — proyecto pequeño</span><span>720h — servidor 24/7</span></div>
+          </div>
+          <div class="m7cloudCostCards" id="cloudCostGrid"></div>
+          <div class="m7cloudCostNote" id="cloudCostNote"></div>
         </div>
       </div>
     </section>
@@ -839,7 +896,7 @@ public class MpiConceptual {
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-flask"></i> Manos a la obra</span>
           <h2>Laboratorio Interactivo</h2>
-          <p class="msecSub">Implementá multiplicación de matrices paralela con ForkJoin y medí el speedup real contra la versión secuencial en tu máquina.</p>
+          <p class="msecSub">Implementá multiplicación de matrices paralela con ForkJoin y medí el speedup real contra la versión secuencial. Compará con la predicción de Amdahl.</p>
         </div>
 
         <div class="m7lab reveal">
@@ -847,39 +904,43 @@ public class MpiConceptual {
             <div class="m7labStep">
               <div class="m7labStepNum">1</div>
               <div class="m7labStepText">
-                <strong>Corré la versión secuencial</strong>
-                <p>El código ya está cargado. Ejecutalo y anotá el tiempo de la multiplicación 512×512 secuencial.</p>
+                <strong>Copiá el código</strong>
+                <p>Usá el botón de abajo para copiar <code>MatrizBenchmark.java</code> — compara secuencial vs ForkJoin en un mismo programa.</p>
               </div>
             </div>
             <div class="m7labStep">
               <div class="m7labStepNum">2</div>
               <div class="m7labStepText">
-                <strong>Descomentá el ForkJoin</strong>
-                <p>Cambiá la línea que llama a <code>multiplicarSeq()</code> por <code>multiplicarPar()</code> y volvé a correr.</p>
+                <strong>Pegalo en el editor</strong>
+                <p>Hacé clic en el editor de OneCompiler, seleccioná todo con <kbd>Ctrl+A</kbd> y pegá el código copiado.</p>
               </div>
             </div>
             <div class="m7labStep">
               <div class="m7labStepNum">3</div>
               <div class="m7labStepText">
-                <strong>Calculá el speedup</strong>
-                <p>Dividí el tiempo secuencial por el paralelo. Comparalo con la predicción de Amdahl para los cores disponibles.</p>
+                <strong>Ejecutá y calculá el speedup</strong>
+                <p>Presioná <strong>Run</strong>. Anotá los tiempos secuencial y paralelo. ¿Coincide con la predicción de Amdahl para los cores disponibles?</p>
               </div>
             </div>
           </div>
 
           <div class="m7labEmbed">
             <iframe
-              src="https://onecompiler.com/java"
+              src="https://onecompiler.com/embed/java?theme=dark&hideTitle=true&hideNew=true&hideLanguages=true"
               title="Lab Módulo 7 — Matrix Multiply paralela"
-              style="width:100%;height:480px;border:none;border-radius:12px;">
+              width="100%"
+              height="480"
+              frameborder="0"
+              allowfullscreen>
             </iframe>
           </div>
 
           <div class="m7labHint">
             <div class="m7labHintHeader">
-              <span><i class="ph ph-code"></i> Código inicial — copialo y pegalo en el compilador</span>
+              <i class="ph-bold ph-code-block"></i>
+              MatrizBenchmark.java — código para copiar y pegar
               <button class="m7btn m7btnSm" onclick="copyLabCode7()">
-                <i class="ph-bold ph-copy"></i> Copiar código
+                <i class="ph-bold ph-copy"></i> Copiar
               </button>
             </div>
             <pre class="language-java" id="lab7CodePre"><code class="language-java">import java.util.concurrent.*;

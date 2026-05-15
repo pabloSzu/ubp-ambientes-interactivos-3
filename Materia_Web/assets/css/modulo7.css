@@ -441,8 +441,8 @@
 ═══════════════════════════════════════════ */
 .m7hwGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
   margin-top: 40px;
 }
 .m7hwCard {
@@ -569,7 +569,7 @@
 }
 .m7hwBody {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1px;
   background: rgba(255,255,255,0.05);
   border-top: 1px solid rgba(255,255,255,0.05);
@@ -1807,15 +1807,444 @@
 }
 
 /* ═══════════════════════════════════════════
+   RACE — nuevos elementos
+═══════════════════════════════════════════ */
+.m7raceDesc {
+  font-size: 12px;
+  color: var(--sub);
+  min-height: 32px;
+  padding: 8px 12px;
+  margin: 8px 0;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  line-height: 1.5;
+  font-family: 'JetBrains Mono', monospace;
+  transition: color 0.2s;
+}
+.m7raceDescGpu { color: var(--sub); }
+.m7raceDesc.active { color: var(--text); }
+.m7raceDescGpu.active { color: var(--accent); }
+.m7raceTimerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 4px;
+}
+.m7raceDoneBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  background: rgba(56,189,248,0.12);
+  border: 1px solid rgba(56,189,248,0.3);
+  color: #38bdf8;
+  animation: m7donePop 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.m7raceDoneBadgeGpu {
+  background: var(--accent-sub);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+@keyframes m7donePop {
+  from { opacity:0; transform:scale(0.7); }
+  to   { opacity:1; transform:scale(1); }
+}
+.m7raceResultBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.m7raceResultDetail {
+  margin-top: 16px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  animation: m7resultPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.m7raceRealExample {
+  padding: 16px 20px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text);
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border);
+}
+.m7raceWhenRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.m7raceWhenBox {
+  padding: 14px 18px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  font-weight: 600;
+}
+.m7raceWhenCpu {
+  border-right: 1px solid var(--border);
+  color: #38bdf8;
+  background: rgba(56,189,248,0.04);
+}
+.m7raceWhenGpu {
+  color: var(--accent);
+  background: var(--accent-sub);
+}
+
+/* ═══════════════════════════════════════════
+   CLUSTERS — rediseño SVG + tabla
+═══════════════════════════════════════════ */
+.m7clusterLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 40px;
+  align-items: start;
+}
+.m7clusterDiagram {
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.m7clusterTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sub);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 16px;
+}
+.m7clusterSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.m7clusterLegend {
+  display: flex;
+  gap: 20px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  flex-wrap: wrap;
+}
+.m7clusterLegItem {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--sub);
+  font-weight: 600;
+}
+.m7clusterLegDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.m7interTable {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.m7interHead {
+  display: grid;
+  grid-template-columns: 110px repeat(3, 1fr);
+  border-bottom: 2px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.m7interHeadCell {
+  padding: 16px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.4;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.m7interHeadCell:last-child { border-right: none; }
+.m7interHeadLabel {
+  color: var(--sub);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: left;
+}
+.m7interRow {
+  display: grid;
+  grid-template-columns: 110px repeat(3, 1fr);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.m7interRow:last-child { border-bottom: none; }
+.m7interRowNote { background: rgba(255,255,255,0.02); }
+.m7interLabel {
+  padding: 13px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sub);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+}
+.m7interVal {
+  padding: 13px 14px;
+  font-size: 13px;
+  color: var(--text);
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.4;
+}
+.m7interVal:last-child { border-right: none; }
+.m7interBest {
+  font-weight: 700;
+  color: var(--accent);
+}
+.m7latencyCard {
+  margin-top: 24px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+}
+.m7latencyCardIcon {
+  font-size: 28px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.m7latencyCardBody strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.m7latencyCardBody p {
+  font-size: 13.5px;
+  color: var(--text);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════
+   INSTANCE CARDS — mejoras
+═══════════════════════════════════════════ */
+.m7instanceCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.m7instanceBars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  margin-left: 16px;
+}
+.m7instanceBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--sub);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.m7instanceBar span { width: 24px; flex-shrink: 0; }
+.m7instanceBarFill {
+  height: 5px;
+  border-radius: 3px;
+  min-width: 2px;
+  transition: width 0.3s ease;
+}
+.m7instanceCardSpot {
+  border-style: dashed;
+}
+.m7instanceSpotBadge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  background: rgba(168,85,247,0.15);
+  border: 1px solid rgba(168,85,247,0.3);
+  color: #a855f7;
+  letter-spacing: 0.05em;
+  animation: m7spotPulse 2s ease-in-out infinite;
+}
+@keyframes m7spotPulse {
+  0%,100% { opacity:0.7; }
+  50%      { opacity:1; }
+}
+
+/* ═══════════════════════════════════════════
+   CLOUD COST CALCULATOR
+═══════════════════════════════════════════ */
+.m7cloudCost {
+  margin-top: 40px;
+  padding: 32px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.m7cloudCostHead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.m7cloudCostHeadIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--accent-sub);
+  border: 1px solid var(--accent-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.m7cloudCostHead strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.m7cloudCostHead span {
+  font-size: 12px;
+  color: var(--sub);
+}
+.m7cloudCostSliderGroup {
+  margin-bottom: 28px;
+}
+.m7cloudCostSliderGroup label {
+  display: block;
+  font-size: 13px;
+  color: var(--sub);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.m7cloudCostSliderGroup label strong {
+  color: var(--accent);
+}
+.m7cloudCostSliderGroup input[type=range] {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+.m7cloudCostSliderHints {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+}
+.m7cloudCostCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.m7cloudCostCard {
+  padding: 20px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+.m7cloudCostCard.best {
+  border-color: var(--accent-border);
+  background: var(--accent-sub);
+}
+.m7cloudCostCard.best .m7cloudCostCardAmount {
+  color: var(--accent);
+}
+.m7cloudCostCardLabel {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--sub);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.m7cloudCostCardAmount {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.m7cloudCostCardSub {
+  font-size: 11px;
+  color: var(--sub);
+  line-height: 1.4;
+}
+.m7cloudCostNote {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--accent-sub);
+  border: 1px solid var(--accent-border);
+  line-height: 1.5;
+  min-height: 20px;
+}
+
+/* ═══════════════════════════════════════════
+   LAB HINT HEADER — alineado con Módulo 6
+═══════════════════════════════════════════ */
+.m7labHintHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--sub);
+  font-weight: 600;
+}
+.m7labHintHeader .m7btn {
+  margin-left: auto;
+}
+
+/* ═══════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .m7hwGrid { grid-template-columns: repeat(2, 1fr); }
+  .m7hwGrid { grid-template-columns: 1fr 1fr; }
+  .m7hwBody { grid-template-columns: repeat(2, 1fr); }
   .m7flipGrid { grid-template-columns: repeat(2, 1fr); }
   .m7glossGrid { grid-template-columns: repeat(2, 1fr); }
   .m7clusterLayout { grid-template-columns: 1fr; }
+  .m7interHead { grid-template-columns: 90px repeat(3, 1fr); }
+  .m7interRow  { grid-template-columns: 90px repeat(3, 1fr); }
   .m7lab { grid-template-columns: 1fr; }
   .m7labEmbed { order: -1; }
+  .m7cloudCostCards { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
   .m7heroStats { grid-template-columns: 1fr; }
@@ -1827,8 +2256,10 @@
   .m7gCharts { grid-template-columns: 1fr; }
   .m7gSimControls { flex-direction: column; gap: 20px; }
   .m7hwGrid { grid-template-columns: 1fr; }
+  .m7hwBody { grid-template-columns: repeat(4, 1fr); }
   .m7racePanels { grid-template-columns: 1fr; }
   .m7raceVs { display: none; }
+  .m7raceWhenRow { grid-template-columns: 1fr; }
   .m7scalingComp { grid-template-columns: 1fr; }
   .m7scalingArrow { display: none; }
   .m7instanceGrid { grid-template-columns: repeat(2, 1fr); }
@@ -1836,10 +2267,16 @@
   .m7archOptions { grid-template-columns: 1fr; }
   .m7glossGrid { grid-template-columns: repeat(2, 1fr); }
   .m7pullQuote { padding: 24px; }
+  .m7latencyCard { flex-direction: column; }
+  .m7interHead { display: none; }
+  .m7interRow { grid-template-columns: 1fr 1fr 1fr 1fr; font-size: 11px; }
+  .m7interLabel { font-size: 9px; }
 }
 @media (max-width: 480px) {
   .m7objGrid { grid-template-columns: 1fr; }
   .m7instanceGrid { grid-template-columns: 1fr; }
   .m7glossGrid { grid-template-columns: 1fr; }
   .m7glossCard { height: 160px; }
+  .m7hwBody { grid-template-columns: repeat(2, 1fr); }
+  .m7cloudCostCards { grid-template-columns: 1fr; }
 }
