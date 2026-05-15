@@ -21,6 +21,7 @@
   --red: #c4002b;
   --purple: #9b6fff;
   --orange: #ff7d54;
+  --lime:   #a3e635;
   --r: 18px;
 }
 
@@ -457,7 +458,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 .m4 { --c: var(--purple); }
 .m5 { --c: var(--orange); }
 .m6 { --c: var(--blue); }
-.m7 { --c: var(--purple); }
+.m7 { --c: var(--lime); }
 
 .mCardInner {
   display: flex;

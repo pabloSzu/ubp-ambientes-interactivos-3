@@ -1,0 +1,1286 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PAI3 · Módulo 7 · HPC, GPU &amp; Cloud</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../assets/css/modulo.css" />
+    <link rel="stylesheet" href="../assets/css/modulo7.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" />
+    <style>
+      :root {
+        --accent:        #a3e635;
+        --accent-sub:    rgba(163,230,53,0.13);
+        --accent-border: rgba(163,230,53,0.38);
+        --accent-mid:    rgba(163,230,53,0.55);
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="readProgress" id="readProgress"></div>
+    <div class="mglow" id="mglow"></div>
+
+    <!-- ── HEADER ──────────────────────────── -->
+    <header class="mhdr">
+      <a class="mhdrBack" href="../index.html">
+        <i class="ph ph-arrow-left"></i> Campus
+      </a>
+      <span class="mhdrBrand">PAI3</span>
+      <span class="mhdrLabel">Módulo 7 · HPC &amp; GPU</span>
+      <nav class="mhdrSections">
+        <a href="#algoritmos">Algoritmos</a>
+        <a href="#gustafson">Gustafson</a>
+        <a href="#hardware">GPU</a>
+        <a href="#cloud">Cloud</a>
+        <a href="#laboratorio">Lab</a>
+        <a href="#actividades">Actividad</a>
+      </nav>
+    </header>
+
+    <!-- ── HERO ─────────────────────────────── -->
+    <section class="m7hero">
+      <canvas class="m7heroCanvas" id="m7Canvas"></canvas>
+      <div class="m7heroOverlay"></div>
+      <div class="m7heroContent msecWrap">
+        <div class="m7heroBadge">
+          <i class="ph-bold ph-cpu"></i> Bloque 04 — Rendimiento extremo
+        </div>
+        <h1 class="m7heroTitle">Alto Rendimiento<br/><span>HPC, GPU &amp; Cloud</span></h1>
+        <p class="m7heroIntro">Un solo core ya no alcanza. Entrenar GPT, renderizar una película en CGI, simular el clima global o secuenciar un genoma requieren miles de procesadores en coordinación perfecta. Esto es el límite de lo computacionalmente posible.</p>
+        <div class="m7heroStats">
+          <div class="m7heroStat">
+            <span class="m7heroStatNum" id="counter1">0</span>
+            <span class="m7heroStatLabel">CUDA cores en una GPU NVIDIA H100</span>
+          </div>
+          <div class="m7heroStat">
+            <span class="m7heroStatNum" id="counter2">0</span>
+            <span class="m7heroStatLabel">PetaFLOPS del Frontier — el supercomputador más potente del mundo</span>
+          </div>
+          <div class="m7heroStat">
+            <span class="m7heroStatNum" id="counter3">0</span>
+            <span class="m7heroStatLabel">tipos de instancias de cómputo disponibles en Amazon AWS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PULL QUOTE ────────────────────────── -->
+    <section class="msec alt">
+      <div class="msecWrap">
+        <blockquote class="m7pullQuote reveal">
+          <i class="ph-bold ph-quotes"></i>
+          <p>"La diferencia entre un teraflop y un exaflop no es de cantidad — es de qué problemas podés resolver. El clima global, los pliegues de proteínas, la inteligencia artificial: todos eran imposibles hasta que el hardware alcanzó la escala necesaria."</p>
+          <cite>— El cambio de paradigma: de cores a clusters · Frontier logró 1.102 ExaFLOPS en 2022 — un trillón de operaciones de punto flotante por segundo.</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ── MICROOBJETIVOS ────────────────────── -->
+    <section class="msec" id="microobjetivos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-target"></i> Objetivos del módulo</span>
+          <h2>¿Qué vas a dominar?</h2>
+        </div>
+        <div class="m7objGrid">
+          <div class="m7objCard reveal" style="--delay:0ms">
+            <div class="m7objIcon"><i class="ph-bold ph-chart-line-up"></i></div>
+            <strong>Ley de Gustafson-Barsis</strong>
+            <p>Por qué para HPC Gustafson reemplaza a Amdahl: el problema crece con los cores, no se queda fijo.</p>
+          </div>
+          <div class="m7objCard reveal" style="--delay:80ms">
+            <div class="m7objIcon"><i class="ph-bold ph-cpu"></i></div>
+            <strong>CPU vs GPU vs Cluster</strong>
+            <p>Cuándo usar cada arquitectura. Por qué una GPU tiene 14.592 cores simples en lugar de 8 cores complejos.</p>
+          </div>
+          <div class="m7objCard reveal" style="--delay:160ms">
+            <div class="m7objIcon"><i class="ph-bold ph-cloud"></i></div>
+            <strong>Cloud y scaling</strong>
+            <p>Scaling vertical vs horizontal. Spot instances, auto-scaling groups, y cuándo el cloud supera al on-premise.</p>
+          </div>
+          <div class="m7objCard reveal" style="--delay:240ms">
+            <div class="m7objIcon"><i class="ph-bold ph-game-controller"></i></div>
+            <strong>Aplicado a interactivos</strong>
+            <p>Cómo Unreal Engine 5, ChatGPT, Netflix y el HFT usan estas arquitecturas en producción real.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ALGORITMOS DE ALTO REQUERIMIENTO ─── -->
+    <section class="msec alt" id="algoritmos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-function"></i> El problema</span>
+          <h2>Algoritmos que necesitan poder de fuego</h2>
+          <p class="msecSub">No todo algoritmo necesita HPC. Estos 6 dominios sí — porque su complejidad computacional supera lo que un CPU consumer puede hacer en tiempo útil. Hacé clic en cada card para ver los detalles.</p>
+        </div>
+        <div class="m7flipGrid reveal">
+
+          <div class="m7flipCard">
+            <div class="m7flipInner">
+              <div class="m7flipFront" style="--fc:#a3e635">
+                <i class="ph-bold ph-brain"></i>
+                <strong>ML Training</strong>
+                <span>Deep Learning</span>
+              </div>
+              <div class="m7flipBack">
+                <strong>O(épocas × N × params)</strong>
+                <p>Entrenar GPT-4 requirió ~25,000 GPU·días. Una red con 1.8T parámetros necesita billones de operaciones de matriz por paso. Imposible en CPU solo.</p>
+                <div class="m7flipTag">GPU cluster + NVLink</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="m7flipCard">
+            <div class="m7flipInner">
+              <div class="m7flipFront" style="--fc:#f59e0b">
+                <i class="ph-bold ph-film-strip"></i>
+                <strong>Ray Tracing CGI</strong>
+                <span>Renderizado 3D</span>
+              </div>
+              <div class="m7flipBack">
+                <strong>O(píxeles × rayos × rebotes)</strong>
+                <p>Un frame de Avatar 2 tardó ~100 horas de cómputo en un CPU. Con GPU farm de 2,000+ unidades se reduce a minutos. Cada píxel es independiente — paralelismo perfecto.</p>
+                <div class="m7flipTag">GPU farm / Render Cloud</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="m7flipCard">
+            <div class="m7flipInner">
+              <div class="m7flipFront" style="--fc:#38bdf8">
+                <i class="ph-bold ph-cloud-sun"></i>
+                <strong>Simulación Climática</strong>
+                <span>CFD / Meteorología</span>
+              </div>
+              <div class="m7flipBack">
+                <strong>O(N³) por paso de tiempo</strong>
+                <p>Simular el clima global requiere resolver ecuaciones de Navier-Stokes en una grilla de 100M+ celdas. Frontier ejecuta 1M pasos en días — antes tomaba años.</p>
+                <div class="m7flipTag">Supercomputador HPC</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="m7flipCard">
+            <div class="m7flipInner">
+              <div class="m7flipFront" style="--fc:#a855f7">
+                <i class="ph-bold ph-dna"></i>
+                <strong>Genómica</strong>
+                <span>Bioinformática</span>
+              </div>
+              <div class="m7flipBack">
+                <strong>O(N × M) Smith-Waterman</strong>
+                <p>Alinear dos genomas de 3.2B bases requiere O(N²) comparaciones. AlphaFold2 predijo 200M proteínas usando 128 TPUs de Google en meses — antes era una tesis doctoral por proteína.</p>
+                <div class="m7flipTag">TPU / GPU cluster</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="m7flipCard">
+            <div class="m7flipInner">
+              <div class="m7flipFront" style="--fc:#ef4444">
+                <i class="ph-bold ph-lock-key"></i>
+                <strong>Criptografía / Mining</strong>
+                <span>Hash brute-force</span>
+              </div>
+              <div class="m7flipBack">
+                <strong>O(2ⁿ) fuerza bruta</strong>
+                <p>Bitcoin mining: 500 exa-hashes por segundo globalmente. Cada hash es una operación SHA-256 independiente — GPU farms de 10,000+ unidades compiten por el bloque. Embarassingly parallel puro.</p>
+                <div class="m7flipTag">ASIC / GPU masivo</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="m7flipCard">
+            <div class="m7flipInner">
+              <div class="m7flipFront" style="--fc:#34d399">
+                <i class="ph-bold ph-atom"></i>
+                <strong>Física de Partículas</strong>
+                <span>N-body / LHC</span>
+              </div>
+              <div class="m7flipBack">
+                <strong>O(N²) naive, O(N log N) optimized</strong>
+                <p>El LHC genera 40TB de datos por segundo. Detectores como ATLAS filtran en tiempo real usando FPGAs a 40MHz. Simulaciones de N cuerpos (galaxias, quarks) usan algoritmos Barnes-Hut en GPU.</p>
+                <div class="m7flipTag">FPGA + GPU + Cluster</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LEY DE GUSTAFSON vs AMDAHL ────────── -->
+    <section class="msec" id="gustafson">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-chart-line-up"></i> La ley que faltaba</span>
+          <h2>Gustafson-Barsis vs Amdahl — el debate de los 40 años</h2>
+          <p class="msecSub">Amdahl (1967) dice que el speedup está acotado. Gustafson (1988) dice que Amdahl se equivoca porque en HPC el problema crece con los cores — más poder = resolver un problema mayor en el mismo tiempo, no el mismo problema más rápido.</p>
+        </div>
+
+        <div class="m7lawCompare reveal">
+          <div class="m7lawBox m7lawAmdahl">
+            <div class="m7lawBoxHead">
+              <i class="ph-bold ph-warning"></i>
+              <div>
+                <strong>Ley de Amdahl</strong>
+                <span>1967 — Problema de tamaño fijo</span>
+              </div>
+            </div>
+            <div class="m7lawFormula">S(N) = 1 / ((1−P) + P/N)</div>
+            <p class="m7lawDesc">El speedup converge a <strong>1/(1-P)</strong> sin importar cuántos cores agregues. El cuello de botella serial es infranqueable.</p>
+            <div class="m7lawInsight m7lawInsightWarn">⚠️ Pessimista: con 90% paralelo, el máximo speedup es ×10 — con ∞ cores.</div>
+          </div>
+
+          <div class="m7lawVs">VS</div>
+
+          <div class="m7lawBox m7lawGustafson">
+            <div class="m7lawBoxHead">
+              <i class="ph-bold ph-check-circle"></i>
+              <div>
+                <strong>Ley de Gustafson-Barsis</strong>
+                <span>1988 — Problema escalado</span>
+              </div>
+            </div>
+            <div class="m7lawFormula">S(N) = N − (1−P)·(N−1)</div>
+            <p class="m7lawDesc">Con más cores podés resolver un problema <strong>N veces mayor</strong> en el mismo tiempo. El speedup crece casi linealmente.</p>
+            <div class="m7lawInsight m7lawInsightGood">✅ Optimista: para HPC real, aumentar cores = escalar el problema, no solo acelerar.</div>
+          </div>
+        </div>
+
+        <!-- Simulador dual -->
+        <div class="m7gSim reveal">
+          <div class="m7gSimControls">
+            <div class="m7gSliderGroup">
+              <label>Fracción paralela (P): <strong id="gPLabel">80%</strong></label>
+              <input type="range" id="gP" min="0" max="99" value="80" oninput="updateGustafson()" />
+            </div>
+            <div class="m7gSliderGroup">
+              <label>Núcleos (N): <strong id="gNLabel">8</strong></label>
+              <input type="range" id="gN" min="0" max="6" value="3" oninput="updateGustafson()" />
+            </div>
+          </div>
+
+          <div class="m7gCharts">
+            <div class="m7gChartWrap">
+              <div class="m7gChartTitle"><i class="ph ph-warning" style="color:#ef4444"></i> Amdahl — speedup acotado</div>
+              <svg class="m7gSvg" id="amdahlSvg7" viewBox="0 0 420 220" preserveAspectRatio="none"></svg>
+              <div class="m7gStat">
+                Speedup actual: <strong id="amdahlSpeedup7">×1.0</strong>
+                &nbsp;·&nbsp; Techo teórico: <strong id="amdahlMax7">×5.0</strong>
+              </div>
+            </div>
+
+            <div class="m7gChartWrap m7gChartWrapAccent">
+              <div class="m7gChartTitle"><i class="ph ph-check-circle" style="color:#a3e635"></i> Gustafson — escala con N</div>
+              <svg class="m7gSvg" id="gustafsonSvg" viewBox="0 0 420 220" preserveAspectRatio="none"></svg>
+              <div class="m7gStat">
+                Speedup actual: <strong id="gustafsonSpeedup">×1.0</strong>
+                &nbsp;·&nbsp; Crecimiento: <strong id="gustafsonGrowth">lineal</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="m7gInsight" id="gInsight"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HARDWARE: CPU vs GPU vs FPGA vs ASIC ── -->
+    <section class="msec alt" id="hardware">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-cpu"></i> El hardware correcto</span>
+          <h2>CPU · GPU · FPGA · ASIC — ¿cuándo usar cada uno?</h2>
+          <p class="msecSub">No existe "el mejor hardware". Cada arquitectura domina en su dominio. Elegir mal puede costar 100x en tiempo o en dinero. Hacé clic en cada chip para ver cuándo conviene.</p>
+        </div>
+
+        <div class="m7hwGrid reveal">
+          <div class="m7hwCard" data-hw="cpu">
+            <div class="m7hwCardTop" style="--hc:#38bdf8">
+              <div class="m7hwChip">
+                <div class="m7hwCore"></div><div class="m7hwCore"></div>
+                <div class="m7hwCore"></div><div class="m7hwCore"></div>
+                <div class="m7hwCore"></div><div class="m7hwCore"></div>
+                <div class="m7hwCore"></div><div class="m7hwCore"></div>
+              </div>
+              <div>
+                <span class="m7hwName">CPU</span>
+                <span class="m7hwSub">8–128 cores · hasta 5.8 GHz</span>
+              </div>
+            </div>
+            <div class="m7hwBody">
+              <div class="m7hwStat"><span>Cores</span><strong>8–128</strong></div>
+              <div class="m7hwStat"><span>Latencia</span><strong>~ns</strong></div>
+              <div class="m7hwStat"><span>Throughput</span><strong>medio</strong></div>
+              <div class="m7hwStat"><span>Precio</span><strong>$300–$15K</strong></div>
+            </div>
+            <div class="m7hwWhen">
+              <div class="m7hwWhenTitle">✅ Usar cuando:</div>
+              <ul>
+                <li>Código con mucho control flow (if/else, recursión)</li>
+                <li>Latencia ultra-baja (HFT, gaming en tiempo real)</li>
+                <li>Tareas secuenciales o de baja paralelización</li>
+              </ul>
+            </div>
+            <div class="m7hwTag" style="--hc:#38bdf8">Generalista · Latencia baja</div>
+          </div>
+
+          <div class="m7hwCard" data-hw="gpu">
+            <div class="m7hwCardTop" style="--hc:#a3e635">
+              <div class="m7hwChipGpu">
+                <!-- mini grid de cores GPU -->
+                <div class="m7hwGpuGrid" id="hwGpuGrid"></div>
+              </div>
+              <div>
+                <span class="m7hwName">GPU</span>
+                <span class="m7hwSub">14K+ cores · NVIDIA H100 80GB</span>
+              </div>
+            </div>
+            <div class="m7hwBody">
+              <div class="m7hwStat"><span>Cores (CUDA)</span><strong>14.592</strong></div>
+              <div class="m7hwStat"><span>VRAM</span><strong>80 GB HBM3</strong></div>
+              <div class="m7hwStat"><span>Throughput</span><strong>3958 TOPS</strong></div>
+              <div class="m7hwStat"><span>Precio</span><strong>$30K–$40K</strong></div>
+            </div>
+            <div class="m7hwWhen">
+              <div class="m7hwWhenTitle">✅ Usar cuando:</div>
+              <ul>
+                <li>Operaciones uniformes sobre millones de datos (ML, render)</li>
+                <li>Sin dependencias entre elementos (embarassingly parallel)</li>
+                <li>La misma operación aplicada a todos los datos (SIMD extremo)</li>
+              </ul>
+            </div>
+            <div class="m7hwTag" style="--hc:#a3e635">SIMD masivo · Throughput extremo</div>
+          </div>
+
+          <div class="m7hwCard" data-hw="fpga">
+            <div class="m7hwCardTop" style="--hc:#f59e0b">
+              <div class="m7hwChipFpga">
+                <div class="m7hwFpgaGrid">
+                  <span>LUT</span><span>DSP</span><span>RAM</span>
+                  <span>CLK</span><span>I/O</span><span>PLL</span>
+                </div>
+              </div>
+              <div>
+                <span class="m7hwName">FPGA</span>
+                <span class="m7hwSub">Reconfigurable · Intel Agilex</span>
+              </div>
+            </div>
+            <div class="m7hwBody">
+              <div class="m7hwStat"><span>LUTs</span><strong>~2M</strong></div>
+              <div class="m7hwStat"><span>Latencia</span><strong>ns–µs</strong></div>
+              <div class="m7hwStat"><span>Eficiencia</span><strong>muy alta</strong></div>
+              <div class="m7hwStat"><span>Precio</span><strong>$1K–$50K</strong></div>
+            </div>
+            <div class="m7hwWhen">
+              <div class="m7hwWhenTitle">✅ Usar cuando:</div>
+              <ul>
+                <li>Protocolo de red a latencia extrema (1µs target)</li>
+                <li>Pipeline de datos en streaming continuo (LHC, HFT)</li>
+                <li>Algoritmo fijo pero que requiere máxima eficiencia energética</li>
+              </ul>
+            </div>
+            <div class="m7hwTag" style="--hc:#f59e0b">Reconfigurable · Ultra-eficiente</div>
+          </div>
+
+          <div class="m7hwCard" data-hw="asic">
+            <div class="m7hwCardTop" style="--hc:#a855f7">
+              <div class="m7hwChipAsic">
+                <i class="ph-bold ph-google-logo" style="font-size:28px;color:#a855f7;opacity:0.8"></i>
+                <span style="font-size:11px;font-weight:800;color:#a855f7">TPU v4</span>
+              </div>
+              <div>
+                <span class="m7hwName">ASIC</span>
+                <span class="m7hwSub">Propósito único · Google TPU</span>
+              </div>
+            </div>
+            <div class="m7hwBody">
+              <div class="m7hwStat"><span>Tipo</span><strong>Single-purpose</strong></div>
+              <div class="m7hwStat"><span>TOPS</span><strong>~275 (TPU v4)</strong></div>
+              <div class="m7hwStat"><span>Eficiencia</span><strong>máxima</strong></div>
+              <div class="m7hwStat"><span>Costo diseño</span><strong>$10M+</strong></div>
+            </div>
+            <div class="m7hwWhen">
+              <div class="m7hwWhenTitle">✅ Usar cuando:</div>
+              <ul>
+                <li>Workload fijo a enorme escala (Google Search, ML inference)</li>
+                <li>El algoritmo nunca cambia y se corre billones de veces</li>
+                <li>TCO justifica el costo de diseño (hyperscalers)</li>
+              </ul>
+            </div>
+            <div class="m7hwTag" style="--hc:#a855f7">Propósito único · Máx. eficiencia</div>
+          </div>
+        </div>
+
+        <!-- CPU vs GPU Race Visualizer -->
+        <div class="msecHead reveal" style="margin-top:60px">
+          <span class="msecEye"><i class="ph ph-play-circle"></i> Visualizador interactivo</span>
+          <h2>CPU vs GPU — la carrera visual</h2>
+          <p class="msecSub">¿Por qué una GPU con 14.000 cores lentos aplasta a una CPU con 8 cores rápidos para ciertas tareas? Y ¿por qué la CPU gana para otras? Elegí el tipo de tarea y corré la carrera.</p>
+        </div>
+
+        <div class="m7race reveal">
+          <div class="m7raceControls">
+            <div class="m7raceTaskSel">
+              <span class="m7raceTaskLbl">Tipo de tarea:</span>
+              <button class="m7raceTaskBtn m7raceTaskBtnActive" id="raceTaskSimple" onclick="raceSetTask('simple',this)">
+                <i class="ph ph-image"></i> Simple masiva<br/><small>1024 píxeles / elem. de matriz</small>
+              </button>
+              <button class="m7raceTaskBtn" id="raceTaskComplex" onclick="raceSetTask('complex',this)">
+                <i class="ph ph-tree-structure"></i> Compleja / dependencias<br/><small>árbol de decisión / graph traversal</small>
+              </button>
+            </div>
+            <div class="m7raceCtrlGroup">
+              <button class="m7raceBtn m7raceBtnPrimary" id="racePlayBtn" onclick="racePlay()">
+                <i class="ph-bold ph-play"></i> Correr carrera
+              </button>
+              <button class="m7raceBtn" onclick="raceReset()">
+                <i class="ph-bold ph-arrow-clockwise"></i> Reset
+              </button>
+            </div>
+          </div>
+
+          <div class="m7racePanels">
+            <div class="m7racePanel">
+              <div class="m7racePanelHead">
+                <span class="m7racePanelName">CPU</span>
+                <span class="m7racePanelSub" id="cpuWorkerLbl">8 cores · alto rendimiento individual</span>
+              </div>
+              <div class="m7raceCores" id="cpuCores"></div>
+              <div class="m7raceTimer">
+                <i class="ph ph-timer"></i> <span id="cpuTime">0.0s</span>
+              </div>
+            </div>
+
+            <div class="m7raceVs">VS</div>
+
+            <div class="m7racePanel m7racePanelGpu">
+              <div class="m7racePanelHead">
+                <span class="m7racePanelName" style="color:var(--accent)">GPU</span>
+                <span class="m7racePanelSub" id="gpuWorkerLbl">64 cores simulados · SIMD masivo</span>
+              </div>
+              <div class="m7raceGpuGrid" id="gpuCores"></div>
+              <div class="m7raceTimer" style="color:var(--accent)">
+                <i class="ph ph-timer"></i> <span id="gpuTime">0.0s</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="m7raceResult" id="raceResult" style="display:none">
+            <i class="ph-bold ph-trophy" id="raceWinnerIcon"></i>
+            <span id="raceWinnerText"></span>
+            <strong id="raceSpeedupText"></strong>
+          </div>
+
+          <div class="m7raceExplain" id="raceExplain" style="display:none"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CLUSTERS E INTERCONNECTS ───────────── -->
+    <section class="msec" id="clusters">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-network"></i> La red que lo conecta todo</span>
+          <h2>Clusters — cuando una máquina no alcanza</h2>
+          <p class="msecSub">Un supercomputador no es una máquina enorme — es miles de máquinas medianas conectadas con una red tan rápida que parecen una sola. La velocidad del interconnect define si el cluster escala o no.</p>
+        </div>
+
+        <div class="m7clusterLayout reveal">
+          <div class="m7clusterDiagram">
+            <div class="m7clusterTitle">Topología Fat-Tree (TOP500 estándar)</div>
+            <!-- Core switches -->
+            <div class="m7clusterRow">
+              <div class="m7clusterSwitch m7cSwitchCore">Core 1</div>
+              <div class="m7clusterSwitch m7cSwitchCore">Core 2</div>
+            </div>
+            <div class="m7clusterLines m7clusterLinesTop">
+              <div></div><div></div><div></div><div></div>
+            </div>
+            <!-- Aggregation switches -->
+            <div class="m7clusterRow">
+              <div class="m7clusterSwitch m7cSwitchAgg">Agg 1</div>
+              <div class="m7clusterSwitch m7cSwitchAgg">Agg 2</div>
+              <div class="m7clusterSwitch m7cSwitchAgg">Agg 3</div>
+              <div class="m7clusterSwitch m7cSwitchAgg">Agg 4</div>
+            </div>
+            <div class="m7clusterLines">
+              <div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div>
+            </div>
+            <!-- Nodes -->
+            <div class="m7clusterRow m7clusterNodeRow">
+              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N1</span></div>
+              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N2</span></div>
+              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N3</span></div>
+              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N4</span></div>
+              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N5</span></div>
+              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N6</span></div>
+              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N7</span></div>
+              <div class="m7clusterNode"><i class="ph-bold ph-cpu"></i><span>N8</span></div>
+            </div>
+          </div>
+
+          <div class="m7clusterInfo">
+            <div class="m7clusterInfoCard" style="--cc:#a3e635">
+              <div class="m7clusterInfoHead"><i class="ph-bold ph-lightning"></i> InfiniBand HDR</div>
+              <div class="m7clusterInfoStat"><span>Bandwidth</span><strong>200 Gb/s</strong></div>
+              <div class="m7clusterInfoStat"><span>Latencia</span><strong>&lt; 0.5 µs</strong></div>
+              <div class="m7clusterInfoStat"><span>Uso típico</span><strong>HPC / ML training</strong></div>
+              <p>Protocolo de red diseñado para clusters. La latencia de 0.5µs hace que 1000 nodos se coordinen casi sin overhead de comunicación. Frontier usa InfiniBand.</p>
+            </div>
+            <div class="m7clusterInfoCard" style="--cc:#38bdf8">
+              <div class="m7clusterInfoHead"><i class="ph-bold ph-globe"></i> Ethernet 100GbE</div>
+              <div class="m7clusterInfoStat"><span>Bandwidth</span><strong>100 Gb/s</strong></div>
+              <div class="m7clusterInfoStat"><span>Latencia</span><strong>~5 µs</strong></div>
+              <div class="m7clusterInfoStat"><span>Uso típico</span><strong>Cloud / Web scale</strong></div>
+              <p>Más barato y universal. Suficiente para cloud computing donde las apps son stateless. La latencia mayor penaliza las computaciones tightly-coupled del HPC.</p>
+            </div>
+            <div class="m7clusterInfoCard" style="--cc:#f59e0b">
+              <div class="m7clusterInfoHead"><i class="ph-bold ph-link"></i> NVLink 4.0 (GPU-GPU)</div>
+              <div class="m7clusterInfoStat"><span>Bandwidth</span><strong>900 GB/s</strong></div>
+              <div class="m7clusterInfoStat"><span>Latencia</span><strong>&lt; 1 µs</strong></div>
+              <div class="m7clusterInfoStat"><span>Uso típico</span><strong>Multi-GPU ML</strong></div>
+              <p>Conecta GPUs directamente en el mismo servidor (hasta 8 GPUs). Las 8 H100 de un DGX H100 comparten 900 GB/s — crucial para LLMs que no caben en una GPU.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CLOUD Y SCALING ────────────────────── -->
+    <section class="msec alt" id="cloud">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-cloud"></i> Compute on demand</span>
+          <h2>Cloud computing — el HPC accesible</h2>
+          <p class="msecSub">El cloud democratizó el acceso a hardware de supercomputación. En minutos podés lanzar 1000 instancias GPU, correr tu training y apagarlo. Pagás solo lo que usás — y con spot instances, a 70% menos.</p>
+        </div>
+
+        <div class="m7scalingComp reveal">
+          <div class="m7scalingCard m7scalingCardV">
+            <div class="m7scalingHead">
+              <i class="ph-bold ph-arrow-up"></i>
+              <strong>Scaling Vertical</strong>
+              <span>Scale-up</span>
+            </div>
+            <div class="m7scalingDiagram">
+              <div class="m7scalingServer m7ssBig">
+                <div class="m7ssCores">
+                  <div></div><div></div><div></div><div></div>
+                  <div></div><div></div><div></div><div></div>
+                </div>
+                <span>Servidor grande</span>
+              </div>
+            </div>
+            <ul class="m7scalingList">
+              <li><i class="ph-bold ph-check" style="color:#34d399"></i> Simple: misma máquina, más recursos</li>
+              <li><i class="ph-bold ph-check" style="color:#34d399"></i> Sin cambios en el código</li>
+              <li><i class="ph-bold ph-x" style="color:#ef4444"></i> Límite físico del hardware</li>
+              <li><i class="ph-bold ph-x" style="color:#ef4444"></i> Downtime durante el upgrade</li>
+              <li><i class="ph-bold ph-x" style="color:#ef4444"></i> Costo exponencial por core extra</li>
+            </ul>
+            <div class="m7scalingExample">💡 Cuándo: DB stateful, apps legacy, workloads que no particionan</div>
+          </div>
+
+          <div class="m7scalingArrow"><i class="ph-bold ph-arrows-horizontal"></i></div>
+
+          <div class="m7scalingCard m7scalingCardH">
+            <div class="m7scalingHead">
+              <i class="ph-bold ph-arrows-out-line-horizontal"></i>
+              <strong>Scaling Horizontal</strong>
+              <span>Scale-out</span>
+            </div>
+            <div class="m7scalingDiagram">
+              <div class="m7scalingServer"><span>Node 1</span></div>
+              <div class="m7scalingServer"><span>Node 2</span></div>
+              <div class="m7scalingServer"><span>Node 3</span></div>
+              <div class="m7scalingServer m7ssNew"><span>+Node</span></div>
+            </div>
+            <ul class="m7scalingList">
+              <li><i class="ph-bold ph-check" style="color:#34d399"></i> Escala sin límite teórico</li>
+              <li><i class="ph-bold ph-check" style="color:#34d399"></i> Alta disponibilidad (HA)</li>
+              <li><i class="ph-bold ph-check" style="color:#34d399"></i> Spot instances = 70% más barato</li>
+              <li><i class="ph-bold ph-x" style="color:#ef4444"></i> Requiere app stateless</li>
+              <li><i class="ph-bold ph-x" style="color:#ef4444"></i> Complejidad de coordinación</li>
+            </ul>
+            <div class="m7scalingExample">💡 Cuándo: APIs, microservicios, ML training, rendering farm</div>
+          </div>
+        </div>
+
+        <div class="m7instanceGrid reveal">
+          <div class="m7instanceCard" style="--ic:#38bdf8">
+            <i class="ph-bold ph-cpu"></i>
+            <strong>Compute-Optimized</strong>
+            <span>c7g, c6i (AWS)</span>
+            <p>Alta relación CPU/RAM. Para cómputo intensivo sin mucha memoria. HPC, batch processing, simulaciones.</p>
+            <div class="m7instancePrice">desde $0.085/hora</div>
+          </div>
+          <div class="m7instanceCard" style="--ic:#a3e635">
+            <i class="ph-bold ph-monitor"></i>
+            <strong>GPU Instances</strong>
+            <span>p4d, p5 (AWS)</span>
+            <p>8× NVIDIA A100/H100. ML training, inferencia masiva, rendering. DGX en el cloud, por horas.</p>
+            <div class="m7instancePrice">desde $32/hora (p4d.24xl)</div>
+          </div>
+          <div class="m7instanceCard" style="--ic:#f59e0b">
+            <i class="ph-bold ph-database"></i>
+            <strong>Memory-Optimized</strong>
+            <span>r7i, x2idn (AWS)</span>
+            <p>Hasta 24TB de RAM. Para bases de datos in-memory, analytics en tiempo real, graphs masivos.</p>
+            <div class="m7instancePrice">desde $0.252/hora</div>
+          </div>
+          <div class="m7instanceCard" style="--ic:#a855f7">
+            <i class="ph-bold ph-tag"></i>
+            <strong>Spot Instances</strong>
+            <span>70% descuento</span>
+            <p>Capacidad no utilizada del cloud. Pueden interrumpirse con 2 min de aviso. Ideales para ML training fault-tolerant y batch jobs.</p>
+            <div class="m7instancePrice">hasta 90% de descuento</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CÓDIGO JAVA ───────────────────────── -->
+    <section class="msec" id="codigo">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-code"></i> Java de alto rendimiento</span>
+          <h2>Código HPC en Java</h2>
+          <p class="msecSub">Java no es C++, pero con ForkJoin, BLAS bindings y cuidado del cache, se puede hacer HPC serio. Estos tres patrones son la base de cualquier cómputo de alto rendimiento en la JVM.</p>
+        </div>
+
+        <div class="m7codeTabs reveal">
+          <div class="m7codeTabBar">
+            <button class="m7codeTab m7codeTabActive" onclick="switchTab7(this,'tab7-matmul')">
+              <i class="ph ph-grid-four"></i> Matrix Multiply
+            </button>
+            <button class="m7codeTab" onclick="switchTab7(this,'tab7-stream')">
+              <i class="ph ph-stack"></i> GPU-style en Java
+            </button>
+            <button class="m7codeTab" onclick="switchTab7(this,'tab7-mpi')">
+              <i class="ph ph-network"></i> MPI conceptual
+            </button>
+          </div>
+
+          <div class="m7codePanel" id="tab7-matmul">
+            <div class="m7codeWhen">
+              <div class="m7codeWhenBox">
+                <i class="ph-bold ph-check-circle" style="color:#a3e635"></i>
+                <p>Multiplicación de matrices: el benchmark estándar de HPC. La versión secuencial es O(n³). Con ForkJoin y división por tiles aprovechamos la caché L1/L2 y paralelizamos filas. En producción se usa BLAS (OpenBLAS, MKL) que usa SIMD automáticamente.</p>
+              </div>
+            </div>
+            <pre class="language-java"><code class="language-java">import java.util.concurrent.*;
+
+public class MatrizParalela {
+    static final int UMBRAL = 64; // tile size para caché locality
+
+    static class MultiplyTask extends RecursiveAction {
+        final double[][] A, B, C;
+        final int rowInicio, rowFin;
+
+        MultiplyTask(double[][] A, double[][] B, double[][] C, int r0, int r1) {
+            this.A = A; this.B = B; this.C = C;
+            this.rowInicio = r0; this.rowFin = r1;
+        }
+
+        @Override
+        protected void compute() {
+            int rows = rowFin - rowInicio;
+            if (rows <= UMBRAL) {
+                // Kernel secuencial — acceso por filas para localidad de caché
+                int n = B[0].length, p = B.length;
+                for (int i = rowInicio; i < rowFin; i++) {
+                    for (int k = 0; k < p; k++) {          // loop k antes de j
+                        double aik = A[i][k];               // localidad de A[i]
+                        for (int j = 0; j < n; j++) {
+                            C[i][j] += aik * B[k][j];
+                        }
+                    }
+                }
+                return;
+            }
+            int mid = (rowInicio + rowFin) / 2;
+            invokeAll(
+                new MultiplyTask(A, B, C, rowInicio, mid),
+                new MultiplyTask(A, B, C, mid, rowFin)
+            );
+        }
+    }
+
+    public static double[][] multiplicar(double[][] A, double[][] B) {
+        int n = A.length;
+        double[][] C = new double[n][B[0].length];
+        ForkJoinPool.commonPool()
+                    .invoke(new MultiplyTask(A, B, C, 0, n));
+        return C;
+    }
+
+    public static void main(String[] args) {
+        int N = 1024;
+        double[][] A = new double[N][N];
+        double[][] B = new double[N][N];
+        // ... inicializar A y B
+
+        long t0 = System.nanoTime();
+        double[][] C = multiplicar(A, B);
+        long ms = (System.nanoTime() - t0) / 1_000_000;
+        System.out.println("1024×1024 paralela: " + ms + "ms");
+        // Speedup esperado vs secuencial: ~Ncores ×
+    }
+}</code></pre>
+          </div>
+
+          <div class="m7codePanel m7codePanelHidden" id="tab7-stream">
+            <div class="m7codeWhen">
+              <div class="m7codeWhenBox">
+                <i class="ph-bold ph-check-circle" style="color:#a3e635"></i>
+                <p>Para operaciones uniformes sobre millones de elementos, <code>.parallel()</code> convierte la JVM en una mini-GPU: el ForkJoinPool distribuye el trabajo automáticamente en todos los cores. Es el equivalente Java al CUDA kernel más simple.</p>
+              </div>
+            </div>
+            <pre class="language-java"><code class="language-java">import java.util.stream.*;
+
+public class GpuStyleJava {
+
+    // Analogía a un CUDA kernel: la misma op aplicada a cada elemento en paralelo
+    public static double[] aplicarFiltro(double[] pixeles, double factor) {
+        // Un solo cambio: .parallel() → JVM usa todos los cores
+        return DoubleStream.of(pixeles)
+                .parallel()                           // GPU-style SIMD en CPU
+                .map(p -> Math.min(1.0, p * factor))  // misma op en cada píxel
+                .toArray();
+    }
+
+    // Suma de 100M elementos — benchmark clásico
+    public static void benchmarkSuma() {
+        int N = 100_000_000;
+        double[] datos = new double[N];
+        for (int i = 0; i < N; i++) datos[i] = i * 0.001;
+
+        // Secuencial
+        long t0 = System.nanoTime();
+        double sumaSeq = 0;
+        for (double d : datos) sumaSeq += d;
+        long msSeq = (System.nanoTime() - t0) / 1_000_000;
+
+        // Paralelo — distribuye en ForkJoinPool.commonPool() automáticamente
+        t0 = System.nanoTime();
+        double sumaPar = DoubleStream.of(datos).parallel().sum();
+        long msPar = (System.nanoTime() - t0) / 1_000_000;
+
+        System.out.printf("Secuencial: %dms%n", msSeq);
+        System.out.printf("Paralelo:   %dms  (%.1f× speedup)%n",
+                          msPar, (double) msSeq / Math.max(msPar, 1));
+        System.out.println("Cores: " + Runtime.getRuntime().availableProcessors());
+    }
+}</code></pre>
+          </div>
+
+          <div class="m7codePanel m7codePanelHidden" id="tab7-mpi">
+            <div class="m7codeWhen">
+              <div class="m7codeWhenBox">
+                <i class="ph-bold ph-check-circle" style="color:#a3e635"></i>
+                <p>MPI (Message Passing Interface) es el estándar de HPC en clusters. Cada proceso tiene su propia memoria y se comunica explícitamente. Este pseudocódigo en Java muestra el patrón scatter-compute-gather que usa Frontier para sus simulaciones.</p>
+              </div>
+            </div>
+            <pre class="language-java"><code class="language-java">// Patrón MPI conceptual en Java con ProcessBuilder / sockets
+// En producción se usa la librería MPJ Express o la JNI sobre OpenMPI
+
+public class MpiConceptual {
+    // Proceso coordinador (rank 0)
+    static void coordinador(int numWorkers, double[] datosGlobales) {
+        int chunkSize = datosGlobales.length / numWorkers;
+
+        // SCATTER: distribuir datos a cada worker
+        for (int rank = 0; rank < numWorkers; rank++) {
+            double[] chunk = Arrays.copyOfRange(
+                datosGlobales, rank * chunkSize, (rank + 1) * chunkSize
+            );
+            enviarA(rank, chunk);   // MPI_Send
+        }
+
+        // GATHER: recolectar resultados parciales
+        double resultadoTotal = 0;
+        for (int rank = 0; rank < numWorkers; rank++) {
+            resultadoTotal += recibirDe(rank);   // MPI_Recv
+        }
+
+        System.out.println("Resultado global: " + resultadoTotal);
+    }
+
+    // Proceso worker (rank 1..N)
+    static void worker(int miRank) {
+        double[] miChunk = recibirDelCoordinador();   // MPI_Recv
+
+        // Cómputo local — sin comunicación con otros workers
+        double resultado = 0;
+        for (double v : miChunk) resultado += v * v;  // ejemplo: norma²
+
+        enviarAlCoordinador(resultado);   // MPI_Send
+    }
+    // Este patrón scatter-compute-gather es la base de Hadoop MapReduce,
+    // Spark, y cualquier framework de computación distribuida.
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LAB ONECOMPILER ───────────────────── -->
+    <section class="msec alt" id="laboratorio">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-flask"></i> Manos a la obra</span>
+          <h2>Laboratorio Interactivo</h2>
+          <p class="msecSub">Implementá multiplicación de matrices paralela con ForkJoin y medí el speedup real contra la versión secuencial en tu máquina.</p>
+        </div>
+
+        <div class="m7lab reveal">
+          <div class="m7labInstructions">
+            <div class="m7labStep">
+              <div class="m7labStepNum">1</div>
+              <div class="m7labStepText">
+                <strong>Corré la versión secuencial</strong>
+                <p>El código ya está cargado. Ejecutalo y anotá el tiempo de la multiplicación 512×512 secuencial.</p>
+              </div>
+            </div>
+            <div class="m7labStep">
+              <div class="m7labStepNum">2</div>
+              <div class="m7labStepText">
+                <strong>Descomentá el ForkJoin</strong>
+                <p>Cambiá la línea que llama a <code>multiplicarSeq()</code> por <code>multiplicarPar()</code> y volvé a correr.</p>
+              </div>
+            </div>
+            <div class="m7labStep">
+              <div class="m7labStepNum">3</div>
+              <div class="m7labStepText">
+                <strong>Calculá el speedup</strong>
+                <p>Dividí el tiempo secuencial por el paralelo. Comparalo con la predicción de Amdahl para los cores disponibles.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m7labEmbed">
+            <iframe
+              src="https://onecompiler.com/java"
+              title="Lab Módulo 7 — Matrix Multiply paralela"
+              style="width:100%;height:480px;border:none;border-radius:12px;">
+            </iframe>
+          </div>
+
+          <div class="m7labHint">
+            <div class="m7labHintHeader">
+              <span><i class="ph ph-code"></i> Código inicial — copialo y pegalo en el compilador</span>
+              <button class="m7btn m7btnSm" onclick="copyLabCode7()">
+                <i class="ph-bold ph-copy"></i> Copiar código
+              </button>
+            </div>
+            <pre class="language-java" id="lab7CodePre"><code class="language-java">import java.util.concurrent.*;
+import java.util.Arrays;
+
+public class MatrizBenchmark {
+    static final int N = 512;
+    static final int UMBRAL = 64;
+
+    // ── Secuencial ────────────────────────────
+    static double[][] multiplicarSeq(double[][] A, double[][] B) {
+        int n = A.length, m = B[0].length, p = B.length;
+        double[][] C = new double[n][m];
+        for (int i = 0; i < n; i++)
+            for (int k = 0; k < p; k++) {
+                double aik = A[i][k];
+                for (int j = 0; j < m; j++) C[i][j] += aik * B[k][j];
+            }
+        return C;
+    }
+
+    // ── Paralela con ForkJoin ─────────────────
+    static class MultiTask extends RecursiveAction {
+        double[][] A, B, C;
+        int r0, r1;
+        MultiTask(double[][] A, double[][] B, double[][] C, int r0, int r1) {
+            this.A=A; this.B=B; this.C=C; this.r0=r0; this.r1=r1;
+        }
+        protected void compute() {
+            if (r1 - r0 <= UMBRAL) {
+                int m = B[0].length, p = B.length;
+                for (int i = r0; i < r1; i++)
+                    for (int k = 0; k < p; k++) {
+                        double aik = A[i][k];
+                        for (int j = 0; j < m; j++) C[i][j] += aik * B[k][j];
+                    }
+                return;
+            }
+            int mid = (r0 + r1) / 2;
+            invokeAll(new MultiTask(A,B,C,r0,mid), new MultiTask(A,B,C,mid,r1));
+        }
+    }
+
+    static double[][] multiplicarPar(double[][] A, double[][] B) {
+        double[][] C = new double[A.length][B[0].length];
+        ForkJoinPool.commonPool().invoke(new MultiTask(A, B, C, 0, A.length));
+        return C;
+    }
+
+    public static void main(String[] args) {
+        double[][] A = new double[N][N];
+        double[][] B = new double[N][N];
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++) { A[i][j] = i+j; B[i][j] = i-j; }
+
+        // ── Paso 1: medir secuencial ──────────
+        long t0 = System.nanoTime();
+        double[][] Cs = multiplicarSeq(A, B);
+        long msSeq = (System.nanoTime() - t0) / 1_000_000;
+        System.out.println("Secuencial: " + msSeq + "ms");
+
+        // ── Paso 2: medir paralela ────────────
+        t0 = System.nanoTime();
+        double[][] Cp = multiplicarPar(A, B);
+        long msPar = (System.nanoTime() - t0) / 1_000_000;
+        System.out.println("Paralela:   " + msPar + "ms");
+
+        // ── Paso 3: speedup ───────────────────
+        System.out.printf("Speedup:    %.2f×%n", (double) msSeq / Math.max(msPar,1));
+        System.out.println("Cores:      " + Runtime.getRuntime().availableProcessors());
+        System.out.println("Correcto:   " + (Math.abs(Cs[1][1] - Cp[1][1]) < 0.001));
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── JUEGO: DISEÑÁ TU ARQUITECTURA ────── -->
+    <section class="msec" id="juego">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-blueprint"></i> Arquitecto de sistemas</span>
+          <h2>Diseñá tu arquitectura de alto rendimiento</h2>
+          <p class="msecSub">Te dan un workload. Vos elegís la arquitectura. 4 escenarios reales — elegí el hardware, la escala y si vas on-premise o cloud. ¿Podés acertar todos?</p>
+        </div>
+
+        <div class="m7arch reveal">
+          <div class="m7archCard" id="archCard">
+            <div class="m7archCardTop">
+              <span class="m7archCounter" id="archCounter">Escenario 1 / 4</span>
+              <span class="m7archScore" id="archScore">0 pts</span>
+            </div>
+            <div class="m7archScenario">
+              <div class="m7archScenarioIcon" id="archIcon"></div>
+              <div class="m7archScenarioBody">
+                <h3 id="archTitle"></h3>
+                <p id="archDesc"></p>
+                <div class="m7archReqs" id="archReqs"></div>
+              </div>
+            </div>
+            <div class="m7archOptions" id="archOptions"></div>
+            <div class="m7archFeedback" id="archFeedback" style="display:none"></div>
+            <button class="m7btn m7btnAccent" id="archNext" style="display:none" onclick="archNext()">
+              Siguiente escenario <i class="ph-bold ph-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="m7archResult" id="archResult" style="display:none">
+            <i class="ph-bold ph-trophy"></i>
+            <div class="m7archResultNum" id="archResultNum"></div>
+            <p id="archResultMsg"></p>
+            <button class="m7btn m7btnAccent" onclick="archRestart()">
+              <i class="ph-bold ph-arrow-clockwise"></i> Jugar de nuevo
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CASOS: EXPERIENCIAS INTERACTIVAS ─── -->
+    <section class="msec alt" id="casos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-game-controller"></i> El mundo real</span>
+          <h2>HPC aplicado a experiencias interactivas</h2>
+          <p class="msecSub">Estos no son ejemplos académicos. Son sistemas que usás todos los días sin saber el hardware detrás. La pila tecnológica de cada uno es una lección de arquitectura de alto rendimiento.</p>
+        </div>
+
+        <div class="m7casosGrid reveal">
+          <div class="m7casoCard" style="--cc:#a3e635">
+            <div class="m7casoCardTop">
+              <div class="m7casoIcon"><i class="ph-bold ph-game-controller"></i></div>
+              <div class="m7casoTag">GPU · RENDERING</div>
+            </div>
+            <strong>Unreal Engine 5 — Nanite</strong>
+            <p>Virtualización de geometría: renderiza billones de polígonos en tiempo real. Cada frame de 4K a 60fps requiere ~8ms para la GPU. NVIDIA RTX 4090 procesa 200+ GPixeles/s. Sin GPU moderna, imposible.</p>
+            <div class="m7casoStats">
+              <div class="m7casoStat"><span class="m7casoStatNum">200</span> GPixels/s</div>
+              <div class="m7casoStat"><span class="m7casoStatNum">60</span> fps target</div>
+              <div class="m7casoStat"><span class="m7casoStatNum">8</span> ms por frame</div>
+            </div>
+          </div>
+
+          <div class="m7casoCard" style="--cc:#a855f7">
+            <div class="m7casoCardTop">
+              <div class="m7casoIcon"><i class="ph-bold ph-robot"></i></div>
+              <div class="m7casoTag">GPU · ML INFERENCE</div>
+            </div>
+            <strong>ChatGPT — Inferencia en tiempo real</strong>
+            <p>GPT-4 corre en clusters de GPU H100. Cada token generado requiere ~1 billón de operaciones de punto flotante. Con 100M usuarios activos, OpenAI usa miles de H100s en paralelo. Latencia target: &lt;200ms primer token.</p>
+            <div class="m7casoStats">
+              <div class="m7casoStat"><span class="m7casoStatNum">1T</span> FLOPs/token</div>
+              <div class="m7casoStat"><span class="m7casoStatNum">&lt;200</span> ms latencia</div>
+              <div class="m7casoStat"><span class="m7casoStatNum">H100</span> cluster</div>
+            </div>
+          </div>
+
+          <div class="m7casoCard" style="--cc:#38bdf8">
+            <div class="m7casoCardTop">
+              <div class="m7casoIcon"><i class="ph-bold ph-video"></i></div>
+              <div class="m7casoTag">CPU CLUSTER · ENCODING</div>
+            </div>
+            <strong>Netflix — Encoding adaptativo</strong>
+            <p>Cada video se transcodifica a 100+ combinaciones de resolución y bitrate en paralelo. AWS EC2 C6i con FFmpeg distribuido: 1M clips procesados por día. Paralelismo a nivel de frame — cada frame es independiente.</p>
+            <div class="m7casoStats">
+              <div class="m7casoStat"><span class="m7casoStatNum">100+</span> versiones/video</div>
+              <div class="m7casoStat"><span class="m7casoStatNum">1M</span> clips/día</div>
+              <div class="m7casoStat"><span class="m7casoStatNum">AWS</span> C6i fleet</div>
+            </div>
+          </div>
+
+          <div class="m7casoCard" style="--cc:#f59e0b">
+            <div class="m7casoCardTop">
+              <div class="m7casoIcon"><i class="ph-bold ph-trend-up"></i></div>
+              <div class="m7casoTag">CPU · ULTRA-LATENCIA</div>
+            </div>
+            <strong>HFT — Trading de alta frecuencia</strong>
+            <p>Decisiones en 10 microsegundos. No usa GPU (demasiado overhead). Usa CPUs Intel de alta frecuencia (5GHz+) con código C++ sin GC, NIC con kernel bypass (DPDK), y co-locación en el mismo rack que el exchange.</p>
+            <div class="m7casoStats">
+              <div class="m7casoStat"><span class="m7casoStatNum">10</span> µs latencia</div>
+              <div class="m7casoStat"><span class="m7casoStatNum">5 GHz</span> CPU</div>
+              <div class="m7casoStat"><span class="m7casoStatNum">FPGA</span> front-end</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUIZ ──────────────────────────────── -->
+    <section class="msec" id="quiz">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-check-square"></i> Quiz final</span>
+          <h2>¿Cuánto absorbiste?</h2>
+          <p class="msecSub">8 preguntas sobre HPC, GPU, Gustafson y cloud. Cada respuesta viene con explicación detallada.</p>
+        </div>
+
+        <div class="m7quizWrap reveal">
+          <div class="m7quizProgress">
+            <div class="m7quizProgressBar" id="q7ProgressBar" style="width:12.5%"></div>
+          </div>
+          <div class="m7quizProgressLabel" id="q7ProgressLabel">Pregunta 1 de 8</div>
+
+          <div class="m7quizQuestion" id="q7Question"></div>
+          <div class="m7quizOptions"  id="q7Options"></div>
+          <div class="m7quizFeedback" id="q7Feedback" style="display:none"></div>
+
+          <div class="m7quizFooter">
+            <button class="m7btn m7btnAccent" id="q7NextBtn" onclick="quiz7Next()" style="display:none">
+              Siguiente <i class="ph-bold ph-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="m7quizResult" id="q7Result" style="display:none">
+            <div class="m7quizResultNum" id="q7ResultNum"></div>
+            <p id="q7ResultMsg"></p>
+            <button class="m7btn m7btnAccent" onclick="quiz7Restart()">
+              <i class="ph-bold ph-arrow-clockwise"></i> Reintentar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GLOSARIO ──────────────────────────── -->
+    <section class="msec alt" id="glosario">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-book-open"></i> Vocabulario HPC</span>
+          <h2>Glosario — los términos que van a escuchar en producción</h2>
+        </div>
+        <div class="m7glossGrid reveal">
+
+          <div class="m7glossCard">
+            <div class="m7glossFront"><i class="ph-bold ph-lightning"></i><span>FLOPS</span></div>
+            <div class="m7glossBack">
+              <strong>Floating-Point Operations Per Second</strong>
+              <p>La métrica universal de rendimiento HPC. 1 TFlop = 10¹² ops/seg. NVIDIA H100: 67 TFlops (FP32). Frontier: 1.1 ExaFlops (FP64).</p>
+            </div>
+          </div>
+
+          <div class="m7glossCard">
+            <div class="m7glossFront"><i class="ph-bold ph-monitor"></i><span>VRAM</span></div>
+            <div class="m7glossBack">
+              <strong>Video RAM (memoria de GPU)</strong>
+              <p>Memoria dedicada de la GPU. El modelo ML debe caber entero en VRAM para inferencia eficiente. H100: 80GB HBM3 a 3.35 TB/s de ancho de banda.</p>
+            </div>
+          </div>
+
+          <div class="m7glossCard">
+            <div class="m7glossFront"><i class="ph-bold ph-squares-four"></i><span>CUDA</span></div>
+            <div class="m7glossBack">
+              <strong>Compute Unified Device Architecture</strong>
+              <p>Plataforma de NVIDIA para programar GPUs. Organiza threads en warps (32) → blocks → grids. El programador escribe un "kernel" que se ejecuta en miles de threads simultáneos.</p>
+            </div>
+          </div>
+
+          <div class="m7glossCard">
+            <div class="m7glossFront"><i class="ph-bold ph-git-fork"></i><span>Warp</span></div>
+            <div class="m7glossBack">
+              <strong>Unidad de ejecución CUDA (32 threads)</strong>
+              <p>La GPU ejecuta 32 threads (1 warp) simultáneamente con la MISMA instrucción (SIMT). Si threads dentro del warp divergen (if/else), los idle threads esperan — "warp divergence", el gran enemigo del rendimiento GPU.</p>
+            </div>
+          </div>
+
+          <div class="m7glossCard">
+            <div class="m7glossFront"><i class="ph-bold ph-network"></i><span>MPI</span></div>
+            <div class="m7glossBack">
+              <strong>Message Passing Interface</strong>
+              <p>Estándar para clusters HPC. Cada proceso tiene su propia memoria y se comunica con MPI_Send/Recv explícitos. Todos los TOP500 lo usan. OpenMPI y MPICH son las implementaciones más comunes.</p>
+            </div>
+          </div>
+
+          <div class="m7glossCard">
+            <div class="m7glossFront"><i class="ph-bold ph-database"></i><span>HBM</span></div>
+            <div class="m7glossBack">
+              <strong>High Bandwidth Memory</strong>
+              <p>Memoria 3D apilada directamente sobre el chip GPU. H100 HBM3: 3.35 TB/s vs GDDR6 de 1 TB/s. El ancho de banda de memoria es el cuello de botella real en ML — no los FLOPS.</p>
+            </div>
+          </div>
+
+          <div class="m7glossCard">
+            <div class="m7glossFront"><i class="ph-bold ph-tag"></i><span>Spot</span></div>
+            <div class="m7glossBack">
+              <strong>Spot / Preemptible Instance</strong>
+              <p>Capacidad de cómputo no utilizada vendida con descuento 70-90%. AWS puede interrumpirla con 2 min de aviso. Ideal para ML training con checkpointing, render farms y batch jobs tolerantes a fallos.</p>
+            </div>
+          </div>
+
+          <div class="m7glossCard">
+            <div class="m7glossFront"><i class="ph-bold ph-cpu"></i><span>NUMA</span></div>
+            <div class="m7glossBack">
+              <strong>Non-Uniform Memory Access</strong>
+              <p>En servidores multi-socket, cada CPU tiene su "local" RAM (rápida) y puede acceder a la RAM del otro socket (lenta, ~2× más latencia). Ignorar NUMA puede matar el rendimiento en servidores de 2+ sockets.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACTIVIDAD ──────────────────────────── -->
+    <section class="msec" id="actividades">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-code-simple"></i> Tu turno</span>
+          <h2>Actividad — Análisis de arquitectura de alto rendimiento</h2>
+          <p class="msecSub">Elegís un sistema interactivo real (videojuego, plataforma de streaming, red social, motor de IA) y analizás su arquitectura desde la perspectiva del alto rendimiento computacional.</p>
+        </div>
+
+        <div class="m7mission reveal">
+          <div class="m7missionSteps">
+            <div class="m7missionStep">
+              <div class="m7missionStepIcon" style="--sc:#a3e635"><i class="ph-bold ph-magnifying-glass"></i></div>
+              <div class="m7missionStepBody">
+                <strong>Paso 1 — Elegí tu sistema</strong>
+                <p>Elegí un sistema con alto requerimiento computacional: Unreal Engine 5, Stable Diffusion, un motor de trading, Netflix encoding, Minecraft (geneneración de mundo), o el motor de física de tu videojuego favorito.</p>
+              </div>
+            </div>
+            <div class="m7missionStep">
+              <div class="m7missionStepIcon" style="--sc:#38bdf8"><i class="ph-bold ph-cpu"></i></div>
+              <div class="m7missionStepBody">
+                <strong>Paso 2 — Identificá el hardware y la escala</strong>
+                <p>¿Qué hardware usa? ¿CPU, GPU, FPGA, cluster? ¿Cuántos nodos? ¿Cloud o on-premise? ¿Qué orden de magnitud de operaciones por segundo? Buscá papers técnicos, blogs de ingeniería (Netflix Tech Blog, Meta Engineering, etc.).</p>
+              </div>
+            </div>
+            <div class="m7missionStep">
+              <div class="m7missionStepIcon" style="--sc:#f59e0b"><i class="ph-bold ph-chart-line-up"></i></div>
+              <div class="m7missionStepBody">
+                <strong>Paso 3 — Aplicá Amdahl y Gustafson</strong>
+                <p>Estimá la fracción paralela P de la workload principal. Calculá el speedup teórico de Amdahl y Gustafson para la escala del sistema. ¿Cuál modelo se ajusta mejor y por qué?</p>
+              </div>
+            </div>
+            <div class="m7missionStep">
+              <div class="m7missionStepIcon" style="--sc:#a855f7"><i class="ph-bold ph-presentation"></i></div>
+              <div class="m7missionStepBody">
+                <strong>Paso 4 — Presentación técnica (5 min)</strong>
+                <p>Presentá tu análisis con: (1) qué hace el sistema, (2) cuál es el cuello de botella computacional, (3) qué arquitectura usa y por qué, (4) cómo escalaría si la demanda se multiplica ×10. Mínimo 1 diagrama propio.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m7rubric reveal">
+          <div class="m7rubricTitle"><i class="ph-bold ph-list-checks"></i> Rúbrica de evaluación</div>
+          <div class="m7rubricItems">
+            <div class="m7rubricItem">
+              <div class="m7rubricItemHeader">
+                <span class="m7rubricItemName">Identificación correcta del hardware y escala</span>
+                <span class="m7rubricPct">25%</span>
+              </div>
+              <div class="m7rubricBar"><div class="m7rubricBarFill" style="--pct:25%;--bc:#a3e635"></div></div>
+              <p class="m7rubricDesc">Hardware identificado con datos reales (fuente citada). Escala aproximada correcta (órdenes de magnitud). Justificación de por qué ese hardware y no otro.</p>
+            </div>
+            <div class="m7rubricItem">
+              <div class="m7rubricItemHeader">
+                <span class="m7rubricItemName">Análisis con Amdahl y Gustafson</span>
+                <span class="m7rubricPct">30%</span>
+              </div>
+              <div class="m7rubricBar"><div class="m7rubricBarFill" style="--pct:30%;--bc:#38bdf8"></div></div>
+              <p class="m7rubricDesc">Estimación de P justificada. Cálculo correcto de S(N) para ambas leyes. Conclusión sobre cuál modelo aplica mejor al sistema elegido y por qué.</p>
+            </div>
+            <div class="m7rubricItem">
+              <div class="m7rubricItemHeader">
+                <span class="m7rubricItemName">Análisis de escalabilidad (×10 demanda)</span>
+                <span class="m7rubricPct">25%</span>
+              </div>
+              <div class="m7rubricBar"><div class="m7rubricBarFill" style="--pct:25%;--bc:#f59e0b"></div></div>
+              <p class="m7rubricDesc">Propuesta coherente de cómo escalaría el sistema. Identificación del cuello de botella real. ¿Vertical o horizontal? ¿Cloud? ¿Cambio de hardware?</p>
+            </div>
+            <div class="m7rubricItem">
+              <div class="m7rubricItemHeader">
+                <span class="m7rubricItemName">Presentación clara con diagrama</span>
+                <span class="m7rubricPct">20%</span>
+              </div>
+              <div class="m7rubricBar"><div class="m7rubricBarFill" style="--pct:20%;--bc:#a855f7"></div></div>
+              <p class="m7rubricDesc">5 minutos respetados. Al menos un diagrama propio (arquitectura, flujo de datos, jerarquía de hardware). Terminología técnica correcta y consistente.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── FOOTER ─────────────────────────────── -->
+    <footer class="mfoot">
+      <a href="modulo6.html" class="mfootLink">
+        <i class="ph ph-arrow-left"></i> Módulo 6
+      </a>
+      <a href="../index.html" class="mfootBrand">Campus PAI3</a>
+      <span class="mfootLink" style="opacity:0.3">
+        Módulo 8 <i class="ph ph-arrow-right"></i>
+      </span>
+    </footer>
+
+    <!-- ── SCRIPTS ────────────────────────────── -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="../assets/js/campus.js"></script>
+    <script src="../assets/js/modulo7.js"></script>
+  </body>
+</html>
