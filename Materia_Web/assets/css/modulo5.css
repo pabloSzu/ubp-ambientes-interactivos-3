@@ -1360,3 +1360,66 @@
   .m5simStepTitle      { font-size: 16px; }
   .m5simStepExplain    { font-size: 13px; }
 }
+
+/* ═══════════════════════════════════════════
+   FILESYSTEM QUIRKS — #filesystem section
+═══════════════════════════════════════════ */
+.m5fsTabs {
+  margin-top: 32px;
+  border-radius: var(--r); border: 1px solid var(--border); overflow: hidden;
+}
+.m5fsTabBar { display: flex; border-bottom: 1px solid var(--border); }
+.m5fsTab {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 18px; font-size: 13px; font-weight: 700;
+  border: none; border-right: 1px solid var(--border);
+  background: var(--surface); color: var(--sub);
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.m5fsTab:last-child { border-right: none; }
+.m5fsTab:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+.m5fsTabActive { background: var(--accent-sub) !important; color: var(--accent) !important; }
+.m5fsPanel { padding: 0; }
+.m5fsPanelHidden { display: none; }
+
+.m5fsToolkit {
+  margin-top: 24px;
+  border-radius: var(--r); border: 1px solid var(--border);
+  background: var(--surface); overflow: hidden;
+}
+.m5fsToolkitTitle {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 20px; font-size: 12px; font-weight: 800; color: var(--sub);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+}
+.m5fsToolkitGrid { display: flex; flex-direction: column; }
+.m5fsToolkitRow {
+  display: grid; grid-template-columns: 1fr 180px 220px;
+  padding: 13px 20px; border-bottom: 1px solid rgba(255,255,255,0.05);
+  align-items: center; gap: 16px; font-size: 13px; color: var(--text);
+}
+.m5fsToolkitRow:last-child { border-bottom: none; }
+.m5fsToolkitHead {
+  font-size: 11px; font-weight: 800; color: var(--sub);
+  text-transform: uppercase; letter-spacing: 0.07em;
+  background: rgba(255,255,255,0.02);
+}
+.m5fsToolBadge {
+  display: inline-flex; align-items: center;
+  padding: 4px 11px; border-radius: 6px;
+  font-size: 11px; font-weight: 800;
+  background: color-mix(in srgb, var(--tc) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tc) 30%, transparent);
+  color: var(--tc);
+}
+.m5fsCode {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 11.5px; color: var(--sub);
+}
+
+@media (max-width: 768px) {
+  .m5fsToolkitRow { grid-template-columns: 1fr; gap: 8px; }
+  .m5fsToolkitHead { display: none; }
+}

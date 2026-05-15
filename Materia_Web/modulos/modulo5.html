@@ -34,6 +34,7 @@
       <nav class="mhdrSections">
         <a href="#conceptos">Conceptos</a>
         <a href="#simulador">Filósofos</a>
+        <a href="#filesystem">Filesystem</a>
         <a href="#codigo">Código</a>
         <a href="#laboratorio">Lab</a>
         <a href="#actividades">Actividad</a>
@@ -598,6 +599,205 @@
             <div class="m5realCode"><code>// Adquirir locks siempre en el mismo orden global</code></div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ── FILESYSTEM QUIRKS ─────────────────── -->
+    <section class="msec" id="filesystem">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-hard-drive"></i> Más allá de la RAM</span>
+          <h2>Filesystem quirks — el disco también necesita locks</h2>
+          <p class="msecSub">Los problemas de concurrencia no se limitan a la memoria. Múltiples hilos o procesos accediendo al mismo archivo producen race conditions, corrupción silenciosa y estados intermedios visibles. El filesystem tiene sus propias trampas.</p>
+        </div>
+
+        <div class="m5realGrid reveal">
+          <div class="m5realCard" style="--rc:#ef4444">
+            <div class="m5realCardTop">
+              <div class="m5realIcon"><i class="ph-bold ph-clock-countdown"></i></div>
+              <div>
+                <span class="m5realTag">RACE CONDITION</span>
+                <h3>Check-then-Act en archivos (TOCTOU)</h3>
+              </div>
+            </div>
+            <div class="m5realScenario">
+              <div class="m5realBad">
+                <span class="m5realBadLabel"><i class="ph-bold ph-warning"></i> TOCTOU race</span>
+                <p>Thread A hace <code>if(!file.exists())</code>, ve que no existe y va a crearlo. Antes de que pueda, Thread B también lo chequea y ve que no existe. Ambos intentan crear — uno falla o sobreescribe al otro.</p>
+              </div>
+              <div class="m5realGood">
+                <span class="m5realGoodLabel"><i class="ph-bold ph-check"></i> Operación atómica</span>
+                <p>Usá <code>Files.createFile()</code> directamente: si el archivo ya existe, lanza <code>FileAlreadyExistsException</code> atómicamente. El SO garantiza que solo un hilo "gana" — sin estados intermedios.</p>
+              </div>
+            </div>
+            <div class="m5realCode"><code>// ✅ atómico: crea O lanza excepción<br>Files.createFile(path);</code></div>
+          </div>
+
+          <div class="m5realCard" style="--rc:#f59e0b">
+            <div class="m5realCardTop">
+              <div class="m5realIcon"><i class="ph-bold ph-pencil-slash"></i></div>
+              <div>
+                <span class="m5realTag">CORRUPCIÓN DE DATOS</span>
+                <h3>Dos hilos, un log de texto</h3>
+              </div>
+            </div>
+            <div class="m5realScenario">
+              <div class="m5realBad">
+                <span class="m5realBadLabel"><i class="ph-bold ph-warning"></i> FileWriter sin lock</span>
+                <p>Thread A escribe <code>"Worker-1 OK\n"</code> y Thread B escribe <code>"Worker-2 ERR\n"</code> en paralelo. Los buffers se entrelazan: el log queda <code>"Worker-2 WO1rker-OK\n ERR\n"</code>. Datos corruptos e ilegibles.</p>
+              </div>
+              <div class="m5realGood">
+                <span class="m5realGoodLabel"><i class="ph-bold ph-check"></i> FileLock exclusivo</span>
+                <p><code>FileChannel.lock()</code> bloquea el archivo a nivel de SO — funciona incluso entre procesos distintos. Cada hilo escribe su línea completa antes de liberar el lock.</p>
+              </div>
+            </div>
+            <div class="m5realCode"><code>try (FileLock lk = canal.lock()) { /* write */ }</code></div>
+          </div>
+
+          <div class="m5realCard" style="--rc:#a855f7">
+            <div class="m5realCardTop">
+              <div class="m5realIcon"><i class="ph-bold ph-file-x"></i></div>
+              <div>
+                <span class="m5realTag">INCONSISTENCIA VISIBLE</span>
+                <h3>Actualizar config sin atomicidad</h3>
+              </div>
+            </div>
+            <div class="m5realScenario">
+              <div class="m5realBad">
+                <span class="m5realBadLabel"><i class="ph-bold ph-warning"></i> Write directo</span>
+                <p>Escribís sobre el config directamente con <code>Files.write(config, datos)</code>. Si un lector accede mientras está escribiendo, ve el archivo a medias — configuración inválida que puede crashear la app.</p>
+              </div>
+              <div class="m5realGood">
+                <span class="m5realGoodLabel"><i class="ph-bold ph-check"></i> Write → Rename atómico</span>
+                <p>Escribís en un archivo temp y una vez completo hacés <code>Files.move(ATOMIC_MOVE)</code>. Los lectores siempre ven la versión anterior completa O la nueva completa — nunca una a medias.</p>
+              </div>
+            </div>
+            <div class="m5realCode"><code>Files.move(temp, config, ATOMIC_MOVE);</code></div>
+          </div>
+        </div>
+
+        <div class="m5fsTabs reveal">
+          <div class="m5fsTabBar">
+            <button class="m5fsTab m5fsTabActive" onclick="switchTabFs(this,'tabfs-lock')">
+              <i class="ph ph-lock-key"></i> FileLock
+            </button>
+            <button class="m5fsTab" onclick="switchTabFs(this,'tabfs-atomic')">
+              <i class="ph ph-atom"></i> Operaciones atómicas
+            </button>
+          </div>
+
+          <div class="m5fsPanel" id="tabfs-lock">
+            <div class="m5codeWhen">
+              <div class="m5codeWhenBox">
+                <i class="ph-bold ph-lock-key" style="color:var(--accent)"></i>
+                <p>Usá <code>FileLock</code> cuando múltiples hilos <em>o procesos</em> necesitan escribir en el mismo archivo. A diferencia de <code>synchronized</code>, funciona entre procesos distintos del SO — útil para logs compartidos entre microservicios.</p>
+              </div>
+            </div>
+            <pre class="language-java"><code class="language-java">import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.*;
+import java.nio.file.*;
+
+public class LogSeguro {
+    private static final Path LOG = Path.of("app.log");
+
+    // Seguro para llamar desde múltiples hilos Y desde múltiples procesos
+    public static void escribirLinea(String msg) throws IOException {
+        try (FileChannel canal = FileChannel.open(LOG,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.APPEND,
+                StandardOpenOption.CREATE);
+             FileLock lock = canal.lock()) {   // bloquea el archivo a nivel de SO
+
+            byte[] bytes = (msg + System.lineSeparator()).getBytes();
+            canal.write(ByteBuffer.wrap(bytes));
+
+        }   // FileLock liberado al cerrar — otros hilos/procesos pueden escribir
+    }
+
+    public static void main(String[] args) throws Exception {
+        Thread[] workers = new Thread[8];
+        for (int i = 0; i < 8; i++) {
+            final int id = i;
+            workers[i] = new Thread(() -> {
+                try { escribirLinea("Worker-" + id + " completó su tarea"); }
+                catch (IOException e) { e.printStackTrace(); }
+            });
+        }
+        for (Thread t : workers) t.start();
+        for (Thread t : workers) t.join();
+        long lineas = Files.lines(LOG).count();
+        System.out.println("Líneas en el log: " + lineas); // siempre 8
+    }
+}</code></pre>
+          </div>
+
+          <div class="m5fsPanel m5fsPanelHidden" id="tabfs-atomic">
+            <div class="m5codeWhen">
+              <div class="m5codeWhenBox">
+                <i class="ph-bold ph-atom" style="color:var(--accent)"></i>
+                <p>Usá operaciones atómicas del filesystem para evitar TOCTOU y estados intermedios visibles. <code>Files.createFile()</code> y <code>Files.move(ATOMIC_MOVE)</code> son primitivas que el SO ejecuta sin interrupciones a nivel de kernel.</p>
+              </div>
+            </div>
+            <pre class="language-java"><code class="language-java">import java.io.*;
+import java.nio.file.*;
+
+public class OperacionesAtomicas {
+
+    // ❌ TOCTOU: dos hilos pueden pasar el if() antes de que alguno cree
+    static void crearArchivoMal(Path p) throws IOException {
+        if (!Files.exists(p)) {          // check ← otro hilo puede colarse aquí
+            Files.createFile(p);          // act  ← race condition entre check y act
+        }
+    }
+
+    // ✅ Atómico: el SO garantiza que solo un hilo crea, el otro obtiene excepción
+    static boolean crearArchivoSeguro(Path p) throws IOException {
+        try {
+            Files.createFile(p);          // atómico: crea O lanza excepción
+            return true;                  // este hilo ganó la "carrera"
+        } catch (FileAlreadyExistsException e) {
+            return false;                 // otro hilo ya lo creó — sin corrupción
+        }
+    }
+
+    // ✅ Write-then-rename: los lectores nunca ven un archivo incompleto
+    static void actualizarConfig(Path config, byte[] datos) throws IOException {
+        Path temp = config.resolveSibling(".tmp_" + config.getFileName());
+        Files.write(temp, datos);           // escribe todo en un archivo temp
+        Files.move(temp, config,            // swap atómico — instantáneo
+                StandardCopyOption.ATOMIC_MOVE,
+                StandardCopyOption.REPLACE_EXISTING);
+        // Cualquier lector ve la versión anterior O la nueva — nunca una incompleta
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="m5fsToolkit reveal">
+          <div class="m5fsToolkitTitle"><i class="ph-bold ph-toolbox"></i> ¿Qué herramienta usar?</div>
+          <div class="m5fsToolkitGrid">
+            <div class="m5fsToolkitRow m5fsToolkitHead">
+              <span>Problema</span><span>Herramienta</span><span>API Java</span>
+            </div>
+            <div class="m5fsToolkitRow">
+              <span>Múltiples hilos, mismo proceso, acceso a archivo</span>
+              <span class="m5fsToolBadge" style="--tc:var(--accent)">synchronized / Lock</span>
+              <span class="m5fsCode">synchronized, ReentrantLock</span>
+            </div>
+            <div class="m5fsToolkitRow">
+              <span>Múltiples procesos del SO comparten el mismo archivo</span>
+              <span class="m5fsToolBadge" style="--tc:#34d399">FileLock</span>
+              <span class="m5fsCode">FileChannel.lock()</span>
+            </div>
+            <div class="m5fsToolkitRow">
+              <span>Operaciones check-then-act sobre archivos</span>
+              <span class="m5fsToolBadge" style="--tc:#a855f7">Op. atómica</span>
+              <span class="m5fsCode">createFile(), ATOMIC_MOVE</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 

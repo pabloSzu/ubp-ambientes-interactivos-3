@@ -53,7 +53,7 @@ animateCounter(document.getElementById('counter1'), 3);
 animateCounter(document.getElementById('counter2'), 3);
 animateCounter(document.getElementById('counter3'), 5);
 
-/* ─── Code tabs ──────────────────────────── */
+/* ─── Code tabs (main) ──────────────────── */
 function switchTab(btn, panelId) {
   document.querySelectorAll('.m5codeTab').forEach(t => t.classList.remove('m5codeTabActive'));
   document.querySelectorAll('.m5codePanel').forEach(p => p.classList.add('m5codePanelHidden'));
@@ -61,6 +61,18 @@ function switchTab(btn, panelId) {
   const panel = document.getElementById(panelId);
   if (panel) {
     panel.classList.remove('m5codePanelHidden');
+    if (window.Prism) Prism.highlightAllUnder(panel);
+  }
+}
+
+/* ─── Filesystem quirks tabs ────────────── */
+function switchTabFs(btn, panelId) {
+  document.querySelectorAll('.m5fsTab').forEach(t => t.classList.remove('m5fsTabActive'));
+  document.querySelectorAll('.m5fsPanel').forEach(p => p.classList.add('m5fsPanelHidden'));
+  btn.classList.add('m5fsTabActive');
+  const panel = document.getElementById(panelId);
+  if (panel) {
+    panel.classList.remove('m5fsPanelHidden');
     if (window.Prism) Prism.highlightAllUnder(panel);
   }
 }
