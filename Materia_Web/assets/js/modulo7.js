@@ -220,31 +220,33 @@ function drawClusterSvg() {
   const svg = document.getElementById('clusterSvg');
   if (!svg) return;
 
-  const W = 520, H = 260;
-  const CORE_COLOR = '#a3e635', AGG_COLOR = '#38bdf8', NODE_COLOR = '#8a9bb8';
-  const LINK_CORE = 'rgba(163,230,53,0.5)', LINK_AGG = 'rgba(56,189,248,0.4)', LINK_NODE = 'rgba(138,155,184,0.3)';
+  const CORE_COLOR = '#a3e635';
+  const AGG_COLOR  = '#38bdf8';
+  const NODE_COLOR = '#8a9bb8';
+  const LINK_CORE  = 'rgba(163,230,53,0.45)';
+  const LINK_AGG   = 'rgba(56,189,248,0.35)';
 
+  // ViewBox 600×280 — perfectly symmetric Fat-Tree, no crowding
+  // Nodes: 70px pitch, r=20 → 30px gap. Aggs centered over node pairs. Cores centered over agg pairs.
+  const NR = 20;
+  const nodeY = 228;
+  const nxs = [45, 115, 185, 255, 325, 395, 465, 535]; // 70px pitch
+
+  // Agg centers = midpoint of each node pair
   const cores = [
-    { x: 160, y: 30, label: 'Core 1' },
-    { x: 360, y: 30, label: 'Core 2' },
+    { x: 150, y: 42, label: 'Core 1' }, // midpoint of Agg1(80) & Agg2(220)
+    { x: 430, y: 42, label: 'Core 2' }, // midpoint of Agg3(360) & Agg4(500)
   ];
   const aggs = [
-    { x: 80,  y: 110, label: 'Agg 1' },
-    { x: 200, y: 110, label: 'Agg 2' },
-    { x: 320, y: 110, label: 'Agg 3' },
-    { x: 440, y: 110, label: 'Agg 4' },
+    { x: 80,  y: 132, label: 'Agg 1' }, // midpoint of N1(45) & N2(115)
+    { x: 220, y: 132, label: 'Agg 2' }, // midpoint of N3(185) & N4(255)
+    { x: 360, y: 132, label: 'Agg 3' }, // midpoint of N5(325) & N6(395)
+    { x: 500, y: 132, label: 'Agg 4' }, // midpoint of N7(465) & N8(535)
   ];
-  const nodes = [
-    { x: 44,  y: 200, label: 'N1' },
-    { x: 113, y: 200, label: 'N2' },
-    { x: 166, y: 200, label: 'N3' },
-    { x: 234, y: 200, label: 'N4' },
-    { x: 287, y: 200, label: 'N5' },
-    { x: 355, y: 200, label: 'N6' },
-    { x: 408, y: 200, label: 'N7' },
-    { x: 476, y: 200, label: 'N8' },
-  ];
+  const nodeLabels = ['N1','N2','N3','N4','N5','N6','N7','N8'];
+  const nodes = nxs.map((x, i) => ({ x, y: nodeY, label: nodeLabels[i] }));
 
+  // Fat-Tree connections: each core → all 4 aggs, each agg → 2 nodes
   const coreToAgg = [
     [0,0],[0,1],[0,2],[0,3],
     [1,0],[1,1],[1,2],[1,3],
@@ -256,33 +258,30 @@ function drawClusterSvg() {
 
   let html = '';
 
-  coreToAgg.forEach(([ci,ai]) => {
-    html += `<line x1="${cores[ci].x}" y1="${cores[ci].y+14}" x2="${aggs[ai].x}" y2="${aggs[ai].y-14}" stroke="${LINK_CORE}" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  // Lines first (behind nodes)
+  coreToAgg.forEach(([ci, ai]) => {
+    html += `<line x1="${cores[ci].x}" y1="${cores[ci].y+15}" x2="${aggs[ai].x}" y2="${aggs[ai].y-15}" stroke="${LINK_CORE}" stroke-width="1.4" stroke-dasharray="5 3" opacity="0.7"/>`;
   });
-  aggToNode.forEach(([ai,ni]) => {
-    html += `<line x1="${aggs[ai].x}" y1="${aggs[ai].y+14}" x2="${nodes[ni].x}" y2="${nodes[ni].y-14}" stroke="${LINK_AGG}" stroke-width="1"/>`;
+  aggToNode.forEach(([ai, ni]) => {
+    html += `<line x1="${aggs[ai].x}" y1="${aggs[ai].y+15}" x2="${nodes[ni].x}" y2="${nodes[ni].y-NR}" stroke="${LINK_AGG}" stroke-width="1.2" opacity="0.7"/>`;
   });
 
+  // Core switches (rounded rects 80×30)
   cores.forEach(c => {
-    html += `<rect x="${c.x-34}" y="${c.y-14}" width="68" height="28" rx="8" fill="rgba(163,230,53,0.12)" stroke="${CORE_COLOR}" stroke-width="1.5"/>`;
-    html += `<text x="${c.x}" y="${c.y+5}" text-anchor="middle" font-size="11" font-weight="800" fill="${CORE_COLOR}">${c.label}</text>`;
-  });
-  aggs.forEach(a => {
-    html += `<rect x="${a.x-34}" y="${a.y-14}" width="68" height="28" rx="8" fill="rgba(56,189,248,0.09)" stroke="${AGG_COLOR}" stroke-width="1.2"/>`;
-    html += `<text x="${a.x}" y="${a.y+5}" text-anchor="middle" font-size="11" font-weight="700" fill="${AGG_COLOR}">${a.label}</text>`;
-  });
-  nodes.forEach(n => {
-    html += `<circle cx="${n.x}" cy="${n.y}" r="18" fill="rgba(138,155,184,0.1)" stroke="${NODE_COLOR}" stroke-width="1"/>`;
-    html += `<text x="${n.x}" y="${n.y+4}" text-anchor="middle" font-size="10" font-weight="700" fill="${NODE_COLOR}">${n.label}</text>`;
+    html += `<rect x="${c.x-40}" y="${c.y-15}" width="80" height="30" rx="9" fill="rgba(163,230,53,0.1)" stroke="${CORE_COLOR}" stroke-width="1.6"/>`;
+    html += `<text x="${c.x}" y="${c.y+5}" text-anchor="middle" font-size="11" font-weight="800" fill="${CORE_COLOR}" font-family="system-ui,sans-serif">${c.label}</text>`;
   });
 
-  const labels = [
-    { x: 14, y: 36,  text: 'CORE',  fill: CORE_COLOR },
-    { x: 14, y: 116, text: 'AGG',   fill: AGG_COLOR },
-    { x: 14, y: 205, text: 'NODE',  fill: NODE_COLOR },
-  ];
-  labels.forEach(l => {
-    html += `<text x="${l.x}" y="${l.y}" font-size="8" font-weight="900" fill="${l.fill}" opacity="0.7" letter-spacing="1">${l.text}</text>`;
+  // Aggregation switches (rounded rects 80×30)
+  aggs.forEach(a => {
+    html += `<rect x="${a.x-40}" y="${a.y-15}" width="80" height="30" rx="9" fill="rgba(56,189,248,0.08)" stroke="${AGG_COLOR}" stroke-width="1.4"/>`;
+    html += `<text x="${a.x}" y="${a.y+5}" text-anchor="middle" font-size="11" font-weight="700" fill="${AGG_COLOR}" font-family="system-ui,sans-serif">${a.label}</text>`;
+  });
+
+  // Compute nodes (circles r=20)
+  nodes.forEach(n => {
+    html += `<circle cx="${n.x}" cy="${n.y}" r="${NR}" fill="rgba(138,155,184,0.09)" stroke="${NODE_COLOR}" stroke-width="1.2"/>`;
+    html += `<text x="${n.x}" y="${n.y+4}" text-anchor="middle" font-size="10" font-weight="700" fill="${NODE_COLOR}" font-family="system-ui,sans-serif">${n.label}</text>`;
   });
 
   svg.innerHTML = html;
