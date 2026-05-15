@@ -510,3 +510,17 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .mfoot { flex-wrap: wrap; justify-content: center; }
   .msecHead { flex-direction: column; gap: 2px; }
 }
+
+/* ─── Prism syntax highlight — fondo negro en todos los módulos ─── */
+:is(pre, code)[class*="language-"] {
+  background: #0d1117 !important;
+  border-radius: 0 !important;
+}
+pre[class*="language-"] > code[class*="language-"] {
+  background: transparent !important;
+}
+pre:not([class*="language-"]) > code[class*="language-"] {
+  display: block;
+  padding: 1.2em 1.4em !important;
+  overflow-x: auto;
+}

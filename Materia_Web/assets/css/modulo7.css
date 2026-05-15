@@ -1198,8 +1198,7 @@
   align-items: flex-start;
 }
 .m7codeWhenBox i { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
-.m7codePanel pre { margin: 0; border-radius: 0; }
-.m7codePanel pre[class*="language-"] { background: #0d1117 !important; }
+.m7codePanel pre { margin: 0; }
 .m7codePanel code { font-size: 12.5px !important; }
 
 /* ═══════════════════════════════════════════
@@ -1278,8 +1277,7 @@
   color: var(--sub);
   font-weight: 600;
 }
-.m7labHint pre { margin: 0; border-radius: 0; }
-.m7labHint pre[class*="language-"] { background: #0d1117 !important; }
+.m7labHint pre { margin: 0; }
 
 /* ═══════════════════════════════════════════
    ARCHITECTURE GAME
