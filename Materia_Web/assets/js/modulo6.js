@@ -561,4 +561,448 @@ document.addEventListener('DOMContentLoaded', () => {
   quizRender();
   updateAmdahl();
   if (window.Prism) Prism.highlightAll();
+  cmpReset();
+  streamReset();
+  lbReset();
 });
+
+/* ═══════════════════════════════════════════
+   COMPARADOR VISUAL: SECUENCIAL vs PARALELO
+═══════════════════════════════════════════ */
+const CMP_TASKS = [
+  { label: 'Frame A', units: 6 },
+  { label: 'Frame B', units: 4 },
+  { label: 'Frame C', units: 8 },
+  { label: 'Frame D', units: 3 },
+  { label: 'Frame E', units: 7 },
+  { label: 'Frame F', units: 5 },
+  { label: 'Frame G', units: 6 },
+  { label: 'Frame H', units: 4 }
+];
+const CMP_UNIT_MS  = 120; // each work unit = 120ms animation
+const CMP_INTERVAL =  50; // refresh every 50ms
+
+let cmpWorkers    = 2;
+let cmpRunning    = false;
+let cmpIntervalId = null;
+
+function cmpBuildHTML(prefix, isPar) {
+  return CMP_TASKS.map((t, i) =>
+    `<div class="m6cmpTask" id="${prefix}${i}">` +
+      `<div class="m6cmpTaskLbl">${t.label}</div>` +
+      `<div class="m6cmpTaskBarWrap">` +
+        `<div class="m6cmpTaskBar${isPar ? ' par' : ''}" id="${prefix}${i}Bar"></div>` +
+      `</div>` +
+    `</div>`
+  ).join('');
+}
+
+function cmpSetWorkers(n, btn) {
+  if (cmpRunning) return;
+  cmpWorkers = n;
+  document.querySelectorAll('.m6cmpWBtn').forEach(b => b.classList.remove('m6cmpWBtnActive'));
+  btn.classList.add('m6cmpWBtnActive');
+  document.getElementById('cmpParWorkerLbl').textContent = n + ' workers';
+  cmpReset();
+}
+
+function cmpReset() {
+  cmpRunning = false;
+  if (cmpIntervalId) { clearInterval(cmpIntervalId); cmpIntervalId = null; }
+
+  const seqEl = document.getElementById('cmpSeqTasks');
+  const parEl = document.getElementById('cmpParTasks');
+  if (seqEl) seqEl.innerHTML = cmpBuildHTML('cmpSeq', false);
+  if (parEl) parEl.innerHTML = cmpBuildHTML('cmpPar', true);
+
+  const seqTime = document.getElementById('cmpSeqTime');
+  const parTime = document.getElementById('cmpParTime');
+  if (seqTime) seqTime.textContent = '0.0s';
+  if (parTime) parTime.textContent = '0.0s';
+
+  const speedup = document.getElementById('cmpSpeedup');
+  if (speedup) speedup.style.display = 'none';
+
+  const btn = document.getElementById('cmpPlayBtn');
+  if (btn) { btn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar'; btn.disabled = false; }
+}
+
+function cmpPlay() {
+  if (cmpRunning) return;
+  cmpRunning = true;
+
+  const seqEl = document.getElementById('cmpSeqTasks');
+  const parEl = document.getElementById('cmpParTasks');
+  if (seqEl) seqEl.innerHTML = cmpBuildHTML('cmpSeq', false);
+  if (parEl) parEl.innerHTML = cmpBuildHTML('cmpPar', true);
+  document.getElementById('cmpSeqTime').textContent = '0.0s';
+  document.getElementById('cmpParTime').textContent = '0.0s';
+  document.getElementById('cmpSpeedup').style.display = 'none';
+
+  const btn = document.getElementById('cmpPlayBtn');
+  if (btn) { btn.innerHTML = '<i class="ph-bold ph-hourglass"></i> Corriendo...'; btn.disabled = true; }
+
+  // Sequential state
+  const seqProgress = new Array(CMP_TASKS.length).fill(0);
+  let seqCur = 0;
+  let seqDone = false;
+  let seqEndTime = 0;
+
+  // Parallel state
+  const parProgress  = new Array(CMP_TASKS.length).fill(0);
+  const parTaskDone  = new Array(CMP_TASKS.length).fill(false);
+  const workerTask   = new Array(cmpWorkers).fill(-1);
+  const parQueue     = CMP_TASKS.map((_, i) => i);
+  for (let w = 0; w < cmpWorkers && parQueue.length > 0; w++) {
+    workerTask[w] = parQueue.shift();
+  }
+  let parDone = false;
+  let parEndTime = 0;
+
+  const t0 = Date.now();
+
+  function onBothDone() {
+    clearInterval(cmpIntervalId);
+    cmpIntervalId = null;
+    cmpRunning = false;
+    const pb = document.getElementById('cmpPlayBtn');
+    if (pb) { pb.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar'; pb.disabled = false; }
+
+    const speedup = (seqEndTime / Math.max(parEndTime, 0.01)).toFixed(2);
+    const pct     = Math.round((1 - parEndTime / seqEndTime) * 100);
+    document.getElementById('cmpSpeedupVal').textContent = '×' + speedup;
+    document.getElementById('cmpSpeedupX').textContent   = pct + '%';
+    document.getElementById('cmpSpeedup').style.display  = 'flex';
+  }
+
+  cmpIntervalId = setInterval(() => {
+    const elapsed = (Date.now() - t0) / 1000;
+
+    // ── Sequential side ──
+    if (!seqDone) {
+      document.getElementById('cmpSeqTime').textContent = elapsed.toFixed(1) + 's';
+      if (seqCur < CMP_TASKS.length) {
+        const incr = CMP_INTERVAL / (CMP_UNIT_MS * CMP_TASKS[seqCur].units);
+        seqProgress[seqCur] = Math.min(seqProgress[seqCur] + incr, 1);
+        const bar = document.getElementById('cmpSeq' + seqCur + 'Bar');
+        if (bar) bar.style.width = (seqProgress[seqCur] * 100).toFixed(1) + '%';
+        if (seqProgress[seqCur] >= 1) {
+          if (bar) bar.classList.add('done-seq');
+          seqCur++;
+        }
+      } else {
+        seqDone = true;
+        seqEndTime = elapsed;
+        if (parDone) onBothDone();
+      }
+    }
+
+    // ── Parallel side ──
+    if (!parDone) {
+      document.getElementById('cmpParTime').textContent = elapsed.toFixed(1) + 's';
+      for (let w = 0; w < cmpWorkers; w++) {
+        const fi = workerTask[w];
+        if (fi === -1 || parTaskDone[fi]) continue;
+        const incr = CMP_INTERVAL / (CMP_UNIT_MS * CMP_TASKS[fi].units);
+        parProgress[fi] = Math.min(parProgress[fi] + incr, 1);
+        const bar = document.getElementById('cmpPar' + fi + 'Bar');
+        if (bar) bar.style.width = (parProgress[fi] * 100).toFixed(1) + '%';
+        if (parProgress[fi] >= 1) {
+          parTaskDone[fi] = true;
+          if (bar) bar.classList.add('done-par');
+          workerTask[w] = parQueue.length > 0 ? parQueue.shift() : -1;
+        }
+      }
+      if (parTaskDone.every(d => d)) {
+        parDone = true;
+        parEndTime = elapsed;
+        if (seqDone) onBothDone();
+      }
+    }
+  }, CMP_INTERVAL);
+}
+
+/* ═══════════════════════════════════════════
+   SIMULADOR STREAMING: ENCODING DE VIDEO
+═══════════════════════════════════════════ */
+const STREAM_FRAMES = [
+  { id: 'F01', type: 'I', ticks: 3 },
+  { id: 'F02', type: 'P', ticks: 1 },
+  { id: 'F03', type: 'P', ticks: 1 },
+  { id: 'F04', type: 'B', ticks: 2 },
+  { id: 'F05', type: 'P', ticks: 1 },
+  { id: 'F06', type: 'I', ticks: 3 },
+  { id: 'F07', type: 'P', ticks: 1 },
+  { id: 'F08', type: 'B', ticks: 2 },
+  { id: 'F09', type: 'P', ticks: 1 },
+  { id: 'F10', type: 'I', ticks: 3 },
+  { id: 'F11', type: 'P', ticks: 1 },
+  { id: 'F12', type: 'B', ticks: 2 }
+];
+const STREAM_UNIT_MS  = 250;
+const STREAM_INTERVAL =  50;
+
+let streamMode         = 'seq';
+let streamWorkerCount  = 4;
+let streamRunning      = false;
+let streamIntervalId   = null;
+let streamSeqBaseline  = null; // measured sequential time
+
+function streamSetMode(mode, btn) {
+  if (streamRunning) return;
+  streamMode = mode;
+  document.querySelectorAll('.m6streamModeBtn').forEach(b => b.classList.remove('m6streamModeBtnActive'));
+  btn.classList.add('m6streamModeBtnActive');
+  const wsel = document.getElementById('streamWorkerSel');
+  if (wsel) wsel.style.display = mode === 'par' ? 'flex' : 'none';
+  streamReset();
+}
+
+function streamSetWorkers(n, btn) {
+  if (streamRunning) return;
+  streamWorkerCount = n;
+  document.querySelectorAll('.m6streamWBtn').forEach(b => b.classList.remove('m6streamWBtnActive'));
+  btn.classList.add('m6streamWBtnActive');
+  streamReset();
+}
+
+function streamBuildInit() {
+  const framesEl = document.getElementById('streamFrames');
+  if (framesEl) {
+    framesEl.innerHTML = STREAM_FRAMES.map((f, i) =>
+      `<div class="m6sFrame" id="sf${i}">` +
+        `<div style="font-size:9px;font-weight:800;opacity:0.55;line-height:1">${f.type}</div>` +
+        `<div style="font-size:13px;font-weight:900;line-height:1">${f.id}</div>` +
+        `<div class="m6sFrameProgress" id="sfp${i}"></div>` +
+      `</div>`
+    ).join('');
+  }
+
+  const wCount    = streamMode === 'seq' ? 1 : streamWorkerCount;
+  const workersEl = document.getElementById('streamWorkers');
+  if (workersEl) {
+    workersEl.innerHTML = Array.from({ length: wCount }, (_, w) =>
+      `<div class="m6sWorker" id="sw${w}">` +
+        `<div class="m6sWorkerLbl">W${w + 1}</div>` +
+        `<div class="m6sWorkerFrame" id="swf${w}">—</div>` +
+        `<div class="m6sWorkerBarWrap"><div class="m6sWorkerBar" id="swb${w}"></div></div>` +
+        `<div class="m6sWorkerPct" id="swp${w}">0%</div>` +
+      `</div>`
+    ).join('');
+  }
+
+  const stTime = document.getElementById('streamTime');
+  const stDone = document.getElementById('streamDone');
+  const stSpd  = document.getElementById('streamSpeedup');
+  if (stTime) stTime.textContent = '0.0s';
+  if (stDone) stDone.textContent = '0 / ' + STREAM_FRAMES.length;
+  if (stSpd)  stSpd.textContent  = '—';
+}
+
+function streamReset() {
+  if (streamIntervalId) { clearInterval(streamIntervalId); streamIntervalId = null; }
+  streamRunning = false;
+  streamBuildInit();
+  const btn = document.getElementById('streamPlayBtn');
+  if (btn) { btn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar encoding'; btn.disabled = false; }
+}
+
+function streamToggle() {
+  if (streamRunning) { streamReset(); return; }
+
+  streamRunning = true;
+  streamBuildInit();
+
+  const btn = document.getElementById('streamPlayBtn');
+  if (btn) { btn.innerHTML = '<i class="ph-bold ph-stop"></i> Detener'; }
+
+  const wCount   = streamMode === 'seq' ? 1 : streamWorkerCount;
+  const queue    = STREAM_FRAMES.map((_, i) => i);
+  const frameDone = new Array(STREAM_FRAMES.length).fill(false);
+
+  // Workers: which frame index each is processing, and when it started
+  const workers = Array.from({ length: wCount }, () => ({ fi: -1, startMs: 0 }));
+  const now0 = Date.now();
+  for (let w = 0; w < wCount && queue.length > 0; w++) {
+    workers[w] = { fi: queue.shift(), startMs: now0 };
+  }
+  let doneCount = 0;
+
+  streamIntervalId = setInterval(() => {
+    const now     = Date.now();
+    const elapsed = (now - now0) / 1000;
+    const stTime  = document.getElementById('streamTime');
+    if (stTime) stTime.textContent = elapsed.toFixed(1) + 's';
+
+    for (let w = 0; w < wCount; w++) {
+      const wk = workers[w];
+      const swfEl = document.getElementById('swf' + w);
+      const swbEl = document.getElementById('swb' + w);
+      const swpEl = document.getElementById('swp' + w);
+
+      if (wk.fi === -1) {
+        if (swfEl) swfEl.textContent = '—';
+        if (swbEl) swbEl.style.width = '0%';
+        if (swpEl) swpEl.textContent = 'idle';
+        continue;
+      }
+
+      const frame    = STREAM_FRAMES[wk.fi];
+      const durMs    = frame.ticks * STREAM_UNIT_MS;
+      const progress = Math.min((now - wk.startMs) / durMs, 1);
+
+      const sfEl  = document.getElementById('sf' + wk.fi);
+      const sfpEl = document.getElementById('sfp' + wk.fi);
+      if (sfEl && !frameDone[wk.fi]) sfEl.classList.add('sf-active');
+      if (sfpEl && !frameDone[wk.fi]) sfpEl.style.width = (progress * 100).toFixed(1) + '%';
+
+      if (swfEl) swfEl.textContent = frame.id;
+      if (swbEl) swbEl.style.width = (progress * 100).toFixed(1) + '%';
+      if (swpEl) swpEl.textContent = Math.round(progress * 100) + '%';
+
+      if (progress >= 1 && !frameDone[wk.fi]) {
+        frameDone[wk.fi] = true;
+        doneCount++;
+        if (sfEl)  { sfEl.classList.remove('sf-active'); sfEl.classList.add('sf-done'); }
+        if (sfpEl) sfpEl.style.width = '100%';
+
+        const stDone = document.getElementById('streamDone');
+        if (stDone) stDone.textContent = doneCount + ' / ' + STREAM_FRAMES.length;
+
+        wk.fi = queue.length > 0 ? queue.shift() : -1;
+        if (wk.fi !== -1) wk.startMs = now;
+      }
+    }
+
+    if (doneCount >= STREAM_FRAMES.length) {
+      clearInterval(streamIntervalId);
+      streamIntervalId = null;
+      streamRunning    = false;
+
+      const pbtn = document.getElementById('streamPlayBtn');
+      if (pbtn) { pbtn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar encoding'; pbtn.disabled = false; }
+
+      const stSpd = document.getElementById('streamSpeedup');
+      if (streamMode === 'seq') {
+        streamSeqBaseline = elapsed;
+        if (stSpd) stSpd.textContent = '×1.0';
+      } else if (streamSeqBaseline) {
+        if (stSpd) stSpd.textContent = '×' + (streamSeqBaseline / elapsed).toFixed(2);
+      } else {
+        const seqEst = STREAM_FRAMES.reduce((s, f) => s + f.ticks * STREAM_UNIT_MS, 0) / 1000;
+        if (stSpd) stSpd.textContent = '×' + (seqEst / elapsed).toFixed(2) + ' (est.)';
+      }
+    }
+  }, STREAM_INTERVAL);
+}
+
+/* ═══════════════════════════════════════════
+   JUEGO 2: BALANCEO DE CARGA
+═══════════════════════════════════════════ */
+const LB_FRAMES_DATA = [
+  { id: 1, w: 8 },
+  { id: 2, w: 5 },
+  { id: 3, w: 7 },
+  { id: 4, w: 4 },
+  { id: 5, w: 6 },
+  { id: 6, w: 5 },
+  { id: 7, w: 3 },
+  { id: 8, w: 4 },
+  { id: 9, w: 2 }
+];
+// Optimal distribution: W1=[8,4,3]=15, W2=[7,5,2]=14, W3=[6,5,4]=15 → makespan=15
+const LB_OPTIMAL    = 15;
+const LB_NUM_WORKERS = 3;
+
+let lbSelected    = null;
+let lbAssignments = [[], [], []];
+let lbAssigned    = new Array(LB_FRAMES_DATA.length).fill(false);
+
+function lbRenderFrames() {
+  const grid = document.getElementById('lbFrameGrid');
+  if (!grid) return;
+  grid.innerHTML = LB_FRAMES_DATA.map((f, i) => {
+    let cls = 'm6lbFrame';
+    if (lbSelected === i) cls += ' lb-selected';
+    if (lbAssigned[i])    cls += ' lb-assigned';
+    return `<div class="${cls}" id="lbf${i}" onclick="lbSelectFrame(${i})">` +
+             `<div class="m6lbFrameWeight">${f.w}s</div>` +
+             `<div style="font-size:9px;opacity:0.55">F${String(f.id).padStart(2, '0')}</div>` +
+           `</div>`;
+  }).join('');
+}
+
+function lbRenderWorkers() {
+  const grid = document.getElementById('lbWorkerGrid');
+  if (!grid) return;
+
+  const totals = lbAssignments.map(arr => arr.reduce((s, fi) => s + LB_FRAMES_DATA[fi].w, 0));
+  const maxTotal = Math.max(...totals, LB_OPTIMAL);
+
+  grid.innerHTML = lbAssignments.map((frames, w) => {
+    const total   = totals[w];
+    const pct     = (total / maxTotal) * 100;
+    const isHeavy = total > LB_OPTIMAL;
+    const items   = frames.map(fi =>
+      `<div class="m6lbWorkerItem">${LB_FRAMES_DATA[fi].w}s</div>`
+    ).join('');
+
+    return `<div class="m6lbWorker" id="lbw${w}" onclick="lbAssignToWorker(${w})">` +
+             `<div class="m6lbWorkerHead">` +
+               `<div class="m6lbWorkerName">W${w + 1}</div>` +
+               `<div class="m6lbWorkerTotal${isHeavy ? ' lb-heavy' : ''}">${total}s</div>` +
+             `</div>` +
+             `<div class="m6lbWorkerItems">${items}</div>` +
+             `<div class="m6lbWorkerBarWrap">` +
+               `<div class="m6lbWorkerBar${isHeavy ? ' lb-heavy-bar' : ''}" style="width:${pct.toFixed(1)}%"></div>` +
+             `</div>` +
+           `</div>`;
+  }).join('');
+}
+
+function lbReset() {
+  lbSelected    = null;
+  lbAssignments = [[], [], []];
+  lbAssigned    = new Array(LB_FRAMES_DATA.length).fill(false);
+  const res = document.getElementById('lbResult');
+  if (res) res.style.display = 'none';
+  lbRenderFrames();
+  lbRenderWorkers();
+}
+
+function lbSelectFrame(idx) {
+  if (lbAssigned[idx]) return;
+  lbSelected = lbSelected === idx ? null : idx;
+  lbRenderFrames();
+}
+
+function lbAssignToWorker(workerIdx) {
+  if (lbSelected === null) return;
+  lbAssignments[workerIdx].push(lbSelected);
+  lbAssigned[lbSelected] = true;
+  lbSelected = null;
+  lbRenderFrames();
+  lbRenderWorkers();
+  if (lbAssigned.every(a => a)) lbShowResult();
+}
+
+function lbShowResult() {
+  const totals   = lbAssignments.map(arr => arr.reduce((s, fi) => s + LB_FRAMES_DATA[fi].w, 0));
+  const makespan = Math.max(...totals);
+  const diff     = makespan - LB_OPTIMAL;
+  const score    = diff === 0 ? 100 : diff <= 1 ? 85 : diff <= 3 ? 65 : diff <= 5 ? 45 : 25;
+
+  const msgs = [
+    `🏆 ¡ÓPTIMO PERFECTO! Makespan = ${makespan}s. Encontraste la distribución ideal. Esto equivale a un algoritmo de scheduling perfecto — algo NP-hard de resolver en general.`,
+    `👍 ¡Casi perfecto! Makespan = ${makespan}s (${diff}s sobre el óptimo de ${LB_OPTIMAL}s). El algoritmo LPT (Longest Processing Time First) suele dar resultados así de buenos.`,
+    `💡 Makespan = ${makespan}s. El óptimo es ${LB_OPTIMAL}s. Pista: intentá asignar los frames más pesados primero, distribuyéndolos entre los workers más libres (heurística LPT).`,
+    `⚠️ Makespan = ${makespan}s — hay bastante margen de mejora. El óptimo es ${LB_OPTIMAL}s. Heurística: asigná el frame más pesado al worker con menos carga acumulada.`
+  ];
+  const msgIdx = diff === 0 ? 0 : diff <= 1 ? 1 : diff <= 4 ? 2 : 3;
+
+  document.getElementById('lbYourTime').textContent = makespan + 's';
+  document.getElementById('lbOptTime').textContent  = LB_OPTIMAL + 's';
+  document.getElementById('lbScore').textContent    = score + '/100';
+  document.getElementById('lbResultMsg').textContent = msgs[msgIdx];
+  document.getElementById('lbResult').style.display  = 'block';
+}

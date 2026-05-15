@@ -7,6 +7,7 @@
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="../assets/css/modulo.css" />
     <link rel="stylesheet" href="../assets/css/modulo6.css" />
+    <link rel="stylesheet" href="../assets/css/modulo6_extra.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" />
@@ -34,6 +35,7 @@
       <nav class="mhdrSections">
         <a href="#conceptos">Conceptos</a>
         <a href="#simulador">Amdahl</a>
+        <a href="#streaming">Streaming</a>
         <a href="#codigo">Código</a>
         <a href="#laboratorio">Lab</a>
         <a href="#actividades">Actividad</a>
@@ -395,6 +397,256 @@
       </div>
     </section>
 
+    <!-- ── MEMORIA COMPARTIDA VS DISTRIBUIDA ──── -->
+    <section class="msec alt" id="memoria">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-buildings"></i> Dos modelos de paralelismo</span>
+          <h2>Memoria compartida vs Memoria distribuida</h2>
+          <p class="msecSub">Todos los sistemas paralelos caen en uno de dos modelos: threads que comparten el mismo espacio de memoria, o procesos separados que se comunican por mensajes. Entender la diferencia es clave para diseñar sistemas escalables.</p>
+        </div>
+
+        <div class="m6memGrid reveal">
+          <!-- Shared Memory -->
+          <div class="m6memCard">
+            <div class="m6memCardHead m6memSharedHead">
+              <i class="ph-bold ph-share-network"></i>
+              <div>
+                <div class="m6memCardTitle">Memoria Compartida</div>
+                <div class="m6memCardSub">Shared Memory — Multiprocesador</div>
+              </div>
+            </div>
+            <div class="m6memDiagram">
+              <div class="m6memDiagRow">
+                <div class="m6memThread">T1</div>
+                <div class="m6memThread">T2</div>
+                <div class="m6memThread">T3</div>
+                <div class="m6memThread">T4</div>
+              </div>
+              <div class="m6memDiagArrows">↓ ↓ ↓ ↓</div>
+              <div class="m6memHeap">
+                <i class="ph ph-database"></i> Heap compartido
+                <span class="m6memHeapBadge">synchronized / volatile</span>
+              </div>
+            </div>
+            <ul class="m6memList">
+              <li><i class="ph ph-check" style="color:#34d399"></i> Comunicación instantánea — solo leer/escribir la misma variable</li>
+              <li><i class="ph ph-check" style="color:#34d399"></i> Fácil de programar — misma API que hilos Java</li>
+              <li><i class="ph ph-warning" style="color:#fb923c"></i> Race conditions — necesita sincronización explícita</li>
+              <li><i class="ph ph-warning" style="color:#fb923c"></i> Escala hasta los cores del mismo servidor, no más</li>
+            </ul>
+            <div class="m6memExample">
+              <div class="m6memExLbl">Java — memoria compartida</div>
+              <pre><code class="language-java">// Todos los threads leen/escriben la misma variable
+AtomicInteger contador = new AtomicInteger(0);
+
+Thread t1 = new Thread(() -&gt; contador.incrementAndGet());
+Thread t2 = new Thread(() -&gt; contador.incrementAndGet());
+// Sin AtomicInteger → race condition</code></pre>
+            </div>
+          </div>
+
+          <!-- Distributed Memory -->
+          <div class="m6memCard">
+            <div class="m6memCardHead m6memDistHead">
+              <i class="ph-bold ph-arrow-left-right"></i>
+              <div>
+                <div class="m6memCardTitle">Memoria Distribuida</div>
+                <div class="m6memCardSub">Message Passing — Cluster / Red</div>
+              </div>
+            </div>
+            <div class="m6memDiagram m6memDiagramDist">
+              <div class="m6memDistRow">
+                <div class="m6memNode">
+                  <div class="m6memNodeIcon"><i class="ph ph-desktop"></i></div>
+                  <div class="m6memNodeMem">RAM 1</div>
+                </div>
+                <div class="m6memDistArrow">⇄ msg</div>
+                <div class="m6memNode">
+                  <div class="m6memNodeIcon"><i class="ph ph-desktop"></i></div>
+                  <div class="m6memNodeMem">RAM 2</div>
+                </div>
+              </div>
+              <div class="m6memDistArrow m6memDistArrowV">⇅ msg</div>
+              <div class="m6memDistRow">
+                <div class="m6memNode">
+                  <div class="m6memNodeIcon"><i class="ph ph-desktop"></i></div>
+                  <div class="m6memNodeMem">RAM 3</div>
+                </div>
+                <div class="m6memDistArrow">⇄ msg</div>
+                <div class="m6memNode">
+                  <div class="m6memNodeIcon"><i class="ph ph-desktop"></i></div>
+                  <div class="m6memNodeMem">RAM 4</div>
+                </div>
+              </div>
+            </div>
+            <ul class="m6memList">
+              <li><i class="ph ph-check" style="color:#34d399"></i> Escala a miles de nodos — sin límite físico de cores</li>
+              <li><i class="ph ph-check" style="color:#34d399"></i> Sin race conditions — cada proceso tiene su propia memoria</li>
+              <li><i class="ph ph-warning" style="color:#fb923c"></i> Comunicación tiene latencia — el mensaje viaja por red</li>
+              <li><i class="ph ph-warning" style="color:#fb923c"></i> Más complejo de programar — hay que diseñar el protocolo</li>
+            </ul>
+            <div class="m6memExample">
+              <div class="m6memExLbl">Java — mensaje entre procesos</div>
+              <pre><code class="language-java">// Procesos separados se comunican por BlockingQueue / socket
+BlockingQueue&lt;String&gt; canal = new LinkedBlockingQueue&lt;&gt;();
+
+// Productor (proceso A)
+canal.put("datos-procesados");
+
+// Consumidor (proceso B) — diferente JVM / nodo
+String msg = canal.take(); // espera el mensaje</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="m6memCompare reveal">
+          <div class="m6memCompareLbl">¿Cuándo usar cada modelo?</div>
+          <div class="m6memCompareGrid">
+            <div class="m6memCompareItem">
+              <strong>Memoria Compartida</strong>
+              <p>Un servidor multi-core (4-128 cores). Multimedia player, servidor web, encoding local.</p>
+            </div>
+            <div class="m6memCompareItem m6memCompareItemAccent">
+              <strong>Ambos (híbrido)</strong>
+              <p>Cluster de servidores multi-core: memoria compartida dentro del nodo + mensajes entre nodos. Netflix, YouTube, servicios cloud.</p>
+            </div>
+            <div class="m6memCompareItem">
+              <strong>Memoria Distribuida</strong>
+              <p>Miles de nodos geográficamente separados. HPC científico, CDN global, blockchain.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COMPARACIÓN VISUAL SEQ VS PAR ──────── -->
+    <section class="msec" id="comparacion">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-chart-bar"></i> Verlo para entenderlo</span>
+          <h2>Secuencial vs Paralelo — en vivo</h2>
+          <p class="msecSub">La misma carga de trabajo: 8 tareas independientes. Observá la diferencia real entre procesarlas de a una o todas a la vez.</p>
+        </div>
+
+        <div class="m6cmp reveal">
+          <div class="m6cmpControls">
+            <button class="m6cmpBtn m6cmpBtnPrimary" id="cmpPlayBtn" onclick="cmpPlay()">
+              <i class="ph-bold ph-play"></i> Iniciar
+            </button>
+            <button class="m6cmpBtn" onclick="cmpReset()">
+              <i class="ph-bold ph-arrow-clockwise"></i> Reset
+            </button>
+            <div class="m6cmpWorkerSel">
+              <span>Workers paralelos:</span>
+              <button class="m6cmpWBtn m6cmpWBtnActive" onclick="cmpSetWorkers(2,this)">2</button>
+              <button class="m6cmpWBtn" onclick="cmpSetWorkers(4,this)">4</button>
+              <button class="m6cmpWBtn" onclick="cmpSetWorkers(8,this)">8</button>
+            </div>
+          </div>
+
+          <div class="m6cmpPanels">
+            <div class="m6cmpPanel">
+              <div class="m6cmpPanelHead">
+                <span class="m6cmpPanelLbl">SECUENCIAL</span>
+                <span class="m6cmpPanelSub">1 worker</span>
+              </div>
+              <div class="m6cmpTasks" id="cmpSeqTasks"></div>
+              <div class="m6cmpTimer">
+                <i class="ph ph-timer"></i>
+                <span id="cmpSeqTime">0.0s</span>
+              </div>
+            </div>
+
+            <div class="m6cmpVs">VS</div>
+
+            <div class="m6cmpPanel m6cmpPanelRight">
+              <div class="m6cmpPanelHead">
+                <span class="m6cmpPanelLbl">PARALELO</span>
+                <span class="m6cmpPanelSub" id="cmpParWorkerLbl">2 workers</span>
+              </div>
+              <div class="m6cmpTasks" id="cmpParTasks"></div>
+              <div class="m6cmpTimer">
+                <i class="ph ph-timer"></i>
+                <span id="cmpParTime">0.0s</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="m6cmpSpeedup" id="cmpSpeedup" style="display:none">
+            <i class="ph-bold ph-lightning"></i>
+            Speedup: <strong id="cmpSpeedupVal"></strong> — el paralelo terminó <strong id="cmpSpeedupX"></strong> más rápido
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SIMULADOR: STREAMING PARALELO ──────── -->
+    <section class="msec alt" id="streaming">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-video"></i> Aplicado al mundo real</span>
+          <h2>Simulador — Encoding de video en paralelo</h2>
+          <p class="msecSub">Netflix convierte cada video a 15 resoluciones distintas simultáneamente. Cada frame es una tarea independiente: paralelismo perfecto. Simulá cómo cambia el tiempo total según la cantidad de workers.</p>
+        </div>
+
+        <div class="m6stream reveal">
+          <div class="m6streamControls">
+            <div class="m6streamCtrlGroup">
+              <button class="m6streamPlayBtn" id="streamPlayBtn" onclick="streamToggle()">
+                <i class="ph-bold ph-play"></i> Iniciar encoding
+              </button>
+              <button class="m6streamResetBtn" onclick="streamReset()">
+                <i class="ph-bold ph-arrow-clockwise"></i>
+              </button>
+            </div>
+            <div class="m6streamModeSel">
+              <span class="m6streamModeLabel">Modo:</span>
+              <button class="m6streamModeBtn m6streamModeBtnActive" id="sModeSeq" onclick="streamSetMode('seq',this)">
+                <i class="ph ph-list"></i> Secuencial
+              </button>
+              <button class="m6streamModeBtn" id="sModePar" onclick="streamSetMode('par',this)">
+                <i class="ph ph-squares-four"></i> Paralelo
+              </button>
+            </div>
+            <div class="m6streamWorkerSel" id="streamWorkerSel" style="display:none">
+              <span class="m6streamModeLabel">Workers:</span>
+              <button class="m6streamWBtn" onclick="streamSetWorkers(2,this)">2</button>
+              <button class="m6streamWBtn m6streamWBtnActive" onclick="streamSetWorkers(4,this)">4</button>
+              <button class="m6streamWBtn" onclick="streamSetWorkers(8,this)">8</button>
+            </div>
+          </div>
+
+          <div class="m6streamBody">
+            <div class="m6streamFrameSection">
+              <div class="m6streamSectionLbl"><i class="ph ph-film-strip"></i> Cola de frames</div>
+              <div class="m6streamFrames" id="streamFrames"></div>
+            </div>
+
+            <div class="m6streamWorkerSection">
+              <div class="m6streamSectionLbl"><i class="ph ph-cpu"></i> Workers en ejecución</div>
+              <div class="m6streamWorkers" id="streamWorkers"></div>
+            </div>
+          </div>
+
+          <div class="m6streamStats">
+            <div class="m6streamStat">
+              <div class="m6streamStatNum" id="streamTime">0.0s</div>
+              <div class="m6streamStatLbl">tiempo transcurrido</div>
+            </div>
+            <div class="m6streamStat">
+              <div class="m6streamStatNum" id="streamDone">0 / 12</div>
+              <div class="m6streamStatLbl">frames completados</div>
+            </div>
+            <div class="m6streamStat">
+              <div class="m6streamStatNum" id="streamSpeedup">—</div>
+              <div class="m6streamStatLbl">speedup vs secuencial</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── CÓDIGO JAVA ───────────────────────── -->
     <section class="msec alt" id="codigo">
       <div class="msecWrap">
@@ -561,6 +813,80 @@ public class MergesortParalelo {
       </div>
     </section>
 
+    <!-- ── CASOS: TV Y STREAMING ─────────────── -->
+    <section class="msec alt" id="casos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-television"></i> Del código a la pantalla</span>
+          <h2>Paralelismo en TV y Streaming</h2>
+          <p class="msecSub">Los sistemas de streaming y TV interactiva son uno de los ejemplos más ricos de paralelismo en producción. Todo lo que aprendiste en este módulo está corriendo ahora mismo en los servidores de Netflix, YouTube y en los STBs de IPTV.</p>
+        </div>
+
+        <div class="m6casosGrid reveal">
+          <div class="m6casoCard">
+            <div class="m6casoIcon" style="--cc:#38bdf8"><i class="ph-bold ph-film-strip"></i></div>
+            <div class="m6casoTag">SIMD + MIMD</div>
+            <strong>Netflix — Encoding multi-resolución</strong>
+            <p>Cada video se convierte a 15 resoluciones (240p–4K) simultáneamente. La GPU aplica SIMD para procesar miles de píxeles en paralelo, mientras que decenas de instancias MIMD manejan distintos videos al mismo tiempo.</p>
+            <div class="m6casoStat"><span>×15</span> resoluciones en paralelo por video</div>
+          </div>
+
+          <div class="m6casoCard">
+            <div class="m6casoIcon" style="--cc:#a78bfa"><i class="ph-bold ph-image-square"></i></div>
+            <div class="m6casoTag">Paralelismo de datos</div>
+            <strong>YouTube — Generación de thumbnails</strong>
+            <p>Cuando subís un video, YouTube extrae frames en posiciones específicas y los procesa en paralelo para generar las miniaturas. Es un caso de embarassingly parallel: cada frame es independiente, speedup casi lineal.</p>
+            <div class="m6casoStat"><span>~60</span> thumbnails por video, todos a la vez</div>
+          </div>
+
+          <div class="m6casoCard">
+            <div class="m6casoIcon" style="--cc:#34d399"><i class="ph-bold ph-broadcast"></i></div>
+            <div class="m6casoTag">MIMD — Memoria compartida</div>
+            <strong>IPTV / Ginga — Múltiples streams</strong>
+            <p>Un STB (Set-Top Box) de IPTV maneja simultáneamente el stream de video principal, las aplicaciones Ginga interactivas, la guía de programación EPG y el canal de datos. Cada proceso corre en su propio hilo con memoria compartida.</p>
+            <div class="m6casoStat"><span>4+</span> hilos concurrentes en un STB moderno</div>
+          </div>
+
+          <div class="m6casoCard">
+            <div class="m6casoIcon" style="--cc:#fb923c"><i class="ph-bold ph-globe"></i></div>
+            <div class="m6casoTag">Memoria distribuida</div>
+            <strong>CDN — Contenido en el borde</strong>
+            <p>Una CDN (Content Delivery Network) distribuye el contenido en cientos de servidores geográficamente separados. Es memoria distribuida pura: cada nodo tiene su propia caché, se coordinan por mensajes HTTP, y el usuario recibe el frame del nodo más cercano.</p>
+            <div class="m6casoStat"><span>&lt;20ms</span> latencia al nodo CDN más cercano</div>
+          </div>
+        </div>
+
+        <div class="m6casosFlow reveal">
+          <div class="m6casosFlowTitle">Ciclo completo: del archivo al STB</div>
+          <div class="m6casosFlowSteps">
+            <div class="m6casosFlowStep">
+              <div class="m6casosFlowIcon"><i class="ph-bold ph-upload"></i></div>
+              <div class="m6casosFlowLbl">Upload</div>
+              <div class="m6casosFlowSub">archivo original</div>
+            </div>
+            <div class="m6casosFlowArrow">→</div>
+            <div class="m6casosFlowStep m6casosFlowStepAccent">
+              <div class="m6casosFlowIcon"><i class="ph-bold ph-cpu"></i></div>
+              <div class="m6casosFlowLbl">Encoding</div>
+              <div class="m6casosFlowSub">SIMD + MIMD paralelo</div>
+            </div>
+            <div class="m6casosFlowArrow">→</div>
+            <div class="m6casosFlowStep m6casosFlowStepAccent">
+              <div class="m6casosFlowIcon"><i class="ph-bold ph-globe"></i></div>
+              <div class="m6casosFlowLbl">CDN</div>
+              <div class="m6casosFlowSub">memoria distribuida</div>
+            </div>
+            <div class="m6casosFlowArrow">→</div>
+            <div class="m6casosFlowStep">
+              <div class="m6casosFlowIcon"><i class="ph-bold ph-television"></i></div>
+              <div class="m6casosFlowLbl">STB / TV</div>
+              <div class="m6casosFlowSub">MIMD local</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── LAB ONECOMPILER ───────────────────── -->
     <section class="msec" id="laboratorio">
       <div class="msecWrap">
@@ -719,6 +1045,60 @@ public class SumaParalela {
             <div class="m6gameResultLbl">escenarios correctos</div>
             <div class="m6gameResultMsg" id="gameResultMsg"></div>
             <button class="m6gameRestart" onclick="gameRestart()"><i class="ph-bold ph-arrow-clockwise"></i> Jugar de nuevo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── JUEGO 2: BALANCEO DE CARGA ─────────── -->
+    <section class="msec" id="juego2">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-scales"></i> Nivel 2</span>
+          <h2>Balanceá la carga</h2>
+          <p class="msecSub">Tenés 9 frames de video con distintos tiempos de procesamiento y 3 workers disponibles. Asigná cada frame al worker que querás — el tiempo total es el del worker más lento. ¿Podés minimizarlo?</p>
+        </div>
+
+        <div class="m6lb reveal">
+          <div class="m6lbTop">
+            <div class="m6lbInfo">
+              <i class="ph ph-info"></i>
+              Hacé clic en un frame para seleccionarlo, luego en un worker para asignarlo.
+            </div>
+            <button class="m6lbResetBtn" onclick="lbReset()">
+              <i class="ph-bold ph-arrow-clockwise"></i> Reiniciar
+            </button>
+          </div>
+
+          <div class="m6lbFrames">
+            <div class="m6lbFramesLbl">FRAMES (hacé clic para seleccionar)</div>
+            <div class="m6lbFrameGrid" id="lbFrameGrid"></div>
+          </div>
+
+          <div class="m6lbWorkers">
+            <div class="m6lbWorkersLbl">WORKERS (hacé clic para asignar el frame seleccionado)</div>
+            <div class="m6lbWorkerGrid" id="lbWorkerGrid"></div>
+          </div>
+
+          <div class="m6lbResult" id="lbResult" style="display:none">
+            <div class="m6lbResultRow">
+              <div class="m6lbResultItem">
+                <div class="m6lbResultNum" id="lbYourTime">—</div>
+                <div class="m6lbResultLbl">tu tiempo total</div>
+              </div>
+              <div class="m6lbResultItem">
+                <div class="m6lbResultNum m6lbOptNum" id="lbOptTime">—</div>
+                <div class="m6lbResultLbl">tiempo óptimo</div>
+              </div>
+              <div class="m6lbResultItem">
+                <div class="m6lbResultNum m6lbScoreNum" id="lbScore">—</div>
+                <div class="m6lbResultLbl">tu puntaje</div>
+              </div>
+            </div>
+            <div class="m6lbResultMsg" id="lbResultMsg"></div>
+            <button class="m6lbTryAgain" onclick="lbReset()">
+              <i class="ph-bold ph-arrow-clockwise"></i> Intentar de nuevo
+            </button>
           </div>
         </div>
       </div>
