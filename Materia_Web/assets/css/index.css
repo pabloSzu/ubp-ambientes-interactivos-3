@@ -271,6 +271,19 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   margin-bottom: 26px;
 }
 
+.heroMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 22px;
+  font-size: 12px;
+  color: var(--sub);
+}
+.heroMetaItem { display: flex; align-items: center; gap: 5px; }
+.heroMetaItem strong { color: var(--text); font-weight: 700; }
+.heroMetaSep { color: var(--muted); }
+
 .heroCtas {
   display: flex;
   gap: 10px;
@@ -354,9 +367,9 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .sectionHead h2 {
-  font-size: clamp(16px, 1.8vw, 22px);
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
 }
 
 .sectionEye {
@@ -398,7 +411,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 .g-hpc    .groupChip  { color: var(--purple); border-color: rgba(155,111,255,0.3); background: rgba(155,111,255,0.07); }
 
 .groupTitle {
-  font-size: clamp(14px, 1.5vw, 17px);
+  font-size: clamp(15px, 1.5vw, 19px);
   font-weight: 800;
   color: var(--text);
 }
@@ -464,7 +477,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 20px 20px 16px;
+  padding: 26px 24px 20px;
 }
 
 .mTop {
@@ -472,17 +485,17 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .mNum {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 900;
   color: var(--c, var(--muted));
   letter-spacing: 0.06em;
   opacity: 0.65;
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .mChips {
@@ -493,9 +506,9 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .mChip {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 3px 7px;
+  padding: 4px 9px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.07);
   color: var(--muted);
@@ -503,32 +516,32 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .mCard h3 {
-  font-size: clamp(13px, 1.3vw, 15px);
+  font-size: clamp(16px, 1.5vw, 19px);
   font-weight: 800;
-  line-height: 1.3;
+  line-height: 1.25;
   color: var(--text);
-  margin-bottom: 7px;
+  margin-bottom: 10px;
 }
 
 .mDesc {
-  font-size: 12px;
+  font-size: clamp(13px, 1.1vw, 14px);
   color: var(--sub);
-  line-height: 1.62;
+  line-height: 1.68;
   flex: 1;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .mFoot {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 12px;
+  padding-top: 14px;
   border-top: 1px solid var(--border);
   margin-top: auto;
 }
 
 .mStruct {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -536,7 +549,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .mGo {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   color: var(--c, var(--teal));
   transition: transform 0.2s;
@@ -851,7 +864,25 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   font-size: 13px;
   color: var(--sub);
   line-height: 1.72;
+  margin-bottom: 12px;
 }
+
+.modalMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+.modalMetaTag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--sub);
+  background: rgba(255,255,255,0.03);
+}
+.modalMetaTag strong { color: var(--teal); font-weight: 700; }
 
 .modalSection {
   margin-bottom: 22px;
