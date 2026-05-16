@@ -287,8 +287,17 @@ if (glow) {
 }
 
 // Hero
-document.title = `PAI3 · Módulo ${id}`;
-setText("mhdrLabel",  `Módulo ${String(id).padStart(2, "0")}`);
+const NAV_LABELS = {
+  1: 'Interactividad y TV Digital',
+  2: 'Interfaces y UX',
+  3: 'Programación Concurrente',
+  4: 'Comunicación IPC',
+  5: 'Sincronización',
+  6: 'Paralelismo',
+  7: 'HPC & GPU'
+};
+document.title = `PAI3 · Módulo ${id} · ${NAV_LABELS[id] || ''}`;
+setText("mhdrLabel", `Módulo ${String(id).padStart(2, "0")} · ${NAV_LABELS[id] || ''}`);
 setText("mheroBlock", data.block);
 setText("mheroNum",   String(id).padStart(2, "0"));
 setText("mheroTitle", data.title);
@@ -373,3 +382,19 @@ function renderList(containerId, items, renderer) {
   if (!el) return;
   el.innerHTML = items.map((item, i) => renderer(item, i)).join("");
 }
+
+/* ─── Navbar dropdown toggle (mobile) ─── */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.mhdrDropBtn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const drop = btn.closest('.mhdrDropdown');
+      const isOpen = drop.classList.contains('open');
+      document.querySelectorAll('.mhdrDropdown').forEach(d => d.classList.remove('open'));
+      if (!isOpen) drop.classList.add('open');
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.mhdrDropdown').forEach(d => d.classList.remove('open'));
+  });
+});
