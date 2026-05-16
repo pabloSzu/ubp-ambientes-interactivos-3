@@ -834,7 +834,7 @@
   margin-bottom: 20px; text-align: right;
 }
 .m4gameScore span { font-size: 22px; font-weight: 900; color: var(--accent); }
-.m4game { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.m4game { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
 .m4gameCard {
   padding: 22px; border-radius: var(--r);
   border: 1px solid var(--border); background: var(--surface);

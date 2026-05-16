@@ -739,7 +739,11 @@ function renderGameScenario() {
   const sc = GAME_SCENARIOS[gameIndex];
   document.getElementById('gameNum').textContent   = `Caso ${gameIndex + 1} / ${GAME_SCENARIOS.length}`;
   document.getElementById('gameScore').textContent = `${gameCorrect} correcta${gameCorrect !== 1 ? 's' : ''}`;
-  document.getElementById('gameScenario').textContent = sc.scenario;
+  const scenarioEl = document.getElementById('gameScenario');
+  const lang = sc.scenario.trimStart().startsWith('--') ? 'sql' : 'java';
+  const escaped = sc.scenario.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  scenarioEl.innerHTML = `<pre class="language-${lang}" style="margin:0;border-radius:10px"><code class="language-${lang}">${escaped}</code></pre>`;
+  if (window.Prism) Prism.highlightAllUnder(scenarioEl);
 
   const opts = document.getElementById('gameOptions');
   opts.innerHTML = '';

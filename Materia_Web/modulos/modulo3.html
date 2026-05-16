@@ -626,9 +626,105 @@ stateDiagram-v2
         </div>
 
         <div class="m3raceImgWrap reveal">
-          <div class="m3raceImgLabel"><i class="ph-bold ph-image"></i> Diagrama — Sin lock vs Con lock</div>
-          <img src="../assets/recursos/diagrama_hilos_lock_vs_race.png" alt="Diagrama comparativo: hilos sin lock generando race condition vs hilos con lock sincronizado" class="m3raceImg" />
-          <div class="m3raceImgCaption">Sin <code>synchronized</code>, los hilos se pisan entre sí y el resultado es inconsistente. Con lock, solo un hilo accede al dato compartido a la vez — el resultado es siempre correcto.</div>
+          <div class="m3raceImgLabel"><i class="ph-bold ph-chart-bar"></i> Diagrama — Sin lock vs Con lock</div>
+          <svg viewBox="0 0 860 390" xmlns="http://www.w3.org/2000/svg" width="100%" style="display:block;background:#0a0c15" role="img" aria-label="Diagrama: Race condition sin lock vs ejecución correcta con lock">
+            <!-- LEFT PANEL: Sin lock -->
+            <rect x="8" y="8" width="416" height="374" rx="12" fill="rgba(255,50,50,0.05)" stroke="rgba(255,50,50,0.25)" stroke-width="1.5"/>
+            <rect x="8" y="8" width="416" height="46" rx="12" fill="rgba(255,50,50,0.18)"/>
+            <rect x="8" y="36" width="416" height="18" fill="rgba(255,50,50,0.18)"/>
+            <text x="216" y="36" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#ff5050">✕  SIN lock — Race Condition</text>
+            <!-- Thread headers -->
+            <rect x="56" y="66" width="128" height="26" rx="6" fill="rgba(0,232,198,0.14)"/>
+            <text x="120" y="83" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#00e8c6">Thread A</text>
+            <rect x="240" y="66" width="128" height="26" rx="6" fill="rgba(74,142,240,0.14)"/>
+            <text x="304" y="83" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#4a8ef0">Thread B</text>
+            <!-- Vertical timeline lines -->
+            <line x1="120" y1="92" x2="120" y2="218" stroke="rgba(0,232,198,0.15)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="304" y1="92" x2="304" y2="218" stroke="rgba(74,142,240,0.15)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <!-- Step 1: READ (simultaneous — both read 5) -->
+            <rect x="56" y="100" width="128" height="38" rx="6" fill="rgba(0,232,198,0.1)" stroke="rgba(0,232,198,0.4)" stroke-width="1"/>
+            <text x="120" y="115" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#00e8c6">READ</text>
+            <text x="120" y="131" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(255,255,255,0.6)">counter = 5</text>
+            <rect x="240" y="100" width="128" height="38" rx="6" fill="rgba(74,142,240,0.1)" stroke="rgba(74,142,240,0.4)" stroke-width="1"/>
+            <text x="304" y="115" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#4a8ef0">READ</text>
+            <text x="304" y="131" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(255,255,255,0.6)">counter = 5 ⚠</text>
+            <!-- Simultaneous badge -->
+            <text x="216" y="98" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#ff5050">▲ ambos leen el mismo valor stale</text>
+            <!-- Step 2: MODIFY -->
+            <rect x="56" y="148" width="128" height="38" rx="6" fill="rgba(0,232,198,0.1)" stroke="rgba(0,232,198,0.4)" stroke-width="1"/>
+            <text x="120" y="163" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#00e8c6">MODIFY</text>
+            <text x="120" y="179" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(255,255,255,0.6)">5 + 1 = 6</text>
+            <rect x="240" y="148" width="128" height="38" rx="6" fill="rgba(74,142,240,0.1)" stroke="rgba(74,142,240,0.4)" stroke-width="1"/>
+            <text x="304" y="163" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#4a8ef0">MODIFY</text>
+            <text x="304" y="179" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(255,255,255,0.6)">5 + 1 = 6</text>
+            <!-- Step 3: WRITE -->
+            <rect x="56" y="196" width="128" height="38" rx="6" fill="rgba(0,232,198,0.1)" stroke="rgba(0,232,198,0.4)" stroke-width="1"/>
+            <text x="120" y="211" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#00e8c6">WRITE</text>
+            <text x="120" y="227" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(255,255,255,0.6)">counter ← 6</text>
+            <rect x="240" y="196" width="128" height="38" rx="6" fill="rgba(74,142,240,0.1)" stroke="rgba(74,142,240,0.4)" stroke-width="1"/>
+            <text x="304" y="211" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#4a8ef0">WRITE</text>
+            <text x="304" y="227" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(255,255,255,0.6)">counter ← 6</text>
+            <!-- Result box left -->
+            <rect x="128" y="248" width="176" height="68" rx="10" fill="rgba(255,50,50,0.14)" stroke="rgba(255,50,50,0.4)" stroke-width="1.5"/>
+            <text x="216" y="268" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="rgba(255,255,255,0.45)">Esperado: 7   →   Obtenido:</text>
+            <text x="216" y="292" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="900" fill="#ff5050">counter = 6  ✕</text>
+            <text x="216" y="308" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="rgba(255,80,80,0.65)">se perdió un incremento — bug silencioso</text>
+            <!-- Overwrite arrow -->
+            <line x1="216" y1="234" x2="216" y2="248" stroke="rgba(255,50,50,0.5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+            <!-- Explanation -->
+            <rect x="32" y="328" width="368" height="38" rx="8" fill="rgba(255,50,50,0.06)" stroke="rgba(255,50,50,0.15)" stroke-width="1"/>
+            <text x="216" y="344" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(255,180,180,0.8)">T2 leyó counter=5 antes de que T1 escribiera 6.</text>
+            <text x="216" y="358" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="rgba(255,180,180,0.8)">La escritura de T2 pisó la de T1. 100 iteraciones → resultado random.</text>
+
+            <!-- DIVIDER -->
+            <line x1="432" y1="16" x2="432" y2="376" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+            <!-- RIGHT PANEL: Con lock -->
+            <rect x="436" y="8" width="416" height="374" rx="12" fill="rgba(34,197,94,0.05)" stroke="rgba(34,197,94,0.22)" stroke-width="1.5"/>
+            <rect x="436" y="8" width="416" height="46" rx="12" fill="rgba(34,197,94,0.18)"/>
+            <rect x="436" y="36" width="416" height="18" fill="rgba(34,197,94,0.18)"/>
+            <text x="644" y="36" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#22c55e">✓  CON lock — synchronized</text>
+            <!-- Thread headers -->
+            <rect x="452" y="66" width="128" height="26" rx="6" fill="rgba(0,232,198,0.14)"/>
+            <text x="516" y="83" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#00e8c6">Thread A</text>
+            <rect x="712" y="66" width="128" height="26" rx="6" fill="rgba(74,142,240,0.10)"/>
+            <text x="776" y="83" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="rgba(74,142,240,0.55)">Thread B</text>
+            <!-- A: vertical line -->
+            <line x1="516" y1="92" x2="516" y2="226" stroke="rgba(0,232,198,0.15)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <!-- B waiting dashed box -->
+            <rect x="712" y="100" width="128" height="120" rx="6" fill="rgba(74,142,240,0.04)" stroke="rgba(74,142,240,0.15)" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="776" y="148" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18" fill="rgba(74,142,240,0.4)">⏳</text>
+            <text x="776" y="170" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="rgba(74,142,240,0.4)">esperando el lock...</text>
+            <!-- A: ACQUIRE -->
+            <rect x="452" y="100" width="128" height="30" rx="6" fill="rgba(255,209,102,0.18)" stroke="rgba(255,209,102,0.5)" stroke-width="1.5"/>
+            <text x="516" y="119" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="800" fill="#ffd166">🔒 ACQUIRE</text>
+            <!-- A: READ + MODIFY + WRITE -->
+            <rect x="452" y="138" width="128" height="36" rx="6" fill="rgba(0,232,198,0.1)" stroke="rgba(0,232,198,0.4)" stroke-width="1"/>
+            <text x="516" y="154" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#00e8c6">READ → 5</text>
+            <text x="516" y="168" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="rgba(255,255,255,0.5)">5 + 1 = 6</text>
+            <rect x="452" y="182" width="128" height="30" rx="6" fill="rgba(0,232,198,0.1)" stroke="rgba(0,232,198,0.4)" stroke-width="1"/>
+            <text x="516" y="201" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#00e8c6">WRITE ← 6</text>
+            <!-- A: RELEASE -->
+            <rect x="452" y="220" width="128" height="30" rx="6" fill="rgba(255,209,102,0.18)" stroke="rgba(255,209,102,0.5)" stroke-width="1.5"/>
+            <text x="516" y="239" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="800" fill="#ffd166">🔓 RELEASE</text>
+            <!-- Handoff arrow A→B -->
+            <path d="M580,235 C620,235 680,255 712,265" stroke="rgba(255,209,102,0.45)" stroke-width="1.5" fill="none" stroke-dasharray="4,2"/>
+            <!-- B: ACQUIRE -->
+            <rect x="712" y="258" width="128" height="30" rx="6" fill="rgba(255,209,102,0.18)" stroke="rgba(255,209,102,0.5)" stroke-width="1.5"/>
+            <text x="776" y="277" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="800" fill="#ffd166">🔒 ACQUIRE</text>
+            <!-- B: READ + WRITE -->
+            <rect x="712" y="296" width="128" height="36" rx="6" fill="rgba(74,142,240,0.1)" stroke="rgba(74,142,240,0.4)" stroke-width="1"/>
+            <text x="776" y="312" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#4a8ef0">READ → 6</text>
+            <text x="776" y="326" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="rgba(255,255,255,0.5)">6 + 1 = 7</text>
+            <rect x="712" y="340" width="128" height="30" rx="6" fill="rgba(74,142,240,0.1)" stroke="rgba(74,142,240,0.4)" stroke-width="1"/>
+            <text x="776" y="359" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#4a8ef0">WRITE ← 7</text>
+            <!-- Result box right -->
+            <rect x="556" y="248" width="148" height="68" rx="10" fill="rgba(34,197,94,0.14)" stroke="rgba(34,197,94,0.4)" stroke-width="1.5"/>
+            <text x="630" y="268" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="rgba(255,255,255,0.45)">Esperado: 7   →   Obtenido:</text>
+            <text x="630" y="292" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="900" fill="#22c55e">counter = 7  ✓</text>
+            <text x="630" y="308" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="rgba(34,197,94,0.65)">resultado siempre correcto</text>
+          </svg>
+          <div class="m3raceImgCaption">Sin <code>synchronized</code>, ambos hilos leen el mismo valor y uno sobreescribe al otro (incremento perdido). Con lock, solo un hilo accede a la vez — el resultado es siempre correcto.</div>
         </div>
 
         <div class="m3codeSection reveal">

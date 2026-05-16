@@ -690,7 +690,7 @@
   margin-bottom: 20px; text-align: right;
 }
 .m3gameScore span { font-size: 22px; font-weight: 900; color: var(--accent); }
-.m3game { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.m3game { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
 .m3gameCard {
   padding: 22px; border-radius: var(--r);
   border: 1px solid var(--border); background: var(--surface);
@@ -1113,6 +1113,7 @@
 
 /* ─── Responsive ─────────────────────────── */
 @media (max-width: 900px) {
+  .m3game { grid-template-columns: repeat(3, 1fr); }
   .m3pvhLayout { grid-template-columns: 1fr; }
   .m3pvhSep { flex-direction: row; padding: 16px 0; }
   .m3pvhSepLine { height: 1px; width: auto; flex: 1; }
