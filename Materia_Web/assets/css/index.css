@@ -672,7 +672,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 .compTrack {
   display: flex;
   width: max-content;
-  animation: compScroll 40s linear infinite;
+  animation: compScroll 90s linear infinite;
 }
 .compTrack:hover { animation-play-state: paused; }
 

@@ -156,23 +156,31 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   align-items: center;
   gap: 2px;
   margin-left: auto;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 4px;
 }
 
 .mhdrNavLink {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 12px;
+  gap: 7px;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--muted);
-  padding: 6px 11px;
+  color: rgba(255,255,255,0.72);
+  padding: 7px 14px;
   border-radius: 8px;
   text-decoration: none;
-  transition: color 0.18s, background 0.18s;
+  transition: color 0.15s ease, background 0.15s ease;
   white-space: nowrap;
+  letter-spacing: 0.01em;
 }
-.mhdrNavLink:hover { color: var(--text); background: rgba(255,255,255,0.06); }
-.mhdrNavLink i { font-size: 13px; }
+.mhdrNavLink:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+.mhdrNavLink i { font-size: 14px; }
 
 /* Dropdown contenido */
 .mhdrDropdown { position: relative; }
@@ -180,54 +188,60 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .mhdrDropBtn {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 12px;
+  gap: 7px;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--muted);
-  padding: 6px 11px;
+  color: var(--accent);
+  padding: 7px 14px;
   border-radius: 8px;
-  background: none;
-  border: none;
+  background: var(--accent-sub, rgba(255,255,255,0.07));
+  border: 1px solid rgba(var(--accent-rgb, 255,255,255), 0.18);
   cursor: pointer;
   font-family: inherit;
-  transition: color 0.18s, background 0.18s;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
   white-space: nowrap;
-  height: 34px;
+  height: 36px;
+  letter-spacing: 0.01em;
 }
-.mhdrDropBtn i { font-size: 13px; }
+.mhdrDropBtn i { font-size: 14px; }
 .mhdrDropBtn:hover,
 .mhdrDropdown:hover .mhdrDropBtn,
-.mhdrDropdown.open .mhdrDropBtn { color: var(--text); background: rgba(255,255,255,0.06); }
+.mhdrDropdown.open .mhdrDropBtn {
+  color: #fff;
+  background: var(--accent);
+  border-color: transparent;
+}
 
-.mhdrCaret { transition: transform 0.2s ease; font-size: 10px !important; opacity: 0.7; }
+.mhdrCaret { transition: transform 0.22s cubic-bezier(.4,0,.2,1); font-size: 11px !important; }
 .mhdrDropdown:hover .mhdrCaret,
 .mhdrDropdown.open .mhdrCaret { transform: rotate(180deg); }
 
 .mhdrDropMenu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   left: 50%;
-  transform: translateX(-50%) translateY(-6px);
-  min-width: 220px;
-  background: rgba(8,11,22,0.97);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 12px;
-  padding: 6px;
+  transform: translateX(-50%) translateY(-8px);
+  min-width: 240px;
+  background: rgba(8,11,22,0.98);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 8px;
   z-index: 400;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  box-shadow: 0 20px 48px rgba(0,0,0,0.65);
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
 }
 .mhdrDropMenu::before {
   content: '';
   position: absolute;
-  top: 0; left: 20%; right: 20%;
-  height: 1px;
+  top: 0; left: 16%; right: 16%;
+  height: 2px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.45;
+  opacity: 0.7;
+  border-radius: 0 0 2px 2px;
 }
 .mhdrDropdown:hover .mhdrDropMenu,
 .mhdrDropdown.open .mhdrDropMenu {
@@ -239,17 +253,22 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .mhdrDropItem {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 12px;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--sub);
-  transition: color 0.15s, background 0.15s;
+  color: rgba(255,255,255,0.75);
+  transition: color 0.13s, background 0.13s;
   white-space: nowrap;
+  text-decoration: none;
 }
-.mhdrDropItem:hover { color: var(--accent); background: var(--accent-sub); }
-.mhdrDropItem i { font-size: 13px; opacity: 0.6; flex-shrink: 0; }
+.mhdrDropItem:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+}
+.mhdrDropItem:hover i { color: var(--accent); }
+.mhdrDropItem i { font-size: 15px; color: rgba(255,255,255,0.35); flex-shrink: 0; transition: color 0.13s; }
 
 .mhdrNav {
   display: flex;
