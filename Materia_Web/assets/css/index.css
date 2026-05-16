@@ -535,9 +535,11 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   padding-top: 14px;
   border-top: 1px solid var(--border);
   margin-top: auto;
+  flex-wrap: nowrap;
 }
 
 .mStruct {
@@ -546,6 +548,11 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mGo {
@@ -553,28 +560,22 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   font-weight: 800;
   color: var(--c, var(--teal));
   transition: transform 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .mCard:hover .mGo { transform: translateX(4px); }
 
 /* ═══════════════════════════════════════════
-   COMPETENCIAS
+   COMPETENCIAS — Infinite marquee
 ═══════════════════════════════════════════ */
 .compSection {
   position: relative;
   z-index: 1;
-  padding: clamp(28px, 3vw, 40px) clamp(20px, 5vw, 72px);
+  padding: clamp(20px, 2.5vw, 32px) 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   background: rgba(255,255,255,0.01);
-}
-
-.compInner {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-wrap: wrap;
+  overflow: hidden;
 }
 
 .compLabel {
@@ -583,32 +584,77 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--muted);
-  flex-shrink: 0;
+  text-align: center;
+  margin-bottom: 14px;
+  padding: 0 clamp(20px, 5vw, 72px);
 }
 
-.compPills {
+.compTrackWrap {
+  position: relative;
+  overflow: hidden;
+}
+
+/* fade edges */
+.compTrackWrap::before,
+.compTrackWrap::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.compTrackWrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg), transparent);
+}
+.compTrackWrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg), transparent);
+}
+
+.compTrack {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  width: max-content;
+  animation: compScroll 40s linear infinite;
+}
+.compTrack:hover { animation-play-state: paused; }
+
+@keyframes compScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.compTrackInner {
+  display: flex;
+  gap: 8px;
+  padding-right: 8px;
+  flex-shrink: 0;
 }
 
 .compPill {
   font-size: 12px;
   font-weight: 700;
-  padding: 6px 14px;
+  padding: 7px 16px;
   border-radius: 999px;
   border: 1px solid var(--border);
   color: var(--sub);
   background: var(--surface);
-  backdrop-filter: blur(12px);
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  white-space: nowrap;
   cursor: default;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  flex-shrink: 0;
 }
 .compPill:hover {
   border-color: rgba(0,232,198,0.28);
   color: var(--teal);
   background: rgba(0,232,198,0.06);
 }
+.compPill.accent-gold   { border-color: rgba(255,209,102,0.2); color: var(--gold); }
+.compPill.accent-purple { border-color: rgba(155,111,255,0.2); color: var(--purple); }
+.compPill.accent-blue   { border-color: rgba(74,142,240,0.2);  color: var(--blue); }
+.compPill.accent-teal   { border-color: rgba(0,232,198,0.2);   color: var(--teal); }
+.compPill.accent-orange { border-color: rgba(255,125,84,0.2);  color: var(--orange); }
 
 /* ═══════════════════════════════════════════
    EVALUACIÓN
@@ -756,7 +802,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   .hdrNav { display: none; }
   .g2, .g3 { grid-template-columns: 1fr; }
   .groupHead { flex-wrap: wrap; }
-  .compInner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .compTrackWrap::before, .compTrackWrap::after { width: 40px; }
   .sectionHead { flex-direction: column; gap: 2px; }
 }
 
