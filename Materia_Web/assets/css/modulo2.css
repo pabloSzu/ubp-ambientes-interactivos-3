@@ -875,4 +875,107 @@
 .m1rubricInfo strong { display: block; font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
 .m1rubricInfo span { display: block; font-size: 13px; color: var(--sub); margin-bottom: 8px; line-height: 1.5; }
 .m1rubricBar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+
+/* ─── DESIGN TOOLS ───────────────────────── */
+.m2toolsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 32px;
+}
+.m2dtCard {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--accent-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.m2dtCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+}
+.m2dtImgWrap { aspect-ratio: 16/9; overflow: hidden; }
+.m2dtImg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.m2dtCard:hover .m2dtImg { transform: scale(1.04); }
+.m2dtBody { padding: 18px 20px 20px; }
+.m2dtBadge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 4px 10px; border-radius: 20px; margin-bottom: 10px;
+  color: #fff; background: var(--db);
+}
+.m2dtBody h3 {
+  font-size: 15px; font-weight: 700;
+  color: var(--text); margin: 0 0 7px;
+}
+.m2dtBody p {
+  font-size: 13px; line-height: 1.6;
+  color: var(--sub); margin: 0 0 12px;
+}
+.m2dtTags { display: flex; gap: 5px; flex-wrap: wrap; }
+.m2dtTag {
+  font-size: 11px; font-weight: 600;
+  padding: 3px 8px; border-radius: 4px;
+  background: var(--accent-sub);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+
+/* ─── TP AI COMPARISON BOX ──────────────── */
+.m2tpBox {
+  margin-top: 40px;
+  background: linear-gradient(135deg, rgba(168,85,247,0.07) 0%, rgba(0,232,198,0.05) 100%);
+  border: 1px solid rgba(168,85,247,0.22);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.m2tpHeader { padding: 28px 30px 0; }
+.m2tpBadge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 14px;
+  background: rgba(168,85,247,0.18); color: #a855f7;
+  border: 1px solid rgba(168,85,247,0.32);
+}
+.m2tpHeader h3 {
+  font-size: clamp(18px, 2vw, 22px); font-weight: 800;
+  color: var(--text); margin: 0 0 10px;
+}
+.m2tpHeader p {
+  font-size: 14px; line-height: 1.65;
+  color: var(--sub); margin: 0 0 22px; max-width: 680px;
+}
+.m2tpImg { width: 100%; display: block; }
+.m2tpCompareGrid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 14px; padding: 22px 30px 28px;
+}
+.m2tpCompareCard {
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px; padding: 14px 16px;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.m2tpCompareCard h4 {
+  font-size: 13px; font-weight: 700;
+  color: var(--text); margin: 0 0 5px;
+  display: flex; align-items: center;
+}
+.m2tpCompareCard p {
+  font-size: 12.5px; color: var(--sub); margin: 0; line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .m2toolsGrid { grid-template-columns: 1fr; }
+  .m2tpCompareGrid { grid-template-columns: 1fr; }
+  .m2tpHeader { padding: 20px 20px 0; }
+  .m2tpCompareGrid { padding: 16px 20px 22px; }
+}
+@media (max-width: 600px) {
+  .m2toolsGrid { gap: 14px; }
+}
 .m1rubricFill { height: 100%; width: var(--pct); background: var(--accent); border-radius: 999px; }

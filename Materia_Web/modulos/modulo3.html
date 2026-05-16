@@ -255,6 +255,110 @@
       </div>
     </section>
 
+    <!-- ── PROCESO HIJO: fork() ─────────────── -->
+    <section class="msec">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-copy"></i> Creación de procesos</span>
+          <h2>fork() — El proceso hijo</h2>
+          <p class="msecSub">¿Cómo nace un proceso en sistemas reales? Con la llamada al sistema <code>fork()</code>. Entender fork() es clave para comprender la diferencia real entre crear un proceso vs crear un hilo — y por qué el SO los trata tan distinto.</p>
+        </div>
+
+        <div class="m3forkLayout reveal">
+          <div class="m3forkExplain">
+            <div class="m3forkStep" style="--fs:#4a8ef0">
+              <div class="m3forkStepNum">01</div>
+              <div>
+                <strong>fork() — Clon del proceso padre</strong>
+                <p>La syscall <code>fork()</code> crea un proceso hijo que es una <strong>copia exacta del padre</strong>: mismo código, mismo heap, misma pila, mismos archivos abiertos. Después del fork, dos procesos corren el mismo programa — pero de forma completamente independiente.</p>
+              </div>
+            </div>
+            <div class="m3forkStep" style="--fs:#00e8c6">
+              <div class="m3forkStepNum">02</div>
+              <div>
+                <strong>Valor de retorno — ¿quién soy?</strong>
+                <p>La distinción entre padre e hijo la da el valor de retorno: <code>fork()</code> retorna <code>0</code> en el hijo y el <strong>PID del hijo</strong> en el padre. Así, el mismo código ejecuta cosas distintas según quién sea.</p>
+              </div>
+            </div>
+            <div class="m3forkStep" style="--fs:#a855f7">
+              <div class="m3forkStepNum">03</div>
+              <div>
+                <strong>Copy-on-Write — el truco del SO</strong>
+                <p>Aunque el hijo empieza con la misma memoria, los cambios que haga no afectan al padre. El SO usa <em>Copy-on-Write</em>: la copia real de memoria solo ocurre cuando alguno modifica los datos, minimizando el costo inicial de crear el proceso.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="m3forkCodeBlock">
+            <div class="m3codeSectionHeader">
+              <div class="m3codeSectionTitle"><i class="ph-bold ph-code"></i> fork() en C — la syscall POSIX</div>
+              <div class="m3codeBadge" style="background:rgba(74,142,240,0.18);color:#4a8ef0;border-color:rgba(74,142,240,0.3)">C / POSIX</div>
+            </div>
+            <pre class="language-c"><code class="language-c">#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+
+int main() {
+    int x = 10;         // variable antes del fork
+    pid_t pid = fork(); // crea el proceso hijo
+
+    if (pid == 0) {
+        // --- Código del HIJO ---
+        x = 20;   // solo modifica su copia (Copy-on-Write)
+        printf("Soy el hijo.  PID=%d, x=%d\n", getpid(), x);
+    } else {
+        // --- Código del PADRE ---
+        printf("Soy el padre. PID=%d, x=%d\n", getpid(), x);
+        // x sigue siendo 10: el hijo no afecta al padre
+    }
+    return 0;
+}</code></pre>
+            <div class="m3forkOutput">
+              <div class="m3forkOutputLabel"><i class="ph-bold ph-terminal"></i> Output posible</div>
+              <code>Soy el padre. PID=1234, x=10
+Soy el hijo.  PID=1235, x=20</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="m3forkVsThread reveal">
+          <div class="m3forkVsTitle">fork() vs new Thread() — ¿cuándo usar cada uno?</div>
+          <div class="m3forkVsGrid">
+            <div class="m3forkVsCard" style="--fvc:#4a8ef0">
+              <div class="m3forkVsCardTop">
+                <i class="ph-bold ph-copy"></i>
+                <strong>fork() — Proceso hijo</strong>
+              </div>
+              <ul>
+                <li>Aislamiento total de memoria</li>
+                <li>Si el hijo falla, el padre sigue corriendo</li>
+                <li>Ideal para tareas que no deben compartir estado</li>
+                <li>Costo mayor: el SO duplica el espacio de memoria</li>
+              </ul>
+              <div class="m3forkVsExample">Ej: servidor web que forkea por cada request (Apache MPM prefork)</div>
+            </div>
+            <div class="m3forkVsSep">
+              <div class="m3forkVsSepLine"></div>
+              <span>vs</span>
+              <div class="m3forkVsSepLine"></div>
+            </div>
+            <div class="m3forkVsCard" style="--fvc:#00e8c6">
+              <div class="m3forkVsCardTop">
+                <i class="ph-bold ph-path"></i>
+                <strong>new Thread() — Hilo Java</strong>
+              </div>
+              <ul>
+                <li>Memoria compartida (heap del proceso padre)</li>
+                <li>Costo bajo: sin duplicación de memoria</li>
+                <li>Comunicación directa entre hilos</li>
+                <li>Race conditions posibles — requiere sincronización</li>
+              </ul>
+              <div class="m3forkVsExample">Ej: servidor web con thread pool (Tomcat, Jetty, Node workers)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── SCHEDULER ─────────────────────────── -->
     <section class="msec" id="scheduler">
       <div class="msecWrap">
@@ -519,6 +623,12 @@ stateDiagram-v2
               <i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar
             </button>
           </div>
+        </div>
+
+        <div class="m3raceImgWrap reveal">
+          <div class="m3raceImgLabel"><i class="ph-bold ph-image"></i> Diagrama — Sin lock vs Con lock</div>
+          <img src="../assets/recursos/diagrama_hilos_lock_vs_race.png" alt="Diagrama comparativo: hilos sin lock generando race condition vs hilos con lock sincronizado" class="m3raceImg" />
+          <div class="m3raceImgCaption">Sin <code>synchronized</code>, los hilos se pisan entre sí y el resultado es inconsistente. Con lock, solo un hilo accede al dato compartido a la vez — el resultado es siempre correcto.</div>
         </div>
 
         <div class="m3codeSection reveal">
@@ -1091,6 +1201,7 @@ public class EjecutorDemo {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
       mermaid.initialize({ startOnLoad: true, theme: 'dark', darkMode: true });

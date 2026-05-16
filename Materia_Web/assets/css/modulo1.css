@@ -1315,4 +1315,99 @@
   .m1devendraCase { padding: 22px; }
   .m1missionSteps { padding: 16px 20px; }
   .m1missionHeader { padding: 20px; }
+  .m1streamGrid { grid-template-columns: 1fr; }
+  .m1streamCiclo { flex-wrap: wrap; }
 }
+
+/* ─── STREAMING PLATFORMS ──────────────── */
+.m1streamGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 36px;
+}
+.m1streamCard {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--accent-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.m1streamCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+.m1streamImgWrap {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+.m1streamImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.m1streamCard:hover .m1streamImg { transform: scale(1.04); }
+.m1streamAnnotation {
+  position: absolute;
+  left: var(--ax);
+  top: var(--ay);
+  z-index: 2;
+}
+.m1streamAnnotationDot {
+  width: 12px; height: 12px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.18);
+  animation: m1pulse 2s ease-in-out infinite;
+  cursor: pointer;
+}
+.m1streamAnnotationText {
+  position: absolute;
+  left: 16px; top: -6px;
+  background: var(--ac);
+  color: #000;
+  font-size: 10px; font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.m1streamAnnotation:hover .m1streamAnnotationText {
+  opacity: 1;
+  transform: translateX(0);
+}
+@keyframes m1pulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(255,255,255,0.18); }
+  50%      { box-shadow: 0 0 0 7px rgba(255,255,255,0.06); }
+}
+.m1streamCardInfo { padding: 18px 22px 22px; }
+.m1streamPlatformBadge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--pb); color: #fff;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 4px 10px; border-radius: 20px; margin-bottom: 10px;
+}
+.m1streamCardInfo h3 {
+  font-size: 16px; font-weight: 700;
+  color: var(--text); margin: 0 0 8px;
+}
+.m1streamCardInfo p {
+  font-size: 13px; line-height: 1.65;
+  color: var(--sub); margin: 0 0 14px;
+}
+.m1streamCiclo {
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+}
+.m1streamCicloItem {
+  background: color-mix(in srgb, var(--ci) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ci) 30%, transparent);
+  color: var(--ci);
+  font-size: 10px; font-weight: 600;
+  padding: 3px 8px; border-radius: 5px;
+}
+.m1streamCicloArrow { color: rgba(255,255,255,0.3); font-size: 11px; }
