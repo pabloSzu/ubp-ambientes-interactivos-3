@@ -6,6 +6,8 @@
     <title>PAI3 — Programación para Ambientes Interactivos III</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="assets/css/index.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
   </head>
   <body>
 
@@ -18,23 +20,61 @@
          HEADER
     ══════════════════════════════════ -->
     <header class="hdr">
-      <div class="hdrBrand">
-        <img src="assets/brand/ubp-logo.png" alt="Universidad Blas Pascal" />
+      <!-- Brand / Logo -->
+      <a class="hdrBrand" href="#">
+        <svg class="hdrLogo" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect x="1" y="1" width="15" height="15" rx="3.5" fill="#00e8c6"/>
+          <rect x="20" y="1" width="15" height="15" rx="3.5" fill="#ffd166"/>
+          <rect x="1" y="20" width="15" height="15" rx="3.5" fill="#a855f7"/>
+          <rect x="20" y="20" width="15" height="15" rx="3.5" fill="#38bdf8"/>
+          <circle cx="18" cy="18" r="2.5" fill="rgba(255,255,255,0.18)"/>
+        </svg>
         <div class="hdrSep" aria-hidden="true"></div>
         <div class="hdrBadge">
           <span class="badge">PAI3</span>
-          <span class="course">Prog. para Ambientes Interactivos III</span>
+          <span class="course">Prog. Ambientes Interactivos III</span>
         </div>
-      </div>
+      </a>
 
-      <nav class="hdrNav" aria-label="Navegación">
-        <a href="#modulos">Módulos</a>
-        <a href="#objetivos">Objetivos</a>
-        <a href="#evaluacion">Evaluación</a>
-        <a href="evaluacion.html">Parciales</a>
+      <!-- Main nav -->
+      <nav class="hdrNav2" aria-label="Navegación principal">
+        <!-- Módulos dropdown -->
+        <div class="hdrDrop" id="hdrModDrop">
+          <button class="hdrDropBtn" type="button" aria-expanded="false" aria-haspopup="true">
+            <i class="ph ph-squares-four"></i><span>Módulos</span><i class="ph ph-caret-down hdrCaret"></i>
+          </button>
+          <div class="hdrDropMenu" role="menu">
+            <a class="hdrDropItem" href="modulos/modulo1.html" style="--mc:#ffd166" role="menuitem">
+              <span class="hdrDropDot"></span><span class="hdrDropNum">01</span><span class="hdrDropName">Interactividad y TV Digital</span>
+            </a>
+            <a class="hdrDropItem" href="modulos/modulo2.html" style="--mc:#a855f7" role="menuitem">
+              <span class="hdrDropDot"></span><span class="hdrDropNum">02</span><span class="hdrDropName">Interfaces y UX</span>
+            </a>
+            <a class="hdrDropItem" href="modulos/modulo3.html" style="--mc:#00e8c6" role="menuitem">
+              <span class="hdrDropDot"></span><span class="hdrDropNum">03</span><span class="hdrDropName">Programación Concurrente</span>
+            </a>
+            <a class="hdrDropItem" href="modulos/modulo4.html" style="--mc:#b040ff" role="menuitem">
+              <span class="hdrDropDot"></span><span class="hdrDropNum">04</span><span class="hdrDropName">Comunicación IPC</span>
+            </a>
+            <a class="hdrDropItem" href="modulos/modulo5.html" style="--mc:#ff7d54" role="menuitem">
+              <span class="hdrDropDot"></span><span class="hdrDropNum">05</span><span class="hdrDropName">Sincronización</span>
+            </a>
+            <a class="hdrDropItem" href="modulos/modulo6.html" style="--mc:#38bdf8" role="menuitem">
+              <span class="hdrDropDot"></span><span class="hdrDropNum">06</span><span class="hdrDropName">Paralelismo</span>
+            </a>
+            <a class="hdrDropItem" href="modulos/modulo7.html" style="--mc:#a3e635" role="menuitem">
+              <span class="hdrDropDot"></span><span class="hdrDropNum">07</span><span class="hdrDropName">HPC &amp; GPU</span>
+            </a>
+          </div>
+        </div>
+        <a href="#objetivos" class="hdrNavLink"><i class="ph ph-target"></i><span>Objetivos</span></a>
+        <a href="#evaluacion" class="hdrNavLink"><i class="ph ph-notepad"></i><span>Evaluación</span></a>
+        <a href="#docente" class="hdrNavLink"><i class="ph ph-user-circle"></i><span>Docente</span></a>
       </nav>
 
-      <a class="hdrCta" href="modulos/modulo1.html">Empezar módulo 1 →</a>
+      <a class="hdrCta" href="modulos/modulo1.html">
+        Empezar <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </header>
 
     <main>
@@ -43,33 +83,118 @@
            HERO
       ══════════════════════════════════ -->
       <section class="hero">
+        <!-- Ambient grid -->
+        <div class="heroGrid" aria-hidden="true"></div>
+
         <div class="heroInner">
+          <!-- Left: copy -->
           <div class="heroLeft reveal">
-            <p class="heroEye">UBP · Licenciatura en Sistemas de Información · Plan 2021</p>
-            <h1>Programación para<br />Ambientes Interactivos III</h1>
-            <p class="heroDesc">
-              Siete módulos para comprender, diseñar y programar experiencias interactivas:
-              desde TV digital y UX hasta concurrencia, paralelismo y computación de alta performance.
-            </p>
-            <div class="heroMeta">
-              <span class="heroMetaItem"><i>👩‍🏫</i> Responsable: <strong>Mónica Nano</strong></span>
-              <span class="heroMetaSep">·</span>
-              <span class="heroMetaItem">6° Semestre</span>
-              <span class="heroMetaSep">·</span>
-              <span class="heroMetaItem">90 hs totales · 6 hs/semana</span>
+            <div class="heroEyebrow">
+              <span class="heroEyeChip"><i class="ph-bold ph-graduation-cap"></i> UBP</span>
+              Licenciatura en Sistemas · Plan 2021
             </div>
+
+            <h1 class="heroTitle">
+              Programación<br>
+              para Ambientes<br>
+              <span class="heroTitleAccent">Interactivos III</span>
+            </h1>
+
+            <p class="heroDesc">
+              Siete módulos que van desde la interactividad y el diseño de interfaces
+              hasta la programación concurrente y la computación de alto rendimiento.
+            </p>
+
+            <div class="heroMeta">
+              <span class="heroMetaItem">
+                <i class="ph ph-user-circle"></i>
+                Directora de carrera: <strong>Mónica Nano</strong>
+              </span>
+              <span class="heroMetaSep" aria-hidden="true">·</span>
+              <span class="heroMetaItem">6° Semestre · 90 hs · 6 hs/semana</span>
+            </div>
+
             <div class="heroCtas">
-              <a class="btnFill" href="modulos/modulo1.html">Empezar con el módulo 1</a>
+              <a class="btnFill" href="modulos/modulo1.html">
+                Empezar módulo 1 <i class="ph-bold ph-arrow-right"></i>
+              </a>
               <a class="btnGlass" href="evaluacion.html">Ver evaluación</a>
             </div>
-            <button class="btnHint" id="openModal" type="button">¿Qué es esta materia? Leer presentación →</button>
+
+            <button class="btnHint" id="openModal" type="button">
+              <i class="ph ph-info"></i> ¿Qué es esta materia? Leer presentación
+            </button>
           </div>
-          <div class="heroStats reveal" style="--d:100ms" aria-label="Datos de la materia">
-            <div class="heroStat"><strong>07</strong><span>módulos</span></div>
-            <div class="heroStat"><strong>100</strong><span>puntos</span></div>
-            <div class="heroStat"><strong>02</strong><span>parciales</span></div>
-            <div class="heroStat"><strong>6h</strong><span>semanales</span></div>
+
+          <!-- Right: module roadmap -->
+          <div class="heroRight reveal" style="--d:120ms" aria-label="Mapa de módulos">
+            <div class="heroRoadmapLabel">Recorrido del cursado</div>
+            <div class="heroRoadmap">
+              <div class="heroRoadmapLine" aria-hidden="true"></div>
+              <a class="heroRoadmapItem" href="modulos/modulo1.html" style="--mc:#ffd166;--delay:0ms">
+                <div class="heroRoadmapDot"></div>
+                <div class="heroRoadmapCard">
+                  <span class="heroRoadmapNum">01</span>
+                  <span class="heroRoadmapName">Interactividad y TV Digital</span>
+                </div>
+              </a>
+              <a class="heroRoadmapItem" href="modulos/modulo2.html" style="--mc:#a855f7;--delay:60ms">
+                <div class="heroRoadmapDot"></div>
+                <div class="heroRoadmapCard">
+                  <span class="heroRoadmapNum">02</span>
+                  <span class="heroRoadmapName">Interfaces y UX</span>
+                </div>
+              </a>
+              <a class="heroRoadmapItem" href="modulos/modulo3.html" style="--mc:#00e8c6;--delay:120ms">
+                <div class="heroRoadmapDot"></div>
+                <div class="heroRoadmapCard">
+                  <span class="heroRoadmapNum">03</span>
+                  <span class="heroRoadmapName">Programación Concurrente</span>
+                </div>
+              </a>
+              <a class="heroRoadmapItem" href="modulos/modulo4.html" style="--mc:#b040ff;--delay:180ms">
+                <div class="heroRoadmapDot"></div>
+                <div class="heroRoadmapCard">
+                  <span class="heroRoadmapNum">04</span>
+                  <span class="heroRoadmapName">Comunicación IPC</span>
+                </div>
+              </a>
+              <a class="heroRoadmapItem" href="modulos/modulo5.html" style="--mc:#ff7d54;--delay:240ms">
+                <div class="heroRoadmapDot"></div>
+                <div class="heroRoadmapCard">
+                  <span class="heroRoadmapNum">05</span>
+                  <span class="heroRoadmapName">Sincronización</span>
+                </div>
+              </a>
+              <a class="heroRoadmapItem" href="modulos/modulo6.html" style="--mc:#38bdf8;--delay:300ms">
+                <div class="heroRoadmapDot"></div>
+                <div class="heroRoadmapCard">
+                  <span class="heroRoadmapNum">06</span>
+                  <span class="heroRoadmapName">Paralelismo</span>
+                </div>
+              </a>
+              <a class="heroRoadmapItem" href="modulos/modulo7.html" style="--mc:#a3e635;--delay:360ms">
+                <div class="heroRoadmapDot"></div>
+                <div class="heroRoadmapCard">
+                  <span class="heroRoadmapNum">07</span>
+                  <span class="heroRoadmapName">HPC &amp; GPU</span>
+                </div>
+              </a>
+            </div>
           </div>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="heroStatsBar reveal" style="--d:200ms" aria-label="Datos de la materia">
+          <div class="heroStat"><strong>07</strong><span>módulos</span></div>
+          <div class="heroStatSep" aria-hidden="true"></div>
+          <div class="heroStat"><strong>03</strong><span>bloques</span></div>
+          <div class="heroStatSep" aria-hidden="true"></div>
+          <div class="heroStat"><strong>100</strong><span>puntos</span></div>
+          <div class="heroStatSep" aria-hidden="true"></div>
+          <div class="heroStat"><strong>02</strong><span>parciales</span></div>
+          <div class="heroStatSep" aria-hidden="true"></div>
+          <div class="heroStat"><strong>6 h</strong><span>semanales</span></div>
         </div>
       </section>
 
@@ -447,6 +572,36 @@
       </section>
 
       <!-- ══════════════════════════════════
+           DOCENTE
+      ══════════════════════════════════ -->
+      <section id="docente" class="bioSection">
+        <div class="sectionWrap">
+          <div class="bioCard reveal">
+            <div class="bioAvatar" aria-hidden="true">PS</div>
+            <div class="bioContent">
+              <div class="bioBadge"><i class="ph ph-chalkboard-teacher"></i> Docente</div>
+              <h3 class="bioName">Pablo Szuster</h3>
+              <p class="bioRole">Programación para Ambientes Interactivos III · Universidad Blas Pascal</p>
+              <p class="bioBio">
+                Docente universitario en UBP, especializado en sistemas interactivos, programación concurrente y experiencias digitales multiplataforma. Apasionado por conectar teoría técnica con aplicaciones reales del mundo del desarrollo.
+              </p>
+              <div class="bioSocials">
+                <a class="bioSocialLink" href="https://github.com/pabloSzu" target="_blank" rel="noopener">
+                  <i class="ph ph-github-logo"></i> GitHub
+                </a>
+                <a class="bioSocialLink" href="mailto:pablo_szu@hotmail.com">
+                  <i class="ph ph-envelope"></i> pablo_szu@hotmail.com
+                </a>
+                <a class="bioSocialLink" href="#" target="_blank" rel="noopener">
+                  <i class="ph ph-linkedin-logo"></i> LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
            CLOSING
       ══════════════════════════════════ -->
       <section class="closing reveal">
@@ -470,7 +625,7 @@
             <h2 id="modalTitle">Programación para<br>Ambientes Interactivos III</h2>
             <p class="modalSub">Un recorrido por la interactividad digital, la programación concurrente y el cómputo de alta performance.</p>
             <div class="modalMetaRow">
-              <span class="modalMetaTag">Responsable: <strong>Mónica Nano</strong></span>
+              <span class="modalMetaTag">Directora de carrera: <strong>Mónica Nano</strong></span>
               <span class="modalMetaTag">6° Semestre</span>
               <span class="modalMetaTag">90 hs totales</span>
               <span class="modalMetaTag">6 hs / semana</span>
@@ -564,5 +719,24 @@
     </div>
 
     <script src="assets/js/index.js"></script>
+    <script>
+      // Header Módulos dropdown
+      const drop = document.getElementById('hdrModDrop');
+      if (drop) {
+        const btn = drop.querySelector('.hdrDropBtn');
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const open = drop.classList.toggle('open');
+          btn.setAttribute('aria-expanded', open);
+        });
+        document.addEventListener('click', () => {
+          drop.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+        drop.addEventListener('keydown', e => {
+          if (e.key === 'Escape') { drop.classList.remove('open'); btn.focus(); }
+        });
+      }
+    </script>
   </body>
 </html>
