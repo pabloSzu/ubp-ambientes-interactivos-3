@@ -137,6 +137,73 @@
       </div>
     </section>
 
+    <!-- ── ELI5 ACCORDION ───────────────────────── -->
+    <section class="mEliOuter">
+      <div class="msecWrap">
+        <div class="mEliAccordion">
+          <button class="mEliToggle" type="button" onclick="toggleEli(this)" aria-expanded="false">
+            <div class="mEliToggleLeft">
+              <span class="mEliToggleBadge">Nuevo en el tema</span>
+              <div class="mEliToggleTexts">
+                <span class="mEliToggleTitle">¿Primera vez con paralelismo real? Empezá acá</span>
+                <span class="mEliToggleSub">Explicación ultra simple — sin tecnicismos, con analogías</span>
+              </div>
+            </div>
+            <i class="ph-bold ph-caret-down mEliCaret"></i>
+          </button>
+
+          <div class="mEliContent">
+            <div class="mEliGrid">
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">🏗️</span>
+                <strong>Paralelismo real</strong>
+                <p>Secuencial: un albañil construye toda la casa solo. Paralelo: 10 albañiles, cada uno en una parte distinta, al mismo tiempo. La obra termina mucho más rápido.</p>
+                <div class="mEliEj"><code>IntStream.range(0,n).parallel().sum()</code> usa todos los cores disponibles sin que hagas nada extra.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">📐</span>
+                <strong>Ley de Amdahl</strong>
+                <p>Si el 20% de tu tarea es imprescindiblemente serial (configurar, combinar resultados), por más trabajadores que pongas, ese 20% siempre lo hace uno solo. El speedup máximo es ×5, sin importar cuántos cores tenés.</p>
+                <div class="mEliEj">S = 1/(0.2 + 0.8/∞) = 5×. Con 100% paralela: speedup infinito. Con 20% serial: nunca más de 5×.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">⚡</span>
+                <strong>Speedup</strong>
+                <p>La versión secuencial tarda 10 segundos. La paralela tarda 2.5 segundos. El speedup es ×4 (4 veces más rápido). Si tenés 8 cores y el speedup es ×4, la eficiencia es 50%.</p>
+                <div class="mEliEj">Estás "desperdiciando" la mitad del hardware. El ideal es speedup ≈ cantidad de cores (speedup lineal).</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">🎯</span>
+                <strong>SIMD</strong>
+                <p>En vez de sumar 4 números de uno en uno, los sumás todos al mismo tiempo con una sola instrucción. El procesador tiene "carriles" paralelos para datos.</p>
+                <div class="mEliEj">Las GPUs son SIMD extremo: miles de cores haciendo la misma operación sobre datos distintos simultáneamente.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">🐌</span>
+                <strong>Overhead</strong>
+                <p>Crear un hilo cuesta tiempo. Dividir el trabajo cuesta tiempo. Juntar los resultados cuesta tiempo. Para sumar 5 números, el overhead es mayor que el beneficio.</p>
+                <div class="mEliEj">ForkJoin tiene un UMBRAL: si el subproblema es menor que N elementos, resolverlo directo sin crear más hilos.</div>
+              </div>
+
+            </div>
+
+            <div class="mEliSummary">
+              <i class="ph-bold ph-fire-simple"></i>
+              <p>
+                Paralelismo = dividir el trabajo entre múltiples cores. La <em>Ley de Amdahl</em> define el límite real (la parte serial manda).
+                El <em>speedup</em> mide la mejora. El <em>overhead</em> es el costo de coordinar — para problemas pequeños destruye el beneficio.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── TAXONOMÍA DE FLYNN ────────────────── -->
     <section class="msec" id="conceptos">
       <div class="msecWrap">
@@ -1155,65 +1222,113 @@ public class SumaParalela {
       <div class="msecWrap">
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-book-bookmark"></i> Glosario</span>
-          <h2>Términos clave</h2>
-          <p class="msecSub">Hacé clic en cada carta para ver la definición.</p>
+          <h2>Glosario</h2>
+          <p class="msecSub">Tocá o hacé hover en cada tarjeta para ver la definición. Estos son los términos que van a aparecer en parciales, entrevistas y en producción.</p>
         </div>
 
-        <div class="m6flipGrid reveal">
+        <div class="mFlipGrid">
 
-          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
-            <div class="m6flipInner">
-              <div class="m6flipFront"><i class="ph ph-chart-line-up"></i><span>Ley de Amdahl</span></div>
-              <div class="m6flipBack">S(N) = 1/((1-P) + P/N). Define el speedup máximo teórico cuando se paraleliza la fracción P de un programa usando N cores. La parte serial (1-P) es el límite infranqueable.</div>
+          <div class="mFlipCard reveal" style="--delay:0ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-chart-line-up" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Ley de Amdahl</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>S(N) = 1/((1−P) + P/N). Define el speedup máximo teórico cuando se paraleliza la fracción P de un programa usando N cores. La parte serial (1−P) es el límite infranqueable — con P=90% y ∞ cores, máximo ×10.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
-            <div class="m6flipInner">
-              <div class="m6flipFront"><i class="ph ph-squares-four"></i><span>SIMD</span></div>
-              <div class="m6flipBack">Single Instruction Multiple Data. La misma operación se aplica simultáneamente a múltiples datos. Modelo de las GPUs y las instrucciones vectoriales (AVX, NEON). Ideal para álgebra lineal y procesamiento de imágenes.</div>
+          <div class="mFlipCard reveal" style="--delay:60ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-squares-four" style="font-size:28px;color:var(--accent)"></i>
+                <strong>SIMD</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Single Instruction Multiple Data. La misma operación se aplica simultáneamente a múltiples datos. Modelo de GPUs e instrucciones vectoriales (AVX, NEON). Ideal para álgebra lineal y procesamiento de imágenes.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
-            <div class="m6flipInner">
-              <div class="m6flipFront"><i class="ph ph-graph"></i><span>MIMD</span></div>
-              <div class="m6flipBack">Multiple Instructions Multiple Data. Múltiples cores ejecutan instrucciones distintas sobre datos distintos de forma independiente. Es el modelo de los servidores multicore modernos y los clusters HPC.</div>
+          <div class="mFlipCard reveal" style="--delay:120ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-graph" style="font-size:28px;color:var(--accent)"></i>
+                <strong>MIMD</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Multiple Instructions Multiple Data. Múltiples cores ejecutan instrucciones distintas sobre datos distintos de forma independiente. Modelo de los servidores multicore modernos y clusters HPC.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
-            <div class="m6flipInner">
-              <div class="m6flipFront"><i class="ph ph-lightning"></i><span>Speedup</span></div>
-              <div class="m6flipBack">Factor de mejora de rendimiento: S = T_secuencial / T_paralelo. Un speedup de ×3 significa que la versión paralela tarda 3 veces menos. El speedup ideal (= N cores) se llama speedup lineal.</div>
+          <div class="mFlipCard reveal" style="--delay:180ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-lightning" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Speedup</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Factor de mejora de rendimiento: S = T_secuencial / T_paralelo. Un speedup de ×3 significa que la versión paralela tarda 3 veces menos. El speedup ideal (= N cores) se llama speedup lineal.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
-            <div class="m6flipInner">
-              <div class="m6flipFront"><i class="ph ph-git-branch"></i><span>ForkJoinPool</span></div>
-              <div class="m6flipBack">Pool de threads de Java optimizado para tareas divide-y-vencerás. Usa work-stealing: un thread inactivo "roba" tareas de la cola de otro thread ocupado. ForkJoinPool.commonPool() retorna el pool compartido de la JVM.</div>
+          <div class="mFlipCard reveal" style="--delay:240ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-git-branch" style="font-size:28px;color:var(--accent)"></i>
+                <strong>ForkJoinPool</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Pool de threads de Java optimizado para tareas divide-y-vencerás. Usa work-stealing: un thread inactivo "roba" tareas de la cola de otro ocupado. <code>ForkJoinPool.commonPool()</code> retorna el pool compartido de la JVM.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
-            <div class="m6flipInner">
-              <div class="m6flipFront"><i class="ph ph-file-code"></i><span>RecursiveTask</span></div>
-              <div class="m6flipBack">Clase abstracta de Java (java.util.concurrent) para tareas ForkJoin que retornan un valor. Implementar compute(): si el problema es pequeño, resolverlo directo; si no, dividir en subtareas, fork() una y compute()+join() la otra.</div>
+          <div class="mFlipCard reveal" style="--delay:300ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-file-code" style="font-size:28px;color:var(--accent)"></i>
+                <strong>RecursiveTask</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Clase abstracta de Java (<code>java.util.concurrent</code>) para tareas ForkJoin que retornan un valor. En <code>compute()</code>: si el problema es pequeño resolverlo directo; si no, dividir en subtareas, <code>fork()</code> una y <code>join()</code> la otra.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
-            <div class="m6flipInner">
-              <div class="m6flipFront"><i class="ph ph-warning"></i><span>Overhead</span></div>
-              <div class="m6flipBack">Costo adicional de crear, coordinar y sincronizar threads. Tiene costo fijo: para tareas muy pequeñas, el overhead supera el beneficio del paralelismo. El UMBRAL en ForkJoin define el tamaño mínimo donde paralelizar vale la pena.</div>
+          <div class="mFlipCard reveal" style="--delay:360ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-warning" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Overhead</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Costo adicional de crear, coordinar y sincronizar threads. Para tareas muy pequeñas el overhead supera el beneficio. El UMBRAL en ForkJoin define el tamaño mínimo donde paralelizar vale la pena.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m6flip" onclick="this.classList.toggle('m6flipFlipped')">
-            <div class="m6flipInner">
-              <div class="m6flipFront"><i class="ph ph-ruler"></i><span>Eficiencia</span></div>
-              <div class="m6flipBack">E = Speedup / N. Mide qué fracción de los cores se aprovecha realmente. Con 8 cores y speedup ×4, la eficiencia es 50%. Eficiencia baja indica que el overhead o la parte serial dominan el tiempo.</div>
+          <div class="mFlipCard reveal" style="--delay:420ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-ruler" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Eficiencia</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>E = Speedup / N. Mide qué fracción de los cores se aprovecha realmente. Con 8 cores y speedup ×4, la eficiencia es 50%. Eficiencia baja indica que el overhead o la parte serial dominan el tiempo.</p>
+              </div>
             </div>
           </div>
 

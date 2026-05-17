@@ -110,6 +110,73 @@
       </div>
     </section>
 
+    <!-- ── ELI5 ACCORDION ───────────────────────── -->
+    <section class="mEliOuter">
+      <div class="msecWrap">
+        <div class="mEliAccordion">
+          <button class="mEliToggle" type="button" onclick="toggleEli(this)" aria-expanded="false">
+            <div class="mEliToggleLeft">
+              <span class="mEliToggleBadge">Nuevo en el tema</span>
+              <div class="mEliToggleTexts">
+                <span class="mEliToggleTitle">¿Primera vez con HPC? Empezá acá</span>
+                <span class="mEliToggleSub">Explicación ultra simple — sin tecnicismos, con analogías</span>
+              </div>
+            </div>
+            <i class="ph-bold ph-caret-down mEliCaret"></i>
+          </button>
+
+          <div class="mEliContent">
+            <div class="mEliGrid">
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">🏢</span>
+                <strong>HPC</strong>
+                <p>El equivalente computacional de un datacenter con miles de máquinas trabajando juntas como una sola. Para cuando una computadora personal tardaría siglos en resolver algo.</p>
+                <div class="mEliEj">Predecir el clima global a 10 días requiere simular la atmósfera completa. Solo los clusters HPC pueden hacerlo en horas.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">🖥️</span>
+                <strong>GPU vs CPU</strong>
+                <p>La CPU es un cirujano de élite: hace una cosa a la vez, pero perfecto y ultra-rápido. La GPU es un ejército de 10.000 soldados que hacen cosas simples en paralelo. Para ML y gráficos, el ejército gana.</p>
+                <div class="mEliEj">Multiplicar matrices de 4096×4096: CPU tarda segundos, GPU tarda milisegundos. Para redes neuronales la diferencia es 100×.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">☁️</span>
+                <strong>Cloud HPC</strong>
+                <p>En vez de comprar un supercomputador por $50M, alquilás 500 máquinas por 1 hora en AWS, hacés el cálculo, y pagás $200. Pagás por lo que usás, cuando lo usás.</p>
+                <div class="mEliEj">Spot instances: capacidad no utilizada vendida barata. Si AWS necesita esa capacidad, te avisa 2 minutos antes y apaga tu instancia.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">🧩</span>
+                <strong>CUDA</strong>
+                <p>El lenguaje para hablar directamente con la GPU de NVIDIA. Escribís código que corre en miles de "threads" de GPU al mismo tiempo. Cada thread procesa un pedacito del problema.</p>
+                <div class="mEliEj">Un kernel CUDA procesa 1000 elementos en paralelo: cada thread suma <code>a[i] + b[i]</code>. Los 1000 se ejecutan simultáneamente.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">📡</span>
+                <strong>MPI</strong>
+                <p>Para cuando ni una GPU alcanza y necesitás 1000 computadoras conectadas en red. Cada máquina tiene su propia memoria y se comunican enviando mensajes explícitos.</p>
+                <div class="mEliEj">Frontier (el super más rápido del mundo): 37.888 nodos AMD EPYC + 8 GPUs cada uno, todos conectados con MPI.</div>
+              </div>
+
+            </div>
+
+            <div class="mEliSummary">
+              <i class="ph-bold ph-fire-simple"></i>
+              <p>
+                HPC = muchas computadoras trabajando como una. La <em>GPU</em> hace miles de cálculos simples en paralelo.
+                <em>CUDA</em> te da acceso directo a esa potencia. <em>MPI</em> conecta miles de máquinas en red. El <em>cloud</em> alquila todo esto sin comprarlo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── ALGORITMOS DE ALTO REQUERIMIENTO ─── -->
     <section class="msec alt" id="algoritmos">
       <div class="msecWrap">
@@ -1171,70 +1238,111 @@ public class MatrizBenchmark {
         <div class="msecHead reveal">
           <span class="msecEye"><i class="ph ph-book-open"></i> Vocabulario HPC</span>
           <h2>Glosario — los términos que van a escuchar en producción</h2>
+          <p class="msecSub">Tocá o hacé hover en cada tarjeta para ver la definición. 8 términos que distinguen a alguien que habla en serio de HPC de alguien que lo googlea.</p>
         </div>
-        <div class="m7glossGrid reveal">
+        <div class="mFlipGrid">
 
-          <div class="m7glossCard">
-            <div class="m7glossFront"><i class="ph-bold ph-lightning"></i><span>FLOPS</span></div>
-            <div class="m7glossBack">
-              <strong>Floating-Point Operations Per Second</strong>
-              <p>La métrica universal de rendimiento HPC. 1 TFlop = 10¹² ops/seg. NVIDIA H100: 67 TFlops (FP32). Frontier: 1.1 ExaFlops (FP64).</p>
+          <div class="mFlipCard reveal" style="--delay:0ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-lightning" style="font-size:28px;color:var(--accent)"></i>
+                <strong>FLOPS</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p><strong>Floating-Point Operations Per Second.</strong> La métrica universal de rendimiento HPC. 1 TFlop = 10¹² ops/seg. NVIDIA H100: 67 TFlops (FP32). Frontier: 1.1 ExaFlops (FP64).</p>
+              </div>
             </div>
           </div>
 
-          <div class="m7glossCard">
-            <div class="m7glossFront"><i class="ph-bold ph-monitor"></i><span>VRAM</span></div>
-            <div class="m7glossBack">
-              <strong>Video RAM (memoria de GPU)</strong>
-              <p>Memoria dedicada de la GPU. El modelo ML debe caber entero en VRAM para inferencia eficiente. H100: 80GB HBM3 a 3.35 TB/s de ancho de banda.</p>
+          <div class="mFlipCard reveal" style="--delay:60ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-monitor" style="font-size:28px;color:var(--accent)"></i>
+                <strong>VRAM</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p><strong>Video RAM</strong> — memoria dedicada de la GPU. El modelo ML debe caber entero en VRAM para inferencia eficiente. H100: 80GB HBM3 a 3.35 TB/s de ancho de banda.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m7glossCard">
-            <div class="m7glossFront"><i class="ph-bold ph-squares-four"></i><span>CUDA</span></div>
-            <div class="m7glossBack">
-              <strong>Compute Unified Device Architecture</strong>
-              <p>Plataforma de NVIDIA para programar GPUs. Organiza threads en warps (32) → blocks → grids. El programador escribe un "kernel" que se ejecuta en miles de threads simultáneos.</p>
+          <div class="mFlipCard reveal" style="--delay:120ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-squares-four" style="font-size:28px;color:var(--accent)"></i>
+                <strong>CUDA</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p><strong>Compute Unified Device Architecture.</strong> Plataforma de NVIDIA para programar GPUs. Organiza threads en warps (32) → blocks → grids. El programador escribe un "kernel" que corre en miles de threads simultáneos.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m7glossCard">
-            <div class="m7glossFront"><i class="ph-bold ph-git-fork"></i><span>Warp</span></div>
-            <div class="m7glossBack">
-              <strong>Unidad de ejecución CUDA (32 threads)</strong>
-              <p>La GPU ejecuta 32 threads (1 warp) simultáneamente con la MISMA instrucción (SIMT). Si threads dentro del warp divergen (if/else), los idle threads esperan — "warp divergence", el gran enemigo del rendimiento GPU.</p>
+          <div class="mFlipCard reveal" style="--delay:180ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-git-fork" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Warp</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Unidad de ejecución CUDA: 32 threads con la MISMA instrucción (SIMT). Si threads divergen dentro del warp (if/else), los idle esperan — "warp divergence" es el gran enemigo del rendimiento GPU.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m7glossCard">
-            <div class="m7glossFront"><i class="ph-bold ph-network"></i><span>MPI</span></div>
-            <div class="m7glossBack">
-              <strong>Message Passing Interface</strong>
-              <p>Estándar para clusters HPC. Cada proceso tiene su propia memoria y se comunica con MPI_Send/Recv explícitos. Todos los TOP500 lo usan. OpenMPI y MPICH son las implementaciones más comunes.</p>
+          <div class="mFlipCard reveal" style="--delay:240ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-network" style="font-size:28px;color:var(--accent)"></i>
+                <strong>MPI</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p><strong>Message Passing Interface.</strong> Estándar para clusters HPC. Cada proceso tiene su propia memoria y se comunica con <code>MPI_Send/Recv</code> explícitos. Todos los TOP500 lo usan. OpenMPI y MPICH son las implementaciones más comunes.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m7glossCard">
-            <div class="m7glossFront"><i class="ph-bold ph-database"></i><span>HBM</span></div>
-            <div class="m7glossBack">
-              <strong>High Bandwidth Memory</strong>
-              <p>Memoria 3D apilada directamente sobre el chip GPU. H100 HBM3: 3.35 TB/s vs GDDR6 de 1 TB/s. El ancho de banda de memoria es el cuello de botella real en ML — no los FLOPS.</p>
+          <div class="mFlipCard reveal" style="--delay:300ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-database" style="font-size:28px;color:var(--accent)"></i>
+                <strong>HBM</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p><strong>High Bandwidth Memory.</strong> Memoria 3D apilada sobre el chip GPU. H100 HBM3: 3.35 TB/s vs GDDR6 de 1 TB/s. El ancho de banda de memoria es el cuello de botella real en ML — no los FLOPS.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m7glossCard">
-            <div class="m7glossFront"><i class="ph-bold ph-tag"></i><span>Spot</span></div>
-            <div class="m7glossBack">
-              <strong>Spot / Preemptible Instance</strong>
-              <p>Capacidad de cómputo no utilizada vendida con descuento 70-90%. AWS puede interrumpirla con 2 min de aviso. Ideal para ML training con checkpointing, render farms y batch jobs tolerantes a fallos.</p>
+          <div class="mFlipCard reveal" style="--delay:360ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-tag" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Spot Instance</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Capacidad de cómputo no utilizada vendida con descuento 70–90%. AWS puede interrumpirla con 2 min de aviso. Ideal para ML training con checkpointing, render farms y batch jobs tolerantes a fallos.</p>
+              </div>
             </div>
           </div>
 
-          <div class="m7glossCard">
-            <div class="m7glossFront"><i class="ph-bold ph-cpu"></i><span>NUMA</span></div>
-            <div class="m7glossBack">
-              <strong>Non-Uniform Memory Access</strong>
-              <p>En servidores multi-socket, cada CPU tiene su "local" RAM (rápida) y puede acceder a la RAM del otro socket (lenta, ~2× más latencia). Ignorar NUMA puede matar el rendimiento en servidores de 2+ sockets.</p>
+          <div class="mFlipCard reveal" style="--delay:420ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-cpu" style="font-size:28px;color:var(--accent)"></i>
+                <strong>NUMA</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p><strong>Non-Uniform Memory Access.</strong> En servidores multi-socket cada CPU tiene su RAM "local" (rápida) y puede acceder a la del otro socket (lenta, ~2× más latencia). Ignorar NUMA destruye el rendimiento en servidores de 2+ sockets.</p>
+              </div>
             </div>
           </div>
 

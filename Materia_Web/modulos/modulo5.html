@@ -139,6 +139,73 @@
       </div>
     </section>
 
+    <!-- ── ELI5 ACCORDION ───────────────────────── -->
+    <section class="mEliOuter">
+      <div class="msecWrap">
+        <div class="mEliAccordion">
+          <button class="mEliToggle" type="button" onclick="toggleEli(this)" aria-expanded="false">
+            <div class="mEliToggleLeft">
+              <span class="mEliToggleBadge">Nuevo en el tema</span>
+              <div class="mEliToggleTexts">
+                <span class="mEliToggleTitle">¿Primera vez con sincronización? Empezá acá</span>
+                <span class="mEliToggleSub">Explicación ultra simple — sin tecnicismos, con analogías</span>
+              </div>
+            </div>
+            <i class="ph-bold ph-caret-down mEliCaret"></i>
+          </button>
+
+          <div class="mEliContent">
+            <div class="mEliGrid">
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">🔒</span>
+                <strong>Mutex</strong>
+                <p>La llave del único baño del bar. Solo entra uno. El que tiene la llave puede entrar; los demás esperan afuera. Cuando sale, deja la llave colgada y entra el siguiente.</p>
+                <div class="mEliEj">En Java: <code>synchronized(lock) { ... }</code>. Solo un hilo entra al bloque a la vez.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">🎫</span>
+                <strong>Semáforo</strong>
+                <p>La boletería de un cine con capacidad para N personas. Mientras queden butacas (contador &gt; 0), la gente entra. Cuando se llena, el próximo espera hasta que alguien salga.</p>
+                <div class="mEliEj"><code>new Semaphore(3)</code> permite que hasta 3 hilos accedan simultáneamente.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">💀</span>
+                <strong>Deadlock</strong>
+                <p>Dos autos en una calle angosta que se encontraron de frente. Ninguno puede avanzar porque el otro no retrocede. Ambos esperan para siempre.</p>
+                <div class="mEliEj">Hilo A tiene Lock1 y espera Lock2. Hilo B tiene Lock2 y espera Lock1. Parálisis total.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">🍝</span>
+                <strong>Filósofos cenando</strong>
+                <p>5 filósofos en mesa redonda con 5 tenedores. Cada uno necesita 2 tenedores para comer. Si todos agarran el de la izquierda al mismo tiempo, nadie puede agarrar el de la derecha.</p>
+                <div class="mEliEj">Modelo clásico de N procesos compitiendo por N recursos compartidos. Deadlock garantizado sin coordinación.</div>
+              </div>
+
+              <div class="mEliCard">
+                <span class="mEliEmoji">👻</span>
+                <strong>Starvation</strong>
+                <p>Tres personas esperan el médico. Cada vez que entra una urgencia nueva, la anterior espera más. La urgente tiene prioridad siempre. La primera persona nunca es atendida.</p>
+                <div class="mEliEj">Con <code>ReentrantLock(true)</code> Java usa fair scheduling: el que lleva más tiempo esperando tiene prioridad.</div>
+              </div>
+
+            </div>
+
+            <div class="mEliSummary">
+              <i class="ph-bold ph-fire-simple"></i>
+              <p>
+                Un mutex garantiza <em>exclusión mutua</em> — solo uno entra. Un semáforo controla <em>cuántos entran</em>.
+                El deadlock ocurre cuando los hilos se esperan <em>en círculo</em>. La starvation cuando uno <em>nunca obtiene</em> lo que espera.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── CONCEPTOS CLAVE ─────────────────────── -->
     <section class="msec alt" id="conceptos">
       <div class="msecWrap">
@@ -1148,106 +1215,106 @@ public class DeadlockFix {
           <p class="msecSub">8 conceptos fundamentales de sincronización. Tocá cada tarjeta para ver la definición completa. Perfecto para repasar antes del parcial.</p>
         </div>
 
-        <div class="m5flipGrid">
-          <div class="m5flipCard reveal" style="--delay:0ms">
-            <div class="m5flipInner">
-              <div class="m5flipFront">
+        <div class="mFlipGrid">
+          <div class="mFlipCard reveal" style="--delay:0ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-lock" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Mutex</strong>
-                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m5flipBack">
+              <div class="mFlipBack">
                 <p><strong>Mutual Exclusion</strong>: mecanismo que garantiza que solo un hilo puede estar en la sección crítica a la vez. El hilo que lo adquiere es el único que puede liberarlo. En Java: <code>synchronized</code> o <code>ReentrantLock</code>.</p>
               </div>
             </div>
           </div>
 
-          <div class="m5flipCard reveal" style="--delay:60ms">
-            <div class="m5flipInner">
-              <div class="m5flipFront">
+          <div class="mFlipCard reveal" style="--delay:60ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-ticket" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Semáforo</strong>
-                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m5flipBack">
+              <div class="mFlipBack">
                 <p>Contador entero protegido con dos operaciones atómicas: <code>acquire()</code> decrementa (bloquea si llega a 0) y <code>release()</code> incrementa. Permite controlar cuántos hilos acceden simultáneamente. Binario (1) = mutex, Counting (N) = límite de concurrencia.</p>
               </div>
             </div>
           </div>
 
-          <div class="m5flipCard reveal" style="--delay:120ms">
-            <div class="m5flipInner">
-              <div class="m5flipFront">
+          <div class="mFlipCard reveal" style="--delay:120ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-bell-ringing" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Monitor</strong>
-                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m5flipBack">
+              <div class="mFlipBack">
                 <p>Abstracción de alto nivel que combina un mutex con variables de condición. El hilo puede entrar al monitor (<code>synchronized</code>), suspenderse liberando el lock (<code>wait()</code>), y ser despertado por otro hilo (<code>notify()</code> / <code>notifyAll()</code>).</p>
               </div>
             </div>
           </div>
 
-          <div class="m5flipCard reveal" style="--delay:180ms">
-            <div class="m5flipInner">
-              <div class="m5flipFront">
+          <div class="mFlipCard reveal" style="--delay:180ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-skull" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Deadlock</strong>
-                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m5flipBack">
+              <div class="mFlipBack">
                 <p>Bloqueo permanente donde un conjunto de hilos esperan indefinidamente recursos retenidos entre sí. El sistema no progresa. Requiere las 4 condiciones de Coffman simultáneas: exclusión mutua, hold &amp; wait, no preempción y espera circular.</p>
               </div>
             </div>
           </div>
 
-          <div class="m5flipCard reveal" style="--delay:240ms">
-            <div class="m5flipInner">
-              <div class="m5flipFront">
+          <div class="mFlipCard reveal" style="--delay:240ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-ghost" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Starvation</strong>
-                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m5flipBack">
+              <div class="mFlipBack">
                 <p>Inanición: un hilo nunca obtiene los recursos que necesita porque otros con mayor prioridad siempre llegan antes. El sistema <em>sí progresa</em> — pero para ese hilo no. Solución: scheduling justo (fair queuing) con <code>ReentrantLock(true)</code>.</p>
               </div>
             </div>
           </div>
 
-          <div class="m5flipCard reveal" style="--delay:300ms">
-            <div class="m5flipInner">
-              <div class="m5flipFront">
+          <div class="mFlipCard reveal" style="--delay:300ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-arrows-counter-clockwise" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Livelock</strong>
-                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m5flipBack">
+              <div class="mFlipBack">
                 <p>Los hilos no están bloqueados (están activos), pero se responden mutuamente sin avanzar. Típico de algoritmos de backoff mal implementados: ambos liberan el recurso al verse, ambos lo toman de vuelta, y el ciclo se repite infinitamente.</p>
               </div>
             </div>
           </div>
 
-          <div class="m5flipCard reveal" style="--delay:360ms">
-            <div class="m5flipInner">
-              <div class="m5flipFront">
+          <div class="mFlipCard reveal" style="--delay:360ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-list-numbers" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Condiciones de Coffman</strong>
-                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m5flipBack">
+              <div class="mFlipBack">
                 <p>Las 4 condiciones necesarias y suficientes para que ocurra un deadlock, formuladas por Edward G. Coffman en 1971: (1) exclusión mutua, (2) hold &amp; wait, (3) no preempción, (4) espera circular. Eliminar cualquiera previene el deadlock.</p>
               </div>
             </div>
           </div>
 
-          <div class="m5flipCard reveal" style="--delay:420ms">
-            <div class="m5flipInner">
-              <div class="m5flipFront">
+          <div class="mFlipCard reveal" style="--delay:420ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-shield-warning" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Sección crítica</strong>
-                <span class="m5flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m5flipBack">
+              <div class="mFlipBack">
                 <p>Región de código que accede a recursos compartidos (variables, archivos, conexiones) y que debe ejecutarse en exclusión mutua para evitar race conditions. Minimizar su tamaño y tiempo de ejecución es clave para maximizar la concurrencia útil.</p>
               </div>
             </div>

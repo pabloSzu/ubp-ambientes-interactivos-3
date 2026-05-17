@@ -383,6 +383,22 @@ function renderList(containerId, items, renderer) {
   el.innerHTML = items.map((item, i) => renderer(item, i)).join("");
 }
 
+/* ─── ELI5 accordion (todos los módulos) ── */
+function toggleEli(btn) {
+  const content = btn.closest('.mEliAccordion').querySelector('.mEliContent');
+  const isOpen = content.classList.contains('open');
+  content.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
+  btn.querySelector('.mEliCaret').classList.toggle('open', !isOpen);
+}
+
+/* ─── Flip cards — click toggle (mobile) ── */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.mFlipCard').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
+});
+
 /* ─── Navbar dropdown toggle (mobile) ─── */
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.mhdrDropBtn').forEach(btn => {

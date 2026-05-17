@@ -124,6 +124,62 @@
       </div>
     </section>
 
+    <!-- ── ELI5 ACCORDION ───────────────────────── -->
+    <section class="mEliOuter">
+      <div class="msecWrap">
+        <div class="mEliAccordion">
+          <button class="mEliToggle" type="button" onclick="toggleEli(this)" aria-expanded="false">
+            <div class="mEliToggleLeft">
+              <span class="mEliToggleBadge">Nuevo en el tema</span>
+              <div class="mEliToggleTexts">
+                <span class="mEliToggleTitle">¿Primera vez con diseño UX? Empezá acá</span>
+                <span class="mEliToggleSub">Explicación ultra simple — sin tecnicismos, con analogías</span>
+              </div>
+            </div>
+            <i class="ph-bold ph-caret-down mEliCaret"></i>
+          </button>
+          <div class="mEliContent">
+            <div class="mEliGrid">
+              <div class="mEliCard">
+                <span class="mEliEmoji">🖥️</span>
+                <strong>UI vs UX</strong>
+                <p>UI es cómo SE VE (botones, colores, tipografía). UX es cómo SE SIENTE (¿es fácil? ¿intuitivo?). Son distintos.</p>
+                <div class="mEliEj">Un auto: UI = diseño del tablero. UX = qué tan cómodo es manejarlo. Podés tener tablero hermoso y auto horrible de manejar.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🧲</span>
+                <strong>Affordance</strong>
+                <p>Una pista visual que dice "usame así" sin necesidad de texto. Un botón 3D invita a presionar. Una barra horizontal invita a deslizar.</p>
+                <div class="mEliEj">La manija de una puerta: si es una barra horizontal, la empujás. Si es una perilla redonda, la girás. Sin instrucciones.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🔔</span>
+                <strong>Feedback</strong>
+                <p>La respuesta que da el sistema cuando hacés algo. Sin feedback, no sabés si tu acción funcionó.</p>
+                <div class="mEliEj">Mandás un formulario → aparece un spinner → dice "Enviado". Cada paso es feedback. Sin spinner, pensarías que se rompió.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">📏</span>
+                <strong>Ley de Fitts</strong>
+                <p>Cuanto más grande y más cerca el botón, más fácil clickearlo. Es matemática aplicada al diseño.</p>
+                <div class="mEliEj">Por eso el botón "Aceptar" es enorme y el "Cancelar" es chiquito y gris. No es accidente.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🗺️</span>
+                <strong>Wireframe</strong>
+                <p>El borrador de la interfaz: solo estructura, sin colores ni imágenes. Como los planos de una casa antes de construirla.</p>
+                <div class="mEliEj">Rectángulos y líneas que dicen "acá va el menú, acá la imagen, acá el texto". Antes de diseñar nada visualmente.</div>
+              </div>
+            </div>
+            <div class="mEliSummary">
+              <i class="ph-bold ph-fire-simple"></i>
+              <p>UI es <em>cómo se ve</em>, UX es <em>cómo se siente</em>. La affordance <em>dice cómo usarlo sin palabras</em>. El feedback <em>confirma que algo pasó</em>. El wireframe es <em>el borrador antes del diseño</em>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── UX vs UI vs IX ────────────────────── -->
     <section class="msec alt" id="conceptos">
       <div class="msecWrap">
@@ -913,148 +969,148 @@
           <h2>Glosario</h2>
           <p class="msecSub">Tocá cada tarjeta para ver la definición. Estos son los términos que usás en una entrevista, una revisión de diseño o una auditoría profesional.</p>
         </div>
-        <div class="m1flipGrid">
-          <div class="m1flipCard reveal" style="--delay:0ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+        <div class="mFlipGrid">
+          <div class="mFlipCard reveal" style="--delay:0ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-monitor" style="font-size:28px;color:var(--accent)"></i>
                 <strong>UI — User Interface</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Capa visual de un sistema digital: colores, tipografía, íconos, layout y animaciones. La UI es lo que el usuario ve, no lo que siente. Puede ser hermosa y aún así tener una UX terrible.</p>
+              <div class="mFlipBack">
+                <p>Todo lo visual e interactivo de un sistema: botones, tipografía, colores, iconos, layouts. Es la capa que el usuario ve y toca. Buena UI sin buena UX = bonito pero frustrante.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:60ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:60ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-heart" style="font-size:28px;color:var(--accent)"></i>
                 <strong>UX — User Experience</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Todo lo que el usuario siente antes, durante y después de usar un sistema. Va más allá de la pantalla: incluye emociones, expectativas, contexto y cada punto de contacto con el producto.</p>
+              <div class="mFlipBack">
+                <p>La experiencia completa del usuario al interactuar con un producto: facilidad, satisfacción, eficiencia, accesibilidad. Se mide con métricas y pruebas de usuario, no con opiniones.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:120ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:120ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-hand-pointing" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Affordance</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Posibilidad real de acción que ofrece un objeto. Un botón SE PUEDE presionar — ese es su affordance. Existe aunque no lo veas. James Gibson (1979), retomado por Don Norman en diseño de interfaces.</p>
+              <div class="mFlipBack">
+                <p>Cualidad de un objeto que comunica su uso intuitivamente. Gibson: affordance es la relación entre las propiedades de un objeto y las capacidades del usuario. Norman popularizó el término en diseño.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:180ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:180ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-sign-in" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Signifier</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Señal perceptible que comunica qué acción es posible. La sombra de un botón dice "soy presionable" — eso es un signifier. Diferencia clave: el affordance existe; el signifier se ve.</p>
+              <div class="mFlipBack">
+                <p>Señal explícita que indica cómo usar algo (diferente de affordance). El cartel "Empujar" es un signifier. El borde redondeado de un botón es un affordance. Los signifiers compensan cuando los affordances no son suficientes.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:240ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:240ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-gauge" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Usabilidad</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Medida en que usuarios específicos alcanzan objetivos específicos con efectividad, eficiencia y satisfacción en un contexto de uso particular. Definición formal: ISO 9241-11. No es sinónimo de UX.</p>
+              <div class="mFlipBack">
+                <p>Medida de qué tan fácil y eficiente es usar un sistema para lograr objetivos específicos. ISO 9241: efectividad + eficiencia + satisfacción. Se evalúa con pruebas con usuarios reales.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:300ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:300ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-list-magnifying-glass" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Heurística</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Regla general usada para evaluar usabilidad sin necesitar test con usuarios. Las 10 heurísticas de Nielsen (1994) son el estándar de la industria para auditorías de interfaz rápidas y efectivas.</p>
+              <div class="mFlipBack">
+                <p>Regla de evaluación empírica para detectar problemas de usabilidad sin necesitar usuarios. Las 10 heurísticas de Jakob Nielsen son el estándar de la industria desde 1994.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:360ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:360ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-path" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Flujo de usuario</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Secuencia de pasos que un usuario sigue para completar una tarea. El flujo muestra el happy path y los edge cases. Mapear flujos antes de diseñar pantallas es una práctica fundamental en UX.</p>
+              <div class="mFlipBack">
+                <p>Secuencia de pasos que sigue un usuario para completar una tarea. Se mapea para identificar fricciones, pasos innecesarios y puntos de abandono. Base del diseño centrado en el usuario.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:420ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:420ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-wheelchair" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Accesibilidad</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Grado en que un sistema puede ser usado por personas con diversas capacidades. WCAG 2.1 define los estándares internacionales con tres niveles: A (mínimo), AA (estándar legal) y AAA (ideal).</p>
+              <div class="mFlipBack">
+                <p>Diseño inclusivo que permite a personas con diversas capacidades usar el sistema. Estándar: WCAG 2.1 (AA). Incluye contraste suficiente, navegación por teclado, alt text en imágenes.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:480ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:480ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-equals" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Consistencia</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Los mismos elementos se ven y se comportan igual en toda la interfaz. La consistencia reduce la carga cognitiva del usuario. Un design system es la herramienta que garantiza consistencia a escala.</p>
+              <div class="mFlipBack">
+                <p>Principio: elementos similares deben verse y comportarse igual en todo el sistema. Reduce la carga cognitiva del usuario. Base de cualquier Design System.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:540ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:540ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-file-dashed" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Wireframe</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Esquema estructural de una interfaz sin color ni estilo final. Muestra jerarquía, distribución y flujo sin el ruido visual del diseño terminado. Paso previo obligado antes del diseño de alta fidelidad.</p>
+              <div class="mFlipBack">
+                <p>Representación esquemática de bajo fidelidad de una interfaz. Sin colores ni imágenes finales. Define jerarquía de contenido, layout y flujo. Paso previo al diseño visual.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:600ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:600ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-layout" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Design System</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Colección de componentes reutilizables y reglas que guían el diseño de un producto. Incluye tokens (colores, tipografía, espaciado), componentes y patrones. Ejemplos: Material Design, Human Interface Guidelines.</p>
+              <div class="mFlipBack">
+                <p>Colección de componentes reutilizables, guías y decisiones de diseño documentadas. Garantiza consistencia visual y acelera el desarrollo. Ejemplo: Material Design (Google), Human Interface Guidelines (Apple).</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:660ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:660ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-brain" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Modelo mental</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Imagen interna que un usuario construye de cómo funciona un sistema. Si la interfaz coincide con ese modelo, la experiencia fluye naturalmente. Si no coincide, hay fricción, errores y abandono.</p>
+              <div class="mFlipBack">
+                <p>La representación interna que tiene el usuario de cómo funciona el sistema. El diseño es exitoso cuando el modelo mental del usuario coincide con el modelo del diseñador.</p>
               </div>
             </div>
           </div>

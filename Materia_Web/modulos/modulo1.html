@@ -141,6 +141,62 @@
       </div>
     </section>
 
+    <!-- ── ELI5 ACCORDION ───────────────────────── -->
+    <section class="mEliOuter">
+      <div class="msecWrap">
+        <div class="mEliAccordion">
+          <button class="mEliToggle" type="button" onclick="toggleEli(this)" aria-expanded="false">
+            <div class="mEliToggleLeft">
+              <span class="mEliToggleBadge">Nuevo en el tema</span>
+              <div class="mEliToggleTexts">
+                <span class="mEliToggleTitle">¿Primera vez con TV interactiva? Empezá acá</span>
+                <span class="mEliToggleSub">Explicación ultra simple — sin tecnicismos, con analogías</span>
+              </div>
+            </div>
+            <i class="ph-bold ph-caret-down mEliCaret"></i>
+          </button>
+          <div class="mEliContent">
+            <div class="mEliGrid">
+              <div class="mEliCard">
+                <span class="mEliEmoji">📺</span>
+                <strong>TV Interactiva</strong>
+                <p>No es solo mirar, es participar. La TV puede responder a lo que hacés con el control remoto.</p>
+                <div class="mEliEj">Como un videojuego en la tele: vos elegís qué pasa, en vez de solo mirar.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🔄</span>
+                <strong>Ciclo de interacción</strong>
+                <p>Vos hacés algo → la TV lo detecta → procesa → responde. Siempre en ese orden.</p>
+                <div class="mEliEj">Presionás un botón → se ilumina → cambia el canal. Eso es el ciclo estímulo-percepción-acción-feedback.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">📡</span>
+                <strong>ISDB-Tb</strong>
+                <p>El "idioma" que hablan las antenas de TV digital en Argentina y Brasil. Define cómo viaja la señal del canal hasta tu tele.</p>
+                <div class="mEliEj">Como el estándar USB: todos los dispositivos hablan el mismo lenguaje para conectarse.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🧩</span>
+                <strong>Middleware / Ginga</strong>
+                <p>Software que conecta la señal de TV con las aplicaciones interactivas. Como el sistema operativo de la tele.</p>
+                <div class="mEliEj">Ginga es el middleware que usa Argentina. Como Android, pero para la televisión.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">📝</span>
+                <strong>NCL / Lua</strong>
+                <p>Los lenguajes de programación para hacer apps en la TV digital. NCL define la estructura, Lua la lógica.</p>
+                <div class="mEliEj">Como HTML define la página web y JavaScript la hace interactiva — NCL y Lua hacen lo mismo para la tele.</div>
+              </div>
+            </div>
+            <div class="mEliSummary">
+              <i class="ph-bold ph-fire-simple"></i>
+              <p>La TV interactiva <em>responde a tus acciones</em>. El middleware <em>conecta la señal con las apps</em>. <code>ISDB-Tb</code> es el estándar de señal. <code>NCL/Lua</code> es como programar esas apps.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── CICLO BÁSICO ────────────────────── -->
     <section class="msec alt" id="contenidos">
       <div class="msecWrap">
@@ -535,100 +591,124 @@
           <h2>Glosario</h2>
           <p class="msecSub">Tocá cada tarjeta para ver la definición. Estos términos son los que vas a usar en las actividades y en el examen.</p>
         </div>
-        <div class="m1flipGrid">
-          <div class="m1flipCard reveal" style="--delay:0ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+        <div class="mFlipGrid">
+          <div class="mFlipCard reveal" style="--delay:0ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-arrows-left-right" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Interactividad</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Capacidad de un sistema de responder a acciones del usuario en tiempo real, creando una experiencia bidireccional entre persona y tecnología.</p>
+              <div class="mFlipBack">
+                <p>Capacidad de un sistema de responder a las acciones del usuario en tiempo real. Va más allá de la navegación pasiva: el usuario influye activamente en el contenido o la experiencia.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:60ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
-                <i class="ph-bold ph-arrows-clockwise" style="font-size:28px;color:var(--accent)"></i>
+          <div class="mFlipCard reveal" style="--delay:60ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-arrow-clockwise" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Ciclo básico</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Modelo de tres etapas: Acción (usuario actúa), Proceso (sistema interpreta) y Feedback (sistema responde). Fundamento de todo sistema interactivo.</p>
+              <div class="mFlipBack">
+                <p>Modelo de interacción: Estímulo → Percepción → Acción → Feedback. Todo sistema interactivo sigue este ciclo: el usuario genera un estímulo, el sistema lo percibe, ejecuta una acción y devuelve feedback.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:120ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
-                <i class="ph-bold ph-television-simple" style="font-size:28px;color:var(--accent)"></i>
+          <div class="mFlipCard reveal" style="--delay:120ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-broadcast" style="font-size:28px;color:var(--accent)"></i>
                 <strong>ISDB-Tb</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Integrated Services Digital Broadcasting Terrestrial — versión brasileña. Estándar de TV digital adoptado por Argentina en 2009. Habilita canal de datos paralelo a la señal de video.</p>
+              <div class="mFlipBack">
+                <p>Estándar de TV digital terrestre usado en Argentina y Brasil (variante latinoamericana del ISDB japonés). Define la codificación de la señal, la transmisión y los canales de datos interactivos.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:180ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
-                <i class="ph-bold ph-stack" style="font-size:28px;color:var(--accent)"></i>
+          <div class="mFlipCard reveal" style="--delay:180ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-plug" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Middleware</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Capa de software entre el hardware del receptor y las aplicaciones. Gestiona recursos, comunicación con la señal y la ejecución de apps interactivas.</p>
+              <div class="mFlipBack">
+                <p>Capa de software entre el sistema operativo del televisor y las aplicaciones interactivas. Abstrae el hardware y provee APIs para desarrollar apps de TV. En Argentina: Ginga.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:240ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
-                <i class="ph-bold ph-circuit-board" style="font-size:28px;color:var(--accent)"></i>
+          <div class="mFlipCard reveal" style="--delay:240ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-television" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Ginga</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Middleware de referencia para el estándar ISDB-Tb. Permite ejecutar aplicaciones interactivas en receptores de TV digital. Open source, mantenido en Brasil y adoptado en Argentina.</p>
+              <div class="mFlipBack">
+                <p>Middleware de código abierto desarrollado en Brasil para la norma ISDB-Tb. Adoptado en Argentina. Tiene dos subsistemas: Ginga-NCL (declarativo) y Ginga-J (procedural, basado en Java).</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:300ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
+          <div class="mFlipCard reveal" style="--delay:300ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-code" style="font-size:28px;color:var(--accent)"></i>
                 <strong>NCL / Lua</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>NCL (Nested Context Language) organiza estructura multimedia. Lua agrega lógica y comportamiento. Juntos forman el stack de desarrollo de apps para Ginga.</p>
+              <div class="mFlipBack">
+                <p>NCL (Nested Context Language) es el lenguaje declarativo de Ginga para estructurar aplicaciones. Lua es el lenguaje de scripting embebido para la lógica de las apps. Juntos son el stack de desarrollo de la TV digital.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:360ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
-                <i class="ph-bold ph-chat-circle-dots" style="font-size:28px;color:var(--accent)"></i>
+          <div class="mFlipCard reveal" style="--delay:360ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-chat-dots" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Feedback</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Respuesta del sistema a la acción del usuario. Puede ser visual, auditiva, háptica o combinada. Sin feedback claro, el usuario no puede completar tareas con confianza.</p>
+              <div class="mFlipBack">
+                <p>Respuesta del sistema ante una acción del usuario. Sin feedback inmediato, el usuario no sabe si su acción tuvo efecto. Principio fundamental de diseño interactivo.</p>
               </div>
             </div>
           </div>
-          <div class="m1flipCard reveal" style="--delay:420ms">
-            <div class="m1flipInner">
-              <div class="m1flipFront">
-                <i class="ph-bold ph-globe" style="font-size:28px;color:var(--accent)"></i>
-                <strong>DEVENDRA</strong>
-                <span class="m1flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+          <div class="mFlipCard reveal" style="--delay:420ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-monitor" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Set-top box</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m1flipBack">
-                <p>Proyecto piloto argentino de educación interactiva sobre TV Digital. Usa Ginga para distribuir contenido educativo interactivo sin necesidad de internet, democratizando el acceso.</p>
+              <div class="mFlipBack">
+                <p>Decodificador de TV digital. Recibe la señal ISDB-Tb, la decodifica y ejecuta el middleware Ginga. Permite a televisores analógicos acceder a la TV digital e interactiva.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mFlipCard reveal" style="--delay:480ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-tree-structure" style="font-size:28px;color:var(--accent)"></i>
+                <strong>DEVENDRA</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Framework de referencia para el desarrollo de aplicaciones ISDB-Tb en Argentina. Define patrones y estructuras para crear aplicaciones NCL/Lua compatibles con la norma nacional.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mFlipCard reveal" style="--delay:540ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-hand-pointing" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Affordance</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Cualidad de un objeto que indica intuitivamente cómo usarlo. Un botón tridimensional "pide" ser presionado. Una barra horizontal "pide" ser deslizada. Sin palabras.</p>
               </div>
             </div>
           </div>

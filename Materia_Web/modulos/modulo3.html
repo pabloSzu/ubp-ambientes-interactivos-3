@@ -131,61 +131,61 @@
     </section>
 
     <!-- ── ELI5 ACCORDION ───────────────────────── -->
-    <section class="m3eliOuter">
+    <section class="mEliOuter">
       <div class="msecWrap">
-        <div class="m3eliAccordion">
-          <button class="m3eliToggle" type="button" onclick="toggleEli(this)" aria-expanded="false">
-            <div class="m3eliToggleLeft">
-              <span class="m3eliToggleBadge">Nuevo en el tema</span>
-              <div class="m3eliToggleTexts">
-                <span class="m3eliToggleTitle">¿Primera vez con concurrencia? Empezá acá</span>
-                <span class="m3eliToggleSub">Explicación ultra simple — sin tecnicismos, con analogías</span>
+        <div class="mEliAccordion">
+          <button class="mEliToggle" type="button" onclick="toggleEli(this)" aria-expanded="false">
+            <div class="mEliToggleLeft">
+              <span class="mEliToggleBadge">Nuevo en el tema</span>
+              <div class="mEliToggleTexts">
+                <span class="mEliToggleTitle">¿Primera vez con concurrencia? Empezá acá</span>
+                <span class="mEliToggleSub">Explicación ultra simple — sin tecnicismos, con analogías</span>
               </div>
             </div>
-            <i class="ph-bold ph-caret-down m3eliCaret"></i>
+            <i class="ph-bold ph-caret-down mEliCaret"></i>
           </button>
 
-          <div class="m3eliContent">
-            <div class="m3eliGrid">
+          <div class="mEliContent">
+            <div class="mEliGrid">
 
-              <div class="m3eliCard">
-                <span class="m3eliEmoji">🏠</span>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🏠</span>
                 <strong>Proceso</strong>
                 <p>Un programa corriendo. Cada proceso tiene su propia memoria, sus propias variables, su propio espacio privado — como si cada programa viviera en una casa separada. No comparte nada con los demás.</p>
-                <div class="m3eliEj">Abrís Chrome → proceso. Abrís Spotify → otro proceso. Si uno explota, el otro sigue.</div>
+                <div class="mEliEj">Abrís Chrome → proceso. Abrís Spotify → otro proceso. Si uno explota, el otro sigue.</div>
               </div>
 
-              <div class="m3eliCard">
-                <span class="m3eliEmoji">🧵</span>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🧵</span>
                 <strong>Hilo (Thread)</strong>
                 <p>Un mini-trabajador dentro de un proceso. Un proceso puede tener muchos hilos. Todos comparten la misma memoria — como empleados que trabajan en el mismo McDonald's y usan la misma cocina.</p>
-                <div class="m3eliEj">Un hilo maneja gráficos, otro el sonido, otro la red. Todos dentro del mismo juego, al mismo tiempo.</div>
+                <div class="mEliEj">Un hilo maneja gráficos, otro el sonido, otro la red. Todos dentro del mismo juego, al mismo tiempo.</div>
               </div>
 
-              <div class="m3eliCard">
-                <span class="m3eliEmoji">🧬</span>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🧬</span>
                 <strong>fork()</strong>
                 <p>Crear un clon del proceso actual. El original es el padre, el nuevo es el hijo. Ambos siguen corriendo el mismo código pero con memoria completamente separada — como clonar una fábrica entera.</p>
-                <div class="m3eliEj">Después del fork() hay dos procesos idénticos. Cada uno tiene su propia copia de todo.</div>
+                <div class="mEliEj">Después del fork() hay dos procesos idénticos. Cada uno tiene su propia copia de todo.</div>
               </div>
 
-              <div class="m3eliCard">
-                <span class="m3eliEmoji">💥</span>
+              <div class="mEliCard">
+                <span class="mEliEmoji">💥</span>
                 <strong>Race Condition</strong>
                 <p>Dos hilos intentan modificar la misma variable al mismo tiempo. Uno pisa el trabajo del otro. Como dos chefs que escriben en el mismo cuaderno sin mirarse — el resultado es impredecible y cambia en cada ejecución.</p>
-                <div class="m3eliEj"><code>counter++</code> parece simple pero son 3 pasos. Si dos hilos los hacen juntos, uno sobreescribe al otro y se pierde un incremento.</div>
+                <div class="mEliEj"><code>counter++</code> parece simple pero son 3 pasos. Si dos hilos los hacen juntos, uno sobreescribe al otro y se pierde un incremento.</div>
               </div>
 
-              <div class="m3eliCard">
-                <span class="m3eliEmoji">🔑</span>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🔑</span>
                 <strong>Lock / synchronized</strong>
                 <p>La llave del baño. Solo entra uno a la vez. El primer hilo toma la llave, hace su trabajo, y la devuelve. El resto espera afuera. Así se evita que dos hilos pisen el mismo dato compartido.</p>
-                <div class="m3eliEj"><code>synchronized</code> en Java = "tomá la llave, hacé lo tuyo, devolvela". Garantiza que el read-modify-write sea atómico.</div>
+                <div class="mEliEj"><code>synchronized</code> en Java = "tomá la llave, hacé lo tuyo, devolvela". Garantiza que el read-modify-write sea atómico.</div>
               </div>
 
             </div>
 
-            <div class="m3eliSummary">
+            <div class="mEliSummary">
               <i class="ph-bold ph-fire-simple"></i>
               <p>
                 Un proceso tiene <em>memoria propia</em> — los hilos <em>comparten memoria</em> dentro del mismo proceso.
@@ -1410,99 +1410,99 @@ public class EjecutorDemo {
           <h2>Glosario</h2>
           <p class="msecSub">Tocá cada tarjeta para ver la definición. Estos son los términos que vas a usar en entrevistas técnicas, revisiones de código y diseño de sistemas concurrentes.</p>
         </div>
-        <div class="m3flipGrid">
-          <div class="m3flipCard reveal" style="--delay:0ms">
-            <div class="m3flipInner">
-              <div class="m3flipFront">
+        <div class="mFlipGrid">
+          <div class="mFlipCard reveal" style="--delay:0ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-house-line" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Proceso</strong>
-                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m3flipBack">
+              <div class="mFlipBack">
                 <p>Instancia de un programa en ejecución con su propio espacio de memoria aislado. Tiene código, heap, stack y recursos propios. El SO le asigna un PID único. Ej: cada pestaña del navegador es un proceso.</p>
               </div>
             </div>
           </div>
-          <div class="m3flipCard reveal" style="--delay:60ms">
-            <div class="m3flipInner">
-              <div class="m3flipFront">
+          <div class="mFlipCard reveal" style="--delay:60ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-path" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Hilo (Thread)</strong>
-                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m3flipBack">
+              <div class="mFlipBack">
                 <p>Unidad de ejecución dentro de un proceso. Comparte heap y código con otros hilos del mismo proceso pero tiene su propio stack. También llamado "proceso liviano". Java crea hilos con <code>Thread</code> o <code>ExecutorService</code>.</p>
               </div>
             </div>
           </div>
-          <div class="m3flipCard reveal" style="--delay:120ms">
-            <div class="m3flipInner">
-              <div class="m3flipFront">
+          <div class="mFlipCard reveal" style="--delay:120ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-shuffle" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Scheduler</strong>
-                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m3flipBack">
+              <div class="mFlipBack">
                 <p>Componente del SO que decide qué hilo recibe tiempo de CPU y por cuánto tiempo. Java no controla al scheduler — el SO es el árbitro. Por eso el orden de ejecución de los hilos no está garantizado.</p>
               </div>
             </div>
           </div>
-          <div class="m3flipCard reveal" style="--delay:180ms">
-            <div class="m3flipInner">
-              <div class="m3flipFront">
+          <div class="mFlipCard reveal" style="--delay:180ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-intersect" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Concurrencia</strong>
-                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m3flipBack">
+              <div class="mFlipBack">
                 <p>Múltiples tareas en progreso simultáneo, intercaladas por el scheduler en uno o más cores. Es un concepto de diseño: el programa está estructurado para manejar múltiples tareas a la vez, aunque no corran exactamente al mismo tiempo.</p>
               </div>
             </div>
           </div>
-          <div class="m3flipCard reveal" style="--delay:240ms">
-            <div class="m3flipInner">
-              <div class="m3flipFront">
+          <div class="mFlipCard reveal" style="--delay:240ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-rows" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Paralelismo</strong>
-                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m3flipBack">
+              <div class="mFlipBack">
                 <p>Ejecución verdaderamente simultánea de múltiples tareas en múltiples cores. Requiere hardware (más de 1 core) y software bien particionado. Un programa con un solo core puede ser concurrente pero nunca paralelo.</p>
               </div>
             </div>
           </div>
-          <div class="m3flipCard reveal" style="--delay:300ms">
-            <div class="m3flipInner">
-              <div class="m3flipFront">
+          <div class="mFlipCard reveal" style="--delay:300ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-warning-diamond" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Race Condition</strong>
-                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m3flipBack">
+              <div class="mFlipBack">
                 <p>Bug donde el resultado de un programa depende del orden de ejecución de los hilos. Ocurre cuando dos o más hilos acceden y modifican datos compartidos sin sincronización. El resultado es impredecible y difícil de reproducir.</p>
               </div>
             </div>
           </div>
-          <div class="m3flipCard reveal" style="--delay:360ms">
-            <div class="m3flipInner">
-              <div class="m3flipFront">
+          <div class="mFlipCard reveal" style="--delay:360ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-swap" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Context Switch</strong>
-                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m3flipBack">
+              <div class="mFlipBack">
                 <p>Operación del SO donde guarda el estado de un hilo (registros, stack pointer, program counter) y carga el estado de otro. Dura ~1000ns. Demasiados context switches pueden degradar el rendimiento más que el trabajo real.</p>
               </div>
             </div>
           </div>
-          <div class="m3flipCard reveal" style="--delay:420ms">
-            <div class="m3flipInner">
-              <div class="m3flipFront">
+          <div class="mFlipCard reveal" style="--delay:420ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-stack" style="font-size:28px;color:var(--accent)"></i>
                 <strong>ExecutorService</strong>
-                <span class="m3flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m3flipBack">
+              <div class="mFlipBack">
                 <p>API de alto nivel de Java para gestionar pools de hilos. Reutiliza hilos en lugar de crear y destruir, controla el tamaño del pool, maneja excepciones y soporta Callable/Future para tareas con resultados. Estándar desde Java 5.</p>
               </div>
             </div>

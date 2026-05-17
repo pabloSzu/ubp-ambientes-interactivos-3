@@ -134,6 +134,62 @@
       </div>
     </section>
 
+    <!-- ── ELI5 ACCORDION ───────────────────────── -->
+    <section class="mEliOuter">
+      <div class="msecWrap">
+        <div class="mEliAccordion">
+          <button class="mEliToggle" type="button" onclick="toggleEli(this)" aria-expanded="false">
+            <div class="mEliToggleLeft">
+              <span class="mEliToggleBadge">Nuevo en el tema</span>
+              <div class="mEliToggleTexts">
+                <span class="mEliToggleTitle">¿Primera vez con IPC? Empezá acá</span>
+                <span class="mEliToggleSub">Explicación ultra simple — sin tecnicismos, con analogías</span>
+              </div>
+            </div>
+            <i class="ph-bold ph-caret-down mEliCaret"></i>
+          </button>
+          <div class="mEliContent">
+            <div class="mEliGrid">
+              <div class="mEliCard">
+                <span class="mEliEmoji">📞</span>
+                <strong>IPC</strong>
+                <p>Inter-Process Communication. Cómo dos procesos separados se hablan, ya que cada proceso tiene su propia memoria y no puede ver la del otro.</p>
+                <div class="mEliEj">Como dos personas en habitaciones cerradas: no se pueden tocar, pero pueden hablar por teléfono, pasar notas por debajo de la puerta, o escribir en una pizarra compartida.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🚿</span>
+                <strong>Pipe</strong>
+                <p>Tubería de datos unidireccional. Lo que A escribe, B lo lee. Los datos van en orden de llegada.</p>
+                <div class="mEliEj">Como una fila de supermercado: primero en entrar, primero en salir. A pone datos, B los saca en el mismo orden.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">📮</span>
+                <strong>Cola de mensajes</strong>
+                <p>Un buzón compartido entre procesos. A deja mensajes, B los recoge cuando puede. No necesitan estar sincronizados.</p>
+                <div class="mEliEj">Como el correo: mandás la carta (no esperás a que el otro la abra), el otro la lee cuando quiere.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🧠</span>
+                <strong>Memoria compartida</strong>
+                <p>El método más rápido: los dos procesos leen y escriben en el mismo bloque de RAM. Sin un lock, es una race condition garantizada.</p>
+                <div class="mEliEj">Como una pizarra que los dos pueden ver y modificar al mismo tiempo. Muy rápido, pero sin reglas es un caos.</div>
+              </div>
+              <div class="mEliCard">
+                <span class="mEliEmoji">🔌</span>
+                <strong>Socket</strong>
+                <p>Comunicación a través de la red entre procesos. Pueden estar en la misma máquina o en otras.</p>
+                <div class="mEliEj">Como llamar por teléfono a otro proceso. Da igual si está al lado tuyo o en otro país.</div>
+              </div>
+            </div>
+            <div class="mEliSummary">
+              <i class="ph-bold ph-fire-simple"></i>
+              <p>IPC es <em>cómo hablan los procesos</em> entre sí. Pipe es <em>tubería ordenada</em>. Cola de mensajes es <em>el buzón</em>. Memoria compartida es <em>la pizarra común</em>. Socket es <em>el teléfono entre procesos</em>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── EL PROBLEMA DEL AISLAMIENTO ──────── -->
     <section class="msec alt" id="conceptos">
       <div class="msecWrap">
@@ -885,76 +941,124 @@ public class Pipeline3Etapas {
           <h2>Glosario</h2>
           <p class="msecSub">Tocá cada tarjeta para ver la definición. Estos son los términos que vas a usar al diseñar sistemas distribuidos, microservicios y pipelines de datos.</p>
         </div>
-        <div class="m4flipGrid">
-          <div class="m4flipCard reveal" style="--delay:0ms">
-            <div class="m4flipInner">
-              <div class="m4flipFront">
-                <i class="ph-bold ph-git-merge" style="font-size:28px;color:var(--accent)"></i>
+        <div class="mFlipGrid">
+          <div class="mFlipCard reveal" style="--delay:0ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-arrows-left-right" style="font-size:28px;color:var(--accent)"></i>
                 <strong>IPC</strong>
-                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m4flipBack">
-                <p>Inter-Process Communication — conjunto de mecanismos provistos por el SO para intercambiar datos entre procesos o hilos. Necesario porque cada proceso tiene su propio espacio de memoria aislado. Incluye pipes, FIFOs, colas de mensajes y memoria compartida.</p>
+              <div class="mFlipBack">
+                <p>Inter-Process Communication. Mecanismos del SO para que procesos aislados intercambien datos. Los procesos no comparten memoria por defecto, por eso necesitan IPC. Categorías: memoria compartida, paso de mensajes, señales.</p>
               </div>
             </div>
           </div>
-          <div class="m4flipCard reveal" style="--delay:60ms">
-            <div class="m4flipInner">
-              <div class="m4flipFront">
-                <i class="ph-bold ph-arrow-right" style="font-size:28px;color:var(--accent)"></i>
+          <div class="mFlipCard reveal" style="--delay:60ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-pipe" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Pipe</strong>
-                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m4flipBack">
-                <p>Canal de comunicación unidireccional y secuencial entre dos procesos. Los datos fluyen en una sola dirección (escritor → lector). Típicamente entre procesos relacionados (padre-hijo con fork). El SO maneja el buffering automáticamente.</p>
+              <div class="mFlipBack">
+                <p>Canal de comunicación unidireccional entre procesos. El productor escribe en un extremo, el consumidor lee del otro. FIFO (First In, First Out). Pipes anónimos: solo entre procesos padre-hijo. Named pipes (FIFO): entre cualquier proceso.</p>
               </div>
             </div>
           </div>
-          <div class="m4flipCard reveal" style="--delay:120ms">
-            <div class="m4flipInner">
-              <div class="m4flipFront">
-                <i class="ph-bold ph-funnel" style="font-size:28px;color:var(--accent)"></i>
+          <div class="mFlipCard reveal" style="--delay:120ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-stack" style="font-size:28px;color:var(--accent)"></i>
                 <strong>FIFO</strong>
-                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m4flipBack">
-                <p>First In, First Out — cola donde el primer elemento en entrar es el primero en salir. En IPC, un FIFO (named pipe) es un pipe con nombre en el filesystem que permite comunicación entre procesos no relacionados. Se crea con <code>mkfifo</code> en Unix.</p>
+              <div class="mFlipBack">
+                <p>First In, First Out. Política de orden en la que el primer dato en entrar es el primero en salir. Garantiza orden en la entrega de mensajes. Todos los pipes son FIFO por naturaleza.</p>
               </div>
             </div>
           </div>
-          <div class="m4flipCard reveal" style="--delay:180ms">
-            <div class="m4flipInner">
-              <div class="m4flipFront">
+          <div class="mFlipCard reveal" style="--delay:180ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
                 <i class="ph-bold ph-envelope" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Cola de mensajes</strong>
-                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m4flipBack">
-                <p>Estructura para enviar datos entre productores y consumidores de forma asincrónica. El productor envía y sigue sin esperar al consumidor. Los mensajes persisten en la cola hasta ser procesados. Ideal para sistemas desacoplados y resilientes.</p>
+              <div class="mFlipBack">
+                <p>Estructura IPC que permite a procesos intercambiar mensajes discretos y tipados. El receptor puede filtrar mensajes por tipo. Persiste aunque el proceso receptor no esté activo.</p>
               </div>
             </div>
           </div>
-          <div class="m4flipCard reveal" style="--delay:240ms">
-            <div class="m4flipInner">
-              <div class="m4flipFront">
-                <i class="ph-bold ph-database" style="font-size:28px;color:var(--accent)"></i>
+          <div class="mFlipCard reveal" style="--delay:240ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-brain" style="font-size:28px;color:var(--accent)"></i>
                 <strong>Memoria compartida</strong>
-                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m4flipBack">
-                <p>Zona de datos accesible por más de una unidad de ejecución. Es el mecanismo de IPC más rápido porque no hay copia de datos — ambos procesos mapean el mismo segmento físico de RAM. Requiere sincronización manual (mutex, semáforo) para evitar race conditions.</p>
+              <div class="mFlipBack">
+                <p>El mecanismo IPC más rápido: múltiples procesos mapean el mismo bloque de memoria física en sus espacios virtuales. Sin sincronización explícita (mutex/semáforo) es una race condition garantizada.</p>
               </div>
             </div>
           </div>
-          <div class="m4flipCard reveal" style="--delay:300ms">
-            <div class="m4flipInner">
-              <div class="m4flipFront">
-                <i class="ph-bold ph-stack" style="font-size:28px;color:var(--accent)"></i>
-                <strong>BlockingQueue</strong>
-                <span class="m4flipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+          <div class="mFlipCard reveal" style="--delay:300ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-plug" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Socket</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
               </div>
-              <div class="m4flipBack">
-                <p>Cola Java que coordina productores y consumidores bloqueando automáticamente. <code>put()</code> bloquea si la queue está llena — el productor espera. <code>take()</code> bloquea si está vacía — el consumidor espera. Sin polling, sin sincronización manual. La implementación más común es <code>LinkedBlockingQueue</code>.</p>
+              <div class="mFlipBack">
+                <p>Endpoint de comunicación bidireccional entre procesos, local o remoto. TCP socket: confiable, ordenado. UDP socket: rápido, sin garantía de entrega. Base de toda comunicación de red.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mFlipCard reveal" style="--delay:360ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-queue" style="font-size:28px;color:var(--accent)"></i>
+                <strong>BlockingQueue</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Cola thread-safe en Java (java.util.concurrent) que bloquea al productor si está llena y al consumidor si está vacía. Implementa el patrón productor-consumidor sin manejo manual de locks.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mFlipCard reveal" style="--delay:420ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-bell" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Señal (Signal)</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Notificación asíncrona enviada a un proceso por el SO o por otro proceso. SIGINT (Ctrl+C), SIGKILL, SIGTERM. El proceso puede capturar señales con handlers o ignorarlas (excepto SIGKILL).</p>
+              </div>
+            </div>
+          </div>
+          <div class="mFlipCard reveal" style="--delay:480ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-export" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Serialización</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Convertir un objeto en memoria a un formato que puede enviarse por un canal IPC (bytes, JSON, XML). El receptor deserializa para reconstruir el objeto. Imprescindible en comunicación entre procesos.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mFlipCard reveal" style="--delay:540ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-factory" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Productor-Consumidor</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Patrón de diseño clásico de concurrencia: un proceso produce datos, otro los consume. Se resuelve con una cola compartida. El desafío: sincronizar sin deadlock ni race condition.</p>
               </div>
             </div>
           </div>
