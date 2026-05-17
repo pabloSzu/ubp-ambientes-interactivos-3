@@ -286,6 +286,10 @@
           </div>
 
           <div class="m3forkCodeBlock">
+            <div class="m3cCallout">
+              <i class="ph-bold ph-info"></i>
+              <p><strong>¿Por qué C?</strong> fork() es una syscall del kernel Unix — Java la oculta a propósito para ser multiplataforma. Este es el <em>único</em> bloque en C del módulo: lo usamos para ver qué pasa por debajo cuando el SO crea un proceso. En Java vas a usar <code>ProcessBuilder</code> para esto — Java nunca te expone fork() directamente.</p>
+            </div>
             <div class="m3codeSectionHeader">
               <div class="m3codeSectionTitle"><i class="ph-bold ph-code"></i> fork() en C — la syscall POSIX</div>
               <div class="m3codeBadge" style="background:rgba(74,142,240,0.18);color:#4a8ef0;border-color:rgba(74,142,240,0.3)">C / POSIX</div>
