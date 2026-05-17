@@ -288,13 +288,13 @@ if (glow) {
 
 // Hero
 const NAV_LABELS = {
-  1: 'Interactividad y TV Digital',
-  2: 'Interfaces y UX',
-  3: 'Programación Concurrente',
-  4: 'Comunicación IPC',
-  5: 'Sincronización',
-  6: 'Paralelismo',
-  7: 'HPC & GPU'
+  1: 'La interactividad y la TV digital',
+  2: 'Interfaces, navegabilidad y UX',
+  3: 'Intro a la prog. concurrente',
+  4: 'Comunicación entre procesos',
+  5: 'Sincronización entre procesos',
+  6: 'Programación en sistemas paralelos',
+  7: 'Computación de alta performance'
 };
 document.title = `PAI3 · Módulo ${id} · ${NAV_LABELS[id] || ''}`;
 setText("mhdrLabel", `Módulo ${String(id).padStart(2, "0")} · ${NAV_LABELS[id] || ''}`);
