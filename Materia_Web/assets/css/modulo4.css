@@ -1092,7 +1092,7 @@
   display: flex; align-items: center; justify-content: center;
 }
 .m4evConceptCard h3 { font-size: 17px; font-weight: 800; margin: 0; }
-.m4evConceptCard p { font-size: 13.5px; color: var(--sub); line-height: 1.65; margin: 0; }
+.m4evConceptCard p { font-size: 15px; color: var(--sub); line-height: 1.65; margin: 0; }
 .m4evConceptCard strong { color: var(--text); }
 
 .m4evVsCard {
@@ -1108,10 +1108,10 @@
 .m4evVsItem:last-child { border-left: 1px solid var(--border); }
 .m4evVsHead {
   display: flex; align-items: center; gap: 7px;
-  font-size: 13px; font-weight: 700; color: var(--vc);
+  font-size: 14px; font-weight: 700; color: var(--vc);
 }
-.m4evVsItem p { font-size: 12.5px; color: var(--sub); line-height: 1.55; margin: 0; }
-.m4evVsItem code { font-size: 11px; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 8px; display: block; color: var(--accent); font-family: monospace; }
+.m4evVsItem p { font-size: 14px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m4evVsItem code { font-size: 13px; background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 8px; display: block; color: var(--accent); font-family: monospace; }
 .m4evVsArrow {
   display: flex; align-items: center; justify-content: center;
   width: 32px; background: rgba(255,255,255,0.03);
@@ -1135,14 +1135,14 @@
 .m4evLoopSteps { display: flex; flex-direction: column; gap: 4px; }
 .m4evLoopStep {
   display: flex; align-items: flex-start; gap: 14px;
-  padding: 14px;
+  padding: 16px;
   background: color-mix(in srgb, var(--lc) 6%, transparent);
   border: 1px solid color-mix(in srgb, var(--lc) 20%, transparent);
   border-radius: 12px;
-  font-size: 13px; color: var(--sub); line-height: 1.5;
+  font-size: 14px; color: var(--sub); line-height: 1.6;
 }
 .m4evLoopStep strong { color: var(--text); }
-.m4evLoopStep code { font-size: 11.5px; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 5px; color: var(--accent); }
+.m4evLoopStep code { font-size: 13px; background: rgba(0,0,0,0.3); padding: 2px 7px; border-radius: 5px; color: var(--accent); }
 .m4evLoopNum {
   width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
   background: color-mix(in srgb, var(--lc) 20%, transparent);
@@ -1154,7 +1154,7 @@
 
 .m4evPatterns { margin-top: 28px; }
 .m4evPatternsHead {
-  font-size: 13px; font-weight: 700; color: var(--muted);
+  font-size: 14px; font-weight: 700; color: var(--muted);
   text-transform: uppercase; letter-spacing: 0.07em;
   margin-bottom: 16px;
 }
@@ -1173,10 +1173,10 @@
   border: 1px solid color-mix(in srgb, var(--pt) 28%, transparent);
   color: var(--pt); font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
 }
-.m4evPattern h4 { font-size: 14px; font-weight: 800; margin: 0; }
-.m4evPattern p { font-size: 12.5px; color: var(--sub); line-height: 1.55; margin: 0; }
-.m4evPattern pre { background: rgba(0,0,0,0.35); border-radius: 10px; padding: 12px 14px; overflow-x: auto; margin: 0; }
-.m4evPattern pre code { font-size: 11.5px; color: #7dd3fc; font-family: monospace; line-height: 1.6; }
+.m4evPattern h4 { font-size: 15px; font-weight: 800; margin: 0; }
+.m4evPattern p { font-size: 14px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m4evPattern pre { background: rgba(0,0,0,0.35); border-radius: 10px; padding: 14px 16px; overflow-x: auto; margin: 0; }
+.m4evPattern pre code { font-size: 13px; color: #7dd3fc; font-family: monospace; line-height: 1.65; }
 
 .m4evConnection {
   display: flex; align-items: flex-start; gap: 16px;
@@ -1190,8 +1190,8 @@
   color: var(--accent); font-size: 18px;
   display: flex; align-items: center; justify-content: center;
 }
-.m4evConnection strong { font-size: 14px; font-weight: 800; color: var(--text); display: block; margin-bottom: 6px; }
-.m4evConnection p { font-size: 13.5px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m4evConnection strong { font-size: 15px; font-weight: 800; color: var(--text); display: block; margin-bottom: 8px; }
+.m4evConnection p { font-size: 15px; color: var(--sub); line-height: 1.65; margin: 0; }
 
 @media (max-width: 900px) {
   .m4evLayout { grid-template-columns: 1fr; }

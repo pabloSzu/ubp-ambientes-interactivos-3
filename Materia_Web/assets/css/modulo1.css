@@ -1439,19 +1439,19 @@
   flex-shrink: 0;
 }
 .m1modContent { display: flex; flex-direction: column; gap: 10px; }
-.m1modContent h3 { font-size: 16px; font-weight: 800; margin: 0; }
-.m1modContent p { font-size: 13.5px; color: var(--sub); line-height: 1.6; margin: 0; }
-.m1modItems { display: flex; flex-direction: column; gap: 6px; }
+.m1modContent h3 { font-size: 17px; font-weight: 800; margin: 0; }
+.m1modContent p { font-size: 15px; color: var(--sub); line-height: 1.65; margin: 0; }
+.m1modItems { display: flex; flex-direction: column; gap: 8px; }
 .m1modItem {
   display: flex; align-items: flex-start; gap: 8px;
-  font-size: 12.5px; color: var(--sub);
+  font-size: 14px; color: var(--sub);
 }
-.m1modItem i { margin-top: 2px; flex-shrink: 0; font-size: 12px; }
+.m1modItem i { margin-top: 3px; flex-shrink: 0; font-size: 13px; }
 .m1modItem span strong { color: var(--text); }
 .m1modEj {
-  font-size: 12px; color: var(--muted);
+  font-size: 13.5px; color: var(--sub);
   border-left: 2px solid var(--border);
-  padding-left: 10px; line-height: 1.5;
+  padding-left: 12px; line-height: 1.6;
   margin-top: 4px;
 }
 
@@ -1475,7 +1475,7 @@
   grid-template-columns: 2fr 1.5fr 1.5fr 2fr;
   padding: 14px 20px;
   border-bottom: 1px solid var(--border);
-  font-size: 13px; color: var(--sub);
+  font-size: 14px; color: var(--sub);
   align-items: center;
   transition: background 0.15s;
 }
