@@ -1069,3 +1069,131 @@
   .m4bqStats { grid-template-columns: repeat(2, 1fr); }
   .m4bqQueue { grid-template-columns: repeat(4, 1fr); }
 }
+
+/* ─── Event-driven / Event Loop ─────────── */
+.m4evLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+}
+.m4evLeft { display: flex; flex-direction: column; gap: 20px; }
+.m4evConceptCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.m4evConceptIcon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  color: var(--accent); font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+}
+.m4evConceptCard h3 { font-size: 17px; font-weight: 800; margin: 0; }
+.m4evConceptCard p { font-size: 13.5px; color: var(--sub); line-height: 1.65; margin: 0; }
+.m4evConceptCard strong { color: var(--text); }
+
+.m4evVsCard {
+  display: flex; gap: 0;
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--border);
+}
+.m4evVsItem {
+  flex: 1; padding: 20px;
+  background: var(--surface);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.m4evVsItem:last-child { border-left: 1px solid var(--border); }
+.m4evVsHead {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 700; color: var(--vc);
+}
+.m4evVsItem p { font-size: 12.5px; color: var(--sub); line-height: 1.55; margin: 0; }
+.m4evVsItem code { font-size: 11px; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 8px; display: block; color: var(--accent); font-family: monospace; }
+.m4evVsArrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; background: rgba(255,255,255,0.03);
+  font-size: 11px; font-weight: 800; color: var(--muted);
+  flex-shrink: 0;
+}
+
+.m4evRight {}
+.m4evLoop {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  height: 100%;
+}
+.m4evLoopLabel {
+  font-size: 11px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+.m4evLoopSteps { display: flex; flex-direction: column; gap: 4px; }
+.m4evLoopStep {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px;
+  background: color-mix(in srgb, var(--lc) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lc) 20%, transparent);
+  border-radius: 12px;
+  font-size: 13px; color: var(--sub); line-height: 1.5;
+}
+.m4evLoopStep strong { color: var(--text); }
+.m4evLoopStep code { font-size: 11.5px; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 5px; color: var(--accent); }
+.m4evLoopNum {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  background: color-mix(in srgb, var(--lc) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lc) 40%, transparent);
+  color: var(--lc); font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.m4evLoopArrow { text-align: center; color: var(--muted); font-size: 12px; padding: 2px 0; }
+
+.m4evPatterns { margin-top: 28px; }
+.m4evPatternsHead {
+  font-size: 13px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.07em;
+  margin-bottom: 16px;
+}
+.m4evPatternsGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.m4evPattern {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 20px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.2s;
+}
+.m4evPattern:hover { border-color: var(--border-hover); }
+.m4evPatternTop { display: flex; align-items: center; gap: 10px; }
+.m4evPatternTag {
+  display: inline-flex; padding: 2px 9px; border-radius: 999px;
+  background: color-mix(in srgb, var(--pt) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pt) 28%, transparent);
+  color: var(--pt); font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+}
+.m4evPattern h4 { font-size: 14px; font-weight: 800; margin: 0; }
+.m4evPattern p { font-size: 12.5px; color: var(--sub); line-height: 1.55; margin: 0; }
+.m4evPattern pre { background: rgba(0,0,0,0.35); border-radius: 10px; padding: 12px 14px; overflow-x: auto; margin: 0; }
+.m4evPattern pre code { font-size: 11.5px; color: #7dd3fc; font-family: monospace; line-height: 1.6; }
+
+.m4evConnection {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-top: 24px; padding: 20px 24px;
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  border-radius: var(--r);
+}
+.m4evConnectionIcon {
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  color: var(--accent); font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+}
+.m4evConnection strong { font-size: 14px; font-weight: 800; color: var(--text); display: block; margin-bottom: 6px; }
+.m4evConnection p { font-size: 13.5px; color: var(--sub); line-height: 1.6; margin: 0; }
+
+@media (max-width: 900px) {
+  .m4evLayout { grid-template-columns: 1fr; }
+  .m4evPatternsGrid { grid-template-columns: 1fr; }
+}

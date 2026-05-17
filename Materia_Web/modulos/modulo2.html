@@ -44,6 +44,7 @@
             <a class="mhdrDropItem" href="#flujos"><i class="ph ph-flow-arrow"></i> Flujos de navegación</a>
           </div>
         </div>
+        <a class="mhdrNavLink" href="#testing"><i class="ph ph-magnifying-glass"></i><span>Testing</span></a>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-bookmark"></i><span>Glosario</span></a>
         <a class="mhdrNavLink" href="#actividades"><i class="ph ph-pencil-simple"></i><span>Actividades</span></a>
       </nav>
@@ -935,6 +936,125 @@
             <i class="ph-bold ph-arrow-clockwise"></i> Jugar de nuevo
           </button>
         </div>
+      </div>
+    </section>
+
+    <!-- ── TESTING DE INTERFACES ───────────────── -->
+    <section class="msec" id="testing">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-magnifying-glass"></i> Validar con datos reales</span>
+          <h2>Testing de interfaces — más allá de la opinión personal</h2>
+          <p class="msecSub">Las heurísticas te dicen si algo <em>parece</em> mal. Las pruebas con usuarios te dicen si algo <em>es</em> mal. Son complementarias — usás ambas en distintos momentos del proceso de diseño.</p>
+        </div>
+
+        <div class="m2testMethods reveal">
+
+          <div class="m2testMethod">
+            <div class="m2testMethodHead">
+              <div class="m2testMethodIcon" style="--tc:#a855f7"><i class="ph-bold ph-user-sound"></i></div>
+              <div>
+                <h3>Think-Aloud / Prueba con usuarios</h3>
+                <span class="m2testBadge" style="--bc:#a855f7">Cualitativo</span>
+              </div>
+            </div>
+            <p>El usuario realiza tareas reales mientras verbaliza lo que piensa. El investigador observa, no interviene. Revela el modelo mental del usuario: dónde busca las cosas, qué lo confunde, qué asume que debería pasar.</p>
+            <div class="m2testSteps">
+              <div class="m2testStep"><span class="m2testNum">1</span><span>Definí 3–5 tareas concretas ("encontrá el botón de cancelar suscripción")</span></div>
+              <div class="m2testStep"><span class="m2testNum">2</span><span>Reclutá 5 usuarios del segmento objetivo — con 5 ya encontrás el 80% de los problemas</span></div>
+              <div class="m2testStep"><span class="m2testStep">3</span><span>Grabá pantalla + audio. No ayudes, no reacciones, solo observá</span></div>
+              <div class="m2testStep"><span class="m2testNum">4</span><span>Anotá cada momento de confusión, error o pausa larga. Esos son los bugs de UX</span></div>
+            </div>
+            <div class="m2testWhen"><i class="ph-bold ph-calendar-check"></i> <strong>Cuándo usarlo:</strong> En cualquier etapa. Con wireframes de papel ya funciona — no necesitás el producto terminado.</div>
+          </div>
+
+          <div class="m2testMethod">
+            <div class="m2testMethodHead">
+              <div class="m2testMethodIcon" style="--tc:#38bdf8"><i class="ph-bold ph-git-branch"></i></div>
+              <div>
+                <h3>A/B Testing</h3>
+                <span class="m2testBadge" style="--bc:#38bdf8">Cuantitativo</span>
+              </div>
+            </div>
+            <p>Dos versiones de la misma interfaz se muestran aleatoriamente a distintos usuarios. Se mide cuál produce mejor comportamiento (más clics, menos abandonos, más conversiones). Elimina la subjetividad del "a mí me gusta más".</p>
+            <div class="m2testSteps">
+              <div class="m2testStep"><span class="m2testNum">1</span><span>Identificá una variable de cambio: color del botón, texto del CTA, posición del formulario</span></div>
+              <div class="m2testStep"><span class="m2testNum">2</span><span>Definí la métrica de éxito antes de arrancar (click rate, tiempo en página, conversión)</span></div>
+              <div class="m2testStep"><span class="m2testNum">3</span><span>Calculá el tamaño de muestra necesario para significancia estadística (mínimo p &lt; 0.05)</span></div>
+              <div class="m2testStep"><span class="m2testNum">4</span><span>Corré el test hasta la muestra objetivo. Nunca pares antes — el sesgo del observador arruina el resultado</span></div>
+            </div>
+            <div class="m2testWhen"><i class="ph-bold ph-calendar-check"></i> <strong>Cuándo usarlo:</strong> Con producto en producción y tráfico real. No funciona con wireframes — necesitás usuarios reales en situación real.</div>
+          </div>
+
+          <div class="m2testMethod">
+            <div class="m2testMethodHead">
+              <div class="m2testMethodIcon" style="--tc:#34d399"><i class="ph-bold ph-chart-line-up"></i></div>
+              <div>
+                <h3>Métricas de usabilidad</h3>
+                <span class="m2testBadge" style="--bc:#34d399">Cuantitativo</span>
+              </div>
+            </div>
+            <p>Números que convierten la experiencia del usuario en datos comparables. Te dicen cuánto mejor o peor es una versión respecto a la anterior — y te permiten fijar metas concretas ("reducir el error rate del formulario de 18% a 5%").</p>
+            <div class="m2testMetrics">
+              <div class="m2testMetric">
+                <span class="m2testMetricName">Task Completion Rate</span>
+                <span class="m2testMetricDef">% de usuarios que completan la tarea sin ayuda. Meta razonable: &gt;85%</span>
+              </div>
+              <div class="m2testMetric">
+                <span class="m2testMetricName">Time-on-Task</span>
+                <span class="m2testMetricDef">Tiempo promedio para completar una tarea. Reducirlo = mejorar eficiencia</span>
+              </div>
+              <div class="m2testMetric">
+                <span class="m2testMetricName">Error Rate</span>
+                <span class="m2testMetricDef">% de acciones incorrectas por intento. Refleja la claridad del sistema</span>
+              </div>
+              <div class="m2testMetric">
+                <span class="m2testMetricName">SUS Score</span>
+                <span class="m2testMetricDef">System Usability Scale — 10 preguntas, resultado de 0 a 100. &gt;68 = aceptable, &gt;80 = bueno</span>
+              </div>
+              <div class="m2testMetric">
+                <span class="m2testMetricName">NPS (UX)</span>
+                <span class="m2testMetricDef">"¿Recomendarías esta interfaz?" Promotores (9-10) menos Detractores (0-6). &gt;30 es positivo</span>
+              </div>
+            </div>
+            <div class="m2testWhen"><i class="ph-bold ph-calendar-check"></i> <strong>Cuándo usarlo:</strong> Siempre, en todas las etapas. Antes del rediseño para establecer el baseline; después para medir el impacto real.</div>
+          </div>
+
+        </div>
+
+        <div class="m2testComparison reveal">
+          <div class="m2testCompHead"><i class="ph-bold ph-scales"></i> ¿Qué método usar y cuándo?</div>
+          <div class="m2testCompGrid">
+            <div class="m2testCompRow m2testCompHeader">
+              <span>Método</span><span>Responde</span><span>Muestra</span><span>Cuándo</span>
+            </div>
+            <div class="m2testCompRow">
+              <span><strong>Heurísticas</strong></span>
+              <span>"¿Viola algún principio?"</span>
+              <span>1 experto</span>
+              <span>Diseño temprano</span>
+            </div>
+            <div class="m2testCompRow">
+              <span><strong>Think-Aloud</strong></span>
+              <span>"¿Por qué se confunde?"</span>
+              <span>5 usuarios</span>
+              <span>Prototipo / beta</span>
+            </div>
+            <div class="m2testCompRow">
+              <span><strong>A/B Testing</strong></span>
+              <span>"¿Cuál versión funciona mejor?"</span>
+              <span>1000+ usuarios</span>
+              <span>Producción</span>
+            </div>
+            <div class="m2testCompRow">
+              <span><strong>Métricas</strong></span>
+              <span>"¿Cuánto mejoró?"</span>
+              <span>Cualquiera</span>
+              <span>Siempre</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 

@@ -1957,3 +1957,112 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   .bioSection::before,
   .bioSection::after { animation: none; }
 }
+
+/* ═══════════════════════════════════════════
+   PROYECTO INTEGRADOR
+═══════════════════════════════════════════ */
+.proyectoSection {
+  padding: 80px 0;
+  position: relative;
+}
+.proyectoSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(168,85,247,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.proyectoInner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.proyectoHead {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.proyectoEye {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #a855f7;
+  background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.25);
+  padding: 5px 14px; border-radius: 999px; margin-bottom: 16px;
+}
+.proyectoHead h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 900; letter-spacing: -0.03em; margin: 0 0 12px;
+}
+.proyectoHead p { font-size: 16px; color: var(--sub); max-width: 560px; margin: 0 auto; }
+
+.proyectoDesc {
+  display: flex; align-items: flex-start; gap: 32px;
+  background: rgba(168,85,247,0.06);
+  border: 1px solid rgba(168,85,247,0.18);
+  border-radius: 20px; padding: 32px;
+  margin-bottom: 40px;
+}
+.proyectoDescText { flex: 1; }
+.proyectoDescText h3 { font-size: 16px; font-weight: 800; margin: 0 0 10px; }
+.proyectoDescText p { font-size: 14px; color: var(--sub); line-height: 1.65; margin: 0 0 10px; }
+.proyectoDescText p:last-child { margin: 0; }
+.proyectoDescTag {
+  display: flex; flex-direction: column; gap: 16px;
+  flex-shrink: 0; min-width: 120px;
+}
+.proyectoStat {
+  display: flex; flex-direction: column; align-items: center;
+  background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.25);
+  border-radius: 14px; padding: 16px 20px; text-align: center;
+}
+.proyectoStatNum { font-size: 32px; font-weight: 900; color: #a855f7; line-height: 1; }
+.proyectoStat > span:last-child { font-size: 11px; color: var(--sub); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+
+.proyectoEtapas { display: flex; flex-direction: column; gap: 0; position: relative; }
+.proyectoEtapas::before {
+  content: '';
+  position: absolute;
+  left: 28px; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, rgba(168,85,247,0.4), rgba(168,85,247,0.1));
+}
+.proyectoEtapa {
+  display: flex; gap: 24px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.proyectoEtapa:last-child { border-bottom: none; }
+.proyectoEtapaNum {
+  width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+  background: color-mix(in srgb, var(--en) 14%, transparent);
+  border: 2px solid color-mix(in srgb, var(--en) 40%, transparent);
+  color: var(--en); font-size: 18px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+}
+.proyectoEtapaBody { flex: 1; padding-top: 6px; }
+.proyectoEtapaHead { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 10px; }
+.proyectoEtapaHead h4 { font-size: 16px; font-weight: 800; margin: 0; }
+.proyectoEtapaPts {
+  font-size: 13px; font-weight: 800; color: #a855f7;
+  background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.25);
+  padding: 3px 12px; border-radius: 999px; flex-shrink: 0;
+}
+.proyectoEtapaBody > p { font-size: 14px; color: var(--sub); line-height: 1.65; margin: 0 0 14px; }
+.proyectoEntregables {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.proyectoEntregables > span {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  padding: 5px 12px; border-radius: 999px; color: var(--sub);
+}
+.proyectoEntregables > span i { color: #a855f7; font-size: 13px; }
+
+@media (max-width: 640px) {
+  .proyectoDesc { flex-direction: column; }
+  .proyectoDescTag { flex-direction: row; justify-content: center; }
+  .proyectoEtapas::before { left: 20px; }
+  .proyectoEtapaNum { width: 40px; height: 40px; font-size: 14px; }
+  .proyectoEtapaHead { flex-direction: column; align-items: flex-start; }
+}

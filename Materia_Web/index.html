@@ -68,6 +68,7 @@
           </div>
         </div>
         <a href="#objetivos" class="hdrNavLink"><i class="ph ph-target"></i><span>Objetivos</span></a>
+        <a href="#proyecto" class="hdrNavLink"><i class="ph ph-blueprint"></i><span>Proyecto</span></a>
         <a href="#evaluacion" class="hdrNavLink"><i class="ph ph-notepad"></i><span>Evaluación</span></a>
         <a href="#docente" class="hdrNavLink"><i class="ph ph-user-circle"></i><span>Docente</span></a>
       </nav>
@@ -531,6 +532,102 @@
               <span class="compPill">Comunicar decisiones técnicas</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
+           PROYECTO INTEGRADOR
+      ══════════════════════════════════ -->
+      <section id="proyecto" class="proyectoSection">
+        <div class="proyectoInner">
+
+          <div class="proyectoHead reveal">
+            <span class="proyectoEye"><i class="ph-bold ph-blueprint"></i> Trabajo final</span>
+            <h2>Proyecto Integrador</h2>
+            <p>Diseñás, analizás e implementás un sistema interactivo real. Integra los 7 módulos de la materia en un único entregable de producción.</p>
+          </div>
+
+          <div class="proyectoDesc reveal">
+            <div class="proyectoDescText">
+              <h3>¿Qué es?</h3>
+              <p>Elegís un sistema interactivo real o lo diseñás desde cero: puede ser una app, un juego, una instalación, una plataforma web. Lo analizás desde todos los ejes de la materia: interactividad, UX, concurrencia, comunicación entre procesos, sincronización y performance.</p>
+              <p>El proyecto se desarrolla a lo largo del cuatrimestre en <strong>4 etapas</strong>. Cada una tiene entrega y feedback antes de la siguiente.</p>
+            </div>
+            <div class="proyectoDescTag">
+              <div class="proyectoStat"><span class="proyectoStatNum">4</span><span>etapas</span></div>
+              <div class="proyectoStat"><span class="proyectoStatNum">40</span><span>puntos</span></div>
+              <div class="proyectoStat"><span class="proyectoStatNum">1–2</span><span>personas</span></div>
+            </div>
+          </div>
+
+          <div class="proyectoEtapas reveal">
+
+            <div class="proyectoEtapa">
+              <div class="proyectoEtapaNum" style="--en:#ffd166">01</div>
+              <div class="proyectoEtapaBody">
+                <div class="proyectoEtapaHead">
+                  <h4>Análisis de interactividad y UX</h4>
+                  <span class="proyectoEtapaPts">10 pts</span>
+                </div>
+                <p>Elegís el sistema y lo analizás: ¿qué nivel de interactividad tiene? ¿Qué ciclo estímulo-acción-feedback usa? Auditá la interfaz con las 10 heurísticas de Nielsen. Identificá 3 problemas de UX y proponé soluciones justificadas.</p>
+                <div class="proyectoEntregables">
+                  <span><i class="ph-bold ph-file-text"></i> Informe de análisis</span>
+                  <span><i class="ph-bold ph-flow-arrow"></i> Diagrama de flujo de usuario</span>
+                  <span><i class="ph-bold ph-pencil-ruler"></i> Wireframes del rediseño</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="proyectoEtapa">
+              <div class="proyectoEtapaNum" style="--en:#a855f7">02</div>
+              <div class="proyectoEtapaBody">
+                <div class="proyectoEtapaHead">
+                  <h4>Arquitectura de concurrencia e IPC</h4>
+                  <span class="proyectoEtapaPts">10 pts</span>
+                </div>
+                <p>Diseñás la arquitectura del backend: ¿cuántos procesos tiene el sistema? ¿Cómo se comunican (pipes, sockets, memoria compartida)? ¿Qué tareas son concurrentes? Implementás un prototipo funcional en Java que demuestre el modelo de concurrencia.</p>
+                <div class="proyectoEntregables">
+                  <span><i class="ph-bold ph-graph"></i> Diagrama de arquitectura</span>
+                  <span><i class="ph-bold ph-code"></i> Prototipo Java con hilos e IPC</span>
+                  <span><i class="ph-bold ph-file-code"></i> Documentación de decisiones técnicas</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="proyectoEtapa">
+              <div class="proyectoEtapaNum" style="--en:#00e8c6">03</div>
+              <div class="proyectoEtapaBody">
+                <div class="proyectoEtapaHead">
+                  <h4>Sincronización y testing de usabilidad</h4>
+                  <span class="proyectoEtapaPts">10 pts</span>
+                </div>
+                <p>Implementás los mecanismos de sincronización que el sistema necesita (mutex, semáforos, monitores). Realizás una prueba de usabilidad con al menos 3 usuarios reales usando el método think-aloud. Documentás los hallazgos y las correcciones aplicadas.</p>
+                <div class="proyectoEntregables">
+                  <span><i class="ph-bold ph-lock-key"></i> Implementación de sincronización</span>
+                  <span><i class="ph-bold ph-user-sound"></i> Registro de prueba con usuarios</span>
+                  <span><i class="ph-bold ph-chart-bar"></i> Métricas de usabilidad (SUS, task completion)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="proyectoEtapa">
+              <div class="proyectoEtapaNum" style="--en:#38bdf8">04</div>
+              <div class="proyectoEtapaBody">
+                <div class="proyectoEtapaHead">
+                  <h4>Performance y presentación final</h4>
+                  <span class="proyectoEtapaPts">10 pts</span>
+                </div>
+                <p>Medís el rendimiento del sistema: ¿qué parte es el cuello de botella? Aplicás la Ley de Amdahl para calcular el speedup máximo teórico. Implementás al menos una optimización paralela medible. Presentás el proyecto completo en 10 minutos con demo en vivo.</p>
+                <div class="proyectoEntregables">
+                  <span><i class="ph-bold ph-timer"></i> Benchmark antes/después con tabla</span>
+                  <span><i class="ph-bold ph-chart-line-up"></i> Análisis Amdahl del cuello de botella</span>
+                  <span><i class="ph-bold ph-presentation"></i> Presentación + demo (10 min)</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
         </div>
       </section>
 

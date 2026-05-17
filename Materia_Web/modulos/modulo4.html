@@ -44,6 +44,7 @@
             <a class="mhdrDropItem" href="#laboratorio"><i class="ph ph-flask"></i> Laboratorio</a>
           </div>
         </div>
+        <a class="mhdrNavLink" href="#eventos"><i class="ph ph-lightning"></i><span>Eventos</span></a>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-bookmark"></i><span>Glosario</span></a>
         <a class="mhdrNavLink" href="#actividades"><i class="ph ph-pencil-simple"></i><span>Actividades</span></a>
       </nav>
@@ -910,6 +911,126 @@ public class Pipeline3Etapas {
             <i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar
           </button>
         </div>
+      </div>
+    </section>
+
+    <!-- ── PROGRAMACIÓN ORIENTADA A EVENTOS ─── -->
+    <section class="msec alt" id="eventos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-lightning"></i> El patrón que lo une todo</span>
+          <h2>Programación orientada a eventos — el event loop</h2>
+          <p class="msecSub">IPC te enseña cómo los procesos se comunican. Los eventos te enseñan <em>cuándo</em> reaccionan. Todo sistema interactivo — desde un videojuego hasta una app web — funciona con un loop que espera eventos y los despacha al handler correcto.</p>
+        </div>
+
+        <div class="m4evLayout reveal">
+
+          <div class="m4evLeft">
+            <div class="m4evConceptCard">
+              <div class="m4evConceptIcon"><i class="ph-bold ph-arrows-clockwise"></i></div>
+              <h3>El Event Loop</h3>
+              <p>Un loop infinito que hace tres cosas: <strong>espera</strong> eventos, <strong>desencola</strong> el siguiente, y <strong>ejecuta</strong> el handler correspondiente. Mientras no hay eventos: duerme (sin consumir CPU). Cuando llega uno: actúa.</p>
+            </div>
+
+            <div class="m4evVsCard">
+              <div class="m4evVsItem">
+                <div class="m4evVsHead" style="--vc:#4a8ef0"><i class="ph-bold ph-arrows-counter-clockwise"></i> Polling</div>
+                <p>El proceso pregunta activamente: "¿hay algo nuevo?" en un loop. Consume CPU aunque no haya nada. Simple de implementar.</p>
+                <code>while(true) { if (hayDatos()) procesá(); }</code>
+              </div>
+              <div class="m4evVsArrow">vs</div>
+              <div class="m4evVsItem">
+                <div class="m4evVsHead" style="--vc:#00e8c6"><i class="ph-bold ph-bell"></i> Event-driven</div>
+                <p>El proceso duerme. El SO lo despierta cuando llega un evento. CPU = 0% en espera. Escala a miles de conexiones.</p>
+                <code>selector.select(); // bloquea hasta evento</code>
+              </div>
+            </div>
+          </div>
+
+          <div class="m4evRight">
+            <div class="m4evLoop">
+              <div class="m4evLoopLabel">Event Loop — flujo completo</div>
+              <div class="m4evLoopSteps">
+                <div class="m4evLoopStep" style="--lc:#4a8ef0">
+                  <span class="m4evLoopNum">1</span>
+                  <div><strong>Esperar</strong> — el proceso bloquea en <code>select()</code> / <code>epoll_wait()</code> hasta que el SO avise</div>
+                </div>
+                <div class="m4evLoopArrow"><i class="ph-bold ph-arrow-down"></i></div>
+                <div class="m4evLoopStep" style="--lc:#a855f7">
+                  <span class="m4evLoopNum">2</span>
+                  <div><strong>Detectar</strong> — el SO devuelve qué eventos ocurrieron (datos listos, conexión nueva, timeout)</div>
+                </div>
+                <div class="m4evLoopArrow"><i class="ph-bold ph-arrow-down"></i></div>
+                <div class="m4evLoopStep" style="--lc:#00e8c6">
+                  <span class="m4evLoopNum">3</span>
+                  <div><strong>Despachar</strong> — para cada evento, llamar al handler registrado (callback, listener, handler)</div>
+                </div>
+                <div class="m4evLoopArrow"><i class="ph-bold ph-arrow-down"></i></div>
+                <div class="m4evLoopStep" style="--lc:#ffd166">
+                  <span class="m4evLoopNum">4</span>
+                  <div><strong>Ejecutar</strong> — el handler procesa el evento y puede generar nuevos eventos en la cola</div>
+                </div>
+                <div class="m4evLoopArrow"><i class="ph-bold ph-arrow-up-right"></i> volver al paso 1</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="m4evPatterns reveal">
+          <div class="m4evPatternsHead">Patrones event-driven en Java</div>
+          <div class="m4evPatternsGrid">
+
+            <div class="m4evPattern">
+              <div class="m4evPatternTop">
+                <span class="m4evPatternTag" style="--pt:#f59e0b">Observer</span>
+                <h4>Listener / Observer</h4>
+              </div>
+              <p>Un objeto emite eventos; otros se suscriben para recibirlos. El emisor no sabe quién escucha — bajo acoplamiento.</p>
+              <pre><code>button.addActionListener(e -> {
+  System.out.println("click!");
+});</code></pre>
+            </div>
+
+            <div class="m4evPattern">
+              <div class="m4evPatternTop">
+                <span class="m4evPatternTag" style="--pt:#a855f7">Future</span>
+                <h4>CompletableFuture</h4>
+              </div>
+              <p>Operación asincrónica que "completa" en el futuro. Se encadenan operaciones sin bloquear el hilo principal.</p>
+              <pre><code>CompletableFuture
+  .supplyAsync(() -> fetchData())
+  .thenApply(data -> process(data))
+  .thenAccept(result -> show(result));</code></pre>
+            </div>
+
+            <div class="m4evPattern">
+              <div class="m4evPatternTop">
+                <span class="m4evPatternTag" style="--pt:#38bdf8">NIO</span>
+                <h4>Java NIO + Selector</h4>
+              </div>
+              <p>Un solo hilo maneja miles de conexiones simultáneas con I/O no bloqueante. El modelo de Node.js, pero en Java.</p>
+              <pre><code>Selector sel = Selector.open();
+channel.register(sel, OP_READ);
+while (true) {
+  sel.select();        // espera eventos
+  for (SelectionKey k : sel.selectedKeys()) {
+    if (k.isReadable()) handleRead(k);
+  }
+}</code></pre>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="m4evConnection reveal">
+          <div class="m4evConnectionIcon"><i class="ph-bold ph-link"></i></div>
+          <div>
+            <strong>Conexión con IPC</strong>
+            <p>Los eventos son IPC con semántica temporal. Un pipe o socket entrega datos — el event loop decide <em>cuándo</em> procesarlos y qué código ejecutar. Son capas complementarias: IPC es el canal, el event loop es el despachador.</p>
+          </div>
+        </div>
+
       </div>
     </section>
 

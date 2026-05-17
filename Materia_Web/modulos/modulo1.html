@@ -54,6 +54,7 @@
             <a class="mhdrDropItem" href="#quiz"><i class="ph ph-exam"></i>Quiz de autoevaluación</a>
           </div>
         </div>
+        <a class="mhdrNavLink" href="#modernos"><i class="ph ph-globe-hemisphere-west"></i><span>Modernos</span></a>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-bookmark"></i><span>Glosario</span></a>
         <a class="mhdrNavLink" href="#actividades"><i class="ph ph-pencil-simple"></i><span>Actividades</span></a>
       </nav>
@@ -557,6 +558,117 @@
             <p>La TV analógica es N1 (reactiva): emitís o recibís, sin diálogo. El streaming moderno es N3-N5: el sistema aprende de vos, predice lo que querés y lo pone adelante. El mismo contenido — una película — es entretenimiento pasivo en TV analógica y una experiencia personalizada en Netflix. Ese salto es la esencia de este módulo.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ── MÁS ALLÁ DE LA TV ───────────────── -->
+    <section class="msec alt" id="modernos">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-globe-hemisphere-west"></i> El panorama completo</span>
+          <h2>Más allá de la TV: sistemas interactivos en la industria actual</h2>
+          <p class="msecSub">La TV digital fue el punto de partida. Hoy la interactividad está en todas partes — y los mismos principios del ciclo estímulo-acción-feedback aplican en cada dominio.</p>
+        </div>
+
+        <div class="m1modGrid reveal">
+
+          <div class="m1modCard">
+            <div class="m1modIcon" style="--ic:#a855f7"><i class="ph-bold ph-game-controller"></i></div>
+            <div class="m1modContent">
+              <h3>Videojuegos</h3>
+              <p class="m1modDesc">El sistema interactivo más demandante del planeta. El game loop corre 60–120 veces por segundo: lee input → actualiza estado → renderiza → repite. Cada cuadro tiene ≤16ms para completarse o se nota el lag.</p>
+              <div class="m1modItems">
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#a855f7"></i><span><strong>Input polling</strong> — el loop pregunta activamente por el estado de cada tecla/botón cada frame</span></div>
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#a855f7"></i><span><strong>Event queue</strong> — los eventos de mouse/gamepad se encolan y procesan en orden</span></div>
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#a855f7"></i><span><strong>Feedback visual/haptic</strong> — vibración, efectos de pantalla, sonido: el "acuse de recibo" del sistema</span></div>
+              </div>
+              <div class="m1modEj">Unreal Engine 5: el ciclo completo (physics + AI + render) corre en hilos separados coordinados con barreras de sincronización.</div>
+            </div>
+          </div>
+
+          <div class="m1modCard">
+            <div class="m1modIcon" style="--ic:#f59e0b"><i class="ph-bold ph-device-mobile"></i></div>
+            <div class="m1modContent">
+              <h3>Apps móviles e interacción táctil</h3>
+              <p class="m1modDesc">El dedo humano reemplazó al mouse. Los gestos son el nuevo lenguaje: tap, swipe, pinch-to-zoom, long-press. Cada gesto tiene un tiempo de respuesta máximo aceptable para no percibirse como "lento".</p>
+              <div class="m1modItems">
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#f59e0b"></i><span><strong>Touch events</strong> — touchstart / touchmove / touchend: coordenadas en tiempo real del contacto</span></div>
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#f59e0b"></i><span><strong>Sensores</strong> — giroscopio, acelerómetro, GPS, cámara: el móvil percibe el mundo físico</span></div>
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#f59e0b"></i><span><strong>Regla de los 100ms</strong> — Google exige &lt;100ms de latencia táctil para considerarse "inmediato"</span></div>
+              </div>
+              <div class="m1modEj">Instagram: cada scroll predice el destino del gesto y precarga el contenido antes de que el dedo llegue ahí. Interactividad anticipatoria.</div>
+            </div>
+          </div>
+
+          <div class="m1modCard">
+            <div class="m1modIcon" style="--ic:#00e8c6"><i class="ph-bold ph-plug"></i></div>
+            <div class="m1modContent">
+              <h3>WebSockets y tiempo real</h3>
+              <p class="m1modDesc">HTTP es unidireccional: el cliente pide, el servidor responde. WebSocket es bidireccional y persistente: cualquiera de los dos puede enviar en cualquier momento. La diferencia entre una app pasiva y una verdaderamente interactiva.</p>
+              <div class="m1modItems">
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#00e8c6"></i><span><strong>Full-duplex</strong> — servidor y cliente se comunican simultáneamente sobre una sola conexión TCP</span></div>
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#00e8c6"></i><span><strong>Push del servidor</strong> — el servidor envía datos sin que el cliente los pida (notificaciones, precios en vivo)</span></div>
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#00e8c6"></i><span><strong>Latencia &lt;100ms</strong> — lo que hace posible el chat en vivo, colaboración tipo Google Docs, multiplayer online</span></div>
+              </div>
+              <div class="m1modEj">Twitch chat: millones de mensajes por minuto. WebSocket distribuido con brokers regionales para mantener latencia global &lt;200ms.</div>
+            </div>
+          </div>
+
+          <div class="m1modCard">
+            <div class="m1modIcon" style="--ic:#f43f5e"><i class="ph-bold ph-projector-screen"></i></div>
+            <div class="m1modContent">
+              <h3>Instalaciones interactivas</h3>
+              <p class="m1modDesc">Sistemas donde el espacio físico responde al cuerpo humano. Cámaras de profundidad, sensores de movimiento, proyecciones reactivas. El "usuario" ni siquiera toca una pantalla — su presencia es el input.</p>
+              <div class="m1modItems">
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#f43f5e"></i><span><strong>Sensores de profundidad</strong> — LiDAR, Kinect, RealSense: capturan el cuerpo en 3D a 30fps</span></div>
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#f43f5e"></i><span><strong>Computer Vision en tiempo real</strong> — detección de pose, tracking de manos, reconocimiento de gestos</span></div>
+                <div class="m1modItem"><i class="ph-bold ph-arrow-right" style="color:#f43f5e"></i><span><strong>Feedback ambiental</strong> — luz, sonido, proyección: el espacio entero responde al movimiento</span></div>
+              </div>
+              <div class="m1modEj">TeamLab (Tokio): instalaciones donde el movimiento de los visitantes genera ondas en el "agua" proyectada. Procesamiento de 60 esqueletos simultáneos en tiempo real.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="m1modTable reveal">
+          <div class="m1modTableHead">
+            <span>Sistema</span>
+            <span>Latencia máxima aceptable</span>
+            <span>Tipo de feedback</span>
+            <span>Protocolo/tecnología clave</span>
+          </div>
+          <div class="m1modTableRow">
+            <span><i class="ph-bold ph-game-controller" style="color:#a855f7"></i> Videojuego FPS</span>
+            <span class="m1modTag" style="--tc:#a855f7">&lt; 16ms</span>
+            <span>Visual + haptic</span>
+            <span>DirectInput / XInput</span>
+          </div>
+          <div class="m1modTableRow">
+            <span><i class="ph-bold ph-device-mobile" style="color:#f59e0b"></i> App móvil</span>
+            <span class="m1modTag" style="--tc:#f59e0b">&lt; 100ms</span>
+            <span>Visual + vibración</span>
+            <span>Touch Events / Sensors API</span>
+          </div>
+          <div class="m1modTableRow">
+            <span><i class="ph-bold ph-chat-circle" style="color:#00e8c6"></i> Chat en vivo</span>
+            <span class="m1modTag" style="--tc:#00e8c6">&lt; 200ms</span>
+            <span>Texto / audio</span>
+            <span>WebSocket</span>
+          </div>
+          <div class="m1modTableRow">
+            <span><i class="ph-bold ph-television-simple" style="color:var(--accent)"></i> TV Digital</span>
+            <span class="m1modTag" style="--tc:var(--accent)">&lt; 500ms</span>
+            <span>Visual en pantalla</span>
+            <span>ISDB-Tb / Ginga</span>
+          </div>
+          <div class="m1modTableRow">
+            <span><i class="ph-bold ph-projector-screen" style="color:#f43f5e"></i> Instalación</span>
+            <span class="m1modTag" style="--tc:#f43f5e">&lt; 33ms</span>
+            <span>Espacial / ambiental</span>
+            <span>OpenCV / LiDAR</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
