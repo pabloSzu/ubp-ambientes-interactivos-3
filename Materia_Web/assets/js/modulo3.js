@@ -468,6 +468,15 @@ function showJavaTab(idx) {
   }
 }
 
+/* ─── ELI5 accordion ────────────────────── */
+function toggleEli(btn) {
+  const content = btn.closest('.m3eliAccordion').querySelector('.m3eliContent');
+  const isOpen = content.classList.contains('open');
+  content.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
+  btn.querySelector('.m3eliCaret').classList.toggle('open', !isOpen);
+}
+
 /* ─── Sync tabs ──────────────────────────── */
 function showSyncTab(idx) {
   document.querySelectorAll('.m3syncTab').forEach((tab, i) => {

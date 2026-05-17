@@ -130,6 +130,73 @@
       </div>
     </section>
 
+    <!-- ── ELI5 ACCORDION ───────────────────────── -->
+    <section class="m3eliOuter">
+      <div class="msecWrap">
+        <div class="m3eliAccordion">
+          <button class="m3eliToggle" type="button" onclick="toggleEli(this)" aria-expanded="false">
+            <div class="m3eliToggleLeft">
+              <span class="m3eliToggleBadge">Nuevo en el tema</span>
+              <div class="m3eliToggleTexts">
+                <span class="m3eliToggleTitle">¿Primera vez con concurrencia? Empezá acá</span>
+                <span class="m3eliToggleSub">Explicación ultra simple — sin tecnicismos, con analogías</span>
+              </div>
+            </div>
+            <i class="ph-bold ph-caret-down m3eliCaret"></i>
+          </button>
+
+          <div class="m3eliContent">
+            <div class="m3eliGrid">
+
+              <div class="m3eliCard">
+                <span class="m3eliEmoji">🏠</span>
+                <strong>Proceso</strong>
+                <p>Un programa corriendo. Cada proceso tiene su propia memoria, sus propias variables, su propio espacio privado — como si cada programa viviera en una casa separada. No comparte nada con los demás.</p>
+                <div class="m3eliEj">Abrís Chrome → proceso. Abrís Spotify → otro proceso. Si uno explota, el otro sigue.</div>
+              </div>
+
+              <div class="m3eliCard">
+                <span class="m3eliEmoji">🧵</span>
+                <strong>Hilo (Thread)</strong>
+                <p>Un mini-trabajador dentro de un proceso. Un proceso puede tener muchos hilos. Todos comparten la misma memoria — como empleados que trabajan en el mismo McDonald's y usan la misma cocina.</p>
+                <div class="m3eliEj">Un hilo maneja gráficos, otro el sonido, otro la red. Todos dentro del mismo juego, al mismo tiempo.</div>
+              </div>
+
+              <div class="m3eliCard">
+                <span class="m3eliEmoji">🧬</span>
+                <strong>fork()</strong>
+                <p>Crear un clon del proceso actual. El original es el padre, el nuevo es el hijo. Ambos siguen corriendo el mismo código pero con memoria completamente separada — como clonar una fábrica entera.</p>
+                <div class="m3eliEj">Después del fork() hay dos procesos idénticos. Cada uno tiene su propia copia de todo.</div>
+              </div>
+
+              <div class="m3eliCard">
+                <span class="m3eliEmoji">💥</span>
+                <strong>Race Condition</strong>
+                <p>Dos hilos intentan modificar la misma variable al mismo tiempo. Uno pisa el trabajo del otro. Como dos chefs que escriben en el mismo cuaderno sin mirarse — el resultado es impredecible y cambia en cada ejecución.</p>
+                <div class="m3eliEj"><code>counter++</code> parece simple pero son 3 pasos. Si dos hilos los hacen juntos, uno sobreescribe al otro y se pierde un incremento.</div>
+              </div>
+
+              <div class="m3eliCard">
+                <span class="m3eliEmoji">🔑</span>
+                <strong>Lock / synchronized</strong>
+                <p>La llave del baño. Solo entra uno a la vez. El primer hilo toma la llave, hace su trabajo, y la devuelve. El resto espera afuera. Así se evita que dos hilos pisen el mismo dato compartido.</p>
+                <div class="m3eliEj"><code>synchronized</code> en Java = "tomá la llave, hacé lo tuyo, devolvela". Garantiza que el read-modify-write sea atómico.</div>
+              </div>
+
+            </div>
+
+            <div class="m3eliSummary">
+              <i class="ph-bold ph-fire-simple"></i>
+              <p>
+                Un proceso tiene <em>memoria propia</em> — los hilos <em>comparten memoria</em> dentro del mismo proceso.
+                <code>fork()</code> <em>clona</em> el proceso entero. El lock garantiza que <em>solo uno a la vez</em> toque el dato compartido.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── PROCESO vs HILO ────────────────────── -->
     <section class="msec alt" id="conceptos">
       <div class="msecWrap">
