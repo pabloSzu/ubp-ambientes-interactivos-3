@@ -41,6 +41,7 @@
             <a class="mhdrDropItem" href="#conceptos"><i class="ph ph-brain"></i> Procesos e Hilos</a>
             <a class="mhdrDropItem" href="#scheduler"><i class="ph ph-gear"></i> Scheduler</a>
             <a class="mhdrDropItem" href="#race"><i class="ph ph-lightning"></i> Race Condition</a>
+            <a class="mhdrDropItem" href="#sincronizacion"><i class="ph ph-lock-key"></i> Sincronización</a>
             <a class="mhdrDropItem" href="#laboratorio"><i class="ph ph-flask"></i> Laboratorio</a>
           </div>
         </div>
@@ -755,6 +756,300 @@ stateDiagram-v2
     }
 }</code></pre>
         </div>
+      </div>
+    </section>
+
+    <!-- ── SINCRONIZACIÓN ───────────────────────── -->
+    <section class="msec" id="sincronizacion">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-lock-key"></i> La solución</span>
+          <h2>Sincronización: proteger datos compartidos</h2>
+          <p class="msecSub">Identificar una race condition es solo la mitad del trabajo. Java ofrece tres mecanismos para garantizar que el read-modify-write sea siempre atómico y seguro.</p>
+        </div>
+
+        <!-- Tabs: synchronized / AtomicInteger / ReentrantLock -->
+        <div class="m3syncTabsWrap reveal">
+          <div class="m3syncTabs" role="tablist">
+            <button class="m3syncTab active" role="tab" aria-selected="true" onclick="showSyncTab(0)">
+              <i class="ph-bold ph-lock-simple"></i> synchronized
+            </button>
+            <button class="m3syncTab" role="tab" aria-selected="false" onclick="showSyncTab(1)">
+              <i class="ph-bold ph-atom"></i> AtomicInteger
+              <span class="m3javaBadgeProd">Preferido</span>
+            </button>
+            <button class="m3syncTab" role="tab" aria-selected="false" onclick="showSyncTab(2)">
+              <i class="ph-bold ph-key"></i> ReentrantLock
+            </button>
+          </div>
+
+          <!-- Panel 0: synchronized -->
+          <div class="m3syncPanel" id="syncPanel0">
+            <pre class="language-java"><code class="language-java">// Solución 1: synchronized block — el candado intrínseco de Java
+public class SafeCounter {
+    static int counter = 0;
+    static final Object LOCK = new Object(); // el "monitor" compartido
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i &lt; 1000; i++) {
+                synchronized (LOCK) {  // solo un hilo entra a la vez
+                    counter++;         // read-modify-write ahora es atómico
+                }                      // lock liberado automáticamente al salir
+            }
+        });
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i &lt; 1000; i++) {
+                synchronized (LOCK) {
+                    counter++;
+                }
+            }
+        });
+        t1.start(); t2.start();
+        t1.join();  t2.join();
+        System.out.println("counter = " + counter); // siempre 2000 ✓
+    }
+}</code></pre>
+            <div class="m3syncExplain">
+              <div class="m3syncExplainItem" style="--ei:#4a8ef0">
+                <div class="m3syncExplainNum">1</div>
+                <div>
+                  <strong>Monitor object</strong>
+                  <p>Cada objeto Java tiene un <em>monitor</em> interno (lock intrínseco). Al entrar a <code>synchronized(obj)</code>, el hilo adquiere ese monitor. Solo uno puede tenerlo a la vez — el resto queda en estado BLOCKED.</p>
+                </div>
+              </div>
+              <div class="m3syncExplainItem" style="--ei:#00e8c6">
+                <div class="m3syncExplainNum">2</div>
+                <div>
+                  <strong>Sección crítica</strong>
+                  <p>El código dentro del bloque se llama <em>sección crítica</em>. Es la única zona donde el acceso al dato compartido está garantizado como atómico. El lock se libera al salir del bloque, incluso si hay excepción.</p>
+                </div>
+              </div>
+              <div class="m3syncExplainItem" style="--ei:#a855f7">
+                <div class="m3syncExplainNum">3</div>
+                <div>
+                  <strong>synchronized method</strong>
+                  <p><code>public synchronized void increment()</code> es equivalente a <code>synchronized(this)</code>. Usa la instancia como monitor — cómodo pero hace que toda la instancia sea el lock, lo que puede ser demasiado amplio.</p>
+                </div>
+              </div>
+            </div>
+            <div class="m3javaWhenBox">
+              <div class="m3javaWhenTitle"><i class="ph-bold ph-question"></i> ¿Cuándo usarlo?</div>
+              <p>Cuando necesitás proteger múltiples operaciones como unidad (compound actions), o cuando operás sobre objetos sin versión Atomic. Tiene overhead por adquisición/liberación del monitor — para un contador simple, preferí <code>AtomicInteger</code>.</p>
+            </div>
+          </div>
+
+          <!-- Panel 1: AtomicInteger -->
+          <div class="m3syncPanel hidden" id="syncPanel1">
+            <pre class="language-java"><code class="language-java">import java.util.concurrent.atomic.AtomicInteger;
+
+// Solución 2: AtomicInteger — sin synchronized explícito
+// Usa instrucciones CAS (Compare-And-Swap) del hardware → sin locks del SO
+public class AtomicCounter {
+    static AtomicInteger counter = new AtomicInteger(0);
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i &lt; 1000; i++) {
+                counter.incrementAndGet(); // equivalente atómico de counter++
+            }
+        });
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i &lt; 1000; i++) {
+                counter.incrementAndGet();
+            }
+        });
+        t1.start(); t2.start();
+        t1.join();  t2.join();
+        System.out.println("counter = " + counter.get()); // siempre 2000 ✓
+    }
+}
+
+// Operaciones disponibles en AtomicInteger:
+AtomicInteger n = new AtomicInteger(10);
+n.get();                    // lee el valor actual
+n.set(5);                   // setea el valor (atómico)
+n.getAndIncrement();        // retorna el viejo, luego incrementa (≡ i++)
+n.incrementAndGet();        // incrementa, luego retorna el nuevo (≡ ++i)
+n.addAndGet(5);             // suma 5, retorna el nuevo valor
+n.compareAndSet(10, 0);     // si n == 10, setea a 0. Retorna true si cambió</code></pre>
+            <div class="m3javaWhenBox">
+              <div class="m3javaWhenTitle"><i class="ph-bold ph-check-circle"></i> ¿Cuándo usarlo?</div>
+              <p>Para contadores, flags y operaciones simples sobre un único valor. Más rápido que <code>synchronized</code> porque usa instrucciones <em>CAS</em> del hardware en vez de locks del SO. El paquete <code>java.util.concurrent.atomic</code> también ofrece <code>AtomicLong</code>, <code>AtomicBoolean</code> y <code>AtomicReference&lt;T&gt;</code>.</p>
+            </div>
+          </div>
+
+          <!-- Panel 2: ReentrantLock -->
+          <div class="m3syncPanel hidden" id="syncPanel2">
+            <pre class="language-java"><code class="language-java">import java.util.concurrent.locks.*;
+
+// Solución 3: ReentrantLock — control explícito y avanzado
+public class LockCounter {
+    static int counter = 0;
+    static ReentrantLock lock = new ReentrantLock();
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i &lt; 1000; i++) {
+                lock.lock();         // adquiere el lock explícitamente
+                try {
+                    counter++;
+                } finally {
+                    lock.unlock();   // SIEMPRE en finally — garantiza liberación incluso con excepción
+                }
+            }
+        });
+        t1.start();
+        t1.join();
+        System.out.println("counter = " + counter);
+    }
+}
+
+// Ventaja clave: tryLock() previene deadlocks con timeout
+boolean acquired = lock.tryLock(100, TimeUnit.MILLISECONDS);
+if (acquired) {
+    try {
+        // sección crítica
+    } finally {
+        lock.unlock();
+    }
+} else {
+    // no obtuve el lock en 100ms → tomo otra decisión en vez de bloquearme
+    System.out.println("Timeout: no pude obtener el lock, continuando...");
+}</code></pre>
+            <div class="m3javaWhenBox">
+              <div class="m3javaWhenTitle"><i class="ph-bold ph-question"></i> ¿Cuándo usarlo?</div>
+              <p>Cuando necesitás <code>tryLock()</code> con timeout para evitar deadlocks, locks de lectura/escritura con <code>ReadWriteLock</code>, o cuando <code>synchronized</code> no da el nivel de control requerido. El <code>unlock()</code> en <code>finally</code> es obligatorio — sin él el lock queda tomado para siempre.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla comparativa -->
+        <div class="m3syncCompareWrap reveal">
+          <div class="m3syncCompareTitle"><i class="ph-bold ph-scales"></i> ¿Cuándo usar cada uno?</div>
+          <div class="m3syncCompare">
+            <div class="m3syncCompareCard" style="--scc:#a855f7">
+              <div class="m3syncCompareTop">
+                <i class="ph-bold ph-lock-simple"></i>
+                <strong>synchronized</strong>
+              </div>
+              <ul>
+                <li>Compound actions (varias ops como unidad)</li>
+                <li>Código simple sin necesidad de tryLock</li>
+                <li>Métodos de instancia con estado compartido</li>
+              </ul>
+              <div class="m3syncCompareCost"><i class="ph-bold ph-gauge"></i> Overhead: medio — lock del SO</div>
+            </div>
+            <div class="m3syncCompareCard" style="--scc:#00e8c6">
+              <div class="m3syncCompareTop">
+                <i class="ph-bold ph-atom"></i>
+                <strong>AtomicInteger</strong>
+              </div>
+              <ul>
+                <li>Contadores simples multihilo</li>
+                <li>Flags booleanos o referencias compartidas</li>
+                <li>Operaciones compare-and-swap</li>
+              </ul>
+              <div class="m3syncCompareCost"><i class="ph-bold ph-gauge"></i> Overhead: bajo — CAS en hardware</div>
+            </div>
+            <div class="m3syncCompareCard" style="--scc:#4a8ef0">
+              <div class="m3syncCompareTop">
+                <i class="ph-bold ph-key"></i>
+                <strong>ReentrantLock</strong>
+              </div>
+              <ul>
+                <li>Cuando necesitás tryLock() con timeout</li>
+                <li>ReadWriteLock (lecturas concurrentes)</li>
+                <li>Control avanzado de condiciones</li>
+              </ul>
+              <div class="m3syncCompareCost"><i class="ph-bold ph-gauge"></i> Overhead: alto — máximo control</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Deadlock -->
+        <div class="m3deadlockWrap reveal">
+          <div class="m3deadlockHeader">
+            <div class="m3deadlockBadge"><i class="ph-bold ph-skull"></i> Peligro</div>
+            <h3>Deadlock: el abrazo mortal</h3>
+            <p>Un deadlock ocurre cuando dos o más hilos quedan bloqueados esperando recursos que el otro tiene — y ninguno puede avanzar. El programa se congela silenciosamente, sin error ni excepción.</p>
+          </div>
+
+          <div class="m3deadlockLayout">
+            <div class="m3deadlockCode">
+              <pre class="language-java"><code class="language-java">// Deadlock clásico: dos hilos, dos locks, orden inverso
+Object lockA = new Object();
+Object lockB = new Object();
+
+Thread t1 = new Thread(() -> {
+    synchronized (lockA) {           // T1 toma lockA ✓
+        try { Thread.sleep(50); } catch (InterruptedException e) {}
+        synchronized (lockB) {       // T1 espera lockB... pero T2 lo tiene ☠
+            System.out.println("T1: obtuve ambos");
+        }
+    }
+});
+
+Thread t2 = new Thread(() -> {
+    synchronized (lockB) {           // T2 toma lockB ✓
+        synchronized (lockA) {       // T2 espera lockA... pero T1 lo tiene ☠
+            System.out.println("T2: obtuve ambos");
+        }
+    }
+});
+
+t1.start();
+t2.start();
+// ☠ El programa se cuelga aquí — espera circular infinita</code></pre>
+            </div>
+
+            <div class="m3deadlockViz">
+              <div class="m3deadlockDiagram">
+                <div class="m3dlThread" style="--dtc:#00e8c6">
+                  <div class="m3dlThreadLabel">Thread 1</div>
+                  <div class="m3dlHolds">tiene <code>lockA</code> <i class="ph-bold ph-lock-simple"></i></div>
+                  <div class="m3dlWaits">espera <code>lockB</code> <i class="ph ph-clock"></i></div>
+                </div>
+                <div class="m3dlCenter">
+                  <div class="m3dlArrowDown"><i class="ph-bold ph-arrow-down"></i></div>
+                  <div class="m3dlCycleLabel">espera<br>circular</div>
+                  <div class="m3dlArrowUp"><i class="ph-bold ph-arrow-up"></i></div>
+                </div>
+                <div class="m3dlThread" style="--dtc:#4a8ef0">
+                  <div class="m3dlThreadLabel">Thread 2</div>
+                  <div class="m3dlHolds">tiene <code>lockB</code> <i class="ph-bold ph-lock-simple"></i></div>
+                  <div class="m3dlWaits">espera <code>lockA</code> <i class="ph ph-clock"></i></div>
+                </div>
+              </div>
+
+              <div class="m3deadlockFix">
+                <div class="m3deadlockFixTitle"><i class="ph-bold ph-wrench"></i> Cómo evitarlo</div>
+                <div class="m3deadlockFixItem">
+                  <i class="ph-bold ph-check-circle"></i>
+                  <div>
+                    <strong>Orden consistente de locks</strong>
+                    <p>Siempre adquirir los locks en el mismo orden en todos los hilos. Si T1 y T2 ambos hacen <code>lockA → lockB</code>, no hay deadlock posible.</p>
+                  </div>
+                </div>
+                <div class="m3deadlockFixItem">
+                  <i class="ph-bold ph-check-circle"></i>
+                  <div>
+                    <strong>tryLock() con timeout</strong>
+                    <p><code>lock.tryLock(100, TimeUnit.MILLISECONDS)</code> — si no obtenés el lock en 100ms, salís y liberás lo que ya tenés. Rompe la espera circular.</p>
+                  </div>
+                </div>
+                <div class="m3deadlockFixItem">
+                  <i class="ph-bold ph-check-circle"></i>
+                  <div>
+                    <strong>Colecciones concurrentes</strong>
+                    <p><code>ConcurrentHashMap</code>, <code>BlockingQueue</code> y el resto del paquete <code>java.util.concurrent</code> manejan sincronización internamente — sin locks manuales, sin riesgo de deadlock.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 

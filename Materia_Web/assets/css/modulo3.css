@@ -1269,3 +1269,203 @@
   color: var(--sub);
   border-top: 1px solid var(--border);
 }
+
+/* ═══════════════════════════════════════════
+   SINCRONIZACIÓN
+═══════════════════════════════════════════ */
+
+/* ─── Sync tabs (independiente de Java tabs) */
+.m3syncTabsWrap {
+  margin-top: 32px; border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--border);
+}
+.m3syncTabs {
+  display: flex; background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+}
+.m3syncTab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 20px; font-size: 14px; font-weight: 600;
+  color: var(--sub); background: transparent; border: none;
+  cursor: pointer; transition: color 0.2s, background 0.2s;
+  border-right: 1px solid var(--border); position: relative;
+}
+.m3syncTab:last-child { border-right: none; }
+.m3syncTab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.m3syncTab.active { color: var(--accent); background: var(--accent-sub); }
+.m3syncTab.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px;
+  background: var(--accent);
+}
+.m3syncPanel { display: block; }
+.m3syncPanel.hidden { display: none; }
+.m3syncPanel pre { margin: 0; border-radius: 0; }
+
+/* ─── How-it-works explain items */
+.m3syncExplain {
+  display: flex; flex-direction: column; gap: 0;
+  padding: 20px 24px; background: rgba(255,255,255,0.02);
+  border-top: 1px solid var(--border);
+}
+.m3syncExplainItem {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.m3syncExplainItem:last-child { border-bottom: none; }
+.m3syncExplainNum {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  border: 1px solid color-mix(in srgb, var(--ei) 35%, transparent);
+  background: color-mix(in srgb, var(--ei) 12%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 900;
+  color: var(--ei);
+}
+.m3syncExplainItem strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.m3syncExplainItem p { font-size: 13.5px; color: var(--sub); line-height: 1.65; margin: 0; }
+.m3syncExplainItem code { font-size: 12px; color: var(--accent); background: var(--accent-sub); padding: 1px 4px; border-radius: 3px; }
+.m3syncExplainItem em { color: var(--text); font-style: normal; font-weight: 600; }
+
+/* ─── Compare table */
+.m3syncCompareWrap { margin-top: 36px; }
+.m3syncCompareTitle {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--sub); margin-bottom: 16px;
+}
+.m3syncCompare {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.m3syncCompareCard {
+  padding: 22px 20px; border-radius: var(--r);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--scc);
+  background: var(--surface); backdrop-filter: blur(12px);
+  display: flex; flex-direction: column; gap: 12px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.m3syncCompareCard:hover { background: var(--surface-hover); }
+.m3syncCompareTop {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 15px; font-weight: 900; color: var(--text);
+}
+.m3syncCompareTop i { color: var(--scc); font-size: 18px; }
+.m3syncCompareCard ul {
+  display: flex; flex-direction: column; gap: 6px;
+  list-style: none; margin: 0; padding: 0;
+}
+.m3syncCompareCard li {
+  font-size: 13px; color: var(--sub); line-height: 1.5;
+  padding-left: 14px; position: relative;
+}
+.m3syncCompareCard li::before {
+  content: '·'; position: absolute; left: 0;
+  color: var(--scc); font-weight: 900;
+}
+.m3syncCompareCost {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; color: var(--muted);
+  padding: 6px 10px; border-radius: 6px;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  margin-top: auto;
+}
+
+/* ─── Deadlock */
+.m3deadlockWrap {
+  margin-top: 48px; border-radius: var(--r); overflow: hidden;
+  border: 1px solid rgba(255,80,80,0.2);
+  background: rgba(255,50,50,0.04);
+}
+.m3deadlockHeader {
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid rgba(255,80,80,0.15);
+}
+.m3deadlockBadge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.14em; color: #ff5a66;
+  border: 1px solid rgba(255,90,102,0.3); background: rgba(255,90,102,0.1);
+  padding: 4px 12px; border-radius: 999px; margin-bottom: 12px;
+}
+.m3deadlockHeader h3 {
+  font-size: clamp(20px, 2.5vw, 26px); font-weight: 900; color: var(--text);
+  margin: 0 0 8px;
+}
+.m3deadlockHeader p { font-size: 15px; color: var(--sub); line-height: 1.65; margin: 0; }
+
+.m3deadlockLayout {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  align-items: start;
+}
+.m3deadlockCode { border-right: 1px solid rgba(255,80,80,0.15); }
+.m3deadlockCode pre { margin: 0; border-radius: 0; }
+.m3deadlockViz { padding: 28px 24px; display: flex; flex-direction: column; gap: 24px; }
+
+/* Diagram: T1 ← arrows → T2 */
+.m3deadlockDiagram {
+  display: flex; align-items: center; gap: 0; justify-content: center;
+}
+.m3dlThread {
+  flex: 1; padding: 18px 16px; border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--dtc) 30%, transparent);
+  background: color-mix(in srgb, var(--dtc) 7%, transparent);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.m3dlThreadLabel {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--dtc);
+}
+.m3dlHolds {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--text); font-weight: 600;
+}
+.m3dlHolds code { font-size: 11px; color: var(--dtc); background: color-mix(in srgb, var(--dtc) 15%, transparent); padding: 1px 5px; border-radius: 3px; }
+.m3dlWaits {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--sub);
+}
+.m3dlWaits code { font-size: 11px; color: #ff9b6b; background: rgba(255,155,107,0.12); padding: 1px 5px; border-radius: 3px; }
+.m3dlCenter {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 0 12px; flex-shrink: 0;
+}
+.m3dlArrowDown, .m3dlArrowUp {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,80,80,0.12); color: #ff5a66; font-size: 14px;
+}
+.m3dlCycleLabel {
+  font-size: 10px; font-weight: 800; text-align: center; line-height: 1.4;
+  color: #ff5a66; text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* Deadlock fixes */
+.m3deadlockFix { display: flex; flex-direction: column; gap: 0; }
+.m3deadlockFixTitle {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.09em; color: var(--sub); margin-bottom: 14px;
+}
+.m3deadlockFixItem {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.m3deadlockFixItem:last-child { border-bottom: none; }
+.m3deadlockFixItem > i { color: var(--accent); font-size: 16px; margin-top: 2px; flex-shrink: 0; }
+.m3deadlockFixItem strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
+.m3deadlockFixItem p { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m3deadlockFixItem code { font-size: 11.5px; color: var(--accent); background: var(--accent-sub); padding: 1px 4px; border-radius: 3px; }
+
+/* ─── Responsive sync */
+@media (max-width: 900px) {
+  .m3syncCompare { grid-template-columns: 1fr; }
+  .m3deadlockLayout { grid-template-columns: 1fr; }
+  .m3deadlockCode { border-right: none; border-bottom: 1px solid rgba(255,80,80,0.15); }
+}
+@media (max-width: 600px) {
+  .m3syncTabs { flex-wrap: wrap; }
+  .m3deadlockDiagram { flex-direction: column; gap: 8px; }
+  .m3dlCenter { flex-direction: row; padding: 8px 0; }
+  .m3dlArrowDown { transform: rotate(90deg); }
+  .m3dlArrowUp { transform: rotate(90deg); }
+}

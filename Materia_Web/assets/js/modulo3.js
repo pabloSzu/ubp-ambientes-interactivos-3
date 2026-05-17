@@ -468,6 +468,20 @@ function showJavaTab(idx) {
   }
 }
 
+/* ─── Sync tabs ──────────────────────────── */
+function showSyncTab(idx) {
+  document.querySelectorAll('.m3syncTab').forEach((tab, i) => {
+    tab.classList.toggle('active', i === idx);
+    tab.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+  });
+  document.querySelectorAll('.m3syncPanel').forEach((panel, i) => {
+    panel.classList.toggle('hidden', i !== idx);
+  });
+  if (typeof Prism !== 'undefined') {
+    setTimeout(() => Prism.highlightAll(), 50);
+  }
+}
+
 /* ─── Thread Detective Game ──────────────── */
 const gameScenarios = [
   {
