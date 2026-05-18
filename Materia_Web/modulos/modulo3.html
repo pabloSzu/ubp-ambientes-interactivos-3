@@ -1632,6 +1632,18 @@ public class EjecutorDemo {
           </div>
         </div>
 
+        <div class="mActBefore reveal">
+          <div class="mActBeforeEye"><i class="ph-bold ph-lightbulb" style="color:#00e8c6"></i> Antes de arrancar</div>
+          <h3>Preparate para esta actividad</h3>
+          <p>Las race conditions son difíciles de reproducir si no sabés qué buscar. Estas pistas te van a ahorrar media hora de debugging.</p>
+          <div class="mActBeforeTips">
+            <div class="mActBeforeTip"><i class="ph-bold ph-check-circle" style="color:#00e8c6"></i> <strong>Probá el código single-thread primero:</strong> antes de agregar hilos, verificá que un solo hilo da 1000 siempre. Si falla en single-thread, el bug no es de concurrencia.</div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-repeat" style="color:#00e8c6"></i> <strong>Las 5 ejecuciones, en la misma sesión de JVM:</strong> usá un bucle <code>for(int i=0;i&lt;5;i++)</code> dentro del main. Si reiniciás el proceso cada vez, el JIT puede esconder la race condition.</div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-terminal" style="color:#00e8c6"></i> <strong>Tip de logging:</strong> <code>System.out.printf("[Corrida %d] Resultado: %d%n", i, counter);</code> te da una tabla lista para pegar en el informe.</div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-atom" style="color:#00e8c6"></i> <strong>Si AtomicInteger siempre da 3000, está perfecto:</strong> ese es el resultado correcto. El punto es mostrar que sin sincronización el resultado varía. Ambos comportamientos son los esperados.</div>
+          </div>
+        </div>
+
         <div class="m3missionBox reveal">
           <div class="m3missionHeader">
             <div class="m3missionBadge"><i class="ph-bold ph-code-simple"></i> Misión 03</div>
@@ -1664,6 +1676,13 @@ public class EjecutorDemo {
               <div class="m3missionStepBody">
                 <strong>Paso 4 — Documentá tus hallazgos</strong>
                 <p>Entregá: el código de ambas versiones, una tabla con los resultados de al menos 5 ejecuciones de cada versión, y un párrafo explicando por qué ocurre la race condition en términos del ciclo read-modify-write.</p>
+              </div>
+            </div>
+            <div class="m3missionStep">
+              <div class="m3missionStepIcon" style="--sc:#00e8c6"><i class="ph-bold ph-upload-simple"></i></div>
+              <div class="m3missionStepBody">
+                <strong>Paso 5 — Entregá tu trabajo</strong>
+                <p>Subí un ZIP con: <code>RaceCounter.java</code> (sin sincronización) y <code>RaceCounterAtomic.java</code> (con AtomicInteger), la tabla de 5 ejecuciones de cada versión, la medición comparativa de tiempo con 10 hilos × 10.000 incrementos, y el párrafo explicando el ciclo read-modify-write.</p>
               </div>
             </div>
           </div>
