@@ -88,13 +88,15 @@
 }
 .m6heroStat:last-child { border-right: none; }
 .m6heroStat:hover { background: rgba(255,255,255,0.03); }
+.m6heroStatTop { display: flex; align-items: baseline; gap: 3px; }
 .m6heroStatNum {
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   font-weight: 900; color: var(--accent); line-height: 1;
   font-variant-numeric: tabular-nums;
 }
+.m6heroStatPrefix { opacity: 0.7; }
 .m6heroStatUnit {
-  font-size: 13px; font-weight: 700; color: var(--accent); margin-top: -4px;
+  font-size: 13px; font-weight: 700; color: var(--accent);
 }
 .m6heroStatLabel {
   font-size: 13px; color: var(--sub); max-width: 160px; line-height: 1.45;
