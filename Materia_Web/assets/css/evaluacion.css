@@ -1,0 +1,367 @@
+/* ═══════════════════════════════════════════
+   PAI3 · evaluacion.html
+═══════════════════════════════════════════ */
+
+/* ── Reading progress ────────────────────── */
+.readProgress {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 999;
+  background: linear-gradient(90deg, var(--accent), #00e8c6);
+  width: 0; transition: width 0.1s linear;
+}
+
+/* ── HERO ────────────────────────────────── */
+.evHero {
+  position: relative; z-index: 1; overflow: hidden;
+  padding: clamp(90px, 12vh, 130px) clamp(20px, 5vw, 72px) clamp(52px, 7vh, 80px);
+  border-bottom: 1px solid var(--border);
+}
+.evHeroDecor {
+  position: absolute; right: clamp(16px, 4vw, 60px); top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(120px, 18vw, 240px); font-weight: 900;
+  color: var(--accent); opacity: 0.04;
+  pointer-events: none; line-height: 1; user-select: none;
+}
+.evHeroInner { position: relative; z-index: 1; max-width: 900px; }
+.evHeroChip {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.13em; color: var(--accent);
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  padding: 5px 14px; border-radius: 999px; margin-bottom: 20px;
+}
+.evHero h1 {
+  font-size: clamp(28px, 4.5vw, 56px); font-weight: 900;
+  line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 18px;
+}
+.evHeroAccent {
+  background: linear-gradient(135deg, #a855f7 0%, #00e8c6 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.evHeroSub {
+  font-size: clamp(14px, 1.4vw, 16px); color: var(--sub);
+  line-height: 1.72; max-width: 640px; margin-bottom: 32px;
+}
+
+/* Stats bar */
+.evHeroStats {
+  display: flex; align-items: center; gap: 0;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; margin-bottom: 24px;
+  width: fit-content;
+}
+.evHeroStat {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 16px 28px;
+}
+.evHeroStat strong { font-size: 28px; font-weight: 900; color: var(--text); line-height: 1; }
+.evHeroStat span   { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.4; }
+.evHeroStatSep { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
+
+/* Reglas */
+.evHeroReglas {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.evHeroRegla {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; color: var(--sub);
+}
+.evHeroRegla i { color: var(--accent); font-size: 16px; flex-shrink: 0; }
+.evHeroRegla strong { color: var(--text); font-weight: 700; }
+
+/* ── PARCIAL SECTIONS ─────────────────────── */
+.evParcial {
+  position: relative; z-index: 1;
+  padding: clamp(40px, 5vw, 64px) clamp(20px, 5vw, 72px);
+  border-bottom: 1px solid var(--border);
+}
+.evParcialDark { background: rgba(255,255,255,0.012); }
+
+.evParcialHead {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 24px; margin-bottom: 40px;
+  padding-bottom: 28px; border-bottom: 1px solid var(--border);
+}
+.evParcialHeadLeft { flex: 1; }
+.evParcialChip {
+  display: inline-block; font-size: 11px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--pc); background: color-mix(in srgb, var(--pc) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pc) 30%, transparent);
+  padding: 4px 12px; border-radius: 999px; margin-bottom: 10px;
+}
+.evParcialHead h2 {
+  font-size: clamp(20px, 2.4vw, 32px); font-weight: 900;
+  color: var(--text); letter-spacing: -0.02em; margin-bottom: 4px;
+}
+.evParcialHead p { font-size: 14px; color: var(--muted); }
+.evParcialPts {
+  flex-shrink: 0; font-size: 52px; font-weight: 900;
+  color: var(--ppcolor, var(--accent)); line-height: 1; text-align: right;
+}
+.evParcialPts span {
+  display: block; font-size: 12px; font-weight: 700;
+  color: var(--muted); letter-spacing: 0.08em; margin-top: 2px;
+}
+
+/* ── ACTIVITY CARDS ──────────────────────── */
+.evAct {
+  border-radius: 18px; overflow: hidden;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+.evAct:hover { border-color: var(--border-hover); }
+
+.evActHeader {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+}
+.evActNum {
+  flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px;
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; color: var(--accent);
+}
+.evActTitleWrap {
+  flex: 1; display: flex; align-items: center; gap: 12px;
+}
+.evActModBadge {
+  flex-shrink: 0; padding: 3px 10px; border-radius: 7px;
+  font-size: 11px; font-weight: 900;
+  color: var(--mb); background: color-mix(in srgb, var(--mb) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mb) 30%, transparent);
+}
+.evActTitleWrap h3 {
+  font-size: clamp(15px, 1.5vw, 18px); font-weight: 900; color: var(--text);
+}
+.evActPts {
+  flex-shrink: 0; font-size: 15px; font-weight: 900; color: var(--accent);
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  padding: 5px 14px; border-radius: 999px; white-space: nowrap;
+}
+
+.evActBody {
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.evActConsigna {
+  font-size: 15px; color: var(--sub); line-height: 1.7; margin: 0;
+}
+.evActConsigna strong { color: var(--text); font-weight: 700; }
+
+/* Scenario box */
+.evActScenario {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 16px 20px; border-radius: 12px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.evActScenario > i { font-size: 22px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+.evActScenario strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+.evActScenario p { font-size: 14px; color: var(--sub); line-height: 1.65; margin: 0; }
+.evActScenario code { font-size: 13px; color: var(--accent); background: var(--accent-sub); padding: 1px 5px; border-radius: 3px; }
+
+/* Partes */
+.evActPartes { display: flex; flex-direction: column; gap: 2px; }
+.evActParte {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 14px 16px; border-radius: 10px;
+  background: rgba(255,255,255,0.015);
+  transition: background 0.15s;
+}
+.evActParte:hover { background: rgba(255,255,255,0.03); }
+.evActParteLabel {
+  flex-shrink: 0; min-width: 70px;
+  font-size: 11px; font-weight: 900; color: var(--accent);
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  padding: 3px 9px; border-radius: 6px; text-align: center;
+  white-space: nowrap; margin-top: 2px; letter-spacing: 0.04em;
+}
+.evActParte strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+.evActParte p { font-size: 14px; color: var(--sub); line-height: 1.65; margin: 0; }
+.evActParte code { font-size: 12.5px; color: var(--accent); background: var(--accent-sub); padding: 1px 4px; border-radius: 3px; }
+.evActParte em { color: var(--text); font-style: italic; }
+
+/* Sub-title within act */
+.evActSubtitle {
+  font-size: 14px; font-weight: 900; color: var(--sub);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  margin: 0;
+}
+.evActSubtitle span {
+  font-size: 13px; font-weight: 800; color: var(--accent);
+  background: var(--accent-sub); border: 1px solid var(--accent-border);
+  padding: 2px 10px; border-radius: 999px; letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Code block */
+.evActCode {
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.evActCodeBar {
+  padding: 8px 14px; font-size: 12px; font-weight: 700;
+  background: rgba(255,255,255,0.05); color: var(--muted);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.evActCodeBar code { font-size: 12px; color: var(--accent); }
+.evActCode pre {
+  margin: 0; padding: 16px 20px; font-size: 13px; line-height: 1.65;
+  color: #c9d1d9; background: #0d1117;
+  overflow-x: auto; font-family: "Consolas", "Fira Code", monospace;
+}
+
+/* Table inside act */
+.evActTable { margin: 10px 0; overflow-x: auto; }
+.evActTable table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+.evActTable th {
+  text-align: left; padding: 8px 14px;
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.evActTable td {
+  padding: 9px 14px; color: var(--sub);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.evActTable tr:last-child td { border-bottom: none; }
+.evActTable td:first-child { color: var(--text); font-weight: 600; }
+.evActTable td:nth-child(2) { color: var(--accent); font-family: "Consolas", monospace; }
+
+/* Sub-list */
+.evActSubList {
+  margin: 8px 0 0 16px; padding: 0;
+  list-style: disc; display: flex; flex-direction: column; gap: 5px;
+}
+.evActSubList li { font-size: 13.5px; color: var(--sub); line-height: 1.55; }
+.evActSubList li strong { color: var(--text); }
+
+/* Entregables */
+.evActEntregables {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 18px;
+}
+.evActEntregables h4 {
+  font-size: 12px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--muted);
+  display: flex; align-items: center; gap: 7px; margin-bottom: 10px;
+}
+.evActEntregables ul {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.evActEntregables li {
+  font-size: 13.5px; color: var(--sub); display: flex; align-items: flex-start; gap: 8px;
+}
+.evActEntregables li::before {
+  content: '→'; color: var(--accent); flex-shrink: 0; font-weight: 700;
+}
+.evActEntregables code { font-size: 12.5px; color: var(--accent); background: var(--accent-sub); padding: 1px 4px; border-radius: 3px; }
+
+/* Tip box */
+.evActTip {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px; border-radius: 10px;
+  background: rgba(255,209,102,0.05);
+  border: 1px solid rgba(255,209,102,0.2);
+}
+.evActTip i { color: #ffd166; font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.evActTip p { font-size: 13.5px; color: var(--sub); line-height: 1.6; margin: 0; }
+.evActTip code { font-size: 12.5px; color: #ffd166; background: rgba(255,209,102,0.1); padding: 1px 4px; border-radius: 3px; }
+
+/* ── CRITERIOS ────────────────────────────── */
+.evCriterios {
+  position: relative; z-index: 1;
+  padding: clamp(40px, 5vw, 64px) clamp(20px, 5vw, 72px);
+  border-bottom: 1px solid var(--border);
+}
+
+.evRubricGrid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 14px; margin-bottom: 32px;
+}
+.evRubricCard {
+  padding: 24px; border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--rc) 22%, var(--border));
+  background: color-mix(in srgb, var(--rc) 3%, transparent);
+}
+.evRubricIcon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: color-mix(in srgb, var(--rc) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rc) 28%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--rc); margin-bottom: 14px;
+}
+.evRubricCard h4 { font-size: 16px; font-weight: 900; color: var(--text); margin-bottom: 8px; }
+.evRubricCard p  { font-size: 13.5px; color: var(--sub); line-height: 1.65; margin-bottom: 14px; }
+.evRubricScale { display: flex; flex-direction: column; gap: 5px; }
+.evRubricLevel {
+  font-size: 12.5px; padding: 6px 10px; border-radius: 7px;
+  color: var(--sub);
+}
+.evRubricLevelFull { background: color-mix(in srgb, var(--rc) 10%, transparent); color: var(--rc); font-weight: 700; }
+.evRubricLevelMid  { background: rgba(255,255,255,0.03); }
+.evRubricLevelLow  { background: rgba(255,255,255,0.015); color: var(--muted); }
+
+/* Avisos */
+.evAvisos { display: flex; flex-direction: column; gap: 10px; }
+.evAviso {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 20px; border-radius: 12px;
+}
+.evAviso > i { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.evAviso strong { display: block; font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+.evAviso p { font-size: 13.5px; line-height: 1.6; margin: 0; }
+.evAviso code { font-size: 12.5px; padding: 1px 4px; border-radius: 3px; }
+
+.evAvisoWarn {
+  background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.2);
+}
+.evAvisoWarn > i { color: #fbbf24; }
+.evAvisoWarn strong { color: #fbbf24; }
+.evAvisoWarn p { color: var(--sub); }
+.evAvisoWarn code { color: #fbbf24; background: rgba(251,191,36,0.1); }
+
+.evAvisoInfo {
+  background: rgba(74,142,240,0.06); border: 1px solid rgba(74,142,240,0.2);
+}
+.evAvisoInfo > i { color: #4a8ef0; }
+.evAvisoInfo strong { color: #4a8ef0; }
+.evAvisoInfo p { color: var(--sub); }
+.evAvisoInfo code { color: #4a8ef0; background: rgba(74,142,240,0.1); }
+
+.evAvisoOk {
+  background: rgba(0,232,198,0.06); border: 1px solid rgba(0,232,198,0.2);
+}
+.evAvisoOk > i { color: #00e8c6; }
+.evAvisoOk strong { color: #00e8c6; }
+.evAvisoOk p { color: var(--sub); }
+
+/* ── RESPONSIVE ──────────────────────────── */
+@media (max-width: 900px) {
+  .evHeroStats { flex-wrap: wrap; width: 100%; }
+  .evParcialHead { flex-direction: column; gap: 12px; }
+  .evParcialPts { font-size: 36px; }
+  .evRubricGrid { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .evActHeader { flex-wrap: wrap; gap: 10px; }
+  .evActTitleWrap { flex-wrap: wrap; }
+  .evActParte { flex-direction: column; gap: 8px; }
+  .evActParteLabel { width: fit-content; }
+}
+@media (max-width: 520px) {
+  .evHeroDecor { display: none; }
+  .evHeroStat strong { font-size: 22px; }
+  .evHeroStat { padding: 12px 16px; }
+}

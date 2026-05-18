@@ -3,84 +3,801 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PAI3 | Evaluación integradora</title>
+    <title>PAI3 · Evaluación Integradora</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="assets/css/campus.css" />
+    <link rel="stylesheet" href="assets/css/modulo.css" />
+    <link rel="stylesheet" href="assets/css/evaluacion.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <style>
+      :root {
+        --accent:        #a855f7;
+        --accent-sub:    rgba(168, 85, 247, 0.08);
+        --accent-border: rgba(168, 85, 247, 0.28);
+        --accent-mid:    rgba(168, 85, 247, 0.45);
+      }
+    </style>
   </head>
   <body>
-    <header class="campusTop">
-      <a class="campusBrand" href="index.html" aria-label="Inicio">
-        <span>PAI3</span>
-        <strong>Evaluación integradora</strong>
+
+    <div class="mb1"></div>
+    <div class="mb2"></div>
+    <div id="mglow"></div>
+    <div class="readProgress" id="readProgress"></div>
+
+    <!-- ── HEADER ──────────────────────────── -->
+    <header class="mhdr">
+      <a class="mhdrBack" href="index.html">
+        <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <nav class="globalNav" aria-label="Navegación global">
-        <a href="index.html">Inicio</a>
-        <a href="index.html#modulos">Módulos</a>
-        <a href="evaluacion.html" aria-current="page">Evaluación</a>
+      <span class="mhdrBrand">PAI3</span>
+      <span class="mhdrLabel">Evaluación Integradora</span>
+      <nav class="mhdrNav2">
+        <a class="mhdrNavLink" href="#parcial1"><i class="ph ph-number-square-one"></i><span>Parcial 1</span></a>
+        <a class="mhdrNavLink" href="#parcial2"><i class="ph ph-number-square-two"></i><span>Parcial 2</span></a>
+        <a class="mhdrNavLink" href="#criterios"><i class="ph ph-list-checks"></i><span>Criterios</span></a>
       </nav>
     </header>
 
-    <main class="campusShell">
-      <aside class="campusAside">
-        <p class="asideLabel">Evaluación</p>
-        <a href="#parcial1">Parcial 1</a>
-        <a href="#parcial2">Parcial 2</a>
-        <a href="#criterios">Criterios</a>
-      </aside>
+    <!-- ══════════════════════════════════
+         HERO
+    ══════════════════════════════════ -->
+    <section class="evHero">
+      <div class="evHeroDecor" aria-hidden="true">100</div>
+      <div class="msecWrap evHeroInner">
+        <span class="evHeroChip"><i class="ph-bold ph-exam"></i> PAI3 · Evaluación integradora</span>
+        <h1>Dos parciales.<br><span class="evHeroAccent">Siete módulos. Cien puntos.</span></h1>
+        <p class="evHeroSub">Cada actividad es aplicada: no hay preguntas teóricas aisladas. Vas a analizar sistemas reales, escribir código Java que funcione, medir resultados y defenderlos con vocabulario técnico del programa.</p>
 
-      <section class="campusMain">
-        <section class="evalHero">
-          <p class="eyebrow">Evaluación integradora</p>
-          <h1>Dos parciales. Cien puntos. Actividades conectadas a los módulos.</h1>
-          <p>
-            La evaluación respeta la regla formal: el Parcial 1 suma 40 puntos
-            y el Parcial 2 suma 60 puntos. Cada actividad debe tener puntaje
-            asignado y responder a contenidos desarrollados.
-          </p>
-        </section>
-
-        <section class="evalGrid">
-          <article id="parcial1" class="evalCard">
-            <div class="points">40</div>
-            <h2>Parcial 1</h2>
-            <p>Módulos 1 a 4: interactividad, UX/UI, concurrencia e IPC.</p>
-            <table>
-              <thead><tr><th>Actividad</th><th>Puntos</th></tr></thead>
-              <tbody>
-                <tr><td>Análisis de interactividad y plataforma</td><td>10</td></tr>
-                <tr><td>Rediseño UX/navegabilidad justificado</td><td>10</td></tr>
-                <tr><td>Simulación con hilos Java</td><td>10</td></tr>
-                <tr><td>Pipeline de comunicación en Java</td><td>10</td></tr>
-              </tbody>
-            </table>
-          </article>
-
-          <article id="parcial2" class="evalCard">
-            <div class="points">60</div>
-            <h2>Parcial 2</h2>
-            <p>Módulos 5 a 7: sincronización, paralelismo y performance.</p>
-            <table>
-              <thead><tr><th>Actividad</th><th>Puntos</th></tr></thead>
-              <tbody>
-                <tr><td>Problema de sincronización en Java</td><td>20</td></tr>
-                <tr><td>Paralelización y medición</td><td>20</td></tr>
-                <tr><td>Análisis Amdahl/Gustafson</td><td>20</td></tr>
-              </tbody>
-            </table>
-          </article>
-        </section>
-
-        <section id="criterios" class="campusBand">
-          <p class="eyebrow">Criterios</p>
-          <h2>Qué se evalúa</h2>
-          <div class="ruleGrid">
-            <article><span>01</span><h3>Concepto</h3><p>Dominio del vocabulario y relación con el programa.</p></article>
-            <article><span>02</span><h3>Aplicación</h3><p>Uso práctico en análisis, diseño o código Java.</p></article>
-            <article><span>03</span><h3>Evidencia</h3><p>Capturas, mediciones, pruebas o resultados verificables.</p></article>
-            <article><span>04</span><h3>Comunicación</h3><p>Entrega clara, profesional y defendible.</p></article>
+        <div class="evHeroStats">
+          <div class="evHeroStat">
+            <strong>40</strong><span>Parcial 1<br>Módulos 1–4</span>
           </div>
-        </section>
-      </section>
-    </main>
+          <div class="evHeroStatSep"></div>
+          <div class="evHeroStat">
+            <strong>60</strong><span>Parcial 2<br>Módulos 5–7</span>
+          </div>
+          <div class="evHeroStatSep"></div>
+          <div class="evHeroStat">
+            <strong>7</strong><span>actividades<br>en total</span>
+          </div>
+          <div class="evHeroStatSep"></div>
+          <div class="evHeroStat">
+            <strong>100</strong><span>puntos<br>totales</span>
+          </div>
+        </div>
+
+        <div class="evHeroReglas">
+          <div class="evHeroRegla">
+            <i class="ph-bold ph-users-two"></i>
+            <span>Trabajo <strong>individual</strong> — salvo que se indique lo contrario</span>
+          </div>
+          <div class="evHeroRegla">
+            <i class="ph-bold ph-robot"></i>
+            <span>Podés usar IA para generar código — pero debés poder explicar <strong>cada línea</strong></span>
+          </div>
+          <div class="evHeroRegla">
+            <i class="ph-bold ph-camera"></i>
+            <span>Toda evidencia debe ser <strong>tuya y original</strong>: capturas, logs, mediciones propias</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         PARCIAL 1
+    ══════════════════════════════════ -->
+    <section id="parcial1" class="evParcial">
+      <div class="msecWrap">
+
+        <div class="evParcialHead">
+          <div class="evParcialHeadLeft">
+            <span class="evParcialChip" style="--pc:#ffd166">Parcial 1</span>
+            <h2>Interactividad, UX, Concurrencia e IPC</h2>
+            <p>Módulos 1 al 4 · Bloque 01 y comienzo del Bloque 02</p>
+          </div>
+          <div class="evParcialPts">40<span>puntos</span></div>
+        </div>
+
+        <!-- ── Actividad 1 ─────────────────── -->
+        <div class="evAct" id="act1">
+          <div class="evActHeader">
+            <span class="evActNum">01</span>
+            <div class="evActTitleWrap">
+              <span class="evActModBadge" style="--mb:#ffd166">M1</span>
+              <h3>Análisis de un sistema interactivo real</h3>
+            </div>
+            <span class="evActPts">10 pts</span>
+          </div>
+
+          <div class="evActBody">
+            <p class="evActConsigna">Elegí una aplicación interactiva del mundo real que <strong>no sea un sitio web estático</strong>. Puede ser: una app de smart TV, un kiosco de autogestión, una instalación en museo, una app de banca móvil, un sistema de transporte público digital, etc.</p>
+
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">A &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Descripción del sistema</strong>
+                  <p>¿Qué es, para quién, en qué plataforma corre y cuál es su propósito central? Incluí captura de pantalla o video corto.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">B &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Ciclo de interactividad</strong>
+                  <p>Identificá el <em>estímulo → proceso → feedback</em> para al menos <strong>3 interacciones distintas</strong> del sistema. Podés usar una tabla o diagrama.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">C &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>Clasificación y justificación</strong>
+                  <p>¿Es interactividad reactiva, participativa o adaptativa? ¿Por qué? Usá el vocabulario técnico del Módulo 1.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">D &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>Comparación con TV digital interactiva</strong>
+                  <p>Si este sistema existiera como aplicación ISDB-Tb con middleware Ginga, ¿qué cambiaría en el modelo de distribución, los recursos disponibles y las limitaciones de hardware? ¿Es viable?</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="evActEntregables">
+              <h4><i class="ph-bold ph-paperclip"></i> Entregables</h4>
+              <ul>
+                <li>Documento PDF o presentación de 4–6 slides</li>
+                <li>Capturas de pantalla o video del sistema elegido</li>
+                <li>Tabla o diagrama del ciclo estímulo-respuesta-feedback</li>
+              </ul>
+            </div>
+
+            <div class="evActTip">
+              <i class="ph-bold ph-lightbulb"></i>
+              <p>Evitá elegir "una app cualquiera". El análisis es más rico cuanto más específico y no-obvio sea el sistema. Una máquina de autoservicio de una farmacia es más interesante que Instagram.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Actividad 2 ─────────────────── -->
+        <div class="evAct" id="act2">
+          <div class="evActHeader">
+            <span class="evActNum">02</span>
+            <div class="evActTitleWrap">
+              <span class="evActModBadge" style="--mb:#a855f7">M2</span>
+              <h3>Auditoría de UX y rediseño justificado</h3>
+            </div>
+            <span class="evActPts">10 pts</span>
+          </div>
+
+          <div class="evActBody">
+            <p class="evActConsigna">Elegí una aplicación real con problemas de UX visibles. Puede ser una app móvil, la web de un organismo público, un sistema de autogestión universitaria, el portal de un banco, etc. Documentá los problemas y proponé un rediseño.</p>
+
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">A &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Auditoría con evidencia</strong>
+                  <p>Mínimo <strong>3 problemas de UX</strong> identificados con capturas de pantalla. Cada problema debe estar justificado con un principio o heurística del Módulo 2 (Nielsen, Gestalt, accesibilidad, etc.).</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">B &nbsp;·&nbsp; 4 pts</div>
+                <div>
+                  <strong>Rediseño en wireframes</strong>
+                  <p>Mínimo <strong>3 pantallas rediseñadas</strong> en Figma o Moqups. No es necesario que sea pixel-perfect — sí que sea claro y navegable. Incluí el link al prototipo o capturas del archivo.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">C &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>Justificación de cada decisión</strong>
+                  <p>Para cada cambio que hiciste en el rediseño: ¿por qué? ¿Qué principio aplicaste? ¿Qué problema de UX resolvió?</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">D &nbsp;·&nbsp; 1 pt</div>
+                <div>
+                  <strong>Adaptación multiplataforma</strong>
+                  <p>¿Qué cambia en tu diseño si pasa de móvil a escritorio (o viceversa)? Nombrá al menos 2 ajustes concretos.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="evActEntregables">
+              <h4><i class="ph-bold ph-paperclip"></i> Entregables</h4>
+              <ul>
+                <li>Capturas del estado actual con los problemas marcados y explicados</li>
+                <li>Link a prototipo Figma/Moqups o capturas del rediseño</li>
+                <li>Documento con la justificación de cada decisión de diseño</li>
+              </ul>
+            </div>
+
+            <div class="evActTip">
+              <i class="ph-bold ph-lightbulb"></i>
+              <p>El rediseño no tiene que ser bello — tiene que ser mejor. Priorizá la claridad del flujo y la jerarquía visual sobre los colores o las ilustraciones.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Actividad 3 ─────────────────── -->
+        <div class="evAct" id="act3">
+          <div class="evActHeader">
+            <span class="evActNum">03</span>
+            <div class="evActTitleWrap">
+              <span class="evActModBadge" style="--mb:#00e8c6">M3</span>
+              <h3>Simulación concurrente en Java</h3>
+            </div>
+            <span class="evActPts">10 pts</span>
+          </div>
+
+          <div class="evActBody">
+            <p class="evActConsigna">Implementá un programa Java que simule el siguiente escenario:</p>
+
+            <div class="evActScenario">
+              <i class="ph-bold ph-bank"></i>
+              <div>
+                <strong>El banco concurrente</strong>
+                <p>Un banco tiene <strong>N cajeros</strong> (hilos). Cada cajero atiende a clientes de una cola compartida. Cada atención dura entre 100 y 500 ms (simulado con <code>Thread.sleep()</code>). Cuando no hay clientes, los cajeros esperan. Cuando llega un cliente, el primer cajero disponible lo atiende.</p>
+              </div>
+            </div>
+
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">A &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Versión funcional</strong>
+                  <p>Código Java que funcione con al menos <strong>3 cajeros y 15 clientes</strong>. El log debe mostrar qué cajero atiende a qué cliente y cuánto tardó. Usá <code>Thread.currentThread().getName()</code> para identificar los hilos.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">B &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Versión ROTA — race condition deliberada</strong>
+                  <p>Modificá el código para que <strong>dos cajeros puedan tomar el mismo cliente</strong> de la cola (quitá la sincronización correcta). Mostrá con evidencia (log de ejecución) que el bug ocurre.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">C &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>Análisis escrito</strong>
+                  <p>¿Qué mecanismo de sincronización usaste en la versión correcta y por qué? ¿Por qué la versión rota falla? Explicá con el vocabulario del módulo (race condition, región crítica, exclusión mutua).</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">D &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>Speedup teórico</strong>
+                  <p>Si la atención de un cliente tarda en promedio 300 ms y el overhead de sincronización es 5 ms, calculá el speedup teórico esperado al pasar de 1 cajero a 3, y de 3 a 6. ¿Hay rendimiento decreciente?</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="evActEntregables">
+              <h4><i class="ph-bold ph-paperclip"></i> Entregables</h4>
+              <ul>
+                <li>Código Java completo (versión correcta y versión rota) en archivo <code>.java</code> o ZIP</li>
+                <li>Log de ejecución de ambas versiones (captura o archivo de texto)</li>
+                <li>Análisis escrito (puede ir en comentarios del código o documento aparte)</li>
+                <li>Cálculo del speedup teórico con desarrollo paso a paso</li>
+              </ul>
+            </div>
+
+            <div class="evActTip">
+              <i class="ph-bold ph-lightbulb"></i>
+              <p>Para que la race condition sea reproducible, podés agregar un <code>Thread.sleep(1)</code> artificial entre el read y el write del contador de clientes. Así forzás el interleaving.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Actividad 4 ─────────────────── -->
+        <div class="evAct" id="act4">
+          <div class="evActHeader">
+            <span class="evActNum">04</span>
+            <div class="evActTitleWrap">
+              <span class="evActModBadge" style="--mb:#4a8ef0">M4</span>
+              <h3>Pipeline IPC: productor-consumidor</h3>
+            </div>
+            <span class="evActPts">10 pts</span>
+          </div>
+
+          <div class="evActBody">
+            <p class="evActConsigna">Implementá el patrón <strong>Productor-Consumidor</strong> en Java usando <code>BlockingQueue</code>. El sistema simula un pipeline de procesamiento de datos en tiempo real.</p>
+
+            <div class="evActScenario">
+              <i class="ph-bold ph-flow-arrow"></i>
+              <div>
+                <strong>El pipeline de sensores</strong>
+                <p>Dos <strong>productores</strong> generan lecturas de sensores (ID único + valor + timestamp). Tres <strong>consumidores</strong> procesan las lecturas y registran el tiempo de procesamiento. La cola tiene capacidad máxima de 10 elementos.</p>
+              </div>
+            </div>
+
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">A &nbsp;·&nbsp; 4 pts</div>
+                <div>
+                  <strong>Implementación funcional</strong>
+                  <p>Código Java con 2 productores y 3 consumidores usando <code>LinkedBlockingQueue</code> con capacidad fija. El log debe mostrar qué productor generó cada ítem y qué consumidor lo procesó.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">B &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Experimento de saturación</strong>
+                  <p>Modificá los tiempos para que los productores generen datos <strong>3 veces más rápido</strong> que lo que los consumidores pueden procesar. ¿Qué pasa con la cola? ¿El programa se bloquea? ¿Por qué? Mostrá con evidencia.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">C &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Diagrama y análisis</strong>
+                  <p>Dibujá el diagrama de flujo de la comunicación entre hilos (puede ser a mano y fotografiado). Luego explicá: ¿en qué se diferencia esta solución de una solución con <code>wait()/notify()</code>? ¿Cuándo usarías cada una?</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="evActEntregables">
+              <h4><i class="ph-bold ph-paperclip"></i> Entregables</h4>
+              <ul>
+                <li>Código Java funcional con los 2 escenarios (normal y saturado)</li>
+                <li>Log de ejecución de ambos escenarios</li>
+                <li>Diagrama de flujo del pipeline (foto o digital)</li>
+                <li>Análisis comparativo <code>BlockingQueue</code> vs <code>wait()/notify()</code></li>
+              </ul>
+            </div>
+
+            <div class="evActTip">
+              <i class="ph-bold ph-lightbulb"></i>
+              <p><code>BlockingQueue.put()</code> bloquea si la cola está llena. <code>BlockingQueue.take()</code> bloquea si está vacía. No necesitás ningún <code>synchronized</code> extra — la cola ya lo maneja internamente.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         PARCIAL 2
+    ══════════════════════════════════ -->
+    <section id="parcial2" class="evParcial evParcialDark">
+      <div class="msecWrap">
+
+        <div class="evParcialHead">
+          <div class="evParcialHeadLeft">
+            <span class="evParcialChip" style="--pc:#f43f5e">Parcial 2</span>
+            <h2>Sincronización, Paralelismo y Performance</h2>
+            <p>Módulos 5 al 7 · Bloque 02 cierre y Bloque 03 completo</p>
+          </div>
+          <div class="evParcialPts" style="--ppcolor:#f43f5e">60<span>puntos</span></div>
+        </div>
+
+        <!-- ── Actividad 5 ─────────────────── -->
+        <div class="evAct" id="act5">
+          <div class="evActHeader">
+            <span class="evActNum">05</span>
+            <div class="evActTitleWrap">
+              <span class="evActModBadge" style="--mb:#ff7d54">M5</span>
+              <h3>El problema de los filósofos — de roto a correcto</h3>
+            </div>
+            <span class="evActPts">20 pts</span>
+          </div>
+
+          <div class="evActBody">
+            <p class="evActConsigna">Implementá el clásico <strong>Problema de los Filósofos Comensales</strong> en dos versiones: primero la versión naive que produce deadlock, después una versión corregida que lo previene.</p>
+
+            <div class="evActScenario">
+              <i class="ph-bold ph-fork-knife"></i>
+              <div>
+                <strong>El escenario</strong>
+                <p>5 filósofos sentados en una mesa circular. Entre cada par de filósofos hay un tenedor. Para comer, cada filósofo necesita los <strong>dos tenedores</strong> a sus lados. Cuando no come, piensa.</p>
+              </div>
+            </div>
+
+            <h4 class="evActSubtitle">Parte A — La versión rota <span>8 pts</span></h4>
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">A1 &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Implementación naive</strong>
+                  <p>Cada filósofo intenta tomar el tenedor izquierdo primero y después el derecho. Usá <code>Semaphore(1)</code> para cada tenedor. El programa <strong>debe colgarse</strong> con la cantidad correcta de filósofos.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">A2 &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Evidencia del deadlock</strong>
+                  <p>Capturá el momento en que el programa se cuelga (log de consola, <code>jstack</code> o diagrama de estado). Explicá en qué estado quedó cada hilo.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">A3 &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>Condiciones de Coffman</strong>
+                  <p>Identificá cuáles de las 4 condiciones de Coffman están presentes en tu implementación rota. Sé específico: ¿cuál es el recurso retenido? ¿Quién espera a quién?</p>
+                </div>
+              </div>
+            </div>
+
+            <h4 class="evActSubtitle">Parte B — La versión corregida <span>12 pts</span></h4>
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">B1 &nbsp;·&nbsp; 5 pts</div>
+                <div>
+                  <strong>Implementación de UNA estrategia de prevención</strong>
+                  <p>Elegí e implementá <strong>una</strong> de las siguientes:</p>
+                  <ul class="evActSubList">
+                    <li><strong>Filósofo asimétrico:</strong> el último filósofo toma los tenedores en orden inverso</li>
+                    <li><strong>Semáforo de sala:</strong> solo N-1 filósofos pueden intentar comer simultáneamente</li>
+                    <li><strong>Jerarquía de recursos:</strong> siempre tomar el tenedor de menor ID primero</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">B2 &nbsp;·&nbsp; 4 pts</div>
+                <div>
+                  <strong>Demostración de correctitud</strong>
+                  <p>Ejecutá el programa durante al menos <strong>10 ciclos completos</strong> de comer por filósofo y mostrá que ningún hilo se bloquea indefinidamente. El log debe mostrar que todos los filósofos eventualmente comen.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">B3 &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Análisis de starvation</strong>
+                  <p>¿Puede haber starvation en tu solución (un filósofo que nunca come aunque no hay deadlock)? Si sí, ¿cómo lo detectarías? ¿Cómo lo prevendrías? Si no, ¿por qué no?</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="evActEntregables">
+              <h4><i class="ph-bold ph-paperclip"></i> Entregables</h4>
+              <ul>
+                <li>Código Java de la versión rota + evidencia del deadlock (log o captura)</li>
+                <li>Código Java de la versión corregida + log de 10 ciclos por filósofo</li>
+                <li>Documento con análisis de Coffman y análisis de starvation</li>
+              </ul>
+            </div>
+
+            <div class="evActTip">
+              <i class="ph-bold ph-lightbulb"></i>
+              <p>Para que el deadlock aparezca más fácil, podés agregar <code>Thread.sleep(10)</code> entre tomar el tenedor izquierdo y el derecho. Así el scheduler tiene más chances de intercalar los hilos en el momento exacto.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Actividad 6 ─────────────────── -->
+        <div class="evAct" id="act6">
+          <div class="evActHeader">
+            <span class="evActNum">06</span>
+            <div class="evActTitleWrap">
+              <span class="evActModBadge" style="--mb:#38bdf8">M6</span>
+              <h3>Paralelización y medición de speedup real</h3>
+            </div>
+            <span class="evActPts">20 pts</span>
+          </div>
+
+          <div class="evActBody">
+            <p class="evActConsigna">Tomás el siguiente algoritmo secuencial como punto de partida. Tu tarea es paralelizarlo de dos formas distintas, medir el speedup real y compararlo con el teórico.</p>
+
+            <div class="evActCode">
+              <div class="evActCodeBar">Código de partida — <code>SumaSecuencial.java</code></div>
+              <pre>
+public static long sumaSecuencial(long[] datos) {
+    long suma = 0;
+    for (long x : datos) {
+        suma += x * x;   // suma de cuadrados
+    }
+    return suma;
+}
+
+// Uso: datos = new long[10_000_000] con valores aleatorios</pre>
+            </div>
+
+            <h4 class="evActSubtitle">Parte A — Análisis teórico previo <span>5 pts</span></h4>
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">A1 &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>Clasificación de Flynn</strong>
+                  <p>¿En qué categoría de la taxonomía de Flynn entra la versión secuencial? ¿Y la versión paralela que vas a implementar? Justificá con el vocabulario del módulo (SISD, SIMD, MISD, MIMD).</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">A2 &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Speedup teórico (Amdahl)</strong>
+                  <p>Asumí que el 95% del cómputo es paralelizable. Calculá el speedup máximo teórico con 2, 4, 8 y 16 procesadores. Completá la tabla con desarrollo:</p>
+                  <div class="evActTable">
+                    <table>
+                      <thead><tr><th>Procesadores (p)</th><th>Speedup máximo S(p)</th></tr></thead>
+                      <tbody>
+                        <tr><td>2</td><td>?</td></tr>
+                        <tr><td>4</td><td>?</td></tr>
+                        <tr><td>8</td><td>?</td></tr>
+                        <tr><td>16</td><td>?</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h4 class="evActSubtitle">Parte B — Implementación y medición <span>15 pts</span></h4>
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">B1 &nbsp;·&nbsp; 5 pts</div>
+                <div>
+                  <strong>Versión con Parallel Streams</strong>
+                  <p>Implementá la suma de cuadrados usando <code>Arrays.stream(datos).parallel().map(x -> x*x).sum()</code> o equivalente. El resultado debe ser idéntico al secuencial.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">B2 &nbsp;·&nbsp; 5 pts</div>
+                <div>
+                  <strong>Versión con ForkJoinPool + RecursiveTask</strong>
+                  <p>Implementá la misma operación usando <code>ForkJoinPool</code> y una clase que extienda <code>RecursiveTask&lt;Long&gt;</code>. Elegí el umbral de división (threshold) y justificá tu elección.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">B3 &nbsp;·&nbsp; 5 pts</div>
+                <div>
+                  <strong>Medición comparativa</strong>
+                  <p>Medí el tiempo de ejecución de las 3 versiones (secuencial, Parallel Stream, ForkJoin) con N=10.000.000 usando <code>System.nanoTime()</code>. Hacé 5 mediciones por versión y calculá el promedio. Completá la tabla de speedup real:</p>
+                  <div class="evActTable">
+                    <table>
+                      <thead><tr><th>Versión</th><th>Tiempo prom. (ms)</th><th>Speedup real</th><th>Speedup teórico</th></tr></thead>
+                      <tbody>
+                        <tr><td>Secuencial</td><td>—</td><td>1.0×</td><td>1.0×</td></tr>
+                        <tr><td>Parallel Stream</td><td>?</td><td>?</td><td>?</td></tr>
+                        <tr><td>ForkJoin (4 threads)</td><td>?</td><td>?</td><td>?</td></tr>
+                        <tr><td>ForkJoin (8 threads)</td><td>?</td><td>?</td><td>?</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p>¿El speedup real coincide con el teórico de Amdahl? ¿Por qué sí o por qué no?</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="evActEntregables">
+              <h4><i class="ph-bold ph-paperclip"></i> Entregables</h4>
+              <ul>
+                <li>Código Java de las 3 versiones (un archivo o ZIP)</li>
+                <li>Tabla completa con tiempos y speedup medidos (puede ir en el código como comentario o en documento)</li>
+                <li>Análisis escrito comparando speedup real vs teórico y conclusiones</li>
+              </ul>
+            </div>
+
+            <div class="evActTip">
+              <i class="ph-bold ph-lightbulb"></i>
+              <p>Las primeras ejecuciones de Java son más lentas por el JIT compiler. Hacé un "warm-up" corriendo el benchmark al menos 2 veces antes de medir. Usá <code>System.nanoTime()</code>, no <code>System.currentTimeMillis()</code>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Actividad 7 ─────────────────── -->
+        <div class="evAct" id="act7">
+          <div class="evActHeader">
+            <span class="evActNum">07</span>
+            <div class="evActTitleWrap">
+              <span class="evActModBadge" style="--mb:#a3e635">M7</span>
+              <h3>Análisis de performance: Amdahl, Gustafson y optimización</h3>
+            </div>
+            <span class="evActPts">20 pts</span>
+          </div>
+
+          <div class="evActBody">
+            <p class="evActConsigna">Analizás el rendimiento de un sistema de procesamiento de imágenes médicas con los modelos formales de la materia.</p>
+
+            <div class="evActScenario">
+              <i class="ph-bold ph-heart-pulse"></i>
+              <div>
+                <strong>El sistema</strong>
+                <p>Un hospital procesa imágenes de tomografías computadas. Cada imagen tarda <strong>240 segundos</strong> en procesarse en un solo núcleo. El 85% del tiempo es procesamiento paralizable (filtros, detección de bordes, compresión). El 15% restante es E/S de disco y escritura de metadata — inherentemente secuencial. El hardware disponible es un servidor con <strong>12 núcleos</strong>.</p>
+              </div>
+            </div>
+
+            <h4 class="evActSubtitle">Parte A — Modelo de Amdahl <span>8 pts</span></h4>
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">A1 &nbsp;·&nbsp; 4 pts</div>
+                <div>
+                  <strong>Tabla de speedup</strong>
+                  <p>Calculá el speedup máximo teórico según la Ley de Amdahl para 2, 4, 8 y 12 procesadores. Mostrá el desarrollo de cada cálculo. <em>S(p) = 1 / (s + (1-s)/p)</em>, donde s=0.15.</p>
+                  <div class="evActTable">
+                    <table>
+                      <thead><tr><th>Procesadores (p)</th><th>Speedup S(p)</th><th>Tiempo resultante (s)</th></tr></thead>
+                      <tbody>
+                        <tr><td>1 (referencia)</td><td>1.00×</td><td>240 s</td></tr>
+                        <tr><td>2</td><td>?</td><td>?</td></tr>
+                        <tr><td>4</td><td>?</td><td>?</td></tr>
+                        <tr><td>8</td><td>?</td><td>?</td></tr>
+                        <tr><td>12</td><td>?</td><td>?</td></tr>
+                        <tr><td>∞</td><td>?</td><td>?</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">A2 &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>Curva de speedup</strong>
+                  <p>Graficá la curva de speedup de Amdahl para p = 1 hasta 12 (a mano sobre papel cuadriculado, con Excel/Sheets, o con cualquier herramienta). Marcá el punto de rendimiento decreciente.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">A3 &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>Análisis del límite práctico</strong>
+                  <p>¿A partir de qué cantidad de procesadores el beneficio adicional es menor al 5% respecto al paso anterior? ¿Vale la pena ir de 8 a 12 núcleos en términos de costo-beneficio? Justificá.</p>
+                </div>
+              </div>
+            </div>
+
+            <h4 class="evActSubtitle">Parte B — Modelo de Gustafson-Barsis <span>6 pts</span></h4>
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">B1 &nbsp;·&nbsp; 4 pts</div>
+                <div>
+                  <strong>Speedup escalado con p=12</strong>
+                  <p>El hospital quiere aprovechar los 12 núcleos para procesar <strong>lotes de imágenes más grandes</strong> en el mismo tiempo total. Usá la Ley de Gustafson-Barsis: <em>S'(p) = p - s(p-1)</em>. Calculá el speedup escalado y comparalo con el resultado de Amdahl con p=12. ¿Cuál es mayor? ¿Por qué?</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">B2 &nbsp;·&nbsp; 2 pts</div>
+                <div>
+                  <strong>¿Cuándo usar cada modelo?</strong>
+                  <p>Describí en tus palabras en qué situación real conviene aplicar el modelo de Amdahl y en cuál el de Gustafson. Usá un ejemplo concreto de cada uno (no los del enunciado).</p>
+                </div>
+              </div>
+            </div>
+
+            <h4 class="evActSubtitle">Parte C — Más allá de agregar núcleos <span>6 pts</span></h4>
+            <div class="evActPartes">
+              <div class="evActParte">
+                <div class="evActParteLabel">C1 &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Propuesta de optimización alternativa</strong>
+                  <p>Amdahl muestra que con s=0.15, el speedup máximo nunca supera ×6.67 sin importar cuántos núcleos agreguemos. Proponé <strong>una optimización diferente</strong> (cambio en el algoritmo, uso de caché, pipeline de procesamiento, GPU, I/O asíncrono, etc.) que permita reducir la fracción secuencial s. Justificá con datos o referencias técnicas.</p>
+                </div>
+              </div>
+              <div class="evActParte">
+                <div class="evActParteLabel">C2 &nbsp;·&nbsp; 3 pts</div>
+                <div>
+                  <strong>Conexión con el Proyecto Integrador</strong>
+                  <p>Reflexionás en clave de cierre: ¿qué aprendiste del análisis de performance que aplicarías al servidor de trivia del Proyecto Integrador? Conectá explícitamente con <strong>al menos 2 conceptos</strong> de los Módulos 5, 6 y 7. ¿Dónde está el cuello de botella del servidor? ¿Qué parte es inherentemente secuencial?</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="evActEntregables">
+              <h4><i class="ph-bold ph-paperclip"></i> Entregables</h4>
+              <ul>
+                <li>Tabla de Amdahl completa con desarrollo de cada cálculo</li>
+                <li>Gráfico de la curva de speedup (digital o fotografiado)</li>
+                <li>Cálculo de Gustafson con comparación y análisis</li>
+                <li>Propuesta de optimización argumentada</li>
+                <li>Reflexión de cierre conectando con el Proyecto Integrador</li>
+              </ul>
+            </div>
+
+            <div class="evActTip">
+              <i class="ph-bold ph-lightbulb"></i>
+              <p>El speedup máximo de Amdahl con s=0.15 es ×6.67 (cuando p→∞). Si tu cálculo da un número mayor, revisá la fórmula. Con Gustafson el resultado es diferente porque el problema escala con los recursos disponibles.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         CRITERIOS DE CORRECCIÓN
+    ══════════════════════════════════ -->
+    <section id="criterios" class="evCriterios">
+      <div class="msecWrap">
+        <div class="msecHead">
+          <span class="msecEye"><i class="ph ph-list-checks"></i> Rúbrica</span>
+          <h2>Criterios de corrección</h2>
+          <p class="msecSub">Cada actividad se evalúa con estos cuatro ejes. El peso de cada eje varía según la naturaleza de la actividad.</p>
+        </div>
+
+        <div class="evRubricGrid">
+          <div class="evRubricCard" style="--rc:#ffd166">
+            <div class="evRubricIcon"><i class="ph-bold ph-brain"></i></div>
+            <h4>Concepto</h4>
+            <p>Dominio del vocabulario técnico del programa. No alcanza con nombrar los términos — hay que usarlos correctamente en contexto.</p>
+            <div class="evRubricScale">
+              <div class="evRubricLevel evRubricLevelFull">Domina y aplica con precisión</div>
+              <div class="evRubricLevel evRubricLevelMid">Usa el vocabulario con errores menores</div>
+              <div class="evRubricLevel evRubricLevelLow">Menciona conceptos sin aplicarlos</div>
+            </div>
+          </div>
+
+          <div class="evRubricCard" style="--rc:#00e8c6">
+            <div class="evRubricIcon"><i class="ph-bold ph-code"></i></div>
+            <h4>Aplicación</h4>
+            <p>El código Java funciona y el análisis está basado en resultados reales. No se evalúa la elegancia del código — sí que compile, corra y produzca el resultado correcto.</p>
+            <div class="evRubricScale">
+              <div class="evRubricLevel evRubricLevelFull">Funciona correctamente + casos borde contemplados</div>
+              <div class="evRubricLevel evRubricLevelMid">Funciona con limitaciones menores</div>
+              <div class="evRubricLevel evRubricLevelLow">No compila o produce resultados incorrectos</div>
+            </div>
+          </div>
+
+          <div class="evRubricCard" style="--rc:#a855f7">
+            <div class="evRubricIcon"><i class="ph-bold ph-camera"></i></div>
+            <h4>Evidencia</h4>
+            <p>Capturas, logs, mediciones, gráficos o wireframes propios que respalden los análisis. Sin evidencia, la afirmación no puntúa aunque sea correcta.</p>
+            <div class="evRubricScale">
+              <div class="evRubricLevel evRubricLevelFull">Evidencia clara, original y suficiente</div>
+              <div class="evRubricLevel evRubricLevelMid">Evidencia parcial o difícil de interpretar</div>
+              <div class="evRubricLevel evRubricLevelLow">Sin evidencia o evidencia no original</div>
+            </div>
+          </div>
+
+          <div class="evRubricCard" style="--rc:#38bdf8">
+            <div class="evRubricIcon"><i class="ph-bold ph-chat-circle-text"></i></div>
+            <h4>Comunicación</h4>
+            <p>La entrega es clara, organizada y defendible. Vas a poder explicar cualquier parte en una consulta oral de 5 minutos.</p>
+            <div class="evRubricScale">
+              <div class="evRubricLevel evRubricLevelFull">Claro, organizado, explicable en detalle</div>
+              <div class="evRubricLevel evRubricLevelMid">Comprensible con esfuerzo adicional</div>
+              <div class="evRubricLevel evRubricLevelLow">Confuso o sin estructura reconocible</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="evAvisos">
+          <div class="evAviso evAvisoWarn">
+            <i class="ph-bold ph-warning"></i>
+            <div>
+              <strong>Uso de IA</strong>
+              <p>Podés usar Claude, ChatGPT o cualquier herramienta de IA para generar código o texto. Lo que no podés hacer es entregar algo que no podés explicar. En la defensa oral se puede preguntar por cualquier línea del código o cualquier párrafo del análisis.</p>
+            </div>
+          </div>
+          <div class="evAviso evAvisoInfo">
+            <i class="ph-bold ph-info"></i>
+            <div>
+              <strong>Entregas y formato</strong>
+              <p>Los archivos Java van como <code>.java</code> o en un ZIP. Los análisis pueden ir como PDF, documento de texto o dentro de los comentarios del código (con Javadoc está bien). Los wireframes van como link a Figma/Moqups o en capturas de pantalla.</p>
+            </div>
+          </div>
+          <div class="evAviso evAvisoOk">
+            <i class="ph-bold ph-check-circle"></i>
+            <div>
+              <strong>No hay "respuesta única"</strong>
+              <p>En las actividades de análisis (Actos 1, 2, 7-C), no hay una respuesta correcta predefinida. Se evalúa la calidad del razonamiento, la consistencia con el vocabulario técnico y la solidez de la argumentación.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── FOOTER NAV ─────────────────────── -->
+    <div class="mfoot">
+      <a class="mfootBtn" href="index.html"><i class="ph ph-arrow-left"></i> Volver al campus</a>
+      <a class="mfootBtn" href="proyecto.html"><i class="ph ph-game-controller"></i> Proyecto Integrador</a>
+    </div>
+
+    <script>
+      // Reading progress bar
+      const bar = document.getElementById('readProgress');
+      if (bar) {
+        window.addEventListener('scroll', () => {
+          const total = document.body.scrollHeight - window.innerHeight;
+          bar.style.width = (window.scrollY / total * 100) + '%';
+        });
+      }
+      // Cursor glow
+      const glow = document.getElementById('mglow');
+      if (glow) {
+        document.addEventListener('mousemove', e => {
+          glow.style.transform = `translate(${e.clientX - 140}px, ${e.clientY - 140}px)`;
+        });
+      }
+    </script>
   </body>
 </html>
