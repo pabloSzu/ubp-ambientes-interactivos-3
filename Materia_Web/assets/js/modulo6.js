@@ -170,6 +170,7 @@ function updateAmdahl() {
 
   // Chart
   drawAmdahlChart(P, N);
+  drawAmdahlTimeline(P, N);
 
   // Insight
   const insight = document.getElementById('amdahlInsight');
@@ -262,6 +263,75 @@ function drawAmdahlChart(P, N) {
   html += `<text x="${labelX.toFixed(1)}" y="${(cy - 10).toFixed(1)}" text-anchor="${anchor}" font-size="12" font-weight="bold" fill="#38bdf8">×${amdahlSpeedup(P, N).toFixed(2)}</text>`;
 
   svg.innerHTML = html;
+}
+
+function drawAmdahlTimeline(P, N) {
+  const container = document.getElementById('amdahlTimeline');
+  if (!container) return;
+
+  const serial    = 1 - P;
+  const parChunk  = N > 0 ? P / N : 0;
+  const totalT    = serial + parChunk;
+
+  const pct = v => (Math.min(v, 1) * 100).toFixed(2) + '%';
+
+  const displayN = Math.min(N, 8);
+  const extra    = N - displayN;
+
+  let rows = '';
+  for (let i = 0; i < displayN; i++) {
+    const lbl    = i === 0 ? 'Core 0' : `Core ${i}`;
+    const isMain = i === 0;
+    let blocks   = '';
+
+    if (isMain && serial > 0.001)
+      blocks += `<div class="m6tlBlock m6tlSerial" style="left:0;width:${pct(serial)}"></div>`;
+    if (!isMain && serial > 0.001)
+      blocks += `<div class="m6tlBlock m6tlIdle" style="left:0;width:${pct(serial)}"></div>`;
+    if (parChunk > 0.001)
+      blocks += `<div class="m6tlBlock m6tlParallel" style="left:${pct(serial)};width:${pct(parChunk)}"></div>`;
+
+    blocks += `<div class="m6tlMarker m6tlTotal" style="left:${pct(totalT)}"></div>`;
+    blocks += `<div class="m6tlMarker m6tlBaseline" style="left:calc(100% - 1px)"></div>`;
+
+    rows += `<div class="m6tlRow"><div class="m6tlCoreLabel">${lbl}</div><div class="m6tlTrack">${blocks}</div></div>`;
+  }
+
+  if (extra > 0) {
+    rows += `<div class="m6tlRow">
+      <div class="m6tlCoreLabel" style="color:rgba(255,255,255,0.18)">+${extra}</div>
+      <div style="flex:1;font-size:10px;color:rgba(255,255,255,0.2);padding:0 8px;line-height:22px">cores adicionales — mismo patrón (idle → paralelo)</div>
+    </div>`;
+  }
+
+  const serialPct  = Math.round(serial * 100);
+  // Only show serial label when the parallel chunk is wide enough to avoid overlap with speedup label
+  const sLbl = serial > 0.02 && parChunk > 0.08
+    ? `<span class="m6tlAxisMark" style="left:${pct(serial)};color:rgba(248,113,113,0.7);transform:translateX(-50%)">${serialPct}% serial</span>`
+    : '';
+  const totalPct  = parseFloat((totalT * 100).toFixed(2));
+  const tLblStyle = totalPct > 60
+    ? `right:${(100 - totalPct).toFixed(2)}%;transform:translateX(50%)`
+    : `left:${totalPct.toFixed(2)}%;transform:translateX(-50%)`;
+  const tLbl = `<span class="m6tlAxisMark" style="${tLblStyle};color:#facc15">×${(1/totalT).toFixed(2)} speedup</span>`;
+
+  container.innerHTML = `
+    <div class="m6tlRows">${rows}</div>
+    <div class="m6tlAxisRow">
+      <div class="m6tlAxisSpacer"></div>
+      <div class="m6tlAxisTrack">
+        <span class="m6tlAxisTick" style="left:0">t=0</span>
+        ${sLbl}
+        ${tLbl}
+        <span class="m6tlAxisTick" style="right:0">t=1.0 original</span>
+      </div>
+    </div>
+    <div class="m6tlLegend">
+      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlSerial"></div> Serial — solo Core 0</div>
+      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlParallel"></div> Paralelo — N cores simultáneos</div>
+      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlIdle"></div> Inactivo (esperando parte serial)</div>
+      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlTotal"></div> Fin ejecución paralela</div>
+    </div>`;
 }
 
 // Init on load

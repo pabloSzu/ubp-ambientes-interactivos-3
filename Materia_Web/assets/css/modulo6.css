@@ -664,6 +664,103 @@
 }
 .m6rubricDesc { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
 
+/* ─── Amdahl Execution Timeline ─────────── */
+.m6tlWrap {
+  margin-top: 20px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 18px 20px 16px;
+}
+.m6tlHead {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.38);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.m6tlRows { display: flex; flex-direction: column; gap: 5px; }
+.m6tlRow  { display: flex; align-items: center; gap: 8px; height: 22px; }
+.m6tlCoreLabel {
+  font-size: 10px;
+  font-family: monospace;
+  color: rgba(255,255,255,0.32);
+  width: 44px;
+  text-align: right;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.m6tlTrack {
+  flex: 1;
+  height: 20px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 5px;
+  position: relative;
+  overflow: visible;
+}
+.m6tlBlock {
+  position: absolute;
+  top: 0; height: 100%;
+  border-radius: 4px;
+  transition: left 0.35s ease, width 0.35s ease;
+}
+.m6tlSerial   { background: rgba(248,113,113,0.72); }
+.m6tlParallel { background: rgba(56,189,248,0.60); }
+.m6tlIdle     { background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.13); border-radius: 3px; }
+.m6tlMarker {
+  position: absolute;
+  top: -3px; bottom: -3px;
+  width: 2px;
+  border-radius: 2px;
+  pointer-events: none;
+  transition: left 0.35s ease;
+}
+.m6tlTotal    { background: #facc15; box-shadow: 0 0 8px rgba(250,204,21,0.5); }
+.m6tlBaseline { width: 1px; background: rgba(255,255,255,0.18); }
+.m6tlAxisRow     { display: flex; align-items: flex-start; gap: 8px; margin-top: 9px; }
+.m6tlAxisSpacer  { width: 44px; flex-shrink: 0; }
+.m6tlAxisTrack   { flex: 1; position: relative; height: 22px; }
+.m6tlAxisTick {
+  position: absolute;
+  font-size: 10px;
+  color: rgba(255,255,255,0.28);
+  top: 2px;
+  white-space: nowrap;
+}
+.m6tlAxisMark {
+  position: absolute;
+  font-size: 10px;
+  top: 2px;
+  white-space: nowrap;
+  transition: left 0.35s ease;
+}
+.m6tlLegend {
+  display: flex;
+  gap: 16px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.m6tlLegItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.38);
+}
+.m6tlLegDot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.m6tlLegDot.m6tlSerial   { background: rgba(248,113,113,0.72); }
+.m6tlLegDot.m6tlParallel { background: rgba(56,189,248,0.60); }
+.m6tlLegDot.m6tlIdle     { background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.25); }
+.m6tlLegDot.m6tlTotal    { background: #facc15; }
+
 /* ─── Responsive ─────────────────────────── */
 @media (max-width: 1024px) {
   .m6objGrid        { grid-template-columns: repeat(2, 1fr); }
@@ -674,7 +771,9 @@
 }
 
 @media (max-width: 768px) {
-  .m6heroStats      { gap: 24px; }
+  .m6heroStats      { flex-direction: column; max-width: 100%; }
+  .m6heroStat       { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .m6heroStat:last-child { border-bottom: none; }
   .m6objGrid        { grid-template-columns: 1fr 1fr; }
   .m6flynnGrid      { grid-template-columns: 1fr; }
   .m6parallelTypes  { flex-direction: column; }
@@ -684,6 +783,9 @@
   .m6flipGrid       { grid-template-columns: repeat(2, 1fr); }
   .m6labInstructions { flex-direction: column; }
   .m6gameOptions    { grid-template-columns: 1fr; }
+  .m6tlWrap         { padding: 14px 14px 12px; }
+  .m6tlLegend       { gap: 10px; }
+  .m6tlLegItem      { font-size: 10px; }
 }
 
 @media (max-width: 480px) {
