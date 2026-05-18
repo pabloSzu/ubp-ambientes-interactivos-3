@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PAI3 · Proyecto Integrador · Trivia Multijugador</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="assets/css/modulo.css" />
+    <link rel="stylesheet" href="assets/css/proyecto.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <style>
+      :root {
+        --accent:        #a855f7;
+        --accent-sub:    rgba(168, 85, 247, 0.08);
+        --accent-border: rgba(168, 85, 247, 0.28);
+        --accent-mid:    rgba(168, 85, 247, 0.45);
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="mb1"></div>
+    <div class="mb2"></div>
+    <div id="mglow"></div>
+
+    <!-- ── HEADER ──────────────────────────── -->
+    <header class="mhdr">
+      <a class="mhdrBack" href="index.html">
+        <i class="ph ph-arrow-left"></i> Campus
+      </a>
+      <span class="mhdrBrand">PAI3</span>
+      <span class="mhdrLabel">Proyecto Integrador</span>
+      <nav class="mhdrNav2">
+        <a class="mhdrNavLink" href="#overview"><i class="ph ph-info"></i><span>¿Qué es?</span></a>
+        <a class="mhdrNavLink" href="#setup"><i class="ph ph-terminal"></i><span>Arrancar</span></a>
+        <a class="mhdrNavLink" href="#bugs"><i class="ph ph-bug"></i><span>Los bugs</span></a>
+        <a class="mhdrNavLink" href="#etapas"><i class="ph ph-steps"></i><span>Etapas</span></a>
+        <a class="mhdrNavLink" href="#protocolo"><i class="ph ph-plugs"></i><span>Protocolo</span></a>
+      </nav>
+    </header>
+
+    <!-- ── HERO ─────────────────────────────── -->
+    <section class="pyhero">
+      <div class="pyheroDecor" aria-hidden="true">TRIVIA</div>
+      <div class="msecWrap pyheroInner">
+        <div class="pyheroChip"><i class="ph-bold ph-game-controller"></i> Proyecto Integrador · PAI3</div>
+        <h1>Servidor de trivia<br><span class="pyheroAccent">multijugador en Java</span></h1>
+        <p class="pyheroSub">Un servidor con race conditions plantadas. Lo ejecutás, lo rompés con 20 jugadores simultáneos, encontrás los bugs, los corregís y medís el resultado. Todo el contenido de la materia en un solo proyecto.</p>
+        <div class="pyheroActions">
+          <a class="pyheroBtn pyyeroBtnPrimary" href="assets/downloads/trivia-pai3.zip" download>
+            <i class="ph-bold ph-download-simple"></i> Descargar código base
+            <span class="pyheroBtnNote">ZIP · 19 KB · Java 17+</span>
+          </a>
+          <a class="pyheroBtn" href="#setup">
+            <i class="ph-bold ph-terminal"></i> Cómo arrancar
+          </a>
+        </div>
+        <div class="pyheroModules">
+          <span class="pyheroModule" style="--pm:#ffd166">M1</span>
+          <span class="pyheroModule" style="--pm:#a855f7">M2</span>
+          <span class="pyheroModule" style="--pm:#00e8c6">M3</span>
+          <span class="pyheroModule" style="--pm:#4a8ef0">M4</span>
+          <span class="pyheroModule" style="--pm:#f43f5e">M5</span>
+          <span class="pyheroModule" style="--pm:#38bdf8">M6</span>
+          <span class="pyheroModule" style="--pm:#a3e635">M7</span>
+          <span class="pyheroModuleLabel">Integra todos los módulos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         ¿QUÉ ES?
+    ══════════════════════════════════ -->
+    <section class="msec" id="overview">
+      <div class="msecWrap">
+        <div class="msecHead">
+          <span class="msecEye"><i class="ph ph-info"></i> Descripción</span>
+          <h2>¿Qué es este proyecto?</h2>
+          <p class="msecSub">Un juego de trivia donde cada jugador es un hilo — y con suficientes jugadores, el sistema se rompe de formas muy predecibles.</p>
+        </div>
+
+        <div class="pyOverviewGrid">
+          <div class="pyCard">
+            <i class="ph-bold ph-arrows-split" style="color:#00e8c6"></i>
+            <h4>Thread-per-client</h4>
+            <p>Cada jugador que se conecta genera un nuevo <code>Thread</code>. Con 20 jugadores → 20 hilos corriendo en paralelo, todos accediendo al mismo estado compartido.</p>
+          </div>
+          <div class="pyCard">
+            <i class="ph-bold ph-bug" style="color:#f43f5e"></i>
+            <h4>Race conditions reales</h4>
+            <p>El puntaje se guarda en un <code>HashMap</code> sin sincronización. Con un jugador, funciona perfecto. Con 10+, los puntajes se corrompen de forma no determinística.</p>
+          </div>
+          <div class="pyCard">
+            <i class="ph-bold ph-plug" style="color:#4a8ef0"></i>
+            <h4>Protocolo TCP de texto</h4>
+            <p>Comunicación por sockets TCP. Una línea por mensaje. Podés conectarte con <code>nc localhost 9000</code> desde la terminal y jugar manualmente.</p>
+          </div>
+          <div class="pyCard">
+            <i class="ph-bold ph-chart-line-up" style="color:#a3e635"></i>
+            <h4>Medible y mejorable</h4>
+            <p>Tiene un script de stress test en Python que lanza N jugadores simultáneos y detecta automáticamente si los puntajes son inconsistentes.</p>
+          </div>
+        </div>
+
+        <div class="pyConceptMap">
+          <h3>¿Dónde aparece cada módulo?</h3>
+          <div class="pyConceptList">
+            <div class="pyConceptItem">
+              <span class="pyBadge" style="--pb:#ffd166">M1</span>
+              <div><strong>Interactividad</strong><span>El ciclo estímulo → respuesta → feedback es exactamente el loop del juego: pregunta → respuesta del jugador → resultado en pantalla.</span></div>
+            </div>
+            <div class="pyConceptItem">
+              <span class="pyBadge" style="--pb:#a855f7">M2</span>
+              <div><strong>UX real</strong><span>¿La interfaz se entiende sin instrucciones? Lo testeás con usuarios reales con el método think-aloud de la Etapa 03.</span></div>
+            </div>
+            <div class="pyConceptItem">
+              <span class="pyBadge" style="--pb:#00e8c6">M3</span>
+              <div><strong>Hilos y race condition</strong><span>Cada jugador = un hilo. Con 20 jugadores respondiendo a la vez, la race condition en el puntaje es visible en los logs.</span></div>
+            </div>
+            <div class="pyConceptItem">
+              <span class="pyBadge" style="--pb:#4a8ef0">M4</span>
+              <div><strong>IPC por sockets</strong><span>El servidor broadcastea cada pregunta a todos los jugadores simultáneamente. Comunicación real entre procesos.</span></div>
+            </div>
+            <div class="pyConceptItem">
+              <span class="pyBadge" style="--pb:#f43f5e">M5</span>
+              <div><strong>Sincronización</strong><span>Sin <code>synchronized</code> o <code>AtomicInteger</code>, dos jugadores pueden "ganar" el bonus de velocidad en la misma ronda al mismo tiempo.</span></div>
+            </div>
+            <div class="pyConceptItem">
+              <span class="pyBadge" style="--pb:#38bdf8">M6</span>
+              <div><strong>Streams paralelos</strong><span>El ranking se puede calcular con <code>parallelStream()</code>. Medís el speedup real comparando con la versión secuencial.</span></div>
+            </div>
+            <div class="pyConceptItem">
+              <span class="pyBadge" style="--pb:#a3e635">M7</span>
+              <div><strong>Amdahl y benchmark</strong><span>¿Cuánto mejora el servidor al agregar sincronización? ¿Cuál es el cuello de botella? Análisis con Ley de Amdahl.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         SETUP
+    ══════════════════════════════════ -->
+    <section class="msec alt" id="setup">
+      <div class="msecWrap">
+        <div class="msecHead">
+          <span class="msecEye"><i class="ph ph-terminal"></i> Cómo arrancar</span>
+          <h2>Paso a paso</h2>
+          <p class="msecSub">Requiere Java 17+ y Python 3.8+ (solo para el stress test). Sin dependencias externas ni frameworks.</p>
+        </div>
+
+        <div class="pySteps">
+
+          <div class="pyStep">
+            <div class="pyStepNum">01</div>
+            <div class="pyStepBody">
+              <h4>Descargar y descomprimir</h4>
+              <p>Descargá el ZIP y descomprimilo en cualquier carpeta. La estructura que vas a ver:</p>
+              <div class="pyTree">
+                <div class="pyTreeItem pyTreeRoot"><i class="ph ph-folder-open"></i> trivia-pai3/</div>
+                <div class="pyTreeItem pyTreeL1"><i class="ph ph-file-text"></i> LEEME.md</div>
+                <div class="pyTreeItem pyTreeL1"><i class="ph ph-folder"></i> src/main/java/pai3/trivia/</div>
+                <div class="pyTreeItem pyTreeL2 pyTreeFile"><i class="ph ph-file-code"></i> TriviaServer.java <span class="pyTreeNote">← punto de entrada</span></div>
+                <div class="pyTreeItem pyTreeL2 pyTreeFile"><i class="ph ph-file-code"></i> GameState.java <span class="pyTreeNote">← bug #2</span></div>
+                <div class="pyTreeItem pyTreeL2 pyTreeFile"><i class="ph ph-file-code"></i> ScoreBoard.java <span class="pyTreeNote">← bug #1</span></div>
+                <div class="pyTreeItem pyTreeL2 pyTreeFile"><i class="ph ph-file-code"></i> ClientHandler.java</div>
+                <div class="pyTreeItem pyTreeL2 pyTreeFile"><i class="ph ph-file-code"></i> Question.java</div>
+                <div class="pyTreeItem pyTreeL1"><i class="ph ph-folder"></i> test/</div>
+                <div class="pyTreeItem pyTreeL2 pyTreeFile"><i class="ph ph-file-code"></i> stress_test.py <span class="pyTreeNote">← reproduce el bug</span></div>
+              </div>
+              <a class="pyDownloadBtn" href="assets/downloads/trivia-pai3.zip" download>
+                <i class="ph-bold ph-download-simple"></i> Descargar trivia-pai3.zip
+              </a>
+            </div>
+          </div>
+
+          <div class="pyStep">
+            <div class="pyStepNum">02</div>
+            <div class="pyStepBody">
+              <h4>Compilar</h4>
+              <p>Abrí una terminal en la carpeta <code>trivia-pai3/</code> y ejecutá:</p>
+              <div class="pyCode">
+                <div class="pyCodeBar"><span>Terminal</span></div>
+                <pre>javac -encoding UTF-8 -d out src/main/java/pai3/trivia/*.java</pre>
+              </div>
+              <p>Si aparece <code>error: file not found</code> → verificá que estás parado en la carpeta <code>trivia-pai3/</code>.<br>Si aparece <code>error: source release 17 requires target release 17</code> → actualizá Java.</p>
+            </div>
+          </div>
+
+          <div class="pyStep">
+            <div class="pyStepNum">03</div>
+            <div class="pyStepBody">
+              <h4>Ejecutar el servidor</h4>
+              <div class="pyCode">
+                <div class="pyCodeBar"><span>Terminal 1 — servidor</span></div>
+                <pre>java -cp out pai3.trivia.TriviaServer</pre>
+              </div>
+              <p>Deberías ver el banner de inicio y el mensaje <code>Esperando jugadores...</code></p>
+            </div>
+          </div>
+
+          <div class="pyStep">
+            <div class="pyStepNum">04</div>
+            <div class="pyStepBody">
+              <h4>Conectar jugadores manualmente</h4>
+              <p>En una <strong>nueva terminal</strong> (sin cerrar la del servidor):</p>
+              <div class="pyCode">
+                <div class="pyCodeBar"><span>Terminal 2 — jugador</span></div>
+                <pre># Linux o Mac
+nc localhost 9000
+
+# Windows (PowerShell)
+telnet localhost 9000</pre>
+              </div>
+              <div class="pyProtocolDemo">
+                <div class="pyProtocolMsg pyProtocolIn">BIENVENIDO|Trivia PAI3 · Servidor Java multijugador</div>
+                <div class="pyProtocolMsg pyProtocolIn">INGRESA_NOMBRE|Escribí: NOMBRE|&lt;tu nombre&gt;</div>
+                <div class="pyProtocolMsg pyProtocolOut">NOMBRE|María</div>
+                <div class="pyProtocolMsg pyProtocolIn">OK|¡Bienvenido María! Hay 1 jugador(es) conectados.</div>
+                <div class="pyProtocolMsg pyProtocolOut">START</div>
+                <div class="pyProtocolMsg pyProtocolIn">PREGUNTA|[1/10] ¿Cuántas condiciones de Coffman...?|A: 2 condiciones|B: 4 condiciones|...</div>
+                <div class="pyProtocolMsg pyProtocolOut">RESPUESTA|B</div>
+                <div class="pyProtocolMsg pyProtocolIn">CORRECTO|¡Bien! +500 puntos</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pyStep">
+            <div class="pyStepNum">05</div>
+            <div class="pyStepBody">
+              <h4>Stress test — hacer aparecer el bug</h4>
+              <p>Con el servidor corriendo, en otra terminal:</p>
+              <div class="pyCode">
+                <div class="pyCodeBar"><span>Terminal 3 — stress test</span></div>
+                <pre># 10 jugadores simultáneos (para empezar a ver el bug)
+python test/stress_test.py
+
+# 20 jugadores (bug más visible)
+python test/stress_test.py --players 20
+
+# Máximo estrés
+python test/stress_test.py --players 30</pre>
+              </div>
+              <p>El script conecta N bots, los hace responder todos a la vez y analiza si los puntajes son consistentes. Cuando hay race condition, vas a ver algo así:</p>
+              <div class="pyCode pyCodeResult">
+                <div class="pyCodeBar pyCodeBarWarn"><i class="ph-bold ph-warning"></i><span>Resultado con race condition</span></div>
+                <pre>  PUNTAJES FINALES:
+  Jugador              Puntaje Real    Esperado    ¿OK?
+  Bot-00                       500        5000  ✗ BAJO
+  Bot-01                      4500        5000  ✓
+  Bot-02                         0        5000  ✗ CERO!
+  Bot-03                      5000        5000  ✓
+
+  ⚠ RACE CONDITION DETECTADA: 8 jugadores con puntaje inconsistente</pre>
+              </div>
+              <p class="pyHint"><i class="ph-bold ph-lightbulb"></i> Guardá este output (screenshot o copiar texto) — es tu evidencia de la race condition para la Etapa 02.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         LOS BUGS
+    ══════════════════════════════════ -->
+    <section class="msec" id="bugs">
+      <div class="msecWrap">
+        <div class="msecHead">
+          <span class="msecEye"><i class="ph ph-bug"></i> Race conditions plantadas</span>
+          <h2>Los tres bugs</h2>
+          <p class="msecSub">Están en el código con comentarios que explican el problema. Tu trabajo es entenderlos y corregirlos.</p>
+        </div>
+
+        <div class="pyBugs">
+
+          <div class="pyBug">
+            <div class="pyBugHeader">
+              <span class="pyBugNum">Bug 1</span>
+              <span class="pyBugFile">ScoreBoard.java · addPoints()</span>
+              <span class="pyBugSeverity pyBugHigh">ALTA</span>
+            </div>
+            <div class="pyBugBody">
+              <p>El puntaje se guarda en un <code>HashMap</code>. El método <code>addPoints()</code> hace un <em>read → modify → write</em> en dos operaciones separadas. Entre esas dos operaciones, otro hilo puede leer el valor viejo.</p>
+              <div class="pyCode">
+                <div class="pyCodeBar pyCodeBarBug"><i class="ph-bold ph-bug"></i><span>ScoreBoard.java — código con bug</span></div>
+                <pre>public void addPoints(String player, int points) {
+    int current = scores.getOrDefault(player, 0); // Paso 1: leer
+    scores.put(player, current + points);           // Paso 2: escribir
+    // ← Entre estos dos pasos, Hilo B puede leer el mismo valor viejo
+    //   y sobrescribir el resultado de Hilo A. Se pierde un incremento.
+}</pre>
+              </div>
+              <div class="pyBugTrace">
+                <strong>Traza del bug con 2 hilos simultáneos:</strong>
+                <table>
+                  <tr><th>Tiempo</th><th>Hilo A (María)</th><th>Hilo B (Juan)</th><th>scores["María"]</th></tr>
+                  <tr><td>t=0</td><td>lee current = 500</td><td>—</td><td>500</td></tr>
+                  <tr class="pyTraceRace"><td>t=1</td><td>—</td><td>lee current = 500 ⚠</td><td>500</td></tr>
+                  <tr><td>t=2</td><td>escribe 800</td><td>—</td><td>800</td></tr>
+                  <tr class="pyTraceRace"><td>t=3</td><td>—</td><td>escribe 800 ⚠</td><td>800</td></tr>
+                  <tr class="pyTraceLoss"><td>—</td><td colspan="3">Esperado: 1100 · Real: 800 · Pérdida: 300 puntos</td></tr>
+                </table>
+              </div>
+              <div class="pyBugFix">
+                <strong>Posibles correcciones:</strong>
+                <div class="pyBugFixOptions">
+                  <div class="pyBugFixOption"><code>synchronized</code> en el método</div>
+                  <div class="pyBugFixOption"><code>ConcurrentHashMap</code> + <code>merge()</code></div>
+                  <div class="pyBugFixOption"><code>AtomicInteger</code> por jugador</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pyBug">
+            <div class="pyBugHeader">
+              <span class="pyBugNum">Bug 2</span>
+              <span class="pyBugFile">GameState.java · claimFirstAnswer()</span>
+              <span class="pyBugSeverity pyBugMed">MEDIA</span>
+            </div>
+            <div class="pyBugBody">
+              <p><code>volatile</code> garantiza que el valor sea visible entre hilos, pero <strong>no garantiza atomicidad</strong> del patrón check-then-act. Dos hilos pueden leer <code>false</code> simultáneamente antes de que ninguno escriba <code>true</code>.</p>
+              <div class="pyCode">
+                <div class="pyCodeBar pyCodeBarBug"><i class="ph-bold ph-bug"></i><span>GameState.java — código con bug</span></div>
+                <pre>private volatile boolean firstAnswerClaimed = false;
+
+public boolean claimFirstAnswer() {
+    if (!firstAnswerClaimed) {      // Hilo A y B leen false a la vez
+        firstAnswerClaimed = true;  // Ambos escriben true
+        return true;                // Ambos retornan true → DOS "primeros"
+    }
+    return false;
+}</pre>
+              </div>
+              <div class="pyBugFix">
+                <strong>Posibles correcciones:</strong>
+                <div class="pyBugFixOptions">
+                  <div class="pyBugFixOption"><code>synchronized</code> en el método</div>
+                  <div class="pyBugFixOption"><code>AtomicBoolean.compareAndSet(false, true)</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pyBug">
+            <div class="pyBugHeader">
+              <span class="pyBugNum">Bug 3</span>
+              <span class="pyBugFile">TriviaServer.java · lista clients</span>
+              <span class="pyBugSeverity pyBugLow">BAJA</span>
+            </div>
+            <div class="pyBugBody">
+              <p><code>ArrayList</code> no es thread-safe. Si un jugador se desconecta (llama a <code>removeClient()</code>) mientras otro hilo está iterando en <code>broadcast()</code>, se lanza una <code>ConcurrentModificationException</code>.</p>
+              <div class="pyCode">
+                <div class="pyCodeBar pyCodeBarBug"><i class="ph-bold ph-bug"></i><span>TriviaServer.java — código con bug</span></div>
+                <pre>// Hilo principal agrega clientes
+clients.add(handler);
+
+// Hilo de broadcast itera la lista
+for (ClientHandler c : clients) { c.send(message); }
+
+// Hilo de un cliente que se desconecta modifica la lista
+clients.remove(handler); // ← ConcurrentModificationException</pre>
+              </div>
+              <div class="pyBugFix">
+                <strong>Posibles correcciones:</strong>
+                <div class="pyBugFixOptions">
+                  <div class="pyBugFixOption"><code>CopyOnWriteArrayList</code></div>
+                  <div class="pyBugFixOption"><code>Collections.synchronizedList()</code> + sync en iteración</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         ETAPAS
+    ══════════════════════════════════ -->
+    <section class="msec alt" id="etapas">
+      <div class="msecWrap">
+        <div class="msecHead">
+          <span class="msecEye"><i class="ph ph-steps"></i> Trabajo a realizar</span>
+          <h2>Las 4 etapas</h2>
+          <p class="msecSub">Grupos de 2 personas. 40 puntos en total. Entrega progresiva — cada etapa se apoya en la anterior.</p>
+        </div>
+
+        <div class="pyEtapas">
+
+          <div class="pyEtapa" style="--pe:#ffd166">
+            <div class="pyEtapaTop">
+              <span class="pyEtapaNum">01</span>
+              <div class="pyEtapaHead">
+                <h4>Diseño + IA + primer servidor</h4>
+                <span class="pyEtapaPts">10 pts</span>
+              </div>
+            </div>
+            <p>Descargá el código base. Correlo con 2-3 jugadores y verificá que funciona. Leé todos los archivos y documentá con tus palabras la arquitectura: cuántos hilos hay, cómo se comunican, dónde puede fallar.</p>
+            <p>Podés usar IA para generar código adicional (más preguntas, nuevas funcionalidades), pero en la presentación te preguntamos por cualquier línea.</p>
+            <div class="pyAlerta">
+              <i class="ph-bold ph-warning"></i>
+              El servidor tiene bugs intencionales. El puntaje va a estar mal con múltiples jugadores simultáneos. Es parte del diseño — lo corregís en la Etapa 02.
+            </div>
+            <ul class="pyEntregables">
+              <li><i class="ph-bold ph-code"></i> Servidor corriendo con al menos 3 jugadores de prueba</li>
+              <li><i class="ph-bold ph-pencil-ruler"></i> Wireframes de la pantalla jugador y pantalla host</li>
+              <li><i class="ph-bold ph-file-text"></i> Documento de arquitectura escrito con tus palabras</li>
+            </ul>
+          </div>
+
+          <div class="pyEtapa" style="--pe:#f43f5e">
+            <div class="pyEtapaTop">
+              <span class="pyEtapaNum">02</span>
+              <div class="pyEtapaHead">
+                <h4>Rompé el servidor — y arreglalo</h4>
+                <span class="pyEtapaPts">10 pts</span>
+              </div>
+            </div>
+            <p>Reproducí las race conditions con el stress test. Mostrá con evidencia (screenshot o log) que los puntajes son incorrectos. Luego aplicá la corrección correcta y demostrá que ya no se rompe.</p>
+            <ul class="pyEntregables">
+              <li><i class="ph-bold ph-bug"></i> Evidencia de la race condition (log del stress test)</li>
+              <li><i class="ph-bold ph-lock-key"></i> Código corregido con <code>synchronized</code>, <code>AtomicInteger</code> o <code>ConcurrentHashMap</code></li>
+              <li><i class="ph-bold ph-chart-bar"></i> Tabla comparativa: sin sync vs con sync (puntajes, errores, latencia)</li>
+            </ul>
+          </div>
+
+          <div class="pyEtapa" style="--pe:#a855f7">
+            <div class="pyEtapaTop">
+              <span class="pyEtapaNum">03</span>
+              <div class="pyEtapaHead">
+                <h4>UX real + event loop</h4>
+                <span class="pyEtapaPts">10 pts</span>
+              </div>
+            </div>
+            <p>Probá la interfaz con 3 personas reales (método think-aloud del Módulo 2): ¿pueden unirse sin instrucciones? ¿Entienden cómo responder? Documentá los hallazgos y corregí los problemas de UX encontrados.</p>
+            <p>Opcional avanzado: reemplazá el modelo thread-per-client por un event loop con Java NIO. Medí cuántas conexiones aguanta la nueva versión.</p>
+            <ul class="pyEntregables">
+              <li><i class="ph-bold ph-user-sound"></i> Registro de prueba think-aloud con 3 personas</li>
+              <li><i class="ph-bold ph-list-checks"></i> Lista de problemas UX encontrados y correcciones aplicadas</li>
+              <li><i class="ph-bold ph-arrows-out-line-horizontal"></i> Benchmark: threads vs event loop (si implementaste la versión NIO)</li>
+            </ul>
+          </div>
+
+          <div class="pyEtapa" style="--pe:#38bdf8">
+            <div class="pyEtapaTop">
+              <span class="pyEtapaNum">04</span>
+              <div class="pyEtapaHead">
+                <h4>Performance + La Gran Final</h4>
+                <span class="pyEtapaPts">10 pts</span>
+              </div>
+            </div>
+            <p>Identificá el cuello de botella con mediciones manuales (timestamps) o un profiler. Aplicá la Ley de Amdahl para calcular el speedup máximo teórico. Presentación de 10 minutos donde el curso entero juega en vivo y los demás grupos intentan romper tu servidor.</p>
+            <ul class="pyEntregables">
+              <li><i class="ph-bold ph-chart-line-up"></i> Análisis Amdahl del cuello de botella identificado</li>
+              <li><i class="ph-bold ph-git-branch"></i> Ranking calculado con <code>parallelStream()</code> o <code>ForkJoinPool</code></li>
+              <li><i class="ph-bold ph-presentation"></i> Demo en vivo con el curso como jugadores</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         PROTOCOLO
+    ══════════════════════════════════ -->
+    <section class="msec" id="protocolo">
+      <div class="msecWrap">
+        <div class="msecHead">
+          <span class="msecEye"><i class="ph ph-plugs"></i> Referencia técnica</span>
+          <h2>Protocolo de comunicación</h2>
+          <p class="msecSub">Si querés construir tu propia interfaz gráfica (Swing, JavaFX, web) en lugar de usar la terminal, implementá este protocolo TCP.</p>
+        </div>
+
+        <div class="pyProtoWrap">
+          <div class="pyProtoGroup">
+            <h4><i class="ph ph-arrow-up-right"></i> Cliente → Servidor</h4>
+            <div class="pyProtoTable">
+              <div class="pyProtoRow pyProtoHeader"><span>Mensaje</span><span>Descripción</span></div>
+              <div class="pyProtoRow"><code>NOMBRE|&lt;nombre&gt;</code><span>Registrarse con un nombre de jugador</span></div>
+              <div class="pyProtoRow"><code>START</code><span>Iniciar la partida (cualquier jugador puede hacerlo)</span></div>
+              <div class="pyProtoRow"><code>RESPUESTA|&lt;A|B|C|D&gt;</code><span>Enviar respuesta a la pregunta activa</span></div>
+            </div>
+          </div>
+
+          <div class="pyProtoGroup">
+            <h4><i class="ph ph-arrow-down-left"></i> Servidor → Cliente</h4>
+            <div class="pyProtoTable">
+              <div class="pyProtoRow pyProtoHeader"><span>Mensaje</span><span>Descripción</span></div>
+              <div class="pyProtoRow"><code>BIENVENIDO|&lt;texto&gt;</code><span>Confirmación de conexión al servidor</span></div>
+              <div class="pyProtoRow"><code>OK|&lt;texto&gt;</code><span>Confirmación de registro de nombre</span></div>
+              <div class="pyProtoRow"><code>JUGADOR_UNIDO|&lt;nombre&gt;|&lt;N&gt; jugadores</code><span>Broadcast cuando un jugador se une</span></div>
+              <div class="pyProtoRow"><code>PREGUNTA|[N/T] &lt;texto&gt;|A:...|B:...|C:...|D:...</code><span>Nueva pregunta activa</span></div>
+              <div class="pyProtoRow"><code>CORRECTO|+&lt;N&gt; puntos</code><span>Respuesta correcta con puntos ganados</span></div>
+              <div class="pyProtoRow"><code>INCORRECTO|&lt;texto&gt;</code><span>Respuesta incorrecta con la letra correcta</span></div>
+              <div class="pyProtoRow"><code>PUNTAJES|&lt;n1&gt;:&lt;p1&gt;|&lt;n2&gt;:&lt;p2&gt;...</code><span>Estado del scoreboard (ordenado por puntaje)</span></div>
+              <div class="pyProtoRow"><code>NUEVA_RONDA|&lt;texto&gt;</code><span>Transición entre preguntas</span></div>
+              <div class="pyProtoRow"><code>FIN_JUEGO|&lt;texto&gt;</code><span>Fin del juego con ganador y puntaje</span></div>
+              <div class="pyProtoRow"><code>ERROR|&lt;descripción&gt;</code><span>Mensaje de error (comando inválido, etc.)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pyFaq">
+          <h3>Preguntas frecuentes</h3>
+          <div class="pyFaqList">
+            <div class="pyFaqItem">
+              <strong>¿Por qué Java puro y no Spring Boot?</strong>
+              <p>Para que el threading sea visible directamente. Con Spring Boot la concurrencia está oculta en el framework — acá la ven en el código.</p>
+            </div>
+            <div class="pyFaqItem">
+              <strong>¿El stress test no muestra el bug?</strong>
+              <p>Las race conditions son no-determinísticas. Probá con <code>--players 30</code> y <code>--delay 0</code>. En máquinas multicore el bug aparece más frecuentemente.</p>
+            </div>
+            <div class="pyFaqItem">
+              <strong>¿Puedo hacer una interfaz gráfica?</strong>
+              <p>Sí. El protocolo es texto plano sobre TCP — podés conectar cualquier cliente: Swing, JavaFX, o incluso una página web. Bonus points garantizados.</p>
+            </div>
+            <div class="pyFaqItem">
+              <strong>¿Puedo usar IA para ayudarme?</strong>
+              <p>Sí. Claude, ChatGPT, lo que quieran. Pero en la presentación te preguntamos por cualquier línea del código — asegurate de entender todo lo que entregás.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── FOOTER NAV ─────────────────────── -->
+    <div class="mfoot">
+      <a class="mfootBtn" href="index.html"><i class="ph ph-arrow-left"></i> Volver al campus</a>
+      <a class="mfootBtn" href="assets/downloads/trivia-pai3.zip" download><i class="ph-bold ph-download-simple"></i> Descargar código</a>
+    </div>
+
+    <script>
+      // Cursor glow
+      const glow = document.getElementById('mglow');
+      if (glow) {
+        document.addEventListener('mousemove', e => {
+          glow.style.transform = `translate(${e.clientX - 140}px, ${e.clientY - 140}px)`;
+        });
+      }
+    </script>
+  </body>
+</html>
