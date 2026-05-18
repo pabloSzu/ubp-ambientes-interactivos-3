@@ -435,77 +435,90 @@
 .m4compareTable td.good { color: var(--accent); }
 .m4compareTable td.warn { color: #ff9b6b; }
 
-/* ─── Pipe visualization ─────────────────── */
-.m4pipeVizWrap {
-  margin-top: 32px; padding: 28px; border-radius: var(--r);
-  border: 1px solid var(--border); background: var(--surface);
-  backdrop-filter: blur(16px);
+/* ─── Pipe Simulation v2 ─────────────────────── */
+.m4pipeSim {
+  margin-top: 32px; padding: 28px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  display: flex; flex-direction: column; gap: 20px;
 }
-.m4pipeViz {
-  display: flex; align-items: center; gap: 0;
-  min-height: 120px; margin-bottom: 20px;
+.m4pipeRow {
+  display: grid;
+  grid-template-columns: 170px 1fr 170px;
+  gap: 14px; align-items: center;
 }
-.m4pipeActor {
+.m4pipeCard {
   display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 20px 24px; border-radius: var(--r);
-  border: 1px solid var(--border); background: rgba(6,8,15,0.6);
-  min-width: 140px; text-align: center; transition: border-color 0.3s;
-  flex-shrink: 0;
+  padding: 18px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  border-radius: 12px; text-align: center;
+  transition: border-color 300ms, background 300ms;
 }
-.m4pipeActorA { border-top-color: #4a8ef0; }
-.m4pipeActorB { border-top-color: var(--accent); }
-.m4pipeActorIcon {
+.m4pipeCardIcon {
   width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid var(--accent-border); background: var(--accent-sub);
+  background: color-mix(in srgb, var(--ic,#b040ff) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ic,#b040ff) 30%, transparent);
   display: flex; align-items: center; justify-content: center;
-  font-size: 18px; color: var(--accent);
+  font-size: 18px; color: var(--ic,#b040ff);
 }
-.m4pipeActorName { font-size: 14px; font-weight: 800; color: var(--text); }
-.m4pipeActorRole { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-.m4pipeActor code { font-size: 11px; color: var(--accent); background: var(--accent-sub); padding: 2px 6px; border-radius: 4px; }
+.m4pipeCardName { font-size: 14px; font-weight: 800; color: var(--text); }
+.m4pipeCardRole { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.m4pipeCardCode { font-size: 11px; color: var(--accent); background: var(--accent-sub); padding: 3px 8px; border-radius: 4px; }
+.m4pipeCardBadge {
+  font-size: 10px; font-weight: 800; letter-spacing: .06em;
+  padding: 3px 10px; border-radius: 20px;
+}
+.m4pipeCardBadge[data-state="idle"]    { background: rgba(255,255,255,.06); color: rgba(255,255,255,.3); }
+.m4pipeCardBadge[data-state="writing"] { background: rgba(155,111,255,.15); color: #9b6fff; animation: m4pipePulse 900ms infinite; }
+.m4pipeCardBadge[data-state="reading"] { background: rgba(0,232,198,.15);   color: #00e8c6; animation: m4pipePulse 900ms infinite; }
+.m4pipeCardBadge[data-state="blocked"] { background: rgba(255,80,80,.15);   color: #ff5050; }
+@keyframes m4pipePulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+.m4pipeCardCount { font-size: 11px; color: var(--sub); }
+.m4pipeCardCount strong { color: var(--text); }
 
-/* Pipe tube */
-.m4pipeTube {
-  flex: 1; position: relative; height: 44px;
-  margin: 0 4px; overflow: hidden;
+.m4pipeBuf {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
 }
-.m4pipeTubeInner {
-  position: absolute; top: 0; left: 0; right: 0; bottom: 16px;
-  border: 2px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  border-radius: 4px;
-  background: color-mix(in srgb, var(--accent) 4%, rgba(6,8,15,0.7));
-  overflow: hidden;
-}
-.m4pipeTubeLabel {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  text-align: center; font-size: 10px; font-weight: 700;
-  color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-}
-
-/* Traveling packet */
-.m4packet {
-  position: absolute; top: 8px;
-  width: 22px; height: 22px; border-radius: 5px;
-  background: var(--accent); box-shadow: 0 0 10px var(--accent);
+.m4pipeBufHeader { display: flex; justify-content: space-between; align-items: center; }
+.m4pipeBufTitle  { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--sub); }
+.m4pipeBufCap    { font-size: 12px; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; }
+.m4pipeBufSlots  { display: flex; gap: 4px; }
+.m4pipeBufSlot {
+  flex: 1; height: 38px; border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
   display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 900; color: rgba(6,8,15,0.9);
-  animation: packetTravel var(--speed, 1.4s) linear forwards;
+  font-size: 8px; font-weight: 800; color: transparent;
+  transition: background 250ms, border-color 250ms, color 250ms;
 }
-@keyframes packetTravel {
-  from { left: -26px; opacity: 0; }
-  5%   { opacity: 1; }
-  95%  { opacity: 1; }
-  to   { left: calc(100% + 6px); opacity: 0; }
+.m4pipeBufSlot.filled {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  color: var(--accent);
 }
+.m4pipeBufSlot.newest { animation: m4slotIn 250ms ease-out; }
+@keyframes m4slotIn { from{transform:scale(1.18)} to{transform:scale(1)} }
+.m4pipeBufFillWrap { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+.m4pipeBufFillBar  { height: 100%; background: var(--accent); border-radius: 2px; transition: width 280ms ease; width: 0%; }
+.m4pipeBufFooter   { font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
 
-.m4pipeCtrl {
-  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+.m4pipeNarration {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 14px; line-height: 1.65; color: var(--sub); min-height: 72px;
 }
-.m4pipeLog {
-  flex: 1; font-size: 13px; color: var(--sub); font-style: italic;
-  min-height: 20px;
-}
+.m4pipeNarration strong { color: var(--text); }
+.m4pipeNarHint { display: block; margin-top: 6px; font-size: 11px; opacity: .6; }
+.m4pipeControls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 /* ─── Java tabs ──────────────────────────── */
 .m4javaTabsWrap {
@@ -595,6 +608,57 @@
 .m4pcStatusOk { color: var(--accent); background: var(--accent-sub); border: 1px solid var(--accent-border); }
 .m4pcStatusWarn { color: #ff9b6b; background: rgba(255,155,107,0.1); border: 1px solid rgba(255,155,107,0.3); }
 .m4pcStatusInfo { color: #4a8ef0; background: rgba(74,142,240,0.1); border: 1px solid rgba(74,142,240,0.3); }
+
+/* ─── BQ Presets ─────────────────────────────── */
+.m4bqPresets {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.m4bqPresetsLabel { font-size: 12px; color: var(--sub); display: flex; align-items: center; gap: 6px; margin-right: 4px; }
+.m4bqPresetBtn {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700;
+  padding: 6px 14px; border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--pc,#fff) 30%, transparent);
+  background: color-mix(in srgb, var(--pc,#fff) 8%, transparent);
+  color: var(--pc,var(--sub));
+  cursor: pointer; transition: all 150ms;
+}
+.m4bqPresetBtn:hover { background: color-mix(in srgb, var(--pc,#fff) 16%, transparent); }
+.m4bqPresetBtn.active { background: color-mix(in srgb, var(--pc,#fff) 20%, transparent); border-width: 1.5px; }
+
+/* ─── BQ Narration ───────────────────────────── */
+.m4bqNarration {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 14px; line-height: 1.65; color: var(--sub);
+  min-height: 72px; margin-bottom: 20px;
+}
+.m4bqNarration strong { color: var(--text); }
+.m4bqNarHint { display: block; margin-top: 6px; font-size: 11px; opacity: .6; }
+
+/* ─── BQ Event Log ───────────────────────────── */
+.m4bqLog {
+  display: flex; flex-direction: column; gap: 4px;
+  margin-top: 16px;
+  max-height: 140px; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.1) transparent;
+}
+.m4bqLogEntry {
+  font-size: 11px; font-family: monospace;
+  padding: 5px 10px; border-radius: 5px;
+  border-left: 3px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.03);
+  color: var(--sub);
+  animation: m4logIn 200ms ease-out both;
+}
+@keyframes m4logIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:none} }
+.m4bqLogEntry.produce { border-left-color: var(--accent); }
+.m4bqLogEntry.consume { border-left-color: #4a8ef0; }
+.m4bqLogEntry.blocked { border-left-color: #ff5050; color: #ff9b6b; }
 
 /* Flash quiz */
 .m4flashQuizWrap {

@@ -432,40 +432,64 @@
           <p class="msecSub">Un pipe es literalmente una tubería: los datos entran por un extremo y salen por el otro. Unidireccional, sin nombre, entre procesos relacionados.</p>
         </div>
 
-        <div class="m4pipeVizWrap reveal">
-          <div class="m4pipeViz">
-            <div class="m4pipeActor m4pipeActorA">
-              <div class="m4pipeActorIcon"><i class="ph-bold ph-pencil"></i></div>
-              <span class="m4pipeActorName">Proceso A</span>
-              <span class="m4pipeActorRole">Escritor</span>
-              <code>PipedOutputStream</code>
-            </div>
+        <div class="m4pipeSim reveal">
 
-            <div class="m4pipeTube" id="pipeTube">
-              <div class="m4pipeTubeInner">
-                <!-- packets injected here by JS -->
-              </div>
-              <div class="m4pipeTubeLabel">
-                <i class="ph-bold ph-arrow-right"></i>
-                Unidireccional — los datos solo fluyen en esta dirección
-              </div>
-            </div>
+  <!-- ACTORS + BUFFER ROW -->
+  <div class="m4pipeRow">
+    <div class="m4pipeCard" id="pipeWriterCard">
+      <div class="m4pipeCardIcon" style="--ic:#9b6fff"><i class="ph-bold ph-pencil-line"></i></div>
+      <div class="m4pipeCardName">Proceso A</div>
+      <div class="m4pipeCardRole">Escritor</div>
+      <code class="m4pipeCardCode">write(dato)</code>
+      <div class="m4pipeCardBadge" id="pipeWriterBadge" data-state="idle">INACTIVO</div>
+      <div class="m4pipeCardCount">Enviados: <strong id="pipeSent">0</strong></div>
+    </div>
 
-            <div class="m4pipeActor m4pipeActorB">
-              <div class="m4pipeActorIcon"><i class="ph-bold ph-eye"></i></div>
-              <span class="m4pipeActorName">Proceso B</span>
-              <span class="m4pipeActorRole">Lector</span>
-              <code>PipedInputStream</code>
-            </div>
-          </div>
+    <div class="m4pipeBuf">
+      <div class="m4pipeBufHeader">
+        <span class="m4pipeBufTitle"><i class="ph ph-stack"></i> Kernel Buffer</span>
+        <span class="m4pipeBufCap" id="pipeBufCap">0 / 8</span>
+      </div>
+      <div class="m4pipeBufSlots" id="pipeBufSlots"></div>
+      <div class="m4pipeBufFillWrap">
+        <div class="m4pipeBufFillBar" id="pipeBufFillBar"></div>
+      </div>
+      <div class="m4pipeBufFooter"><i class="ph-bold ph-arrow-right"></i> FIFO — el dato más antiguo sale primero</div>
+    </div>
 
-          <div class="m4pipeCtrl">
-            <button class="m4btn m4btnAccent" onclick="sendPipePacket()">
-              <i class="ph-bold ph-paper-plane-tilt"></i> Enviar dato
-            </button>
-            <div class="m4pipeLog" id="pipeLog">Presioná "Enviar dato" para ver un paquete viajar por el pipe.</div>
-          </div>
-        </div>
+    <div class="m4pipeCard" id="pipeReaderCard">
+      <div class="m4pipeCardIcon" style="--ic:#00e8c6"><i class="ph-bold ph-eye"></i></div>
+      <div class="m4pipeCardName">Proceso B</div>
+      <div class="m4pipeCardRole">Lector</div>
+      <code class="m4pipeCardCode">read() → dato</code>
+      <div class="m4pipeCardBadge" id="pipeReaderBadge" data-state="idle">INACTIVO</div>
+      <div class="m4pipeCardCount">Recibidos: <strong id="pipeReceived">0</strong></div>
+    </div>
+  </div>
+
+  <!-- NARRACIÓN -->
+  <div class="m4pipeNarration" id="pipeNarration">
+    Presioná <strong>Iniciar</strong> para ver el flujo de datos en el pipe.
+    <span class="m4pipeNarHint">write() bloquea cuando el buffer está lleno · read() bloquea cuando está vacío · los datos salen en el mismo orden que entraron (FIFO)</span>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="m4pipeControls">
+    <button class="m4btn m4btnAccent" id="pipeBtn" onclick="pipeToggle()">
+      <i class="ph-bold ph-play"></i> Iniciar
+    </button>
+    <button class="m4btn" onclick="pipeSaturate()">
+      <i class="ph-bold ph-fill"></i> Saturar buffer
+    </button>
+    <button class="m4btn" onclick="pipeDrain()">
+      <i class="ph-bold ph-drop-slash"></i> Vaciar buffer
+    </button>
+    <button class="m4btn" onclick="pipeReset()">
+      <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset
+    </button>
+  </div>
+
+</div>
 
         <div class="m4javaTabsWrap reveal">
           <div class="m4javaTabs" role="tablist">
@@ -700,6 +724,19 @@ public class PipedStreamDemo {
         </div>
 
         <div class="m4bqSimulator reveal">
+          <!-- SCENARIO PRESETS -->
+          <div class="m4bqPresets">
+            <span class="m4bqPresetsLabel"><i class="ph ph-sliders-horizontal"></i> Escenarios:</span>
+            <button class="m4bqPresetBtn" onclick="bqScenario('fast-prod')" style="--pc:#ff9b6b">
+              <i class="ph-bold ph-rabbit"></i> P más rápido
+            </button>
+            <button class="m4bqPresetBtn" onclick="bqScenario('balanced')" style="--pc:#00e8c6">
+              <i class="ph-bold ph-equals"></i> Equilibrio
+            </button>
+            <button class="m4bqPresetBtn" onclick="bqScenario('fast-cons')" style="--pc:#4a8ef0">
+              <i class="ph-bold ph-horse"></i> C más rápido
+            </button>
+          </div>
           <div class="m4bqLayout">
             <!-- PRODUCTOR -->
             <div class="m4bqActor" id="bqProducer">
@@ -757,6 +794,12 @@ public class PipedStreamDemo {
             </div>
           </div>
 
+          <!-- NARRACIÓN -->
+          <div class="m4bqNarration" id="bqNarration">
+            Presioná <strong>Iniciar</strong> para ver el productor-consumidor en acción.
+            <span class="m4bqNarHint">put() bloquea cuando la queue está llena · take() bloquea cuando está vacía · ajustá las velocidades para ver backpressure en tiempo real</span>
+          </div>
+
           <!-- STATS -->
           <div class="m4bqStats">
             <div class="m4bqStat">
@@ -776,6 +819,9 @@ public class PipedStreamDemo {
               <span class="m4bqStatLabel">Consumidor bloqueado</span>
             </div>
           </div>
+
+          <!-- EVENT LOG -->
+          <div class="m4bqLog" id="bqLog"></div>
 
           <!-- CONTROLS -->
           <div class="m4bqCtrl">

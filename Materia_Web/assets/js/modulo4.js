@@ -53,36 +53,165 @@ animateCounter(document.getElementById('counter1'), 4);
 animateCounter(document.getElementById('counter2'), 8);
 animateCounter(document.getElementById('counter3'), 3);
 
-/* ─── Pipe visualization ─────────────────── */
-let pipePacketCount = 0;
+/* ─── Pipe Simulation v2 ─────────────────────── */
+const PIPE_BUF_SIZE = 8;
+const pipe = {
+  buf: [], sent: 0, received: 0, running: false,
+  writerTimer: null, readerTimer: null,
+  readerPaused: false, writerPaused: false,
+  writerBlocked: false, readerBlocked: false,
+  writeMs: 700, readMs: 1100,
+};
 
-function sendPipePacket() {
-  const tube = document.querySelector('.m4pipeTubeInner');
-  const logEl = document.getElementById('pipeLog');
-  if (!tube) return;
-
-  pipePacketCount++;
-  const num = pipePacketCount;
-
-  const pkt = document.createElement('div');
-  pkt.className = 'm4packet';
-  pkt.textContent = 'D' + num;
-  pkt.style.setProperty('--speed', '1.4s');
-  tube.appendChild(pkt);
-
-  if (logEl) {
-    logEl.textContent = `Paquete D${num} enviado por Proceso A → viajando por el pipe → será leído por Proceso B`;
-    logEl.style.color = 'var(--accent)';
+function pipeInitSlots() {
+  const slots = document.getElementById('pipeBufSlots');
+  if (!slots) return;
+  slots.innerHTML = '';
+  for (let i = 0; i < PIPE_BUF_SIZE; i++) {
+    const s = document.createElement('div');
+    s.className = 'm4pipeBufSlot';
+    s.id = 'pipeslot' + i;
+    slots.appendChild(s);
   }
-
-  pkt.addEventListener('animationend', () => {
-    pkt.remove();
-    if (logEl) {
-      logEl.textContent = `D${num} recibido por Proceso B. Pipe listo para el siguiente dato.`;
-      logEl.style.color = 'var(--sub)';
-    }
-  });
 }
+
+function pipeRenderBuf() {
+  for (let i = 0; i < PIPE_BUF_SIZE; i++) {
+    const s = document.getElementById('pipeslot' + i);
+    if (!s) continue;
+    const filled = i < pipe.buf.length;
+    s.classList.toggle('filled', filled);
+    s.textContent = filled ? 'D' + pipe.buf[i] : '';
+  }
+  const cap  = document.getElementById('pipeBufCap');
+  const bar  = document.getElementById('pipeBufFillBar');
+  const sent = document.getElementById('pipeSent');
+  const recv = document.getElementById('pipeReceived');
+  if (cap)  cap.textContent = pipe.buf.length + ' / ' + PIPE_BUF_SIZE;
+  if (bar)  bar.style.width = ((pipe.buf.length / PIPE_BUF_SIZE) * 100) + '%';
+  if (sent) sent.textContent = pipe.sent;
+  if (recv) recv.textContent = pipe.received;
+}
+
+function pipeSetBadge(id, state) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const map = { idle: 'INACTIVO', writing: 'write() ▶', reading: 'read() ▶', blocked: 'BLOQUEADO ⏸' };
+  el.textContent = map[state] || state;
+  el.dataset.state = state;
+}
+
+function pipeNarrate(html) {
+  const el = document.getElementById('pipeNarration');
+  if (el) el.innerHTML = html;
+}
+
+function pipeWriterStep() {
+  if (!pipe.running) return;
+  if (pipe.writerPaused) {
+    pipeSetBadge('pipeWriterBadge', 'idle');
+    pipe.writerTimer = setTimeout(pipeWriterStep, 300);
+    return;
+  }
+  if (pipe.buf.length >= PIPE_BUF_SIZE) {
+    if (!pipe.writerBlocked) {
+      pipe.writerBlocked = true;
+      pipeSetBadge('pipeWriterBadge', 'blocked');
+      pipeNarrate('🔒 <strong>write() BLOQUEADO</strong> — el kernel buffer está lleno (<strong>' + PIPE_BUF_SIZE + '/' + PIPE_BUF_SIZE + '</strong>). Proceso A llamó a write() pero no hay espacio. El SO suspende a Proceso A hasta que Proceso B lea algún dato y libere espacio. Este mecanismo se llama <em>backpressure</em>.');
+    }
+    pipe.writerTimer = setTimeout(pipeWriterStep, 150);
+    return;
+  }
+  pipe.writerBlocked = false;
+  pipe.sent++;
+  pipe.buf.push(pipe.sent);
+  pipeSetBadge('pipeWriterBadge', 'writing');
+  const newidx = pipe.buf.length - 1;
+  pipeRenderBuf();
+  const newest = document.getElementById('pipeslot' + newidx);
+  if (newest) { newest.classList.add('newest'); setTimeout(() => newest.classList.remove('newest'), 300); }
+  const pct = Math.round((pipe.buf.length / PIPE_BUF_SIZE) * 100);
+  const warn = pct >= 87 ? ' ⚠️ Buffer casi lleno — write() se bloqueará pronto.' : pct >= 60 ? ' Buffer por encima del 60%.' : '';
+  pipeNarrate('✏️ <strong>Proceso A escribió D' + pipe.sent + '</strong> en el pipe. Buffer: <strong>' + pipe.buf.length + '/' + PIPE_BUF_SIZE + '</strong> (' + pct + '%).' + warn + ' Los datos se acumulan en orden FIFO.');
+  pipe.writerTimer = setTimeout(pipeWriterStep, pipe.writeMs);
+}
+
+function pipeReaderStep() {
+  if (!pipe.running) return;
+  if (pipe.readerPaused) {
+    pipeSetBadge('pipeReaderBadge', 'idle');
+    pipe.readerTimer = setTimeout(pipeReaderStep, 300);
+    return;
+  }
+  if (pipe.buf.length === 0) {
+    if (!pipe.readerBlocked) {
+      pipe.readerBlocked = true;
+      pipeSetBadge('pipeReaderBadge', 'blocked');
+      pipeNarrate('📭 <strong>read() BLOQUEADO</strong> — el buffer está vacío (<strong>0/' + PIPE_BUF_SIZE + '</strong>). Proceso B llamó a read() pero no hay datos disponibles. El SO suspende a Proceso B hasta que Proceso A escriba algo. Sin busy-waiting — no consume CPU mientras espera.');
+    }
+    pipe.readerTimer = setTimeout(pipeReaderStep, 150);
+    return;
+  }
+  pipe.readerBlocked = false;
+  const item = pipe.buf.shift();
+  pipe.received++;
+  pipeSetBadge('pipeReaderBadge', 'reading');
+  pipeRenderBuf();
+  pipeNarrate('👁 <strong>Proceso B leyó D' + item + '</strong> del pipe (<em>FIFO — el dato más antiguo sale primero</em>). Buffer: <strong>' + pipe.buf.length + '/' + PIPE_BUF_SIZE + '</strong>. Total recibidos: ' + pipe.received + '.');
+  pipe.readerTimer = setTimeout(pipeReaderStep, pipe.readMs);
+}
+
+function pipeToggle() {
+  if (pipe.running) {
+    pipe.running = false;
+    clearTimeout(pipe.writerTimer);
+    clearTimeout(pipe.readerTimer);
+    pipeSetBadge('pipeWriterBadge', 'idle');
+    pipeSetBadge('pipeReaderBadge', 'idle');
+    const btn = document.getElementById('pipeBtn');
+    if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Continuar';
+  } else {
+    pipe.running = true;
+    pipe.writerBlocked = false;
+    pipe.readerBlocked = false;
+    const btn = document.getElementById('pipeBtn');
+    if (btn) btn.innerHTML = '<i class="ph-bold ph-pause"></i> Pausar';
+    pipeWriterStep();
+    setTimeout(pipeReaderStep, pipe.readMs / 2);
+  }
+}
+
+function pipeSaturate() {
+  if (!pipe.running) { pipeToggle(); setTimeout(pipeSaturate, 100); return; }
+  pipe.readerPaused = true;
+  pipeNarrate('⚠️ <strong>Modo Saturación</strong> — Proceso B dejó de leer por 4 segundos. Observá cómo el buffer se llena y write() empieza a bloquearse al llegar a ' + PIPE_BUF_SIZE + '/' + PIPE_BUF_SIZE + '.');
+  setTimeout(() => { pipe.readerPaused = false; }, 4000);
+}
+
+function pipeDrain() {
+  if (!pipe.running) { pipeToggle(); setTimeout(pipeDrain, 100); return; }
+  pipe.writerPaused = true;
+  pipeNarrate('⚠️ <strong>Modo Vaciado</strong> — Proceso A dejó de escribir por 4 segundos. Observá cómo el buffer se vacía y read() empieza a bloquearse al llegar a 0/' + PIPE_BUF_SIZE + '.');
+  setTimeout(() => { pipe.writerPaused = false; }, 4000);
+}
+
+function pipeReset() {
+  pipe.running = false;
+  clearTimeout(pipe.writerTimer);
+  clearTimeout(pipe.readerTimer);
+  pipe.buf = []; pipe.sent = 0; pipe.received = 0;
+  pipe.writerBlocked = false; pipe.readerBlocked = false;
+  pipe.readerPaused = false; pipe.writerPaused = false;
+  pipeRenderBuf();
+  pipeSetBadge('pipeWriterBadge', 'idle');
+  pipeSetBadge('pipeReaderBadge', 'idle');
+  const btn = document.getElementById('pipeBtn');
+  if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar';
+  pipeNarrate('Presioná <strong>Iniciar</strong> para ver el flujo de datos en el pipe.<span class="m4pipeNarHint">write() bloquea cuando el buffer está lleno · read() bloquea cuando está vacío · los datos salen en el mismo orden que entraron (FIFO)</span>');
+}
+
+pipeInitSlots();
+pipeRenderBuf();
 
 /* ─── Java tabs ──────────────────────────── */
 function showJavaTab(idx) {
@@ -275,6 +404,8 @@ function bqProduce() {
     // BLOCKED — queue full
     bqState.producerBlocked++;
     bqSetActorState(producerEl, prodBadge, 'blocked');
+    bqNarrate('🔒 <strong>put() BLOQUEADO</strong> — la queue está llena (<strong>' + bqState.maxSize + '/' + bqState.maxSize + '</strong>). El productor llamó a put() pero no hay espacio. Java suspende este hilo automáticamente hasta que el consumidor haga take() y libere un slot. <em>Backpressure en acción.</em>');
+    bqLogEvent('put() bloqueado — queue llena', 'blocked');
     bqUpdateStats();
     // Retry every 200ms until there's space
     bqState.producerRetryTimer = setTimeout(() => { bqProduce(); }, 200);
@@ -285,6 +416,10 @@ function bqProduce() {
   bqState.queue.push('item' + (bqState.produced + 1));
   bqState.produced++;
   bqRenderQueue();
+  const pct2 = Math.round((bqState.queue.length / bqState.maxSize) * 100);
+  const w2 = pct2 >= 87 ? ' ⚠️ Queue casi llena.' : pct2 >= 60 ? ' Queue por encima del 60%.' : '';
+  bqNarrate('📦 <strong>Productor puso ítem #' + bqState.produced + '</strong> en la queue. Ocupación: <strong>' + bqState.queue.length + '/' + bqState.maxSize + '</strong> (' + pct2 + '%).' + w2);
+  bqLogEvent('put(item-' + bqState.produced + ') → queue: ' + bqState.queue.length + '/' + bqState.maxSize, 'produce');
   bqUpdateStats();
 
   if (typeof anime !== 'undefined') {
@@ -309,6 +444,8 @@ function bqConsume() {
     // BLOCKED — queue empty
     bqState.consumerBlocked++;
     bqSetActorState(consumerEl, consBadge, 'blocked');
+    bqNarrate('📭 <strong>take() BLOQUEADO</strong> — la queue está vacía (<strong>0/' + bqState.maxSize + '</strong>). El consumidor llamó a take() pero no hay ítems. Java suspende este hilo automáticamente hasta que el productor haga put(). Sin polling, sin CPU wasted.');
+    bqLogEvent('take() bloqueado — queue vacía', 'blocked');
     bqUpdateStats();
     // Retry every 200ms until there's something to consume
     bqState.consumerRetryTimer = setTimeout(() => { bqConsume(); }, 200);
@@ -319,6 +456,8 @@ function bqConsume() {
   bqState.queue.shift();
   bqState.consumed++;
   bqRenderQueue();
+  bqNarrate('✅ <strong>Consumidor tomó ítem #' + bqState.consumed + '</strong> de la queue. Ocupación: <strong>' + bqState.queue.length + '/' + bqState.maxSize + '</strong>. El slot liberado permite al productor continuar si estaba bloqueado.');
+  bqLogEvent('take() → consumido #' + bqState.consumed + ' | queue: ' + bqState.queue.length + '/' + bqState.maxSize, 'consume');
   bqUpdateStats();
 
   // Schedule next consumption
@@ -381,6 +520,46 @@ function bqReset() {
 
   const btn = document.getElementById('bqToggleBtn');
   if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar';
+}
+
+function bqNarrate(html) {
+  const el = document.getElementById('bqNarration');
+  if (el) el.innerHTML = html;
+}
+
+function bqLogEvent(text, type) {
+  const log = document.getElementById('bqLog');
+  if (!log) return;
+  const entry = document.createElement('div');
+  entry.className = 'm4bqLogEntry ' + (type || '');
+  entry.textContent = text;
+  log.insertBefore(entry, log.firstChild);
+  while (log.children.length > 6) log.removeChild(log.lastChild);
+}
+
+function bqScenario(name) {
+  const map = {
+    'fast-prod': { prod: 400,  cons: 1600 },
+    'balanced':  { prod: 800,  cons: 800  },
+    'fast-cons': { prod: 1600, cons: 350  },
+  };
+  const s = map[name];
+  if (!s) return;
+  bqState.producerRate = s.prod;
+  bqState.consumerRate = s.cons;
+  const pSlider = document.getElementById('producerSlider');
+  const cSlider = document.getElementById('consumerSlider');
+  const pLabel  = document.getElementById('prodRateLabel');
+  const cLabel  = document.getElementById('consRateLabel');
+  if (pSlider) pSlider.value = s.prod;
+  if (cSlider) cSlider.value = s.cons;
+  if (pLabel)  pLabel.textContent = s.prod;
+  if (cLabel)  cLabel.textContent = s.cons;
+  document.querySelectorAll('.m4bqPresetBtn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector('[onclick="bqScenario(\'' + name + '\')"]');
+  if (btn) btn.classList.add('active');
+  const names = { 'fast-prod': 'P más rápido — la queue se va a llenar y put() bloqueará al productor.', 'balanced': 'Equilibrio — productor y consumidor van a la misma velocidad.', 'fast-cons': 'C más rápido — la queue se va a vaciar y take() bloqueará al consumidor.' };
+  bqNarrate('⚙️ Escenario cargado: <strong>' + names[name] + '</strong> Presioná Iniciar para verlo en acción.');
 }
 
 /* ─── Slider listeners ───────────────────── */
