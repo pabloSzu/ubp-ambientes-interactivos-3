@@ -33,6 +33,29 @@ a { color: inherit; text-decoration: none; }
 p, h1, h2, h3, h4 { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 
+/* ─── Scrollbar global ───────────────────── */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track {
+  background:
+    linear-gradient(180deg, rgba(0,232,198,0.08), rgba(74,142,240,0.08), rgba(155,111,255,0.05)),
+    #05070d;
+}
+::-webkit-scrollbar-thumb {
+  min-height: 56px;
+  border: 3px solid #05070d;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 38%),
+    linear-gradient(180deg, #00e8c6, #4a8ef0 46%, #8b5cf6 78%, #c084fc);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.38), rgba(255,255,255,0) 36%),
+    linear-gradient(180deg, #5fffee, #38bdf8 42%, #a855f7 74%, #d8b4fe);
+}
+* { scrollbar-width: thin; scrollbar-color: #8b5cf6 #05070d; }
+
 /* ─── Blobs ──────────────────────────────── */
 .blob {
   position: fixed;
@@ -110,6 +133,16 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+}
+
+span.mhdrBrand {
+  width: clamp(112px, 10vw, 148px);
+  height: 34px;
+  overflow: hidden;
+  color: transparent;
+  background: url("../brand/ubp-logo.png") left center / contain no-repeat;
+  filter: drop-shadow(0 0 12px rgba(164,2,46,0.18));
+  user-select: none;
 }
 
 .mhdrBack {
@@ -607,34 +640,78 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: clamp(28px, 3.5vw, 44px) clamp(20px, 5vw, 72px);
+  gap: 14px;
+  padding: clamp(32px, 4vw, 52px) clamp(20px, 5vw, 72px);
 }
 
-.mfootBtn {
+.mfootNav {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--sub);
-  padding: 10px 16px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  backdrop-filter: blur(12px);
-  transition: border-color 0.2s, color 0.2s;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-.mfootBtn:hover { border-color: var(--border-hover); color: var(--text); }
-.mfootBtn.off { visibility: hidden; pointer-events: none; }
 
-.mfootHome {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--muted);
-  transition: color 0.2s;
+.mfoot .mfootBtn,
+.mfoot .mfootHome,
+.mfoot .mfootLink,
+.mfoot .mfootBrand {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 17px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025)),
+    rgba(255,255,255,0.035);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  text-decoration: none;
+  box-shadow:
+    0 14px 34px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
 }
-.mfootHome:hover { color: var(--sub); }
+.mfoot .mfootBtn:hover,
+.mfoot .mfootHome:hover,
+.mfoot .mfootLink:hover,
+.mfoot .mfootBrand:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  color: #fff;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 22%, transparent), rgba(255,255,255,0.06)),
+    rgba(255,255,255,0.045);
+  box-shadow:
+    0 18px 44px rgba(0,0,0,0.3),
+    0 0 28px color-mix(in srgb, var(--accent) 18%, transparent),
+    inset 0 1px 0 rgba(255,255,255,0.14);
+}
+.mfootBtn.off { visibility: hidden; pointer-events: none; }
+.mfoot .mfootBtnDisabled,
+.mfoot .mfootBtn[aria-disabled="true"],
+.mfoot span.mfootLink {
+  opacity: 0.42;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.mfoot .mfootBrand {
+  border-color: rgba(255,255,255,0.12);
+  color: #fff;
+  background:
+    linear-gradient(135deg, rgba(182,31,73,0.22), rgba(255,255,255,0.04)),
+    rgba(255,255,255,0.035);
+  text-transform: none;
+  letter-spacing: 0;
+}
 
 /* ═══════════════════════════════════════════
    RESPONSIVE
