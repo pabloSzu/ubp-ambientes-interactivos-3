@@ -1959,110 +1959,224 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 /* ═══════════════════════════════════════════
-   PROYECTO INTEGRADOR
+   PROYECTO INTEGRADOR — TRIVIA MULTIJUGADOR
 ═══════════════════════════════════════════ */
 .proyectoSection {
-  padding: 80px 0;
+  padding: 100px 0 80px;
   position: relative;
+  overflow: hidden;
 }
 .proyectoSection::before {
   content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(168,85,247,0.06) 0%, transparent 70%);
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(168,85,247,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(0,232,198,0.05) 0%, transparent 60%);
   pointer-events: none;
 }
-.proyectoInner {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.proyectoHead {
-  text-align: center;
-  margin-bottom: 48px;
-}
+.proyectoInner { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* Head */
+.proyectoHead { text-align: center; margin-bottom: 60px; }
 .proyectoEye {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
   text-transform: uppercase; color: #a855f7;
-  background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.25);
-  padding: 5px 14px; border-radius: 999px; margin-bottom: 16px;
+  background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.28);
+  padding: 6px 16px; border-radius: 999px; margin-bottom: 20px;
 }
 .proyectoHead h2 {
-  font-size: clamp(28px, 4vw, 42px);
-  font-weight: 900; letter-spacing: -0.03em; margin: 0 0 12px;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 900; letter-spacing: -0.035em; line-height: 1.05;
+  margin: 0 0 16px;
 }
-.proyectoHead p { font-size: 16px; color: var(--sub); max-width: 560px; margin: 0 auto; }
+.proyectoTitleAccent {
+  background: linear-gradient(135deg, #a855f7 0%, #00e8c6 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.proyectoHead p { font-size: 17px; color: var(--sub); max-width: 580px; margin: 0 auto; line-height: 1.6; }
 
-.proyectoDesc {
-  display: flex; align-items: flex-start; gap: 32px;
-  background: rgba(168,85,247,0.06);
-  border: 1px solid rgba(168,85,247,0.18);
-  border-radius: 20px; padding: 32px;
-  margin-bottom: 40px;
+/* Concepto visual — mock + descripción */
+.proyectoConcepto {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; align-items: start;
+  margin-bottom: 48px;
 }
-.proyectoDescText { flex: 1; }
-.proyectoDescText h3 { font-size: 16px; font-weight: 800; margin: 0 0 10px; }
-.proyectoDescText p { font-size: 14px; color: var(--sub); line-height: 1.65; margin: 0 0 10px; }
-.proyectoDescText p:last-child { margin: 0; }
-.proyectoDescTag {
-  display: flex; flex-direction: column; gap: 16px;
-  flex-shrink: 0; min-width: 120px;
-}
-.proyectoStat {
-  display: flex; flex-direction: column; align-items: center;
-  background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.25);
-  border-radius: 14px; padding: 16px 20px; text-align: center;
-}
-.proyectoStatNum { font-size: 32px; font-weight: 900; color: #a855f7; line-height: 1; }
-.proyectoStat > span:last-child { font-size: 11px; color: var(--sub); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
 
-.proyectoEtapas { display: flex; flex-direction: column; gap: 0; position: relative; }
-.proyectoEtapas::before {
-  content: '';
-  position: absolute;
-  left: 28px; top: 0; bottom: 0; width: 2px;
-  background: linear-gradient(to bottom, rgba(168,85,247,0.4), rgba(168,85,247,0.1));
+/* Mock de juego */
+.proyectoMock {
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid rgba(168,85,247,0.25);
+  background: rgba(10,8,20,0.9);
+  box-shadow: 0 0 60px rgba(168,85,247,0.12), 0 20px 40px rgba(0,0,0,0.5);
 }
-.proyectoEtapa {
-  display: flex; gap: 24px;
-  padding: 28px 0;
-  border-bottom: 1px solid var(--border);
+.proyectoMockBar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.proyectoMockDot { width: 10px; height: 10px; border-radius: 50%; }
+.proyectoMockTitle { font-size: 12px; color: var(--muted); margin-left: 4px; font-weight: 600; }
+.proyectoMockBody { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.proyectoMockQuestion {
   position: relative;
+  background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.22);
+  border-radius: 12px; padding: 16px 20px;
 }
-.proyectoEtapa:last-child { border-bottom: none; }
-.proyectoEtapaNum {
-  width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
-  background: color-mix(in srgb, var(--en) 14%, transparent);
-  border: 2px solid color-mix(in srgb, var(--en) 40%, transparent);
-  color: var(--en); font-size: 18px; font-weight: 900;
+.proyectoMockQuestion p { font-size: 14px; font-weight: 700; color: var(--text); margin: 0; line-height: 1.5; }
+.proyectoMockTimer {
+  position: absolute; top: -10px; right: 14px;
+  background: #f43f5e; color: #fff;
+  font-size: 12px; font-weight: 900;
+  padding: 2px 10px; border-radius: 999px;
+}
+.proyectoMockOptions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.proyectoMockOpt {
+  padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 700;
+  background: color-mix(in srgb, var(--oc) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--oc) 28%, transparent);
+  color: var(--oc);
+}
+.proyectoMockOptWin {
+  background: color-mix(in srgb, var(--oc) 20%, transparent);
+  border-color: color-mix(in srgb, var(--oc) 50%, transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--oc) 20%, transparent);
+}
+.proyectoMockPlayers { display: flex; flex-direction: column; gap: 6px; }
+.proyectoMockPlayer {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--sub); padding: 6px 10px;
+  background: rgba(255,255,255,0.03); border-radius: 8px;
+}
+.proyectoMockPlayer span:nth-child(2) { flex: 1; color: var(--text); font-weight: 600; }
+.proyectoMockScore { font-weight: 900; color: #ffd166; font-size: 14px; }
+.proyectoMockAvatar {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: color-mix(in srgb, var(--av) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--av) 40%, transparent);
+  color: var(--av); font-size: 9px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
-  position: relative; z-index: 1;
 }
-.proyectoEtapaBody { flex: 1; padding-top: 6px; }
-.proyectoEtapaHead { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 10px; }
-.proyectoEtapaHead h4 { font-size: 16px; font-weight: 800; margin: 0; }
-.proyectoEtapaPts {
-  font-size: 13px; font-weight: 800; color: #a855f7;
-  background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.25);
+.proyectoMockPlayerMore {
+  justify-content: center; color: var(--muted);
+  font-size: 12px; font-style: italic;
+  background: transparent;
+}
+
+/* Concepto derecho */
+.proyectoConceptoRight h3 { font-size: 20px; font-weight: 900; margin: 0 0 12px; }
+.proyectoConceptoRight > p { font-size: 15px; color: var(--sub); line-height: 1.65; margin: 0 0 24px; }
+.proyectoConceptoItems { display: flex; flex-direction: column; gap: 10px; }
+.proyectoConceptoItem {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14px; color: var(--sub); line-height: 1.5;
+}
+.proyectoConceptoBadge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 36px; height: 22px; border-radius: 6px; flex-shrink: 0;
+  background: color-mix(in srgb, var(--cb) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cb) 35%, transparent);
+  color: var(--cb); font-size: 10px; font-weight: 900; letter-spacing: 0.04em;
+}
+
+/* Reglas */
+.proyectoReglas {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-bottom: 48px;
+}
+.proyectoRegla {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px;
+}
+.proyectoRegla > i { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+.proyectoRegla strong { display: block; font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.proyectoRegla span { font-size: 13.5px; color: var(--sub); line-height: 1.5; }
+
+/* Etapas nuevas */
+.proyectoEtapasNew { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 32px; }
+.proyectoEtapaNew {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid color-mix(in srgb, var(--en) 22%, var(--border));
+  border-radius: 18px; padding: 28px;
+  display: flex; flex-direction: column; gap: 14px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.proyectoEtapaNew:hover {
+  background: rgba(255,255,255,0.04);
+  border-color: color-mix(in srgb, var(--en) 40%, transparent);
+}
+.proyectoEtapaNewNum {
+  font-size: 11px; font-weight: 900; letter-spacing: 0.1em;
+  color: var(--en);
+  background: color-mix(in srgb, var(--en) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--en) 28%, transparent);
+  display: inline-flex; padding: 4px 12px; border-radius: 999px;
+  align-self: flex-start;
+}
+.proyectoEtapaNewHead { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.proyectoEtapaNewHead h4 { font-size: 17px; font-weight: 900; margin: 0; line-height: 1.3; }
+.proyectoEtapaNewPts {
+  font-size: 13px; font-weight: 800;
+  color: var(--en);
+  background: color-mix(in srgb, var(--en) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--en) 28%, transparent);
   padding: 3px 12px; border-radius: 999px; flex-shrink: 0;
 }
-.proyectoEtapaBody > p { font-size: 14px; color: var(--sub); line-height: 1.65; margin: 0 0 14px; }
-.proyectoEntregables {
-  display: flex; flex-wrap: wrap; gap: 8px;
+.proyectoEtapaNew > p { font-size: 14px; color: var(--sub); line-height: 1.65; margin: 0; }
+.proyectoEtapaNewAlerta {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; color: #fbbf24; line-height: 1.5;
+  background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 10px; padding: 10px 14px; margin: 0 !important;
 }
+.proyectoEtapaNewAlerta i { flex-shrink: 0; margin-top: 1px; font-size: 14px; }
+
+/* Entregables (reutilizado) */
+.proyectoEntregables { display: flex; flex-wrap: wrap; gap: 8px; }
 .proyectoEntregables > span {
   display: inline-flex; align-items: center; gap: 6px;
-  font-size: 12px; font-weight: 600;
+  font-size: 13px; font-weight: 600;
   background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-  padding: 5px 12px; border-radius: 999px; color: var(--sub);
+  padding: 6px 14px; border-radius: 999px; color: var(--sub);
 }
 .proyectoEntregables > span i { color: #a855f7; font-size: 13px; }
 
-@media (max-width: 640px) {
-  .proyectoDesc { flex-direction: column; }
-  .proyectoDescTag { flex-direction: row; justify-content: center; }
-  .proyectoEtapas::before { left: 20px; }
-  .proyectoEtapaNum { width: 40px; height: 40px; font-size: 14px; }
-  .proyectoEtapaHead { flex-direction: column; align-items: flex-start; }
+/* La Gran Final */
+.proyectoFinal {
+  position: relative; border-radius: 20px; overflow: hidden;
+  border: 1px solid rgba(255,209,102,0.3);
+  background: rgba(255,209,102,0.05);
+  padding: 36px;
+}
+.proyectoFinalGlow {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,209,102,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.proyectoFinalContent {
+  display: flex; align-items: flex-start; gap: 24px;
+  position: relative; z-index: 1;
+}
+.proyectoFinalIcon {
+  width: 56px; height: 56px; border-radius: 16px; flex-shrink: 0;
+  background: rgba(255,209,102,0.15); border: 1px solid rgba(255,209,102,0.35);
+  color: #ffd166; font-size: 26px;
+  display: flex; align-items: center; justify-content: center;
+}
+.proyectoFinalContent h3 { font-size: 20px; font-weight: 900; color: #ffd166; margin: 0 0 10px; }
+.proyectoFinalContent p { font-size: 15px; color: var(--sub); line-height: 1.7; margin: 0; }
+.proyectoFinalContent em { color: #ffd166; font-style: normal; font-weight: 700; }
+
+@media (max-width: 900px) {
+  .proyectoConcepto { grid-template-columns: 1fr; }
+  .proyectoEtapasNew { grid-template-columns: 1fr; }
+  .proyectoReglas { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .proyectoMockOptions { grid-template-columns: 1fr; }
+  .proyectoFinalContent { flex-direction: column; }
+  .proyectoEtapaNewHead { flex-direction: column; }
 }

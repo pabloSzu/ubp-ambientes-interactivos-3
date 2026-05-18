@@ -541,91 +541,185 @@
       <section id="proyecto" class="proyectoSection">
         <div class="proyectoInner">
 
+          <!-- HEADER -->
           <div class="proyectoHead reveal">
-            <span class="proyectoEye"><i class="ph-bold ph-blueprint"></i> Trabajo final</span>
-            <h2>Proyecto Integrador</h2>
-            <p>Diseñás, analizás e implementás un sistema interactivo real. Integra los 7 módulos de la materia en un único entregable de producción.</p>
+            <span class="proyectoEye"><i class="ph-bold ph-game-controller"></i> Proyecto integrador</span>
+            <h2>Construís tu propio<br><span class="proyectoTitleAccent">trivia multijugador</span></h2>
+            <p>Un juego en tiempo real donde el curso entero juega tu versión en la última clase. El servidor que aguante más jugadores sin romperse gana.</p>
           </div>
 
-          <div class="proyectoDesc reveal">
-            <div class="proyectoDescText">
-              <h3>¿Qué es?</h3>
-              <p>Elegís un sistema interactivo real o lo diseñás desde cero: puede ser una app, un juego, una instalación, una plataforma web. Lo analizás desde todos los ejes de la materia: interactividad, UX, concurrencia, comunicación entre procesos, sincronización y performance.</p>
-              <p>El proyecto se desarrolla a lo largo del cuatrimestre en <strong>4 etapas</strong>. Cada una tiene entrega y feedback antes de la siguiente.</p>
+          <!-- CONCEPTO VISUAL -->
+          <div class="proyectoConcepto reveal">
+            <div class="proyectoConceptoLeft">
+              <div class="proyectoMock">
+                <div class="proyectoMockBar">
+                  <span class="proyectoMockDot" style="background:#ff5f57"></span>
+                  <span class="proyectoMockDot" style="background:#febc2e"></span>
+                  <span class="proyectoMockDot" style="background:#28c840"></span>
+                  <span class="proyectoMockTitle">TriviaApp — Servidor Java</span>
+                </div>
+                <div class="proyectoMockBody">
+                  <div class="proyectoMockQuestion">
+                    <span class="proyectoMockTimer">12s</span>
+                    <p>¿Cuántas condiciones de Coffman son necesarias para que ocurra un deadlock?</p>
+                  </div>
+                  <div class="proyectoMockOptions">
+                    <div class="proyectoMockOpt" style="--oc:#4a8ef0">A &nbsp; 2 condiciones</div>
+                    <div class="proyectoMockOpt proyectoMockOptWin" style="--oc:#00e8c6">B &nbsp; 4 condiciones ✓</div>
+                    <div class="proyectoMockOpt" style="--oc:#f43f5e">C &nbsp; 3 condiciones</div>
+                    <div class="proyectoMockOpt" style="--oc:#f59e0b">D &nbsp; 1 condición</div>
+                  </div>
+                  <div class="proyectoMockPlayers">
+                    <div class="proyectoMockPlayer"><span class="proyectoMockAvatar" style="--av:#a855f7">ML</span><span>Mati L.</span><span class="proyectoMockScore">1200</span></div>
+                    <div class="proyectoMockPlayer"><span class="proyectoMockAvatar" style="--av:#00e8c6">SR</span><span>Sofia R.</span><span class="proyectoMockScore">980</span></div>
+                    <div class="proyectoMockPlayer"><span class="proyectoMockAvatar" style="--av:#ffd166">JP</span><span>Juan P.</span><span class="proyectoMockScore">860</span></div>
+                    <div class="proyectoMockPlayer proyectoMockPlayerMore"><span>+17 jugadores conectados</span></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="proyectoDescTag">
-              <div class="proyectoStat"><span class="proyectoStatNum">4</span><span>etapas</span></div>
-              <div class="proyectoStat"><span class="proyectoStatNum">40</span><span>puntos</span></div>
-              <div class="proyectoStat"><span class="proyectoStatNum">1–2</span><span>personas</span></div>
+
+            <div class="proyectoConceptoRight">
+              <h3>¿Por qué este proyecto?</h3>
+              <p>Un juego de trivia multijugador en tiempo real tiene exactamente los problemas que estudiaron — no de forma teórica, sino como bugs reales que se ven en pantalla.</p>
+              <div class="proyectoConceptoItems">
+                <div class="proyectoConceptoItem">
+                  <span class="proyectoConceptoBadge" style="--cb:#ffd166">M1</span>
+                  <span>El ciclo estímulo → respuesta → feedback es el loop del juego completo</span>
+                </div>
+                <div class="proyectoConceptoItem">
+                  <span class="proyectoConceptoBadge" style="--cb:#a855f7">M2</span>
+                  <span>¿La interfaz se entiende sin instrucciones? Lo prueban con usuarios reales</span>
+                </div>
+                <div class="proyectoConceptoItem">
+                  <span class="proyectoConceptoBadge" style="--cb:#00e8c6">M3</span>
+                  <span>Cada jugador conectado = un hilo. Con 20 jugadores aparece la race condition en el puntaje</span>
+                </div>
+                <div class="proyectoConceptoItem">
+                  <span class="proyectoConceptoBadge" style="--cb:#4a8ef0">M4</span>
+                  <span>El servidor broadcastea la pregunta a todos simultáneamente — IPC por WebSocket</span>
+                </div>
+                <div class="proyectoConceptoItem">
+                  <span class="proyectoConceptoBadge" style="--cb:#f43f5e">M5</span>
+                  <span>Sin mutex el primer lugar se corrompe: dos jugadores "ganan" al mismo tiempo</span>
+                </div>
+                <div class="proyectoConceptoItem">
+                  <span class="proyectoConceptoBadge" style="--cb:#38bdf8">M6</span>
+                  <span>El ranking se calcula con streams paralelos — miden el speedup real</span>
+                </div>
+                <div class="proyectoConceptoItem">
+                  <span class="proyectoConceptoBadge" style="--cb:#a3e635">M7</span>
+                  <span>¿Aguanta 50 jugadores? Análisis Amdahl del cuello de botella con carga real</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="proyectoEtapas reveal">
+          <!-- REGLAS -->
+          <div class="proyectoReglas reveal">
+            <div class="proyectoRegla">
+              <i class="ph-bold ph-users-two" style="color:#a855f7"></i>
+              <div>
+                <strong>Grupos de 2</strong>
+                <span>Sin dónde esconderse. Cada uno es dueño de una capa del sistema.</span>
+              </div>
+            </div>
+            <div class="proyectoRegla">
+              <i class="ph-bold ph-robot" style="color:#00e8c6"></i>
+              <div>
+                <strong>Podés usar IA para generar código</strong>
+                <span>Claude, ChatGPT, lo que quieran. Pero en la presentación les preguntamos por cualquier línea.</span>
+              </div>
+            </div>
+            <div class="proyectoRegla">
+              <i class="ph-bold ph-trophy" style="color:#ffd166"></i>
+              <div>
+                <strong>El curso entero juega en la final</strong>
+                <span>El servidor que aguante más jugadores sin romperse gana reputación eterna.</span>
+              </div>
+            </div>
+          </div>
 
-            <div class="proyectoEtapa">
-              <div class="proyectoEtapaNum" style="--en:#ffd166">01</div>
-              <div class="proyectoEtapaBody">
-                <div class="proyectoEtapaHead">
-                  <h4>Análisis de interactividad y UX</h4>
-                  <span class="proyectoEtapaPts">10 pts</span>
+          <!-- ETAPAS -->
+          <div class="proyectoEtapasNew reveal">
+
+            <div class="proyectoEtapaNew" style="--en:#ffd166">
+              <div class="proyectoEtapaNewNum">01</div>
+              <div class="proyectoEtapaNewBody">
+                <div class="proyectoEtapaNewHead">
+                  <h4>Diseño + IA + primer servidor</h4>
+                  <span class="proyectoEtapaNewPts">10 pts</span>
                 </div>
-                <p>Elegís el sistema y lo analizás: ¿qué nivel de interactividad tiene? ¿Qué ciclo estímulo-acción-feedback usa? Auditá la interfaz con las 10 heurísticas de Nielsen. Identificá 3 problemas de UX y proponé soluciones justificadas.</p>
+                <p>Usá IA para generar el servidor base en Java (WebSocket + preguntas + puntaje simple). Diseñá la pantalla del jugador en wireframes. Documentá cada decisión de arquitectura con tus palabras: cuántos hilos, cómo se comunican, dónde puede fallar.</p>
+                <p class="proyectoEtapaNewAlerta"><i class="ph-bold ph-warning"></i> El servidor intencionalmente NO tiene sincronización correcta. El puntaje se va a romper con múltiples jugadores. Eso es parte del diseño.</p>
                 <div class="proyectoEntregables">
-                  <span><i class="ph-bold ph-file-text"></i> Informe de análisis</span>
-                  <span><i class="ph-bold ph-flow-arrow"></i> Diagrama de flujo de usuario</span>
-                  <span><i class="ph-bold ph-pencil-ruler"></i> Wireframes del rediseño</span>
+                  <span><i class="ph-bold ph-code"></i> Servidor Java funcional (mínimo 5 jugadores)</span>
+                  <span><i class="ph-bold ph-pencil-ruler"></i> Wireframes de pantalla jugador + host</span>
+                  <span><i class="ph-bold ph-file-text"></i> Doc de arquitectura con tus palabras</span>
                 </div>
               </div>
             </div>
 
-            <div class="proyectoEtapa">
-              <div class="proyectoEtapaNum" style="--en:#a855f7">02</div>
-              <div class="proyectoEtapaBody">
-                <div class="proyectoEtapaHead">
-                  <h4>Arquitectura de concurrencia e IPC</h4>
-                  <span class="proyectoEtapaPts">10 pts</span>
+            <div class="proyectoEtapaNew" style="--en:#f43f5e">
+              <div class="proyectoEtapaNewNum">02</div>
+              <div class="proyectoEtapaNewBody">
+                <div class="proyectoEtapaNewHead">
+                  <h4>Rompé el servidor — y arreglalo</h4>
+                  <span class="proyectoEtapaNewPts">10 pts</span>
                 </div>
-                <p>Diseñás la arquitectura del backend: ¿cuántos procesos tiene el sistema? ¿Cómo se comunican (pipes, sockets, memoria compartida)? ¿Qué tareas son concurrentes? Implementás un prototipo funcional en Java que demuestre el modelo de concurrencia.</p>
+                <p>Reproducí la race condition intencionalmente: creá un script que mande 20 respuestas simultáneas y mostrá que el puntaje se corrompe. Grabá el output. Luego agregá la sincronización correcta (mutex, synchronized, AtomicInteger) y demostrá que ya no se rompe. Compará el rendimiento antes y después.</p>
                 <div class="proyectoEntregables">
-                  <span><i class="ph-bold ph-graph"></i> Diagrama de arquitectura</span>
-                  <span><i class="ph-bold ph-code"></i> Prototipo Java con hilos e IPC</span>
-                  <span><i class="ph-bold ph-file-code"></i> Documentación de decisiones técnicas</span>
+                  <span><i class="ph-bold ph-bug"></i> Demo de la race condition (video o log)</span>
+                  <span><i class="ph-bold ph-lock-key"></i> Código corregido con sincronización</span>
+                  <span><i class="ph-bold ph-chart-bar"></i> Tabla comparativa: sin sync vs con sync</span>
                 </div>
               </div>
             </div>
 
-            <div class="proyectoEtapa">
-              <div class="proyectoEtapaNum" style="--en:#00e8c6">03</div>
-              <div class="proyectoEtapaBody">
-                <div class="proyectoEtapaHead">
-                  <h4>Sincronización y testing de usabilidad</h4>
-                  <span class="proyectoEtapaPts">10 pts</span>
+            <div class="proyectoEtapaNew" style="--en:#a855f7">
+              <div class="proyectoEtapaNewNum">03</div>
+              <div class="proyectoEtapaNewBody">
+                <div class="proyectoEtapaNewHead">
+                  <h4>UX real + IPC + event loop</h4>
+                  <span class="proyectoEtapaNewPts">10 pts</span>
                 </div>
-                <p>Implementás los mecanismos de sincronización que el sistema necesita (mutex, semáforos, monitores). Realizás una prueba de usabilidad con al menos 3 usuarios reales usando el método think-aloud. Documentás los hallazgos y las correcciones aplicadas.</p>
+                <p>Probá la interfaz con 3 personas reales (método think-aloud): ¿pueden unirse sin instrucciones? ¿Entienden cómo responder? Documentá los hallazgos y corregí. Reemplazá el modelo thread-per-client por un event loop con NIO o Spring WebSocket. Medí cuántas conexiones aguanta ahora.</p>
                 <div class="proyectoEntregables">
-                  <span><i class="ph-bold ph-lock-key"></i> Implementación de sincronización</span>
-                  <span><i class="ph-bold ph-user-sound"></i> Registro de prueba con usuarios</span>
-                  <span><i class="ph-bold ph-chart-bar"></i> Métricas de usabilidad (SUS, task completion)</span>
+                  <span><i class="ph-bold ph-user-sound"></i> Video/registro de prueba con usuarios</span>
+                  <span><i class="ph-bold ph-lightning"></i> Servidor refactorizado con event loop</span>
+                  <span><i class="ph-bold ph-arrows-out-line-horizontal"></i> Benchmark: threads vs event loop (N conexiones)</span>
                 </div>
               </div>
             </div>
 
-            <div class="proyectoEtapa">
-              <div class="proyectoEtapaNum" style="--en:#38bdf8">04</div>
-              <div class="proyectoEtapaBody">
-                <div class="proyectoEtapaHead">
-                  <h4>Performance y presentación final</h4>
-                  <span class="proyectoEtapaPts">10 pts</span>
+            <div class="proyectoEtapaNew" style="--en:#38bdf8">
+              <div class="proyectoEtapaNewNum">04</div>
+              <div class="proyectoEtapaNewBody">
+                <div class="proyectoEtapaNewHead">
+                  <h4>Performance + La Gran Final</h4>
+                  <span class="proyectoEtapaNewPts">10 pts</span>
                 </div>
-                <p>Medís el rendimiento del sistema: ¿qué parte es el cuello de botella? Aplicás la Ley de Amdahl para calcular el speedup máximo teórico. Implementás al menos una optimización paralela medible. Presentás el proyecto completo en 10 minutos con demo en vivo.</p>
+                <p>Identificá el cuello de botella con un profiler o benchmark manual. Aplicá la Ley de Amdahl para calcular el speedup máximo teórico. Paralelizá el cálculo del ranking con streams paralelos o Fork/Join. Presentación de 10 minutos donde el curso entero juega en vivo: los demás grupos intentan romper tu servidor con conexiones masivas.</p>
                 <div class="proyectoEntregables">
-                  <span><i class="ph-bold ph-timer"></i> Benchmark antes/después con tabla</span>
                   <span><i class="ph-bold ph-chart-line-up"></i> Análisis Amdahl del cuello de botella</span>
-                  <span><i class="ph-bold ph-presentation"></i> Presentación + demo (10 min)</span>
+                  <span><i class="ph-bold ph-git-branch"></i> Ranking paralelo implementado y medido</span>
+                  <span><i class="ph-bold ph-presentation"></i> Demo en vivo con el curso como jugadores</span>
                 </div>
               </div>
             </div>
 
+          </div>
+
+          <!-- LA GRAN FINAL -->
+          <div class="proyectoFinal reveal">
+            <div class="proyectoFinalGlow"></div>
+            <div class="proyectoFinalContent">
+              <div class="proyectoFinalIcon"><i class="ph-bold ph-trophy"></i></div>
+              <div>
+                <h3>La Gran Final — última clase del cuatrimestre</h3>
+                <p>Cada grupo prende su servidor. El curso entero se conecta desde el celular y juega una partida. Los demás grupos stress-testean el servidor ajeno: mandan conexiones masivas, respuestas simultáneas, intentan hacerlo caer. El grupo con mejor UX <em>y</em> servidor más estable gana. No hay forma de fakear un sistema que se rompe en vivo.</p>
+              </div>
+            </div>
           </div>
 
         </div>
