@@ -106,6 +106,18 @@ function pipeNarrate(html) {
   if (el) el.innerHTML = html;
 }
 
+function pipeLogEvent(text, type) {
+  const log = document.getElementById('pipeLog');
+  if (!log) return;
+  const empty = log.querySelector('.m4evtLogEmpty');
+  if (empty) empty.remove();
+  const entry = document.createElement('div');
+  entry.className = 'm4evtLogEntry ' + (type || '');
+  entry.textContent = text;
+  log.insertBefore(entry, log.firstChild);
+  while (log.children.length > 8) log.removeChild(log.lastChild);
+}
+
 function pipeWriterStep() {
   if (!pipe.running) return;
   if (pipe.writerPaused) {
@@ -118,6 +130,7 @@ function pipeWriterStep() {
       pipe.writerBlocked = true;
       pipeSetBadge('pipeWriterBadge', 'blocked');
       pipeNarrate('🔒 <strong>write() BLOQUEADO</strong> — el kernel buffer está lleno (<strong>' + PIPE_BUF_SIZE + '/' + PIPE_BUF_SIZE + '</strong>). Proceso A llamó a write() pero no hay espacio. El SO suspende a Proceso A hasta que Proceso B lea algún dato y libere espacio. Este mecanismo se llama <em>backpressure</em>.');
+      pipeLogEvent('write() BLOQUEADO — buffer lleno (' + PIPE_BUF_SIZE + '/' + PIPE_BUF_SIZE + ')', 'blocked');
     }
     pipe.writerTimer = setTimeout(pipeWriterStep, 150);
     return;
@@ -133,6 +146,7 @@ function pipeWriterStep() {
   const pct = Math.round((pipe.buf.length / PIPE_BUF_SIZE) * 100);
   const warn = pct >= 87 ? ' ⚠️ Buffer casi lleno — write() se bloqueará pronto.' : pct >= 60 ? ' Buffer por encima del 60%.' : '';
   pipeNarrate('✏️ <strong>Proceso A escribió D' + pipe.sent + '</strong> en el pipe. Buffer: <strong>' + pipe.buf.length + '/' + PIPE_BUF_SIZE + '</strong> (' + pct + '%).' + warn + ' Los datos se acumulan en orden FIFO.');
+  pipeLogEvent('write(D' + pipe.sent + ') → buffer ' + pipe.buf.length + '/' + PIPE_BUF_SIZE, 'write');
   pipe.writerTimer = setTimeout(pipeWriterStep, pipe.writeMs);
 }
 
@@ -148,6 +162,7 @@ function pipeReaderStep() {
       pipe.readerBlocked = true;
       pipeSetBadge('pipeReaderBadge', 'blocked');
       pipeNarrate('📭 <strong>read() BLOQUEADO</strong> — el buffer está vacío (<strong>0/' + PIPE_BUF_SIZE + '</strong>). Proceso B llamó a read() pero no hay datos disponibles. El SO suspende a Proceso B hasta que Proceso A escriba algo. Sin busy-waiting — no consume CPU mientras espera.');
+      pipeLogEvent('read() BLOQUEADO — buffer vacío (0/' + PIPE_BUF_SIZE + ')', 'blocked');
     }
     pipe.readerTimer = setTimeout(pipeReaderStep, 150);
     return;
@@ -158,6 +173,7 @@ function pipeReaderStep() {
   pipeSetBadge('pipeReaderBadge', 'reading');
   pipeRenderBuf();
   pipeNarrate('👁 <strong>Proceso B leyó D' + item + '</strong> del pipe (<em>FIFO — el dato más antiguo sale primero</em>). Buffer: <strong>' + pipe.buf.length + '/' + PIPE_BUF_SIZE + '</strong>. Total recibidos: ' + pipe.received + '.');
+  pipeLogEvent('read() → D' + item + ' (FIFO) | buffer ' + pipe.buf.length + '/' + PIPE_BUF_SIZE, 'read');
   pipe.readerTimer = setTimeout(pipeReaderStep, pipe.readMs);
 }
 
@@ -208,6 +224,8 @@ function pipeReset() {
   const btn = document.getElementById('pipeBtn');
   if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar';
   pipeNarrate('Presioná <strong>Iniciar</strong> para ver el flujo de datos en el pipe.<span class="m4pipeNarHint">write() bloquea cuando el buffer está lleno · read() bloquea cuando está vacío · los datos salen en el mismo orden que entraron (FIFO)</span>');
+  const pipeLog = document.getElementById('pipeLog');
+  if (pipeLog) pipeLog.innerHTML = '<div class="m4evtLogEmpty">Los eventos del pipe aparecerán acá cuando inicies la simulación.</div>';
 }
 
 pipeInitSlots();
@@ -520,6 +538,9 @@ function bqReset() {
 
   const btn = document.getElementById('bqToggleBtn');
   if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar';
+
+  const bqLog = document.getElementById('bqLog');
+  if (bqLog) bqLog.innerHTML = '<div class="m4evtLogEmpty">Los eventos de la queue aparecerán acá cuando inicies la simulación.</div>';
 }
 
 function bqNarrate(html) {
@@ -530,8 +551,10 @@ function bqNarrate(html) {
 function bqLogEvent(text, type) {
   const log = document.getElementById('bqLog');
   if (!log) return;
+  const empty = log.querySelector('.m4evtLogEmpty');
+  if (empty) empty.remove();
   const entry = document.createElement('div');
-  entry.className = 'm4bqLogEntry ' + (type || '');
+  entry.className = 'm4evtLogEntry ' + (type || '');
   entry.textContent = text;
   log.insertBefore(entry, log.firstChild);
   while (log.children.length > 6) log.removeChild(log.lastChild);

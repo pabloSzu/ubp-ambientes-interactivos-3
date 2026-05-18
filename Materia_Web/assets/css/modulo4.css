@@ -640,25 +640,38 @@
 .m4bqNarration strong { color: var(--text); }
 .m4bqNarHint { display: block; margin-top: 6px; font-size: 11px; opacity: .6; }
 
-/* ─── BQ Event Log ───────────────────────────── */
-.m4bqLog {
-  display: flex; flex-direction: column; gap: 4px;
-  margin-top: 16px;
-  max-height: 140px; overflow-y: auto;
-  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.1) transparent;
-}
-.m4bqLogEntry {
+/* ─── Shared Event Log ───────────────────────── */
+@keyframes m4logIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:none} }
+.m4evtLogEmpty { font-size: 11px; color: var(--muted); font-style: italic; padding: 4px 8px; }
+.m4evtLogEntry {
   font-size: 11px; font-family: monospace;
   padding: 5px 10px; border-radius: 5px;
   border-left: 3px solid rgba(255,255,255,.15);
   background: rgba(255,255,255,.03);
-  color: var(--sub);
+  color: var(--sub); flex-shrink: 0;
   animation: m4logIn 200ms ease-out both;
 }
-@keyframes m4logIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:none} }
-.m4bqLogEntry.produce { border-left-color: var(--accent); }
-.m4bqLogEntry.consume { border-left-color: #4a8ef0; }
-.m4bqLogEntry.blocked { border-left-color: #ff5050; color: #ff9b6b; }
+
+/* ─── BQ Event Log ───────────────────────────── */
+.m4bqLog {
+  display: flex; flex-direction: column; gap: 4px;
+  margin-top: 16px;
+  height: 148px; overflow-y: auto; /* fixed height — no layout shift when entries added */
+  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.1) transparent;
+}
+.m4bqLog .m4evtLogEntry.produce { border-left-color: var(--accent); }
+.m4bqLog .m4evtLogEntry.consume { border-left-color: #4a8ef0; }
+.m4bqLog .m4evtLogEntry.blocked { border-left-color: #ff5050; color: #ff9b6b; }
+
+/* ─── Pipe Event Log ─────────────────────────── */
+.m4pipeLog {
+  height: 120px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 4px;
+  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.1) transparent;
+}
+.m4pipeLog .m4evtLogEntry.write   { border-left-color: #9b6fff; }
+.m4pipeLog .m4evtLogEntry.read    { border-left-color: #00e8c6; }
+.m4pipeLog .m4evtLogEntry.blocked { border-left-color: #ff5050; color: #ff9b6b; }
 
 /* Flash quiz */
 .m4flashQuizWrap {

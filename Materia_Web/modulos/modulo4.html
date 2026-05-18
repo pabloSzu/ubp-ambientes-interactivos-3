@@ -473,6 +473,11 @@
     <span class="m4pipeNarHint">write() bloquea cuando el buffer está lleno · read() bloquea cuando está vacío · los datos salen en el mismo orden que entraron (FIFO)</span>
   </div>
 
+  <!-- LOG DE EVENTOS -->
+  <div class="m4pipeLog" id="pipeLog">
+    <div class="m4evtLogEmpty">Los eventos del pipe aparecerán acá cuando inicies la simulación.</div>
+  </div>
+
   <!-- CONTROLS -->
   <div class="m4pipeControls">
     <button class="m4btn m4btnAccent" id="pipeBtn" onclick="pipeToggle()">
@@ -821,7 +826,9 @@ public class PipedStreamDemo {
           </div>
 
           <!-- EVENT LOG -->
-          <div class="m4bqLog" id="bqLog"></div>
+          <div class="m4bqLog" id="bqLog">
+            <div class="m4evtLogEmpty">Los eventos de la queue aparecerán acá cuando inicies la simulación.</div>
+          </div>
 
           <!-- CONTROLS -->
           <div class="m4bqCtrl">
