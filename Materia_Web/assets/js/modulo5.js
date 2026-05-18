@@ -1018,6 +1018,245 @@ document.querySelectorAll('.m5flipCard').forEach(card => {
   card.addEventListener('click', () => card.classList.toggle('flipped'));
 });
 
+/* ═══════════════════════════════════════════
+   RACE CONDITION SIMULATOR
+═══════════════════════════════════════════ */
+
+const rc = {
+  mode: 'race',
+  step: 0,
+  counter: 0,
+  expected: 0,
+  lost: 0,
+  rounds: 0,
+  running: false,
+  timer: null,
+  locked: null,
+  speedMs: 700,
+  t1: { local: null, state: 'idle' },
+  t2: { local: null, state: 'idle' },
+};
+
+/* ── Helpers ─────────────────────────────── */
+function rcSetThread(id, state, local) {
+  const t = id === 'T1' ? rc.t1 : rc.t2;
+  t.state = state; t.local = local;
+  const el = document.getElementById('rcThread' + id);
+  if (el) el.dataset.state = state;
+  const opEl = document.getElementById('rcOp' + id);
+  const stateLabels = {
+    idle: 'IDLE', reading: 'READ ←', incrementing: 'local++',
+    writing: '→ WRITE', waiting: 'ESPERANDO…', locked: '🔒 TIENE LOCK',
+  };
+  if (opEl) opEl.textContent = stateLabels[state] || state.toUpperCase();
+  const localEl = document.getElementById('rcLocal' + id);
+  if (localEl) localEl.textContent = local !== null && local !== undefined ? local : '–';
+}
+
+function rcDrawCounter(lost) {
+  const valEl = document.getElementById('rcCounterVal');
+  const box   = document.getElementById('rcCounterBox');
+  if (valEl) valEl.textContent = rc.counter;
+  if (lost && box) {
+    box.classList.remove('lost');
+    void box.offsetWidth; // reflow to restart animation
+    box.classList.add('lost');
+    // floating badge
+    const badge = document.createElement('div');
+    badge.className = 'm5rcLostBadge';
+    badge.textContent = '−1 PERDIDO';
+    box.appendChild(badge);
+    setTimeout(() => { box.classList.remove('lost'); badge.remove(); }, 1200);
+  }
+}
+
+function rcDrawLock(holder) {
+  const el = document.getElementById('rcLockBadge');
+  if (!el) return;
+  if (!holder) { el.textContent = 'LIBRE'; el.dataset.state = 'free'; }
+  else if (holder === 'T1') { el.textContent = '🔒 T1'; el.dataset.state = 't1'; }
+  else { el.textContent = '🔒 T2'; el.dataset.state = 't2'; }
+}
+
+function rcNarrate(html) {
+  const el = document.getElementById('rcNarration');
+  if (el) el.innerHTML = html;
+}
+
+function rcDrawStats() {
+  const set = (id, val, cls) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = val;
+    el.className = 'm5rcStatNum' + (cls ? ' ' + cls : '');
+  };
+  set('rcExpected', rc.expected);
+  set('rcActual',   rc.counter,  rc.lost > 0 && rc.mode === 'race' ? 'bad' : '');
+  set('rcLost',     rc.lost,     rc.lost > 0 ? 'bad' : '');
+  set('rcRounds',   rc.rounds);
+}
+
+/* ── Race steps (1 round = 4 steps) ─────── */
+const rcRaceSteps = [
+  () => {
+    const v = rc.counter;
+    rc.t1.local = v; rc.t2.local = v;
+    rcSetThread('T1', 'reading', v);
+    rcSetThread('T2', 'reading', v);
+    rcNarrate(`Ambos hilos llaman a <code>contador++</code> al mismo tiempo. Los dos leen el valor actual: <strong>${v}</strong>. El scheduler puede interrumpirlos entre el READ y el WRITE.`);
+  },
+  () => {
+    rc.t1.local++; rc.t2.local++;
+    rcSetThread('T1', 'incrementing', rc.t1.local);
+    rcSetThread('T2', 'incrementing', rc.t2.local);
+    rcNarrate(`T1 calcula <strong>${rc.t1.local - 1} + 1 = ${rc.t1.local}</strong>. T2 calcula <strong>${rc.t2.local - 1} + 1 = ${rc.t2.local}</strong>. Ambos tienen el mismo resultado en su registro privado.`);
+  },
+  () => {
+    rc.counter = rc.t1.local;
+    rcSetThread('T1', 'writing', rc.t1.local);
+    rcSetThread('T2', 'idle', null);
+    rcDrawCounter(false);
+    rcNarrate(`T1 escribe <strong>${rc.t1.local}</strong>. Contador = ${rc.counter}. Hasta acá todo bien... ahora T2 también va a escribir su valor.`);
+  },
+  () => {
+    rc.counter = rc.t2.local; // mismo valor → overwrite
+    rc.expected += 2;
+    rc.lost++;
+    rc.rounds++;
+    rcSetThread('T1', 'idle', null);
+    rcSetThread('T2', 'writing', rc.t2.local);
+    rcDrawCounter(true);
+    rcDrawStats();
+    rcNarrate(`💥 T2 escribe <strong>${rc.t2.local}</strong>... ¡el mismo número que T1! El contador debería ser <strong>${rc.expected}</strong> pero quedó en <strong>${rc.counter}</strong>. <strong>Un incremento se perdió para siempre.</strong> Esto es una race condition.`);
+  },
+];
+
+/* ── Mutex steps (1 round = 8 steps) ────── */
+const rcMutexSteps = [
+  () => {
+    rc.locked = 'T1';
+    rcSetThread('T1', 'locked', null);
+    rcSetThread('T2', 'waiting', null);
+    rcDrawLock('T1');
+    rcNarrate(`T1 llama a <code>mutex.lock()</code> y lo adquiere. El SO bloquea a T2 automáticamente — intentó hacer <code>lock()</code> pero alguien ya lo tiene. T2 no consume CPU mientras espera.`);
+  },
+  () => {
+    rc.t1.local = rc.counter;
+    rcSetThread('T1', 'reading', rc.t1.local);
+    rcNarrate(`T1 lee el contador con exclusividad total: <strong>${rc.t1.local}</strong>. Nadie más puede leer ni escribir mientras T1 tiene el mutex.`);
+  },
+  () => {
+    rc.t1.local++;
+    rcSetThread('T1', 'incrementing', rc.t1.local);
+    rcNarrate(`T1 calcula: <strong>${rc.t1.local - 1} + 1 = ${rc.t1.local}</strong>. T2 sigue bloqueado esperando el mutex.`);
+  },
+  () => {
+    rc.counter = rc.t1.local;
+    rcSetThread('T1', 'writing', rc.t1.local);
+    rcDrawCounter(false);
+    rcNarrate(`T1 escribe <strong>${rc.t1.local}</strong>. Contador actualizado correctamente. Ahora va a liberar el mutex.`);
+  },
+  () => {
+    rc.locked = 'T2';
+    rcSetThread('T1', 'idle', null);
+    rcSetThread('T2', 'locked', null);
+    rcDrawLock('T2');
+    rcNarrate(`T1 llama a <code>mutex.unlock()</code>. El SO desbloquea a T2 que estaba esperando. T2 adquiere el mutex inmediatamente.`);
+  },
+  () => {
+    rc.t2.local = rc.counter; // lee el valor YA actualizado por T1
+    rcSetThread('T2', 'reading', rc.t2.local);
+    rcNarrate(`T2 lee <strong>${rc.t2.local}</strong> — el valor correcto que dejó T1, no el valor viejo. Esto es exactamente lo que el mutex garantiza.`);
+  },
+  () => {
+    rc.t2.local++;
+    rcSetThread('T2', 'incrementing', rc.t2.local);
+    rcNarrate(`T2 calcula: <strong>${rc.t2.local - 1} + 1 = ${rc.t2.local}</strong>.`);
+  },
+  () => {
+    rc.counter = rc.t2.local;
+    rc.locked = null;
+    rc.expected += 2;
+    rc.rounds++;
+    rcSetThread('T2', 'idle', null);
+    rcDrawCounter(false);
+    rcDrawLock(null);
+    rcDrawStats();
+    rcNarrate(`✅ T2 escribe <strong>${rc.t2.local}</strong> y libera el mutex. Esperado: <strong>${rc.expected}</strong>, Actual: <strong>${rc.counter}</strong>. <strong>Resultado perfecto.</strong> Perdidos: 0. El mutex eliminó la race condition.`);
+  },
+];
+
+/* ── Step controller ─────────────────────── */
+function rcStep() {
+  const steps = rc.mode === 'race' ? rcRaceSteps : rcMutexSteps;
+  steps[rc.step]();
+  rc.step = (rc.step + 1) % steps.length;
+}
+
+/* ── Play / Pause ────────────────────────── */
+function rcTogglePlay() {
+  const btn = document.getElementById('rcPlayBtn');
+  if (rc.running) {
+    clearInterval(rc.timer);
+    rc.running = false;
+    if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Auto';
+  } else {
+    rc.running = true;
+    if (btn) btn.innerHTML = '<i class="ph-bold ph-pause"></i> Pausar';
+    rc.timer = setInterval(rcStep, rc.speedMs);
+  }
+}
+
+/* ── Speed ───────────────────────────────── */
+function rcSpeed(ms) {
+  rc.speedMs = ms;
+  document.querySelectorAll('.m5rcSpeedBtn').forEach(b => b.classList.remove('active'));
+  const labels = { 1200: 'Lento', 700: 'Normal', 280: 'Rápido' };
+  document.querySelectorAll('.m5rcSpeedBtn').forEach(b => {
+    if (b.textContent === labels[ms]) b.classList.add('active');
+  });
+  if (rc.running) {
+    clearInterval(rc.timer);
+    rc.timer = setInterval(rcStep, rc.speedMs);
+  }
+}
+
+/* ── Mode switch ─────────────────────────── */
+function rcSetMode(mode) {
+  if (rc.running) { clearInterval(rc.timer); rc.running = false; }
+  rc.mode = mode;
+  document.querySelectorAll('.m5rcModeBtn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector('.m5rcModeBtn.' + mode);
+  if (activeBtn) activeBtn.classList.add('active');
+  const playBtn = document.getElementById('rcPlayBtn');
+  if (playBtn) playBtn.innerHTML = '<i class="ph-bold ph-play"></i> Auto';
+  rcReset();
+}
+
+/* ── Reset ───────────────────────────────── */
+function rcReset() {
+  clearInterval(rc.timer);
+  rc.running = false;
+  rc.step = 0; rc.counter = 0; rc.expected = 0; rc.lost = 0; rc.rounds = 0;
+  rc.locked = null;
+  rc.t1 = { local: null, state: 'idle' };
+  rc.t2 = { local: null, state: 'idle' };
+
+  rcSetThread('T1', 'idle', null);
+  rcSetThread('T2', 'idle', null);
+  rcDrawCounter(false);
+  rcDrawLock(null);
+  rcDrawStats();
+
+  const playBtn = document.getElementById('rcPlayBtn');
+  if (playBtn) playBtn.innerHTML = '<i class="ph-bold ph-play"></i> Auto';
+
+  const msg = rc.mode === 'race'
+    ? 'Presioná <strong>Paso</strong> o <strong>Auto</strong>. Dos hilos van a hacer <code>contador++</code> al mismo tiempo. Observá cómo un incremento desaparece en cada ronda.'
+    : 'Presioná <strong>Paso</strong> o <strong>Auto</strong>. El mutex garantiza acceso exclusivo. T2 espera mientras T1 trabaja — ningún incremento se pierde.';
+  rcNarrate(msg);
+}
+
 /* ─── Prism on load ──────────────────────── */
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => { if (window.Prism) Prism.highlightAll(); });

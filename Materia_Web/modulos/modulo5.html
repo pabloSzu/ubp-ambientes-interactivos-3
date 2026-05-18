@@ -39,6 +39,7 @@
           </button>
           <div class="mhdrDropMenu">
             <a class="mhdrDropItem" href="#conceptos"><i class="ph ph-brain"></i> Conceptos clave</a>
+            <a class="mhdrDropItem" href="#race-sim"><i class="ph ph-warning-circle"></i> Race condition</a>
             <a class="mhdrDropItem" href="#filosofos-intro"><i class="ph ph-fork-knife"></i> El problema de los filósofos</a>
             <a class="mhdrDropItem" href="#simulador"><i class="ph ph-gear"></i> Simulador interactivo</a>
             <a class="mhdrDropItem" href="#coffman"><i class="ph ph-warning"></i> Condiciones de Coffman</a>
@@ -302,6 +303,109 @@
               <span class="m5conceptBullet">Sin progreso real</span>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── RACE CONDITION SIMULATOR ──────────── -->
+    <section class="msec" id="race-sim">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-warning-circle"></i> El problema raíz</span>
+          <h2>¿Por qué existe el mutex?</h2>
+          <p class="msecSub">Dos hilos hacen <code>contador++</code> al mismo tiempo. Sin sincronización, el resultado es incorrecto. Con mutex, es perfecto. Mirá la diferencia en tiempo real.</p>
+        </div>
+
+        <div class="m5rcSim reveal">
+
+          <!-- MODE TOGGLE -->
+          <div class="m5rcModes">
+            <span class="m5rcModesLabel"><i class="ph ph-sliders"></i> Modo:</span>
+            <button class="m5rcModeBtn race active" onclick="rcSetMode('race')">
+              <i class="ph-bold ph-warning"></i> Sin mutex — race condition
+            </button>
+            <button class="m5rcModeBtn mutex" onclick="rcSetMode('mutex')">
+              <i class="ph-bold ph-lock-key"></i> Con mutex — correcto
+            </button>
+          </div>
+
+          <!-- ARENA -->
+          <div class="m5rcArena">
+
+            <!-- T1 -->
+            <div class="m5rcThread" id="rcThreadT1" data-state="idle" style="--tc:#ff7d54">
+              <div class="m5rcThName">
+                <span class="m5rcThDot"></span>
+                <span class="m5rcThLabel">Hilo T1</span>
+              </div>
+              <div class="m5rcThOp" id="rcOpT1">IDLE</div>
+              <div class="m5rcThLocalWrap">local = <span class="m5rcThLocalVal" id="rcLocalT1">–</span></div>
+            </div>
+
+            <!-- CONTADOR -->
+            <div class="m5rcCounterWrap">
+              <div class="m5rcCounterLabel">contador compartido</div>
+              <div class="m5rcCounterBox" id="rcCounterBox">
+                <div class="m5rcCounterVal" id="rcCounterVal">0</div>
+              </div>
+              <div class="m5rcLockBadge" id="rcLockBadge" data-state="free">LIBRE</div>
+            </div>
+
+            <!-- T2 -->
+            <div class="m5rcThread" id="rcThreadT2" data-state="idle" style="--tc:#4a8ef0">
+              <div class="m5rcThName">
+                <span class="m5rcThDot"></span>
+                <span class="m5rcThLabel">Hilo T2</span>
+              </div>
+              <div class="m5rcThOp" id="rcOpT2">IDLE</div>
+              <div class="m5rcThLocalWrap">local = <span class="m5rcThLocalVal" id="rcLocalT2">–</span></div>
+            </div>
+
+          </div>
+
+          <!-- NARRACIÓN -->
+          <div class="m5rcNarration" id="rcNarration">
+            Presioná <strong>Paso</strong> o <strong>Auto</strong> para ver qué pasa cuando dos hilos modifican la misma variable sin sincronización.
+          </div>
+
+          <!-- STATS -->
+          <div class="m5rcStats">
+            <div class="m5rcStat">
+              <span class="m5rcStatNum" id="rcExpected">0</span>
+              <span class="m5rcStatLabel">Esperado</span>
+            </div>
+            <div class="m5rcStat">
+              <span class="m5rcStatNum" id="rcActual">0</span>
+              <span class="m5rcStatLabel">Actual</span>
+            </div>
+            <div class="m5rcStat">
+              <span class="m5rcStatNum" id="rcLost">0</span>
+              <span class="m5rcStatLabel">Perdidos</span>
+            </div>
+            <div class="m5rcStat">
+              <span class="m5rcStatNum" id="rcRounds">0</span>
+              <span class="m5rcStatLabel">Rondas</span>
+            </div>
+          </div>
+
+          <!-- CONTROLS -->
+          <div class="m5rcControls">
+            <button class="m5btn m5btnAccent" id="rcPlayBtn" onclick="rcTogglePlay()">
+              <i class="ph-bold ph-play"></i> Auto
+            </button>
+            <button class="m5btn" onclick="rcStep()">
+              <i class="ph-bold ph-arrow-right"></i> Paso
+            </button>
+            <button class="m5btn" onclick="rcReset()">
+              <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset
+            </button>
+            <div class="m5rcSpeedBtns">
+              <button class="m5rcSpeedBtn" onclick="rcSpeed(1200)">Lento</button>
+              <button class="m5rcSpeedBtn active" onclick="rcSpeed(700)">Normal</button>
+              <button class="m5rcSpeedBtn" onclick="rcSpeed(280)">Rápido</button>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
