@@ -75,21 +75,29 @@
   color: var(--sub); max-width: 560px; line-height: 1.6; margin-bottom: 48px;
 }
 .m6heroStats {
-  display: flex; gap: 40px; flex-wrap: wrap;
+  display: flex; gap: 0; flex-wrap: wrap;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+  overflow: hidden; backdrop-filter: blur(20px);
+  background: rgba(6,8,15,0.55); max-width: 620px;
 }
 .m6heroStat {
-  display: flex; flex-direction: column; gap: 4px;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 22px 26px; flex: 1;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s;
 }
+.m6heroStat:last-child { border-right: none; }
+.m6heroStat:hover { background: rgba(255,255,255,0.03); }
 .m6heroStatNum {
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   font-weight: 900; color: var(--accent); line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 .m6heroStatUnit {
-  font-size: 14px; font-weight: 700; color: var(--accent); margin-top: -4px;
+  font-size: 13px; font-weight: 700; color: var(--accent); margin-top: -4px;
 }
 .m6heroStatLabel {
-  font-size: 12px; color: var(--sub); max-width: 180px; line-height: 1.4;
+  font-size: 13px; color: var(--sub); max-width: 160px; line-height: 1.45;
 }
 
 /* ─── Pull quote ─────────────────────────── */
