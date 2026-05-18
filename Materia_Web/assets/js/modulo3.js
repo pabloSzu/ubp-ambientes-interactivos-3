@@ -53,180 +53,202 @@ animateCounter(document.getElementById('counter1'), 16);
 animateCounter(document.getElementById('counter2'), 1000);
 animateCounter(document.getElementById('counter3'), 70);
 
-/* ─── Scheduler Animation ────────────────── */
-let schedulerRunning = false;
-let schedulerInterval = null;
-let schedulerCpuTimeout = null;
-
-const threadDefs = [
-  { name: 'T1', color: '#00e8c6' },
-  { name: 'T2', color: '#4a8ef0' },
-  { name: 'T3', color: '#a855f7' },
-  { name: 'T4', color: '#ff9b6b' },
+/* ─── Scheduler Simulation ───────────────────── */
+const SCHED_DEFS = [
+  { id: 'T1', color: '#00e8c6', totalTicks: 5 },
+  { id: 'T2', color: '#4a8ef0', totalTicks: 7 },
+  { id: 'T3', color: '#a855f7', totalTicks: 4 },
+  { id: 'T4', color: '#ff9b6b', totalTicks: 6 },
 ];
 
-let schedulerQueue = ['T1', 'T2', 'T3', 'T4'];
-let schedulerDone = [];
-let schedulerCpuBusy = false;
-let schedulerCycle = 0;
+const sched = { threads: [], running: false, timer: null, idx: 0, tickMs: 700, current: null };
 
-function makeBlock(name) {
-  const def = threadDefs.find(d => d.name === name);
-  const div = document.createElement('div');
-  div.className = 'm3schBlock';
-  div.style.setProperty('--bc', def ? def.color : '#fff');
-  div.dataset.name = name;
-  div.textContent = name;
-  return div;
+function schedInit() {
+  sched.threads = SCHED_DEFS.map(d => ({ ...d, done: 0, cpuMs: 0, state: 'RUNNABLE', blockedFor: 0 }));
+  sched.idx = 0;
+  sched.current = null;
+  sched.threads.forEach(t => schedDrawThread(t));
+  schedDrawCpu(null);
 }
 
-function renderQueue() {
-  const qEl = document.getElementById('schQueue');
-  if (!qEl) return;
-  qEl.innerHTML = '';
-  schedulerQueue.forEach(n => qEl.appendChild(makeBlock(n)));
+function schedDrawThread(t) {
+  const card  = document.getElementById('sth-' + t.id);
+  const stEl  = document.getElementById('sth-' + t.id + '-state');
+  const fillEl = document.getElementById('sth-' + t.id + '-fill');
+  const pctEl = document.getElementById('sth-' + t.id + '-pct');
+  const cpuEl = document.getElementById('sth-' + t.id + '-cpu');
+  if (!card) return;
+  const pct = Math.round((t.done / t.totalTicks) * 100);
+  card.dataset.state = t.state;
+  if (stEl)  { stEl.textContent = t.state; stEl.dataset.state = t.state; }
+  if (fillEl) fillEl.style.width = pct + '%';
+  if (pctEl)  pctEl.textContent = pct + '%';
+  if (cpuEl)  cpuEl.textContent = t.cpuMs + 'ms';
 }
 
-function renderDone() {
-  const dEl = document.getElementById('schDone');
-  if (!dEl) return;
-  dEl.innerHTML = '';
-  schedulerDone.forEach(n => dEl.appendChild(makeBlock(n)));
+function schedDrawCpu(t) {
+  const box  = document.getElementById('schedCpuBox');
+  const name = document.getElementById('schedCpuThread');
+  const stat = document.getElementById('schedCpuState');
+  if (!box) return;
+  if (!t) {
+    box.classList.remove('active');
+    box.style.setProperty('--cpu-color', 'rgba(255,255,255,0.06)');
+    if (name) { name.textContent = '—'; name.style.color = 'rgba(255,255,255,.3)'; }
+    if (stat) stat.textContent = 'Esperando';
+  } else {
+    box.classList.add('active');
+    box.style.setProperty('--cpu-color', t.color);
+    if (name) { name.textContent = t.id; name.style.color = t.color; }
+    if (stat) stat.textContent = 'RUNNING';
+  }
 }
 
-function setPhase(text) {
-  const ph = document.getElementById('schPhase');
-  if (ph) ph.textContent = text;
+function schedAddTick(t) {
+  const bar = document.getElementById('schedTlBar');
+  if (!bar) return;
+  const seg = document.createElement('div');
+  seg.className = 'm3schedTlSeg';
+  seg.title = t ? t.id : 'Ocioso';
+  seg.style.setProperty('--tc', t ? t.color : '#2a2a38');
+  seg.textContent = t ? t.id : '—';
+  bar.appendChild(seg);
+  bar.scrollLeft = bar.scrollWidth;
 }
 
-function setCpuLabel(text) {
-  const lb = document.getElementById('schCpuLabel');
-  if (lb) lb.textContent = text;
+function schedNarrate(html) {
+  const el = document.getElementById('schedNarration');
+  if (el) el.innerHTML = html;
 }
 
-function doSchedulerTick() {
-  if (schedulerCpuBusy) return;
+function schedStep() {
+  const ts = sched.threads;
 
-  if (schedulerQueue.length === 0) {
-    // All done — reset after pause
-    setPhase('Todos los hilos completados. Reiniciando cola...');
-    setCpuLabel('Libre');
-    const cpuEl = document.getElementById('schCpu');
-    if (cpuEl) cpuEl.classList.remove('active');
-    setTimeout(() => {
-      schedulerQueue = ['T1', 'T2', 'T3', 'T4'];
-      schedulerDone = [];
-      schedulerCycle = 0;
-      renderQueue();
-      renderDone();
-      setPhase('Nueva ronda — el scheduler vuelve a empezar');
-    }, 1500);
+  // Reset previous RUNNING → RUNNABLE
+  if (sched.current && sched.current.state === 'RUNNING') {
+    sched.current.state = 'RUNNABLE';
+    schedDrawThread(sched.current);
+  }
+
+  // Decrement blocked counters
+  ts.forEach(t => {
+    if (t.state === 'BLOCKED') {
+      t.blockedFor--;
+      if (t.blockedFor <= 0) { t.state = 'RUNNABLE'; schedDrawThread(t); }
+    }
+  });
+
+  // Todos terminaron
+  if (ts.every(t => t.state === 'DONE')) {
+    sched.current = null;
+    schedDrawCpu(null);
+    schedAddTick(null);
+    schedNarrate('🏁 <strong>Todos los hilos completaron su trabajo.</strong> El scheduler ya no tiene hilos pendientes — la CPU queda libre. Mirá el historial: eso es exactamente cómo se intercalaron los 4 hilos en una sola CPU.');
+    schedStop(true);
     return;
   }
 
-  schedulerCycle++;
-  schedulerCpuBusy = true;
-
-  // Pick a thread (usually first, occasionally a random one to show non-determinism)
-  let idx = 0;
-  if (schedulerCycle % 3 === 0 && schedulerQueue.length > 1) {
-    idx = Math.floor(Math.random() * schedulerQueue.length);
-  }
-  const chosen = schedulerQueue.splice(idx, 1)[0];
-  renderQueue();
-
-  // Context switch phase
-  setPhase(`Context switch → seleccionando ${chosen}...`);
-  setCpuLabel(chosen);
-
-  const cpuEl = document.getElementById('schCpu');
-  if (cpuEl) cpuEl.classList.add('active');
-
-  // Animate the CPU block appearance
-  if (typeof anime !== 'undefined') {
-    anime({
-      targets: cpuEl,
-      scale: [0.85, 1], opacity: [0.5, 1],
-      duration: 350, easing: 'easeOutBack'
-    });
+  // Buscar siguiente RUNNABLE (round-robin)
+  let chosen = null;
+  for (let i = 0; i < ts.length; i++) {
+    const t = ts[(sched.idx + i) % ts.length];
+    if (t.state === 'RUNNABLE') {
+      chosen = t;
+      sched.idx = (ts.indexOf(t) + 1) % ts.length;
+      break;
+    }
   }
 
-  // Running phase
-  setTimeout(() => {
-    setPhase(`Ejecutando ${chosen} — time slice activo`);
-  }, 400);
+  if (!chosen) {
+    // CPU ociosa — todos bloqueados
+    sched.current = null;
+    schedAddTick(null);
+    schedDrawCpu(null);
+    const bIds = ts.filter(t => t.state === 'BLOCKED').map(t => t.id).join(', ');
+    schedNarrate('⚠️ <strong>CPU ociosa</strong> — todos los hilos activos están BLOQUEADOS esperando locks (' + bIds + '). La CPU no puede hacer trabajo útil hasta que alguno se desbloquee.');
+    return;
+  }
 
-  // After running: decide to complete or re-queue
-  schedulerCpuTimeout = setTimeout(() => {
-    const willComplete = schedulerQueue.length === 0 || Math.random() < 0.5;
+  // Ejecutar chosen 1 tick
+  chosen.state = 'RUNNING';
+  chosen.done++;
+  chosen.cpuMs += sched.tickMs;
+  sched.current = chosen;
 
-    if (willComplete) {
-      // Thread completes
-      setPhase(`${chosen} terminó su ejecución → TERMINATED`);
-      schedulerDone.push(chosen);
-      renderDone();
-    } else {
-      // Time slice expired, put back in queue
-      setPhase(`Time slice de ${chosen} expiró → vuelve a RUNNABLE`);
-      // Put at end of queue
-      schedulerQueue.push(chosen);
-      renderQueue();
-    }
+  const pct    = Math.round((chosen.done / chosen.totalTicks) * 100);
+  const willDone  = chosen.done >= chosen.totalTicks;
+  const willBlock = !willDone && Math.random() < 0.18;
 
-    if (cpuEl) cpuEl.classList.remove('active');
-    setCpuLabel('Libre');
+  const waitList  = ts.filter(t => t !== chosen && t.state === 'RUNNABLE')
+    .map(t => '<span style="color:' + t.color + ';font-weight:700">' + t.id + '</span>');
+  const blockList = ts.filter(t => t.state === 'BLOCKED')
+    .map(t => '<span style="color:#ff9b6b;opacity:.7">' + t.id + ' ⚠</span>');
 
-    if (typeof anime !== 'undefined') {
-      anime({
-        targets: cpuEl,
-        scale: [1, 0.9, 1], opacity: [1, 0.6, 1],
-        duration: 300, easing: 'easeInOutQuad'
-      });
-    }
+  schedAddTick(chosen);
+  schedDrawThread(chosen);
+  schedDrawCpu(chosen);
 
-    schedulerCpuBusy = false;
-  }, 1600);
-}
-
-function toggleScheduler() {
-  const btn = document.getElementById('btnScheduler');
-  if (schedulerRunning) {
-    clearInterval(schedulerInterval);
-    clearTimeout(schedulerCpuTimeout);
-    schedulerInterval = null;
-    schedulerCpuTimeout = null;
-    schedulerRunning = false;
-    schedulerCpuBusy = false;
-    if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar';
-    setPhase('Pausado — presioná Iniciar para continuar');
+  if (willDone) {
+    chosen.state = 'DONE';
+    sched.current = null;
+    schedDrawThread(chosen);
+    schedDrawCpu(null);
+    const left = ts.filter(t => t.state !== 'DONE').length;
+    schedNarrate('✅ <strong style="color:' + chosen.color + '">' + chosen.id + ' terminó su tarea</strong> — estado TERMINATED. El scheduler ya no le asignará CPU.' + (left ? ' Quedan <strong>' + left + '</strong> hilo' + (left > 1 ? 's' : '') + ' activo' + (left > 1 ? 's' : '') + '.' : ''));
+  } else if (willBlock) {
+    const ticks = 2 + Math.floor(Math.random() * 2);
+    chosen.blockedFor = ticks;
+    chosen.state = 'BLOCKED';
+    sched.current = null;
+    schedDrawThread(chosen);
+    schedDrawCpu(null);
+    schedNarrate('🔒 <strong style="color:#ff9b6b">' + chosen.id + ' quedó BLOQUEADO</strong> — intentó adquirir un lock que otro hilo ya tiene. No consume CPU mientras espera. El scheduler pasa al próximo hilo disponible.');
   } else {
-    schedulerRunning = true;
-    if (btn) btn.innerHTML = '<i class="ph-bold ph-pause"></i> Pausar';
-    setPhase('Scheduler activo — observá el flujo de hilos');
-    doSchedulerTick();
-    schedulerInterval = setInterval(doSchedulerTick, 2200);
+    const others = [...waitList, ...blockList];
+    schedNarrate('▶ <strong style="color:' + chosen.color + '">' + chosen.id + ' tiene la CPU</strong> — ' + pct + '% completado. ' + (others.length ? 'Cola de listos: ' + others.join(', ') + '.' : 'Es el único hilo disponible.') + ' El scheduler intercala los hilos para que todos progresen.');
   }
 }
 
-function resetScheduler() {
-  clearInterval(schedulerInterval);
-  clearTimeout(schedulerCpuTimeout);
-  schedulerInterval = null;
-  schedulerCpuTimeout = null;
-  schedulerRunning = false;
-  schedulerCpuBusy = false;
-  schedulerQueue = ['T1', 'T2', 'T3', 'T4'];
-  schedulerDone = [];
-  schedulerCycle = 0;
-  renderQueue();
-  renderDone();
-  setCpuLabel('Esperando...');
-  setPhase('Presioná Iniciar para ver el scheduler en acción');
-  const cpuEl = document.getElementById('schCpu');
-  if (cpuEl) cpuEl.classList.remove('active');
-  const btn = document.getElementById('btnScheduler');
-  if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar';
+function schedToggle() { if (sched.running) schedStop(); else schedStart(); }
+
+function schedStart() {
+  sched.running = true;
+  const btn = document.getElementById('schedBtn');
+  if (btn) btn.innerHTML = '<i class="ph-bold ph-pause"></i> Pausar';
+  schedStep();
+  sched.timer = setInterval(schedStep, sched.tickMs);
 }
+
+function schedStop(done) {
+  sched.running = false;
+  clearInterval(sched.timer);
+  sched.timer = null;
+  const btn = document.getElementById('schedBtn');
+  if (btn && !done) btn.innerHTML = '<i class="ph-bold ph-play"></i> Continuar';
+  if (btn && done)  btn.innerHTML = '<i class="ph-bold ph-arrow-counter-clockwise"></i> Reiniciar';
+}
+
+function schedReset() {
+  clearInterval(sched.timer);
+  sched.timer = null;
+  sched.running = false;
+  schedInit();
+  const bar = document.getElementById('schedTlBar');
+  if (bar) bar.innerHTML = '';
+  const btn = document.getElementById('schedBtn');
+  if (btn) btn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar';
+  schedNarrate('Presioná <strong>Iniciar</strong> para ver el scheduler en acción.<span class="m3schedNarHint">Observá cómo el SO elige qué hilo corre y cuándo — el programador no controla este orden.</span>');
+}
+
+function schedSpeed(s) {
+  document.querySelectorAll('.m3schedSpeedBtn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('speed-' + s);
+  if (btn) btn.classList.add('active');
+  sched.tickMs = ({ slow: 1300, normal: 700, fast: 280 })[s] || 700;
+  if (sched.running) { clearInterval(sched.timer); sched.timer = setInterval(schedStep, sched.tickMs); }
+}
+
+schedInit();
 
 /* ─── Flash Quiz ─────────────────────────── */
 const flashQuizData = [
@@ -777,5 +799,3 @@ document.querySelectorAll('.m3flipCard').forEach(card => {
 buildGame();
 renderQuiz();
 renderFlashQuiz();
-renderQueue();
-renderDone();

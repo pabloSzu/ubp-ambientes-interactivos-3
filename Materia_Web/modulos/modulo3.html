@@ -435,42 +435,108 @@ Soy el hijo.  PID=1235, x=20</code>
           <p class="msecSub">El scheduler del SO asigna tiempo de CPU entre hilos usando políticas de prioridad, round-robin y preemption. El resultado es que el orden de ejecución de tus hilos es impredecible.</p>
         </div>
 
-        <div class="m3schedulerWrap reveal">
-          <div class="m3schedulerViz" id="schedulerViz">
-            <div class="m3schZone">
-              <div class="m3schZoneLabel">Cola de Listos</div>
-              <div class="m3schQueue" id="schQueue">
-                <div class="m3schBlock" style="--bc:#00e8c6" data-name="T1">T1</div>
-                <div class="m3schBlock" style="--bc:#4a8ef0" data-name="T2">T2</div>
-                <div class="m3schBlock" style="--bc:#a855f7" data-name="T3">T3</div>
-                <div class="m3schBlock" style="--bc:#ff9b6b" data-name="T4">T4</div>
+        <div class="m3schedSim reveal">
+
+          <!-- HILO CARDS -->
+          <div class="m3schedThreads">
+            <div class="m3schedThread" id="sth-T1" data-state="RUNNABLE" style="--thread-color:#00e8c6">
+              <div class="m3schedThTop">
+                <span class="m3schedThDot" style="background:#00e8c6"></span>
+                <span class="m3schedThName">Hilo T1</span>
+                <span class="m3schedThState" id="sth-T1-state" data-state="RUNNABLE">RUNNABLE</span>
+              </div>
+              <div class="m3schedThBar"><div class="m3schedThFill" id="sth-T1-fill" style="--tc:#00e8c6;width:0%"></div></div>
+              <div class="m3schedThStats">
+                <span>Progreso: <strong id="sth-T1-pct">0%</strong></span>
+                <span>CPU: <strong id="sth-T1-cpu">0ms</strong></span>
               </div>
             </div>
-            <div class="m3schArrow"><i class="ph-bold ph-arrow-right"></i></div>
-            <div class="m3schZone m3schCpuZone">
-              <div class="m3schZoneLabel">CPU</div>
-              <div class="m3schCpu" id="schCpu">
-                <div class="m3schCpuInner">
-                  <i class="ph-bold ph-cpu"></i>
-                  <span id="schCpuLabel">Esperando...</span>
-                </div>
+            <div class="m3schedThread" id="sth-T2" data-state="RUNNABLE" style="--thread-color:#4a8ef0">
+              <div class="m3schedThTop">
+                <span class="m3schedThDot" style="background:#4a8ef0"></span>
+                <span class="m3schedThName">Hilo T2</span>
+                <span class="m3schedThState" id="sth-T2-state" data-state="RUNNABLE">RUNNABLE</span>
+              </div>
+              <div class="m3schedThBar"><div class="m3schedThFill" id="sth-T2-fill" style="--tc:#4a8ef0;width:0%"></div></div>
+              <div class="m3schedThStats">
+                <span>Progreso: <strong id="sth-T2-pct">0%</strong></span>
+                <span>CPU: <strong id="sth-T2-cpu">0ms</strong></span>
               </div>
             </div>
-            <div class="m3schArrow"><i class="ph-bold ph-arrow-right"></i></div>
-            <div class="m3schZone">
-              <div class="m3schZoneLabel">Completados</div>
-              <div class="m3schDone" id="schDone"></div>
+            <div class="m3schedThread" id="sth-T3" data-state="RUNNABLE" style="--thread-color:#a855f7">
+              <div class="m3schedThTop">
+                <span class="m3schedThDot" style="background:#a855f7"></span>
+                <span class="m3schedThName">Hilo T3</span>
+                <span class="m3schedThState" id="sth-T3-state" data-state="RUNNABLE">RUNNABLE</span>
+              </div>
+              <div class="m3schedThBar"><div class="m3schedThFill" id="sth-T3-fill" style="--tc:#a855f7;width:0%"></div></div>
+              <div class="m3schedThStats">
+                <span>Progreso: <strong id="sth-T3-pct">0%</strong></span>
+                <span>CPU: <strong id="sth-T3-cpu">0ms</strong></span>
+              </div>
+            </div>
+            <div class="m3schedThread" id="sth-T4" data-state="RUNNABLE" style="--thread-color:#ff9b6b">
+              <div class="m3schedThTop">
+                <span class="m3schedThDot" style="background:#ff9b6b"></span>
+                <span class="m3schedThName">Hilo T4</span>
+                <span class="m3schedThState" id="sth-T4-state" data-state="RUNNABLE">RUNNABLE</span>
+              </div>
+              <div class="m3schedThBar"><div class="m3schedThFill" id="sth-T4-fill" style="--tc:#ff9b6b;width:0%"></div></div>
+              <div class="m3schedThStats">
+                <span>Progreso: <strong id="sth-T4-pct">0%</strong></span>
+                <span>CPU: <strong id="sth-T4-cpu">0ms</strong></span>
+              </div>
             </div>
           </div>
-          <div class="m3schPhaseLabel" id="schPhase">Presioná Iniciar para ver el scheduler en acción</div>
-          <div class="m3schBtns">
-            <button class="m3btn m3btnAccent" id="btnScheduler" onclick="toggleScheduler()">
+
+          <!-- CPU + NARRACIÓN -->
+          <div class="m3schedCenter">
+            <div class="m3schedCpuWrap">
+              <div class="m3schedCpuLabel">CPU Core</div>
+              <div class="m3schedCpuBox" id="schedCpuBox" style="--cpu-color:rgba(255,255,255,0.06)">
+                <i class="ph-bold ph-cpu m3schedCpuIcon"></i>
+                <div class="m3schedCpuThread" id="schedCpuThread" style="color:rgba(255,255,255,.3)">—</div>
+                <div class="m3schedCpuStatus" id="schedCpuState">Esperando</div>
+              </div>
+            </div>
+            <div class="m3schedNarration" id="schedNarration">
+              Presioná <strong>Iniciar</strong> para ver el scheduler en acción.
+              <span class="m3schedNarHint">Observá cómo el SO elige qué hilo corre y cuándo — el programador no controla este orden.</span>
+            </div>
+          </div>
+
+          <!-- HISTORIAL (GANTT) -->
+          <div class="m3schedTlWrap">
+            <div class="m3schedTlHeader">
+              <span class="m3schedTlTitle"><i class="ph ph-chart-bar"></i> Historial de CPU</span>
+              <div class="m3schedTlLegend">
+                <span><span class="m3schedTlDot" style="--td:#00e8c6"></span>T1</span>
+                <span><span class="m3schedTlDot" style="--td:#4a8ef0"></span>T2</span>
+                <span><span class="m3schedTlDot" style="--td:#a855f7"></span>T3</span>
+                <span><span class="m3schedTlDot" style="--td:#ff9b6b"></span>T4</span>
+                <span><span class="m3schedTlDot" style="--td:#2a2a38"></span>Ocioso</span>
+              </div>
+            </div>
+            <div class="m3schedTlBar" id="schedTlBar"></div>
+            <div class="m3schedTlHint">Cada bloque = 1 time slice · El interleaving muestra que la CPU sirve a todos los hilos de a turnos</div>
+          </div>
+
+          <!-- CONTROLES -->
+          <div class="m3schedControls">
+            <button class="m3btn m3btnAccent" id="schedBtn" onclick="schedToggle()">
               <i class="ph-bold ph-play"></i> Iniciar
             </button>
-            <button class="m3btn" onclick="resetScheduler()">
+            <div class="m3schedSpeedWrap">
+              <span class="m3schedSpeedLabel">Velocidad</span>
+              <button class="m3schedSpeedBtn" id="speed-slow" onclick="schedSpeed('slow')">Lento</button>
+              <button class="m3schedSpeedBtn active" id="speed-normal" onclick="schedSpeed('normal')">Normal</button>
+              <button class="m3schedSpeedBtn" id="speed-fast" onclick="schedSpeed('fast')">Rápido</button>
+            </div>
+            <button class="m3btn" onclick="schedReset()">
               <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset
             </button>
           </div>
+
         </div>
 
         <div class="m3stateSection reveal">

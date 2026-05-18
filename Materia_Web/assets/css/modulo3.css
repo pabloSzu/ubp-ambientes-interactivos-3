@@ -288,76 +288,140 @@
 .m3compareTable td.good { color: var(--accent); }
 .m3compareTable td.warn { color: #ff9b6b; }
 
-/* ─── Scheduler ──────────────────────────── */
-.m3schedulerWrap {
-  margin-top: 32px; padding: 28px;
-  border: 1px solid var(--border); border-radius: var(--r);
-  background: var(--surface); backdrop-filter: blur(16px);
+/* ─── Scheduler Simulation v2 ─────────────── */
+.m3schedSim {
+  margin-top: 32px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
-.m3schedulerViz {
-  display: flex; align-items: center; gap: 16px;
-  min-height: 120px; margin-bottom: 20px;
+
+/* Hilo cards */
+.m3schedThreads {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
-.m3schZone {
-  display: flex; flex-direction: column; gap: 10px; flex: 1;
+.m3schedThread {
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 300ms, background 300ms, opacity 300ms, box-shadow 300ms;
 }
-.m3schZoneLabel {
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.1em; color: var(--muted);
+.m3schedThread[data-state="RUNNING"] {
+  border-color: var(--thread-color, var(--accent));
+  background: rgba(255,255,255,0.07);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--thread-color, var(--accent)) 25%, transparent);
 }
-.m3schQueue {
-  display: flex; gap: 8px; flex-wrap: wrap; min-height: 48px;
-  padding: 8px; border-radius: 10px;
-  border: 1px dashed var(--border); background: rgba(6,8,15,0.4);
+.m3schedThread[data-state="BLOCKED"] { opacity: 0.55; border-color: rgba(255,155,107,0.35); }
+.m3schedThread[data-state="DONE"]    { opacity: 0.3; }
+
+.m3schedThTop { display: flex; align-items: center; gap: 8px; }
+.m3schedThDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.m3schedThName { font-size: 12px; font-weight: 700; color: var(--text); flex: 1; }
+.m3schedThState {
+  font-size: 9px; font-weight: 800; letter-spacing: .06em;
+  padding: 2px 7px; border-radius: 20px;
+}
+.m3schedThState[data-state="RUNNABLE"] { background: rgba(74,142,240,.15);  color: #4a8ef0; }
+.m3schedThState[data-state="RUNNING"]  { background: rgba(0,232,198,.15);   color: #00e8c6; animation: schedPulse 900ms ease-in-out infinite; }
+.m3schedThState[data-state="BLOCKED"]  { background: rgba(255,155,107,.15); color: #ff9b6b; }
+.m3schedThState[data-state="DONE"]     { background: rgba(255,255,255,.06); color: rgba(255,255,255,.3); }
+@keyframes schedPulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+.m3schedThBar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+.m3schedThFill { height: 100%; background: var(--tc,#00e8c6); border-radius: 3px; transition: width 350ms ease; }
+.m3schedThStats {
+  display: flex; justify-content: space-between;
+  font-size: 10px; color: var(--sub);
+}
+.m3schedThStats strong { color: var(--text); }
+
+/* CPU + narración */
+.m3schedCenter {
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  gap: 20px;
   align-items: center;
 }
-.m3schBlock {
-  width: 44px; height: 44px; border-radius: 10px;
-  border: 1px solid color-mix(in srgb, var(--bc) 40%, transparent);
-  background: color-mix(in srgb, var(--bc) 14%, rgba(6,8,15,0.6));
-  color: var(--bc); font-weight: 900; font-size: 13px;
+.m3schedCpuWrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.m3schedCpuLabel { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--sub); }
+.m3schedCpuBox {
+  width: 120px; height: 120px; border-radius: 18px;
+  border: 2px solid var(--cpu-color, rgba(255,255,255,.08));
+  background: color-mix(in srgb, var(--cpu-color) 10%, rgba(0,0,0,.3));
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  transition: border-color 350ms, background 350ms, box-shadow 350ms;
+}
+.m3schedCpuBox.active {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--cpu-color) 18%, transparent),
+              0 0 32px color-mix(in srgb, var(--cpu-color) 28%, transparent);
+}
+.m3schedCpuIcon { font-size: 22px; color: var(--cpu-color, rgba(255,255,255,.25)); transition: color 350ms; }
+.m3schedCpuThread { font-size: 26px; font-weight: 900; line-height: 1; transition: color 350ms; }
+.m3schedCpuStatus { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--sub); }
+
+.m3schedNarration {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--sub);
+  min-height: 88px;
+}
+.m3schedNarration strong { color: var(--text); }
+.m3schedNarHint {
+  display: block; margin-top: 8px;
+  font-size: 11px; opacity: .6;
+}
+
+/* Timeline */
+.m3schedTlWrap { display: flex; flex-direction: column; gap: 8px; }
+.m3schedTlHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.m3schedTlTitle { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--sub); }
+.m3schedTlLegend { display: flex; gap: 12px; flex-wrap: wrap; }
+.m3schedTlLegend span { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--sub); }
+.m3schedTlDot { width: 10px; height: 10px; border-radius: 2px; background: var(--td,#555); flex-shrink: 0; }
+.m3schedTlBar {
+  display: flex; gap: 3px;
+  overflow-x: auto; padding: 8px 0 4px;
+  min-height: 48px;
+  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.1) transparent;
+}
+.m3schedTlSeg {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 6px;
+  background: var(--tc,#2a2a38);
   display: flex; align-items: center; justify-content: center;
-  transition: opacity 0.3s, transform 0.3s;
+  font-size: 9px; font-weight: 800; color: rgba(0,0,0,.75);
+  animation: segIn 180ms ease-out both;
 }
-.m3schArrow {
-  font-size: 20px; color: var(--muted); flex-shrink: 0;
+@keyframes segIn { from{transform:scale(.5);opacity:0} to{transform:scale(1);opacity:1} }
+.m3schedTlHint { font-size: 10px; color: var(--muted); }
+
+/* Controls */
+.m3schedControls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.m3schedSpeedWrap { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.m3schedSpeedLabel { font-size: 12px; color: var(--sub); }
+.m3schedSpeedBtn {
+  font-size: 11px; font-weight: 700;
+  padding: 5px 13px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: transparent; color: var(--sub);
+  cursor: pointer; transition: all 150ms;
 }
-.m3schCpuZone { flex: 0 0 auto; align-items: center; }
-.m3schCpu {
-  width: 100px; height: 100px; border-radius: 16px;
-  border: 1px solid var(--accent-border);
-  background: var(--accent-sub);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 0 0 var(--accent-mid);
-  transition: box-shadow 0.4s;
-}
-.m3schCpu.active {
-  box-shadow: 0 0 0 6px var(--accent-sub), 0 0 30px var(--accent-border);
-  animation: cpuPulse 1s ease-in-out infinite alternate;
-}
-@keyframes cpuPulse {
-  from { box-shadow: 0 0 0 4px var(--accent-sub), 0 0 20px var(--accent-border); }
-  to   { box-shadow: 0 0 0 10px rgba(0,232,198,0.04), 0 0 40px var(--accent-border); }
-}
-.m3schCpuInner {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  font-size: 26px; color: var(--accent);
-}
-.m3schCpuInner span {
-  font-size: 12px; font-weight: 700; color: var(--text); text-align: center;
-}
-.m3schDone {
-  display: flex; gap: 6px; flex-wrap: wrap; min-height: 48px;
-  padding: 8px; border-radius: 10px;
-  border: 1px dashed color-mix(in srgb, var(--accent) 20%, transparent);
-  background: color-mix(in srgb, var(--accent) 4%, rgba(6,8,15,0.4));
-  align-items: center;
-}
-.m3schPhaseLabel {
-  font-size: 14px; color: var(--sub); text-align: center;
-  min-height: 20px; margin-bottom: 16px; font-style: italic;
-}
-.m3schBtns { display: flex; gap: 10px; justify-content: center; }
+.m3schedSpeedBtn:hover { border-color: rgba(255,255,255,.2); color: var(--text); }
+.m3schedSpeedBtn.active { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); color: var(--text); }
 
 /* State diagram + list */
 .m3stateSection {
@@ -1131,8 +1195,9 @@
   .m3rmwArrow { transform: rotate(90deg); align-self: center; }
   .m3flipGrid { grid-template-columns: repeat(2, 1fr); }
   .m3simResultsGrid { grid-template-columns: repeat(2, 1fr); }
-  .m3schedulerViz { flex-direction: column; }
-  .m3schArrow { transform: rotate(90deg); }
+  .m3schedThreads { grid-template-columns: repeat(2, 1fr); }
+  .m3schedCenter { grid-template-columns: 1fr; }
+  .m3schedCpuWrap { flex-direction: row; gap: 16px; }
   .m3pvhRooms { flex-direction: column; }
   .m3pvhThreadBoxes { flex-direction: column; }
   .m3forkLayout { grid-template-columns: 1fr; }
