@@ -1002,12 +1002,21 @@
 .sm-openBtn {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 14px 28px; border-radius: 12px; cursor: pointer;
-  background: var(--accent); border: none; color: #fff;
+  background: var(--accent); color: #fff;
+  border: 2px solid rgba(255,255,255,0.35);
   font-size: 16px; font-weight: 800; font-family: inherit;
   transition: transform 0.15s, box-shadow 0.15s; white-space: nowrap;
-  box-shadow: 0 4px 20px rgba(255,125,84,0.35);
+  animation: smBtnPulse 2s ease-in-out infinite;
 }
-.sm-openBtn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,125,84,0.5); }
+@keyframes smBtnPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(255,125,84,0.35), 0 0 0 0   rgba(255,125,84,0.55); }
+  60%       { box-shadow: 0 4px 20px rgba(255,125,84,0.35), 0 0 0 10px rgba(255,125,84,0);   }
+}
+.sm-openBtn:hover {
+  animation: none;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255,125,84,0.6);
+}
 .sm-openBtn i { font-size: 20px; }
 
 /* Overlay */
