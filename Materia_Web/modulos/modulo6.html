@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
@@ -417,95 +417,17 @@
           <p class="msecSub">Elegí un caso real o configurá tu propio código. Ves exactamente qué core trabaja, cuáles quedan inactivos, y por qué siempre hay un techo de speedup que no podés superar.</p>
         </div>
 
-        <div class="m6sim reveal">
-
-          <!-- Escenarios reales -->
-          <div class="m6sScenarios">
-            <span class="m6sScLbl">Caso real:</span>
-            <button type="button" class="m6sScBtn m6sScBtnActive" onclick="m6setScenario(0)"><i class="ph ph-image"></i> Galería</button>
-            <button type="button" class="m6sScBtn" onclick="m6setScenario(1)"><i class="ph ph-film-slate"></i> Netflix</button>
-            <button type="button" class="m6sScBtn" onclick="m6setScenario(2)"><i class="ph ph-bank"></i> Banco</button>
-            <button type="button" class="m6sScBtn" onclick="m6setScenario(3)"><i class="ph ph-sort-ascending"></i> Sorting</button>
-            <button type="button" class="m6sScBtn" onclick="m6setScenario(-1)"><i class="ph ph-sliders"></i> Libre</button>
-          </div>
-          <div class="m6sScDesc" id="m6sScDesc">Redimensionar 10M de fotos — cada imagen es independiente. Caso casi ideal para paralelismo.</div>
-
-          <!-- Layout principal: controles + visualización -->
-          <div class="m6sLayout">
-
-            <!-- Columna izquierda: sliders, barra, métricas -->
-            <div class="m6sControls">
-              <div class="m6sSldGroup">
-                <div class="m6sSldHead">
-                  <label for="amdahlP"><i class="ph ph-percent"></i> Fracción del código paralelizable</label>
-                  <span class="m6sSldVal" id="amdahlPLabel">75%</span>
-                </div>
-                <input type="range" class="m6sRange" id="amdahlP" min="0" max="99" value="75" step="1" oninput="updateAmdahl()" />
-                <div class="m6sSldHints"><span>0% = todo serial</span><span>99% = casi todo paralelo</span></div>
-              </div>
-
-              <div class="m6sSldGroup">
-                <div class="m6sSldHead">
-                  <label for="amdahlN"><i class="ph ph-cpu"></i> Número de cores (N)</label>
-                  <span class="m6sSldVal" id="amdahlNLabel">4</span>
-                </div>
-                <input type="range" class="m6sRange" id="amdahlN" min="0" max="6" value="2" step="1" oninput="updateAmdahl()" />
-                <div class="m6sCoreTicks">
-                  <span>1</span><span>2</span><span>4</span><span>8</span><span>16</span><span>32</span><span>64</span>
-                </div>
-              </div>
-
-              <div class="m6sCompBar">
-                <div class="m6sCompBarLabel">Composición del código</div>
-                <div class="m6sCompBarTrack">
-                  <div class="m6sCompSerial" id="amdahlBarSerial" style="--w:25%">
-                    <span id="amdahlBarSerialLbl">serial (25%)</span>
-                  </div>
-                  <div class="m6sCompParallel" id="amdahlBarParallel">
-                    <span id="amdahlBarParallelLbl">paralelo (75%)</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="m6sMetrics">
-                <div class="m6sMetric">
-                  <div class="m6sMetricNum m6sMetricPrimary" id="amdahlSpeedup">×3.4</div>
-                  <div class="m6sMetricLbl">speedup actual</div>
-                </div>
-                <div class="m6sMetric">
-                  <div class="m6sMetricNum m6sMetricSecondary" id="amdahlMax">×4.0</div>
-                  <div class="m6sMetricLbl">techo teórico</div>
-                </div>
-                <div class="m6sMetric">
-                  <div class="m6sMetricNum m6sMetricEff" id="amdahlEff">84%</div>
-                  <div class="m6sMetricLbl">eficiencia cores</div>
-                </div>
-              </div>
+        <div class="m6simTriggerWrap reveal">
+          <button class="m6simTriggerBtn" onclick="m6openSim()">
+            <div class="m6simTriggerIcon"><i class="ph-bold ph-sliders"></i></div>
+            <div class="m6simTriggerContent">
+              <div class="m6simTriggerTitle">Abrir simulador interactivo</div>
+              <div class="m6simTriggerSub">4 escenarios reales: Galería · Netflix · Banco · Sorting — o configuración libre</div>
             </div>
-
-            <!-- Columna derecha: visualización por core -->
-            <div class="m6sViz">
-              <div class="m6sVizTitle"><i class="ph ph-rows"></i> Ejecución en paralelo — por core</div>
-              <div id="amdahlTimeline"></div>
-            </div>
-          </div>
-
-          <!-- Curva Amdahl (colapsable) -->
-          <details class="m6sChartDetails">
-            <summary class="m6sChartSummary">
-              <i class="ph ph-chart-line-up"></i>
-              <span>Ver curva de speedup: Amdahl en función de los cores</span>
-              <i class="ph ph-caret-down m6sChartCaret"></i>
-            </summary>
-            <div class="m6simChart m6sChartInner">
-              <svg id="amdahlSvg" viewBox="0 0 520 270" preserveAspectRatio="xMidYMid meet"></svg>
-            </div>
-          </details>
-
-          <div class="m6simInsight" id="amdahlInsight">
-            Mové los sliders para ver el análisis.
-          </div>
+            <i class="ph-bold ph-arrow-square-out m6simTriggerArrow"></i>
+          </button>
         </div>
+
       </div>
     </section>
 
@@ -1382,6 +1304,18 @@ public class SumaParalela {
           <p class="msecSub">Implementá tres versiones de suma de 1M elementos, medí tiempos reales y compará con la predicción de Amdahl. Entregá un informe técnico.</p>
         </div>
 
+        <div class="mActBefore reveal">
+          <div class="mActBeforeEye"><i class="ph-bold ph-lightbulb" style="color:#38bdf8"></i> Antes de arrancar</div>
+          <h3>Preparate para esta actividad</h3>
+          <p>El benchmark paralelo tiene una trampa clásica: el JIT de Java calienta el código en la primera ejecución, lo que hace que los primeros tiempos sean engañosamente lentos. Leé estos tips antes de medir.</p>
+          <div class="mActBeforeTips">
+            <div class="mActBeforeTip"><i class="ph-bold ph-code" style="color:#38bdf8"></i><span>Usá el código del laboratorio como base. Tiene la estructura de benchmark ya armada; tu trabajo es completar las 3 implementaciones.</span></div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-repeat" style="color:#38bdf8"></i><span>Correlo 3 veces y promediá las últimas 2. La primera ejecución siempre es más lenta por el JIT warmup y no refleja el rendimiento real.</span></div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-sliders" style="color:#38bdf8"></i><span>Para el UMBRAL de ForkJoin, probá al menos 2 valores en el rango 10K–50K. Un UMBRAL muy chico genera demasiados tasks; uno muy grande no paraleliza bien. Elegí el que da el mejor tiempo real.</span></div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-desktop" style="color:#38bdf8"></i><span>Para resultados de paralelismo reales, corré el código en tu IDE local (IntelliJ, Eclipse, VS Code). OneCompiler y compiladores online limitan el acceso a múltiples cores.</span></div>
+          </div>
+        </div>
+
         <div class="m6mission reveal">
           <div class="m6missionSteps">
             <div class="m6missionStep">
@@ -1412,11 +1346,18 @@ public class SumaParalela {
                 <p>Estimá P (fracción paralela) para tu implementación de ForkJoin. Calculá el speedup teórico con la fórmula de Amdahl usando los cores disponibles. Comparé con el speedup real medido y explicá la diferencia (overhead, caché, JIT warmup).</p>
               </div>
             </div>
+            <div class="m6missionStep">
+              <div class="m6missionStepIcon" style="--sc:#e879f9"><i class="ph-bold ph-upload-simple"></i></div>
+              <div class="m6missionStepBody">
+                <strong>Paso 5 — Entregá tu trabajo</strong>
+                <p>Subí un PDF con: el archivo <code>SumaParalela.java</code>, una tabla de 9 celdas (3 estrategias × 3 tamaños de array) con columna de speedup real, el cálculo de Amdahl para tu P estimado comparado con el speedup medido, y al menos 2 razones que expliquen la diferencia (overhead, caché, JIT warmup).</p>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="m6rubric reveal">
-          <div class="m6rubricTitle"><i class="ph-bold ph-list-checks"></i> Rúbrica de evaluación</div>
+          <div class="m6rubricTitle"><i class="ph-bold ph-list-checks"></i> Criterios de corrección</div>
           <div class="m6rubricItems">
             <div class="m6rubricItem">
               <div class="m6rubricItemHeader">
@@ -1466,6 +1407,113 @@ public class SumaParalela {
       </a>
     </footer>
 
+    <!-- ── AMDAHL SIMULATOR MODAL ───────────── -->
+    <div class="m6simModal" id="m6simModal" role="dialog" aria-modal="true" onclick="if(event.target===this)m6closeSim()">
+      <div class="m6simModalBox">
+
+        <div class="m6simModalHdr">
+          <div>
+            <div class="m6simModalEye"><i class="ph ph-sliders"></i> Simulador interactivo</div>
+            <h2 class="m6simModalTitle">Amdahl's Law — visualizalo en vivo</h2>
+            <p class="m6simModalSub">Elegí un caso real o configurá tu propio código. Ves exactamente qué core trabaja, cuáles quedan inactivos, y por qué siempre hay un techo de speedup que no podés superar.</p>
+          </div>
+          <button class="m6simModalClose" onclick="m6closeSim()" aria-label="Cerrar simulador">
+            <i class="ph-bold ph-x"></i>
+          </button>
+        </div>
+
+        <div class="m6sim">
+
+          <!-- Escenarios reales -->
+          <div class="m6sScenarios">
+            <span class="m6sScLbl">Caso real:</span>
+            <button type="button" class="m6sScBtn m6sScBtnActive" onclick="m6setScenario(0)"><i class="ph ph-image"></i> Galería</button>
+            <button type="button" class="m6sScBtn" onclick="m6setScenario(1)"><i class="ph ph-film-slate"></i> Netflix</button>
+            <button type="button" class="m6sScBtn" onclick="m6setScenario(2)"><i class="ph ph-bank"></i> Banco</button>
+            <button type="button" class="m6sScBtn" onclick="m6setScenario(3)"><i class="ph ph-sort-ascending"></i> Sorting</button>
+            <button type="button" class="m6sScBtn" onclick="m6setScenario(-1)"><i class="ph ph-sliders"></i> Libre</button>
+          </div>
+          <div class="m6sScDesc" id="m6sScDesc">Redimensionar 10M de fotos — cada imagen es independiente. Caso casi ideal para paralelismo.</div>
+
+          <!-- Layout principal: controles + visualización -->
+          <div class="m6sLayout">
+
+            <!-- Columna izquierda: sliders, barra, métricas -->
+            <div class="m6sControls">
+              <div class="m6sSldGroup">
+                <div class="m6sSldHead">
+                  <label for="amdahlP"><i class="ph ph-percent"></i> Fracción del código paralelizable</label>
+                  <span class="m6sSldVal" id="amdahlPLabel">75%</span>
+                </div>
+                <input type="range" class="m6sRange" id="amdahlP" min="0" max="99" value="75" step="1" oninput="updateAmdahl()" />
+                <div class="m6sSldHints"><span>0% = todo serial</span><span>99% = casi todo paralelo</span></div>
+              </div>
+
+              <div class="m6sSldGroup">
+                <div class="m6sSldHead">
+                  <label for="amdahlN"><i class="ph ph-cpu"></i> Número de cores (N)</label>
+                  <span class="m6sSldVal" id="amdahlNLabel">4</span>
+                </div>
+                <input type="range" class="m6sRange" id="amdahlN" min="0" max="6" value="2" step="1" oninput="updateAmdahl()" />
+                <div class="m6sCoreTicks">
+                  <span>1</span><span>2</span><span>4</span><span>8</span><span>16</span><span>32</span><span>64</span>
+                </div>
+              </div>
+
+              <div class="m6sCompBar">
+                <div class="m6sCompBarLabel">Composición del código</div>
+                <div class="m6sCompBarTrack">
+                  <div class="m6sCompSerial" id="amdahlBarSerial" style="--w:25%">
+                    <span id="amdahlBarSerialLbl">serial (25%)</span>
+                  </div>
+                  <div class="m6sCompParallel" id="amdahlBarParallel">
+                    <span id="amdahlBarParallelLbl">paralelo (75%)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="m6sMetrics">
+                <div class="m6sMetric">
+                  <div class="m6sMetricNum m6sMetricPrimary" id="amdahlSpeedup">×3.4</div>
+                  <div class="m6sMetricLbl">speedup actual</div>
+                </div>
+                <div class="m6sMetric">
+                  <div class="m6sMetricNum m6sMetricSecondary" id="amdahlMax">×4.0</div>
+                  <div class="m6sMetricLbl">techo teórico</div>
+                </div>
+                <div class="m6sMetric">
+                  <div class="m6sMetricNum m6sMetricEff" id="amdahlEff">84%</div>
+                  <div class="m6sMetricLbl">eficiencia cores</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna derecha: visualización por core -->
+            <div class="m6sViz">
+              <div class="m6sVizTitle"><i class="ph ph-rows"></i> Ejecución en paralelo — por core</div>
+              <div id="amdahlTimeline"></div>
+            </div>
+          </div>
+
+          <!-- Curva Amdahl (colapsable) -->
+          <details class="m6sChartDetails">
+            <summary class="m6sChartSummary">
+              <i class="ph ph-chart-line-up"></i>
+              <span>Ver curva de speedup: Amdahl en función de los cores</span>
+              <i class="ph ph-caret-down m6sChartCaret"></i>
+            </summary>
+            <div class="m6simChart m6sChartInner">
+              <svg id="amdahlSvg" viewBox="0 0 520 270" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+          </details>
+
+          <div class="m6simInsight" id="amdahlInsight">
+            Mové los sliders para ver el análisis.
+          </div>
+        </div>
+
+      </div>
+    </div>
     <!-- ── SCRIPTS ────────────────────────────── -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>

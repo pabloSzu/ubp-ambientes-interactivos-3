@@ -10,14 +10,64 @@
   border-bottom: 1px solid var(--border);
   overflow: hidden;
 }
-.pyheroDecor {
-  position: absolute; right: clamp(16px, 4vw, 64px); top: 50%;
-  transform: translateY(-50%);
-  font-size: clamp(100px, 16vw, 200px); font-weight: 900;
-  letter-spacing: -0.06em; color: var(--accent); opacity: 0.035;
-  pointer-events: none; line-height: 1; user-select: none;
+.pyheroInner {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 72px); align-items: center;
 }
-.pyheroInner { position: relative; z-index: 1; max-width: 860px; }
+.pyheroLeft { min-width: 0; }
+.pyheroRight { min-width: 0; }
+
+/* Terminal mockup */
+.pyheroTerminal {
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: #0d0d12;
+  box-shadow: 0 32px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
+}
+.pyheroTerminalBar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 11px 16px;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.pyheroTerminalDot {
+  width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0;
+}
+.pyheroTerminalTitle {
+  margin-left: 8px; font-size: 12px; font-weight: 600;
+  color: rgba(255,255,255,0.35);
+  font-family: "Consolas", "Fira Code", monospace;
+}
+.pyheroTerminalBody {
+  padding: 18px 20px 20px;
+  font-family: "Consolas", "Fira Code", monospace;
+  font-size: clamp(11px, 1.2vw, 13px);
+  line-height: 1.75;
+  display: flex; flex-direction: column; gap: 1px;
+}
+.pyheroTLine { white-space: nowrap; }
+.pyheroTRow {
+  display: flex; align-items: center; gap: 6px;
+  padding: 1px 0;
+}
+.pyTlGray  { color: rgba(255,255,255,0.35); }
+.pyTlWhite { color: rgba(255,255,255,0.85); font-weight: 700; margin-top: 6px; }
+.pyTlWarn  { color: #fb923c; }
+.pyTlAccent { color: #a855f7; font-weight: 700; }
+.pyTlBad   { color: #f43f5e; font-weight: 800; min-width: 44px; }
+.pyTlOk    { color: #34d399; font-weight: 800; min-width: 44px; }
+.pyTlX     { color: #f43f5e; font-size: 0.9em; }
+.pyTlCheck { color: #34d399; font-size: 0.9em; }
+.pyTlName  { color: rgba(255,255,255,0.6); min-width: 56px; }
+.pyTlExpected { color: rgba(255,255,255,0.25); }
+
+.pyheroTerminalCaption {
+  font-size: 11.5px; color: rgba(255,255,255,0.3);
+  text-align: center; margin: 10px 0 0;
+  font-style: italic;
+}
 .pyheroChip {
   display: inline-flex; align-items: center; gap: 7px;
   font-size: 11px; font-weight: 800; text-transform: uppercase;
@@ -303,8 +353,40 @@
 .pyFaqItem p { font-size: 13.5px; color: var(--sub); line-height: 1.6; margin: 0; }
 .pyFaqItem code { font-size: 12px; color: var(--accent); background: var(--accent-sub); padding: 1px 4px; border-radius: 3px; }
 
+/* ── MINI-RUBRIC (dentro de pyEtapa) ────────── */
+.pyRubricMini {
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.pyRubricMiniRow {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12.5px; color: var(--sub); padding: 4px 0;
+}
+.pyRubricMiniLabel { flex: 1; }
+.pyRubricMiniPts {
+  font-size: 11px; font-weight: 900; color: var(--pe);
+  background: color-mix(in srgb, var(--pe) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pe) 28%, transparent);
+  padding: 2px 9px; border-radius: 999px; flex-shrink: 0; margin-left: 12px;
+}
+
+/* ── HINT INLINE (opcional/avanzado) ─────────── */
+.pyHintInline {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: var(--sub); line-height: 1.55;
+  padding: 10px 14px; background: rgba(168,85,247,0.06);
+  border: 1px solid rgba(168,85,247,0.18); border-radius: 9px;
+  margin: 10px 0 12px;
+}
+.pyHintInline > i { color: #a855f7; flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+.pyHintInline span { flex: 1; }
+.pyHintInline code { font-size: 12px; color: var(--accent); background: var(--accent-sub); padding: 1px 4px; border-radius: 3px; }
+
 /* ── RESPONSIVE ──────────────────────────── */
 @media (max-width: 900px) {
+  .pyheroInner    { grid-template-columns: 1fr; }
+  .pyheroRight    { display: none; }
   .pyOverviewGrid { grid-template-columns: 1fr; }
   .pyEtapas       { grid-template-columns: 1fr; }
   .pyProtoWrap    { grid-template-columns: 1fr; }

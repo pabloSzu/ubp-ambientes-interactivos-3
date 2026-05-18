@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
@@ -1249,6 +1249,18 @@ while (true) {
           <p class="msecSub">Esta actividad vale <strong>10 puntos</strong>. Vas a implementar un pipeline de 3 etapas en Java, medir tiempos y comparar conceptualmente con los mecanismos de IPC vistos en la teoría.</p>
         </div>
 
+        <div class="mActBefore reveal">
+          <div class="mActBeforeEye"><i class="ph-bold ph-lightbulb" style="color:#9b6fff"></i> Antes de arrancar</div>
+          <h3>Preparate para esta actividad</h3>
+          <p>El pipeline puede parecer complejo, pero la clave está en entender el flujo de datos entre etapas. Usá el código de referencia del laboratorio como base y concentrate en medir bien los tiempos.</p>
+          <div class="mActBeforeTips">
+            <div class="mActBeforeTip"><i class="ph-bold ph-code" style="color:#9b6fff"></i><span>Arrancá desde el código de referencia del laboratorio. Modificalo y extendelo en lugar de empezar de cero.</span></div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-timer" style="color:#9b6fff"></i><span>Para logear timestamps: <code>System.out.println("[" + System.currentTimeMillis() + "] " + etapa + ": " + item)</code> en cada etapa.</span></div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-traffic-cone" style="color:#9b6fff"></i><span>Para probar el bloqueo, simulá velocidades distintas con <code>Thread.sleep(200)</code> en cada etapa y observá cuál frena al sistema.</span></div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-file-text" style="color:#9b6fff"></i><span>La comparación con pipes/FIFO es conceptual, no necesitás código nuevo. Pensá en qué tienen en común y en qué difieren a nivel del SO.</span></div>
+          </div>
+        </div>
+
         <div class="m4actMission reveal">
           <div class="m4missionHeader">
             <div class="m4missionBadge"><i class="ph-bold ph-code-simple"></i> Misión 04</div>
@@ -1283,11 +1295,18 @@ while (true) {
                 <p>Escribí un párrafo explicando: ¿en qué se parece una <code>BlockingQueue</code> a un pipe? ¿en qué se diferencia? ¿cuándo elegirías un FIFO del SO sobre una <code>BlockingQueue</code> de Java? Justificá con los conceptos del módulo.</p>
               </div>
             </div>
+            <div class="m4missionStep">
+              <div class="m4missionStepIcon" style="--sc:#e879f9"><i class="ph-bold ph-upload-simple"></i></div>
+              <div class="m4missionStepBody">
+                <strong>Paso 5 — Entregá tu trabajo</strong>
+                <p>Subí un PDF o ZIP con: el archivo <code>Pipeline3Etapas.java</code> compilable, la salida de consola mostrando al menos 3 ítems pasando por las 3 etapas con sus timestamps, la tabla de tiempos con las 3 configuraciones de velocidad, y el párrafo comparativo con pipes y FIFO.</p>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="m4rubric reveal">
-          <div class="m4rubricTitle"><i class="ph-bold ph-list-checks"></i> Rúbrica de evaluación</div>
+          <div class="m4rubricTitle"><i class="ph-bold ph-list-checks"></i> Criterios de corrección</div>
           <div class="m4rubricItems">
             <div class="m4rubricItem">
               <div class="m4rubricItemHeader">

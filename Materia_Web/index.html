@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
@@ -69,7 +69,7 @@
         </div>
         <a href="#objetivos" class="hdrNavLink"><i class="ph ph-target"></i><span>Objetivos</span></a>
         <a href="#evaluacion" class="hdrNavLink"><i class="ph ph-notepad"></i><span>Evaluación</span></a>
-        <a href="#proyecto" class="hdrNavLink"><i class="ph ph-blueprint"></i><span>Proyecto</span></a>
+        <a href="proyecto.html" class="hdrNavLink"><i class="ph ph-blueprint"></i><span>Proyecto</span></a>
         <a href="#docente" class="hdrNavLink"><i class="ph ph-user-circle"></i><span>Docente</span></a>
       </nav>
 
@@ -600,117 +600,23 @@
       <section id="proyecto" class="proyectoSection">
         <div class="proyectoInner">
 
-          <!-- HEADER -->
           <div class="proyectoHead reveal">
             <span class="proyectoEye"><i class="ph-bold ph-game-controller"></i> Proyecto integrador</span>
             <h2>Construís tu propio<br><span class="proyectoTitleAccent">trivia multijugador</span></h2>
-            <p>Un juego en tiempo real donde el curso entero juega tu versión en la última clase. El servidor que aguante más jugadores sin romperse gana.</p>
+            <p>Un servidor Java con race conditions plantadas. Lo rompés con 20 jugadores simultáneos, lo corregís y en la última clase el curso entero juega en vivo.</p>
           </div>
 
-          <!-- CONCEPTO VISUAL -->
-          <div class="proyectoConcepto reveal">
-            <div class="proyectoConceptoLeft">
-              <div class="proyectoMock">
-                <div class="proyectoMockBar">
-                  <span class="proyectoMockDot" style="background:#ff5f57"></span>
-                  <span class="proyectoMockDot" style="background:#febc2e"></span>
-                  <span class="proyectoMockDot" style="background:#28c840"></span>
-                  <span class="proyectoMockTitle">TriviaApp — Servidor Java</span>
-                </div>
-                <div class="proyectoMockBody">
-                  <div class="proyectoMockQuestion">
-                    <span class="proyectoMockTimer">12s</span>
-                    <p>¿Cuántas condiciones de Coffman son necesarias para que ocurra un deadlock?</p>
-                  </div>
-                  <div class="proyectoMockOptions">
-                    <div class="proyectoMockOpt" style="--oc:#4a8ef0">A &nbsp; 2 condiciones</div>
-                    <div class="proyectoMockOpt proyectoMockOptWin" style="--oc:#00e8c6">B &nbsp; 4 condiciones ✓</div>
-                    <div class="proyectoMockOpt" style="--oc:#f43f5e">C &nbsp; 3 condiciones</div>
-                    <div class="proyectoMockOpt" style="--oc:#f59e0b">D &nbsp; 1 condición</div>
-                  </div>
-                  <div class="proyectoMockPlayers">
-                    <div class="proyectoMockPlayer"><span class="proyectoMockAvatar" style="--av:#a855f7">ML</span><span>Mati L.</span><span class="proyectoMockScore">1200</span></div>
-                    <div class="proyectoMockPlayer"><span class="proyectoMockAvatar" style="--av:#00e8c6">SR</span><span>Sofia R.</span><span class="proyectoMockScore">980</span></div>
-                    <div class="proyectoMockPlayer"><span class="proyectoMockAvatar" style="--av:#ffd166">JP</span><span>Juan P.</span><span class="proyectoMockScore">860</span></div>
-                    <div class="proyectoMockPlayer proyectoMockPlayerMore"><span>+17 jugadores conectados</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="proyectoConceptoRight">
-              <h3>¿Por qué este proyecto?</h3>
-              <p>Un juego de trivia multijugador en tiempo real tiene exactamente los problemas que estudiaron — no de forma teórica, sino como bugs reales que se ven en pantalla.</p>
-              <div class="proyectoConceptoItems">
-                <div class="proyectoConceptoItem">
-                  <span class="proyectoConceptoBadge" style="--cb:#ffd166">M1</span>
-                  <span>El ciclo estímulo → respuesta → feedback es el loop del juego completo</span>
-                </div>
-                <div class="proyectoConceptoItem">
-                  <span class="proyectoConceptoBadge" style="--cb:#a855f7">M2</span>
-                  <span>¿La interfaz se entiende sin instrucciones? Lo prueban con usuarios reales</span>
-                </div>
-                <div class="proyectoConceptoItem">
-                  <span class="proyectoConceptoBadge" style="--cb:#00e8c6">M3</span>
-                  <span>Cada jugador conectado = un hilo. Con 20 jugadores aparece la race condition en el puntaje</span>
-                </div>
-                <div class="proyectoConceptoItem">
-                  <span class="proyectoConceptoBadge" style="--cb:#4a8ef0">M4</span>
-                  <span>El servidor broadcastea la pregunta a todos simultáneamente — IPC por WebSocket</span>
-                </div>
-                <div class="proyectoConceptoItem">
-                  <span class="proyectoConceptoBadge" style="--cb:#f43f5e">M5</span>
-                  <span>Sin mutex el primer lugar se corrompe: dos jugadores "ganan" al mismo tiempo</span>
-                </div>
-                <div class="proyectoConceptoItem">
-                  <span class="proyectoConceptoBadge" style="--cb:#38bdf8">M6</span>
-                  <span>El ranking se calcula con streams paralelos — miden el speedup real</span>
-                </div>
-                <div class="proyectoConceptoItem">
-                  <span class="proyectoConceptoBadge" style="--cb:#a3e635">M7</span>
-                  <span>¿Aguanta 50 jugadores? Análisis Amdahl del cuello de botella con carga real</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- REGLAS -->
-          <div class="proyectoReglas reveal">
-            <div class="proyectoRegla">
-              <i class="ph-bold ph-users-two" style="color:#a855f7"></i>
-              <div>
-                <strong>Grupos de 2</strong>
-                <span>Sin dónde esconderse. Cada uno es dueño de una capa del sistema.</span>
-              </div>
-            </div>
-            <div class="proyectoRegla">
-              <i class="ph-bold ph-robot" style="color:#00e8c6"></i>
-              <div>
-                <strong>Podés usar IA para generar código</strong>
-                <span>Claude, ChatGPT, lo que quieran. Pero en la presentación les preguntamos por cualquier línea.</span>
-              </div>
-            </div>
-            <div class="proyectoRegla">
-              <i class="ph-bold ph-trophy" style="color:#ffd166"></i>
-              <div>
-                <strong>El curso entero juega en la final</strong>
-                <span>El servidor que aguante más jugadores sin romperse gana reputación eterna.</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- CÓDIGO BASE -->
           <div class="proyectoCode reveal">
             <div class="proyectoCodeLeft">
-              <i class="ph-bold ph-code"></i>
+              <i class="ph-bold ph-game-controller"></i>
               <div>
-                <strong>Código base disponible</strong>
-                <span>El servidor Java ya está armado con los bugs plantados. Descargalo, reproducí las race conditions y corregílas.</span>
+                <strong>4 etapas &middot; 100 puntos &middot; Grupos de 2</strong>
+                <span>Todo el contenido de la materia &mdash; M1 al M7 &mdash; integrado en un solo proyecto real.</span>
               </div>
             </div>
             <div class="proyectoCodeActions">
               <a class="proyectoCodeBtn proyectoCodeBtnPrimary" href="proyecto.html">
-                <i class="ph-bold ph-book-open"></i> Ver guía completa
+                <i class="ph-bold ph-arrow-square-out"></i> Ver proyecto completo
               </a>
               <a class="proyectoCodeBtn" href="assets/downloads/trivia-pai3.zip" download>
                 <i class="ph-bold ph-download-simple"></i> Descargar ZIP
@@ -718,92 +624,9 @@
             </div>
           </div>
 
-          <!-- ETAPAS -->
-          <div class="proyectoEtapasNew reveal">
-
-            <div class="proyectoEtapaNew" style="--en:#ffd166">
-              <div class="proyectoEtapaNewNum">01</div>
-              <div class="proyectoEtapaNewBody">
-                <div class="proyectoEtapaNewHead">
-                  <h4>Diseño + IA + primer servidor</h4>
-                  <span class="proyectoEtapaNewPts">10 pts</span>
-                </div>
-                <p>Usá IA para generar el servidor base en Java (WebSocket + preguntas + puntaje simple). Diseñá la pantalla del jugador en wireframes. Documentá cada decisión de arquitectura con tus palabras: cuántos hilos, cómo se comunican, dónde puede fallar.</p>
-                <p class="proyectoEtapaNewAlerta"><i class="ph-bold ph-warning"></i> El servidor intencionalmente NO tiene sincronización correcta. El puntaje se va a romper con múltiples jugadores. Eso es parte del diseño.</p>
-                <div class="proyectoEntregables">
-                  <span><i class="ph-bold ph-code"></i> Servidor Java funcional (mínimo 5 jugadores)</span>
-                  <span><i class="ph-bold ph-pencil-ruler"></i> Wireframes de pantalla jugador + host</span>
-                  <span><i class="ph-bold ph-file-text"></i> Doc de arquitectura con tus palabras</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="proyectoEtapaNew" style="--en:#f43f5e">
-              <div class="proyectoEtapaNewNum">02</div>
-              <div class="proyectoEtapaNewBody">
-                <div class="proyectoEtapaNewHead">
-                  <h4>Rompé el servidor — y arreglalo</h4>
-                  <span class="proyectoEtapaNewPts">10 pts</span>
-                </div>
-                <p>Reproducí la race condition intencionalmente: creá un script que mande 20 respuestas simultáneas y mostrá que el puntaje se corrompe. Grabá el output. Luego agregá la sincronización correcta (mutex, synchronized, AtomicInteger) y demostrá que ya no se rompe. Compará el rendimiento antes y después.</p>
-                <div class="proyectoEntregables">
-                  <span><i class="ph-bold ph-bug"></i> Demo de la race condition (video o log)</span>
-                  <span><i class="ph-bold ph-lock-key"></i> Código corregido con sincronización</span>
-                  <span><i class="ph-bold ph-chart-bar"></i> Tabla comparativa: sin sync vs con sync</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="proyectoEtapaNew" style="--en:#a855f7">
-              <div class="proyectoEtapaNewNum">03</div>
-              <div class="proyectoEtapaNewBody">
-                <div class="proyectoEtapaNewHead">
-                  <h4>UX real + IPC + event loop</h4>
-                  <span class="proyectoEtapaNewPts">10 pts</span>
-                </div>
-                <p>Probá la interfaz con 3 personas reales (método think-aloud): ¿pueden unirse sin instrucciones? ¿Entienden cómo responder? Documentá los hallazgos y corregí. Reemplazá el modelo thread-per-client por un event loop con NIO o Spring WebSocket. Medí cuántas conexiones aguanta ahora.</p>
-                <div class="proyectoEntregables">
-                  <span><i class="ph-bold ph-user-sound"></i> Video/registro de prueba con usuarios</span>
-                  <span><i class="ph-bold ph-lightning"></i> Servidor refactorizado con event loop</span>
-                  <span><i class="ph-bold ph-arrows-out-line-horizontal"></i> Benchmark: threads vs event loop (N conexiones)</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="proyectoEtapaNew" style="--en:#38bdf8">
-              <div class="proyectoEtapaNewNum">04</div>
-              <div class="proyectoEtapaNewBody">
-                <div class="proyectoEtapaNewHead">
-                  <h4>Performance + La Gran Final</h4>
-                  <span class="proyectoEtapaNewPts">10 pts</span>
-                </div>
-                <p>Identificá el cuello de botella con un profiler o benchmark manual. Aplicá la Ley de Amdahl para calcular el speedup máximo teórico. Paralelizá el cálculo del ranking con streams paralelos o Fork/Join. Presentación de 10 minutos donde el curso entero juega en vivo: los demás grupos intentan romper tu servidor con conexiones masivas.</p>
-                <div class="proyectoEntregables">
-                  <span><i class="ph-bold ph-chart-line-up"></i> Análisis Amdahl del cuello de botella</span>
-                  <span><i class="ph-bold ph-git-branch"></i> Ranking paralelo implementado y medido</span>
-                  <span><i class="ph-bold ph-presentation"></i> Demo en vivo con el curso como jugadores</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- LA GRAN FINAL -->
-          <div class="proyectoFinal reveal">
-            <div class="proyectoFinalGlow"></div>
-            <div class="proyectoFinalContent">
-              <div class="proyectoFinalIcon"><i class="ph-bold ph-trophy"></i></div>
-              <div>
-                <h3>La Gran Final — última clase del cuatrimestre</h3>
-                <p>Cada grupo prende su servidor. El curso entero se conecta desde el celular y juega una partida. Los demás grupos stress-testean el servidor ajeno: mandan conexiones masivas, respuestas simultáneas, intentan hacerlo caer. El grupo con mejor UX <em>y</em> servidor más estable gana. No hay forma de fakear un sistema que se rompe en vivo.</p>
-              </div>
-            </div>
-          </div>
-
         </div>
       </section>
-
-      <!-- ── Separador decorativo ──────────── -->
+            <!-- ── Separador decorativo ──────────── -->
       <div class="sectionDivider" aria-hidden="true">
         <span class="sectionDividerLine"></span>
         <span class="sectionDividerIcon"><i class="ph-bold ph-user-circle"></i></span>

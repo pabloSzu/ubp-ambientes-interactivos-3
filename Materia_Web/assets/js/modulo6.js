@@ -372,6 +372,25 @@ function drawAmdahlTimeline(P, N) {
 // Init on load — set default scenario
 document.addEventListener('DOMContentLoaded', () => m6setScenario(0));
 
+/* ─── Amdahl simulator modal ─────────────── */
+function m6openSim() {
+  const modal = document.getElementById('m6simModal');
+  if (!modal) return;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  modal.scrollTop = 0;
+  updateAmdahl();
+}
+function m6closeSim() {
+  const modal = document.getElementById('m6simModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') m6closeSim();
+});
+
 /* ═══════════════════════════════════════════
    JUEGO: ¿PARALELO O SERIE?
 ═══════════════════════════════════════════ */

@@ -1059,3 +1059,100 @@
   .m6flipGrid { grid-template-columns: 1fr 1fr; }
 }
 
+/* ─── Amdahl Simulator Modal ─────────────── */
+.m6simModal {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(4,6,14,0.88);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  display: flex; align-items: flex-start; justify-content: center;
+  overflow-y: auto; padding: 24px 16px 60px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(.4,0,.2,1);
+}
+.m6simModal.open {
+  opacity: 1; pointer-events: all;
+}
+.m6simModalBox {
+  width: 100%; max-width: 1100px;
+  background: rgba(8,12,24,0.98);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 36px;
+  margin: auto;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.75), 0 0 0 1px rgba(56,189,248,0.05);
+}
+.m6simModalHdr {
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px; margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.m6simModalEye {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--accent); margin-bottom: 10px;
+}
+.m6simModalTitle {
+  font-size: clamp(1.25rem, 2.5vw, 1.85rem);
+  font-weight: 800; color: var(--text); margin: 0 0 8px; line-height: 1.2;
+}
+.m6simModalSub {
+  font-size: 14px; color: rgba(220,232,255,0.55); line-height: 1.6; margin: 0; max-width: 600px;
+}
+.m6simModalClose {
+  flex-shrink: 0; width: 40px; height: 40px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; cursor: pointer;
+  color: rgba(255,255,255,0.55); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+.m6simModalClose:hover {
+  background: rgba(255,80,80,0.14); color: #ff6b6b; border-color: rgba(255,80,80,0.3);
+}
+
+/* Trigger button in section */
+.m6simTriggerWrap { margin-top: 8px; }
+.m6simTriggerBtn {
+  display: flex; align-items: center; gap: 20px;
+  width: 100%; padding: 26px 30px;
+  background: var(--accent-sub);
+  border: 1.5px dashed var(--accent-border);
+  border-radius: 16px; cursor: pointer;
+  text-align: left; font-family: inherit;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+.m6simTriggerBtn:hover {
+  background: rgba(56,189,248,0.12);
+  border-color: rgba(56,189,248,0.55);
+  transform: translateY(-2px);
+}
+.m6simTriggerIcon {
+  width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+  background: var(--accent); display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: #000;
+}
+.m6simTriggerContent { flex: 1; }
+.m6simTriggerTitle {
+  font-size: 17px; font-weight: 800; color: var(--accent); margin-bottom: 4px; line-height: 1.3;
+}
+.m6simTriggerSub {
+  font-size: 13px; color: rgba(220,232,255,0.5); font-weight: 500;
+}
+.m6simTriggerArrow {
+  font-size: 22px; color: var(--accent); opacity: 0.55; flex-shrink: 0;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.m6simTriggerBtn:hover .m6simTriggerArrow { opacity: 1; transform: translate(3px, -3px); }
+
+@media (max-width: 640px) {
+  .m6simModalBox { padding: 20px 16px 28px; }
+  .m6simTriggerBtn { padding: 18px; gap: 14px; }
+  .m6simTriggerIcon { width: 42px; height: 42px; font-size: 18px; border-radius: 10px; }
+  .m6simTriggerTitle { font-size: 15px; }
+}
+

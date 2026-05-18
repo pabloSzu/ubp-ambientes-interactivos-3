@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
@@ -1436,6 +1436,18 @@ public class DeadlockFix {
           <p class="msecSub">Esta actividad vale <strong>10 puntos</strong>. Vas a analizar, diagnosticar y corregir un sistema concurrente con deadlock potencial, implementar la solución con Semaphore y documentar el razonamiento.</p>
         </div>
 
+        <div class="mActBefore reveal">
+          <div class="mActBeforeEye"><i class="ph-bold ph-lightbulb" style="color:#ff7d54"></i> Antes de arrancar</div>
+          <h3>Preparate para esta actividad</h3>
+          <p>El deadlock puede ser difícil de reproducir de forma consistente. Hay técnicas simples para forzarlo y capturarlo como evidencia. Leé los tips antes de arrancar a codear.</p>
+          <div class="mActBeforeTips">
+            <div class="mActBeforeTip"><i class="ph-bold ph-bug" style="color:#ff7d54"></i><span>Para forzar el deadlock de forma reproducible, agregá <code>Thread.sleep(1)</code> entre el primer y el segundo <code>acquire()</code>. Así los 5 filósofos toman su tenedor izquierdo antes de que cualquiera tome el derecho.</span></div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-camera" style="color:#ff7d54"></i><span>Como evidencia del deadlock no hace falta esperar 5 minutos: 10-15 segundos sin nuevas líneas de salida alcanza. Capturá la pantalla o copiá el texto de consola.</span></div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-table" style="color:#ff7d54"></i><span>Para la tabla de Coffman, un formato simple alcanza: 4 filas, columnas "Condición | Línea en el código | Cómo romperla". No precisa ser elaborada.</span></div>
+            <div class="mActBeforeTip"><i class="ph-bold ph-check-circle" style="color:#ff7d54"></i><span>Para verificar que la solución funciona, dejala correr al menos 15 segundos. Si las líneas de "comiendo" siguen apareciendo, está todo bien.</span></div>
+          </div>
+        </div>
+
         <div class="m5actMission reveal">
           <div class="m5missionHeader">
             <div class="m5missionBadge"><i class="ph-bold ph-wrench"></i> Misión 05</div>
@@ -1470,11 +1482,18 @@ public class DeadlockFix {
                 <p>Con la solución de Semaphore(4), ¿es posible que algún filósofo nunca coma? ¿Qué condición del scheduler podría causarlo? Proponé al menos una modificación (ej: delay aleatorio entre intentos, orden rotativo) que reduzca la probabilidad de starvation. Justificá con los conceptos del módulo.</p>
               </div>
             </div>
+            <div class="m5missionStep">
+              <div class="m5missionStepIcon" style="--sc:#e879f9"><i class="ph-bold ph-upload-simple"></i></div>
+              <div class="m5missionStepBody">
+                <strong>Paso 5 — Entregá tu trabajo</strong>
+                <p>Subí un PDF o ZIP con: <code>FilosofosSinSync.java</code> (versión con deadlock), <code>FilosofosSeguros.java</code> (versión corregida), capturas de consola de ambas versiones (la congelada y la que corre 15+ segundos), la tabla de Coffman completa, y el párrafo sobre starvation potencial.</p>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="m5rubric reveal">
-          <div class="m5rubricTitle"><i class="ph-bold ph-list-checks"></i> Rúbrica de evaluación</div>
+          <div class="m5rubricTitle"><i class="ph-bold ph-list-checks"></i> Criterios de corrección</div>
           <div class="m5rubricItems">
             <div class="m5rubricItem">
               <div class="m5rubricItemHeader">

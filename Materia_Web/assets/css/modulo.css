@@ -150,6 +150,32 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .mhdrSections a:hover { color: var(--text); background: rgba(255, 255, 255, 0.05); }
 
+/* ─── "Antes de arrancar" section (shared) ─ */
+.mActBefore {
+  padding: 24px 26px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+.mActBeforeEye {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--accent); margin-bottom: 10px;
+}
+.mActBefore h3 {
+  font-size: 15px; font-weight: 800; color: var(--text); margin: 0 0 10px; line-height: 1.35;
+}
+.mActBefore > p { font-size: 14px; color: var(--sub); line-height: 1.7; margin: 0 0 16px; }
+.mActBeforeTips { display: flex; flex-direction: column; gap: 10px; }
+.mActBeforeTip {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: var(--text); line-height: 1.55;
+}
+.mActBeforeTip i { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
 /* ─── New structured nav ────────────────── */
 .mhdrNav2 {
   display: flex;
@@ -205,7 +231,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .mhdrDropBtn i { font-size: 14px; }
 .mhdrDropBtn:hover,
-.mhdrDropdown:hover .mhdrDropBtn,
 .mhdrDropdown.open .mhdrDropBtn {
   color: #fff;
   background: var(--accent);
@@ -213,7 +238,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 
 .mhdrCaret { transition: transform 0.22s cubic-bezier(.4,0,.2,1); font-size: 11px !important; }
-.mhdrDropdown:hover .mhdrCaret,
 .mhdrDropdown.open .mhdrCaret { transform: rotate(180deg); }
 
 .mhdrDropMenu {
@@ -243,7 +267,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   opacity: 0.7;
   border-radius: 0 0 2px 2px;
 }
-.mhdrDropdown:hover .mhdrDropMenu,
 .mhdrDropdown.open .mhdrDropMenu {
   opacity: 1;
   pointer-events: all;
@@ -626,7 +649,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
     left: auto; right: 0;
     transform: translateY(-6px);
   }
-  .mhdrDropdown:hover .mhdrDropMenu,
   .mhdrDropdown.open .mhdrDropMenu { transform: translateY(0); }
 }
 @media (max-width: 700px) {
