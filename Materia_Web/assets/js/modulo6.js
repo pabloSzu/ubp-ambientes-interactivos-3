@@ -142,6 +142,29 @@ function copyLabCode() {
 ═══════════════════════════════════════════ */
 const CORES_MAP = [1, 2, 4, 8, 16, 32, 64];
 
+const M6_SCENARIOS = [
+  { P: 75, N: 2, desc: 'Redimensionar 10M de fotos — cada imagen es independiente. Caso casi ideal para paralelismo.' },
+  { P: 92, N: 3, desc: 'Encodear video a 15 resoluciones — cada frame es una tarea independiente. El mejor caso posible.' },
+  { P: 25, N: 2, desc: 'Validar transacciones bancarias — las reglas de negocio deben ejecutarse en orden estricto.' },
+  { P: 65, N: 3, desc: 'Merge sort con 1M de elementos — los chunks se ordenan en paralelo, pero el merge final es serial.' },
+];
+
+function m6setScenario(idx) {
+  document.querySelectorAll('.m6sScBtn').forEach((b, i) => {
+    b.classList.toggle('m6sScBtnActive', i === idx);
+  });
+  const desc = document.getElementById('m6sScDesc');
+  if (idx >= 0 && idx < M6_SCENARIOS.length) {
+    const s = M6_SCENARIOS[idx];
+    document.getElementById('amdahlP').value = s.P;
+    document.getElementById('amdahlN').value = s.N;
+    if (desc) desc.textContent = s.desc;
+  } else {
+    if (desc) desc.textContent = 'Modo libre — configurá tu propio escenario con los sliders.';
+  }
+  updateAmdahl();
+}
+
 function amdahlSpeedup(P, N) {
   return 1 / ((1 - P) + P / N);
 }
@@ -269,16 +292,25 @@ function drawAmdahlTimeline(P, N) {
   const container = document.getElementById('amdahlTimeline');
   if (!container) return;
 
-  const serial    = 1 - P;
-  const parChunk  = N > 0 ? P / N : 0;
-  const totalT    = serial + parChunk;
+  const serial   = 1 - P;
+  const parChunk = N > 0 ? P / N : 0;
+  const totalT   = serial + parChunk;
 
   const pct = v => (Math.min(v, 1) * 100).toFixed(2) + '%';
 
+  // Phase header bar
+  const phaseHeader = serial > 0.005
+    ? `<div class="m6sPhaseBar">
+        <div class="m6sPhaseSerial" style="width:${pct(serial)}">⚠ ${Math.round(serial * 100)}% serial — cuello de botella</div>
+        <div class="m6sPhaseParallel">${Math.round(P * 100)}% paralelo — todos los cores</div>
+      </div>`
+    : `<div class="m6sPhaseBar"><div class="m6sPhaseParallel" style="flex:1">100% paralelo — speedup lineal</div></div>`;
+
+  // Core rows
   const displayN = Math.min(N, 8);
   const extra    = N - displayN;
-
   let rows = '';
+
   for (let i = 0; i < displayN; i++) {
     const lbl    = i === 0 ? 'Core 0' : `Core ${i}`;
     const isMain = i === 0;
@@ -286,8 +318,11 @@ function drawAmdahlTimeline(P, N) {
 
     if (isMain && serial > 0.001)
       blocks += `<div class="m6tlBlock m6tlSerial" style="left:0;width:${pct(serial)}"></div>`;
-    if (!isMain && serial > 0.001)
+    if (!isMain && serial > 0.001) {
       blocks += `<div class="m6tlBlock m6tlIdle" style="left:0;width:${pct(serial)}"></div>`;
+      if (i === 1 && serial > 0.08)
+        blocks += `<div class="m6sIdleAnno" style="width:${pct(serial)}">⏸ esperando</div>`;
+    }
     if (parChunk > 0.001)
       blocks += `<div class="m6tlBlock m6tlParallel" style="left:${pct(serial)};width:${pct(parChunk)}"></div>`;
 
@@ -300,12 +335,11 @@ function drawAmdahlTimeline(P, N) {
   if (extra > 0) {
     rows += `<div class="m6tlRow">
       <div class="m6tlCoreLabel" style="color:rgba(255,255,255,0.18)">+${extra}</div>
-      <div style="flex:1;font-size:10px;color:rgba(255,255,255,0.2);padding:0 8px;line-height:22px">cores adicionales — mismo patrón (idle → paralelo)</div>
+      <div style="flex:1;font-size:10px;color:rgba(255,255,255,0.2);padding:0 8px;line-height:26px">cores adicionales — mismo patrón (idle → paralelo)</div>
     </div>`;
   }
 
-  const serialPct  = Math.round(serial * 100);
-  // Only show serial label when the parallel chunk is wide enough to avoid overlap with speedup label
+  const serialPct = Math.round(serial * 100);
   const sLbl = serial > 0.02 && parChunk > 0.08
     ? `<span class="m6tlAxisMark" style="left:${pct(serial)};color:rgba(248,113,113,0.7);transform:translateX(-50%)">${serialPct}% serial</span>`
     : '';
@@ -316,6 +350,7 @@ function drawAmdahlTimeline(P, N) {
   const tLbl = `<span class="m6tlAxisMark" style="${tLblStyle};color:#facc15">×${(1/totalT).toFixed(2)} speedup</span>`;
 
   container.innerHTML = `
+    ${phaseHeader}
     <div class="m6tlRows">${rows}</div>
     <div class="m6tlAxisRow">
       <div class="m6tlAxisSpacer"></div>
@@ -327,15 +362,15 @@ function drawAmdahlTimeline(P, N) {
       </div>
     </div>
     <div class="m6tlLegend">
-      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlSerial"></div> Serial — solo Core 0</div>
-      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlParallel"></div> Paralelo — N cores simultáneos</div>
-      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlIdle"></div> Inactivo (esperando parte serial)</div>
-      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlTotal"></div> Fin ejecución paralela</div>
+      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlSerial"></div> Serial — 1 core</div>
+      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlParallel"></div> Paralelo — N cores</div>
+      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlIdle"></div> Inactivo</div>
+      <div class="m6tlLegItem"><div class="m6tlLegDot m6tlTotal"></div> Fin paralelo</div>
     </div>`;
 }
 
-// Init on load
-document.addEventListener('DOMContentLoaded', () => updateAmdahl());
+// Init on load — set default scenario
+document.addEventListener('DOMContentLoaded', () => m6setScenario(0));
 
 /* ═══════════════════════════════════════════
    JUEGO: ¿PARALELO O SERIE?
