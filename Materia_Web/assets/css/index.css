@@ -2144,6 +2144,38 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 .proyectoEntregables > span i { color: #a855f7; font-size: 13px; }
 
+/* Código base */
+.proyectoCode {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+  background: rgba(0, 232, 198, 0.04);
+  border: 1px solid rgba(0, 232, 198, 0.2);
+  border-radius: 16px; padding: 20px 24px;
+  margin-bottom: 24px;
+}
+.proyectoCodeLeft {
+  display: flex; align-items: center; gap: 16px; flex: 1; min-width: 0;
+}
+.proyectoCodeLeft > i {
+  font-size: 26px; color: #00e8c6; flex-shrink: 0;
+}
+.proyectoCodeLeft strong { display: block; font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
+.proyectoCodeLeft span  { font-size: 13.5px; color: var(--sub); line-height: 1.55; }
+.proyectoCodeActions { display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+.proyectoCodeBtn {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; padding: 10px 18px;
+  border-radius: 10px; border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05); color: var(--text);
+  text-decoration: none; white-space: nowrap;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.proyectoCodeBtn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.22); }
+.proyectoCodeBtnPrimary {
+  background: rgba(0, 232, 198, 0.12); border-color: rgba(0, 232, 198, 0.35); color: #00e8c6;
+}
+.proyectoCodeBtnPrimary:hover { background: rgba(0, 232, 198, 0.2); border-color: rgba(0, 232, 198, 0.5); }
+
 /* La Gran Final */
 .proyectoFinal {
   position: relative; border-radius: 20px; overflow: hidden;
