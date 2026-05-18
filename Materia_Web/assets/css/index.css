@@ -477,6 +477,14 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 .heroMetaItem i { color: var(--teal); font-size: 16px; }
 .heroMetaItem strong { color: var(--text); font-weight: 700; }
 .heroMetaSep { color: var(--muted); }
+a.heroMetaDocente {
+  text-decoration: none;
+  color: inherit;
+  transition: color 150ms ease-out;
+}
+a.heroMetaDocente:hover { color: var(--text); }
+a.heroMetaDocente:hover i { color: var(--purple); }
+a.heroMetaDocente:hover strong { color: var(--purple); }
 
 .heroCtas {
   display: flex;
