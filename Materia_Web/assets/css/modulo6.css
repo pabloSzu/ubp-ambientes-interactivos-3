@@ -120,7 +120,7 @@
 
 /* ─── Objetivos ──────────────────────────── */
 .m6objGrid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 16px; margin-top: 32px;
 }
 .m6objCard {
