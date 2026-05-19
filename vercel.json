@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/Materia_Web/$1" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}
