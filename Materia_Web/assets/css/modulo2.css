@@ -1061,3 +1061,96 @@
   .m2testMetric { flex-direction: column; gap: 4px; }
   .m2testMetricName { min-width: unset; }
 }
+
+@media (max-width: 640px) {
+  .m2objGrid,
+  .m2triLayer,
+  .m2normBox,
+  .m2dtGrid,
+  .m2tpCompareGrid,
+  .m2testCompRow,
+  .m2a11yIntro,
+  .m2a11yTypes,
+  .m2wcagLevels,
+  .m2toolsGrid,
+  .m2navWhen {
+    grid-template-columns: 1fr !important;
+  }
+
+  .m2flowSplit,
+  .m2flowTypes,
+  .m2flowBranches {
+    grid-template-columns: 1fr !important;
+  }
+
+  .m2triArrow,
+  .m2pilarArrow,
+  .m2tlTopCell.empty,
+  .m2tlBotCell.empty,
+  .m2tlStemDown,
+  .m2tlStemUp,
+  .m2tlAxis {
+    display: none;
+  }
+
+  .m2normBox {
+    gap: 18px;
+    padding: 20px;
+  }
+
+  .m2tl {
+    display: grid;
+    gap: 12px;
+  }
+
+  .m2tlTopRow,
+  .m2tlBotRow {
+    display: contents;
+  }
+
+  .m2tlTopCell,
+  .m2tlBotCell {
+    align-items: stretch;
+  }
+
+  .m2tlCard {
+    min-width: 0;
+  }
+
+  .m2pilarRow {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .m2a11yIntro {
+    gap: 20px;
+    text-align: left;
+  }
+
+  .m2a11yStat {
+    min-width: 0;
+    align-items: flex-start;
+  }
+
+  .m2a11yStatLabel {
+    max-width: none;
+    text-align: left;
+  }
+
+  .m2testCompRow {
+    gap: 8px;
+    padding: 14px 16px;
+  }
+
+  .m2flowDiagram {
+    padding: 18px;
+  }
+
+  .m2flowBranch {
+    align-items: stretch;
+  }
+
+  .m2flowBranchLabel {
+    align-self: center;
+  }
+}

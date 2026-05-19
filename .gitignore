@@ -10,3 +10,12 @@ dist/
 build/
 .vercel/
 
+# Documentos internos de planificación (se quedan en disco, no se publican)
+CONTENIDOS_MAESTRO.md
+DOCUMENTO_MAESTRO_MATERIA.md
+principal.pdf
+Programación para Ambientes Interactivos III- Contenido y Módulos.pdf
+
+# Carpeta raíz de código fuente (duplicada en Materia_Web/assets/codigo/)
+trivia-pai3/
+

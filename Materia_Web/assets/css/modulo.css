@@ -57,7 +57,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 * { scrollbar-width: thin; scrollbar-color: #8b5cf6 #05070d; }
 
 /* ─── Blobs ──────────────────────────────── */
-.blob {
+.blob,
+.mb1,
+.mb2 {
   position: fixed;
   border-radius: 50%;
   pointer-events: none;
@@ -378,6 +380,81 @@ span.mhdrBrand {
   z-index: 1;
 }
 
+/* Center hero copy for all modules 1-7 */
+.m1heroContent,
+.m2heroContent,
+.m3heroContent,
+.m4heroContent,
+.m5heroContent,
+.m6heroContent,
+.m7heroContent {
+  max-width: 900px;
+  width: min(100%, 900px);
+  margin: 0 auto;
+  padding-inline: clamp(20px, 5vw, 80px);
+  text-align: center;
+}
+
+.m1heroTitle,
+.m2heroTitle,
+.m3heroTitle,
+.m4heroTitle,
+.m5heroTitle,
+.m6heroTitle,
+.m7heroTitle,
+.m1heroIntro,
+.m2heroIntro,
+.m3heroIntro,
+.m4heroIntro,
+.m5heroIntro,
+.m6heroSub,
+.m7heroIntro,
+.m1heroBadge,
+.m2heroBadge,
+.m3heroBadge,
+.m4heroBadge,
+.m5heroBadge,
+.m6heroEyebrow,
+.m7heroBadge {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.m1heroIntro,
+.m2heroIntro,
+.m3heroIntro,
+.m4heroIntro,
+.m5heroIntro,
+.m6heroSub,
+.m7heroIntro {
+  text-align: center;
+}
+
+.m1heroStats,
+.m2heroStats,
+.m3heroStats,
+.m4heroStats,
+.m5heroStats,
+.m6heroStats,
+.m7heroStats {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.m1heroStat,
+.m2heroStat,
+.m3heroStat,
+.m4heroStat,
+.m5heroStat,
+.m6heroStat,
+.m7heroStat {
+  align-items: center;
+  text-align: center;
+}
+
 .mheroTop {
   margin-bottom: 18px;
 }
@@ -452,6 +529,7 @@ span.mhdrBrand {
 .msec.alt { background: rgba(255, 255, 255, 0.012); }
 
 .msecWrap {
+  width: min(1100px, calc(100% - 40px));
   max-width: 1100px;
   margin: 0 auto;
 }
@@ -729,16 +807,151 @@ span.mhdrBrand {
   .mhdrDropdown.open .mhdrDropMenu { transform: translateY(0); }
 }
 @media (max-width: 700px) {
+  .mhdr {
+    justify-content: flex-start;
+    gap: 10px;
+    padding-inline: 12px;
+  }
+  .mhdrNav2,
+  .mhdrSections {
+    display: none;
+  }
+  span.mhdrBrand {
+    width: clamp(96px, 30vw, 124px);
+    height: 32px;
+  }
+  .mhdrBack {
+    padding-inline: 8px;
+    white-space: nowrap;
+  }
+  .mhdrLabel {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .mheroDecor { display: none; }
   .termGrid { grid-template-columns: repeat(2, 1fr); }
   .cGrid { grid-template-columns: 1fr; }
+  .msec {
+    padding-inline: 18px;
+  }
+  .msecWrap {
+    width: min(100%, calc(100% - 36px));
+    max-width: 100%;
+  }
+  .mhero {
+    min-height: auto;
+    padding: 96px 18px 48px;
+  }
+  .mhero h1,
+  .mheroTitle {
+    font-size: clamp(38px, 14vw, 58px);
+    line-height: 1;
+  }
+  .mheroStats,
+  .m1heroStats,
+  .m2heroStats,
+  .m3heroStats,
+  .m4heroStats,
+  .m5heroStats,
+  .m6heroStats,
+  .m7heroStats {
+    max-width: 100%;
+    overflow-x: auto;
+  }
 }
 @media (max-width: 520px) {
   .mhdrLabel { display: none; }
   .mhdrNav2 { gap: 0; }
   .termGrid { grid-template-columns: 1fr; }
-  .mfoot { flex-wrap: wrap; justify-content: center; }
+  .mfoot {
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .mfootNav {
+    justify-content: stretch;
+  }
+  .mfoot .mfootBtn,
+  .mfoot .mfootHome,
+  .mfoot .mfootLink,
+  .mfoot .mfootBrand {
+    width: 100%;
+    justify-content: center;
+  }
   .msecHead { flex-direction: column; gap: 2px; }
+}
+
+@media (max-width: 640px) {
+  img,
+  svg,
+  canvas,
+  video {
+    max-width: 100%;
+  }
+
+  pre,
+  table,
+  .msecWrap svg,
+  [class*="Table"],
+  [class*="Code"],
+  [class*="Diagram"],
+  [class*="Simulator"],
+  [class*="Timeline"],
+  [class*="Canvas"],
+  [class*="Viz"] {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  [class*="Grid"],
+  [class*="Layout"],
+  [class*="Cards"],
+  [class*="Columns"],
+  [class*="Compare"],
+  [class*="Stats"],
+  [class*="Options"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [class*="Row"],
+  [class*="Actions"],
+  [class*="Controls"],
+  [class*="Btns"] {
+    flex-wrap: wrap;
+  }
+
+  .mActBefore,
+  .mEliToggle,
+  .mEliSummary,
+  .modulePanel,
+  [class*="Card"],
+  [class*="Panel"],
+  [class*="Box"] {
+    padding-inline: clamp(14px, 4vw, 20px);
+  }
+}
+
+@media (max-width: 400px) {
+  .mhdrBack {
+    font-size: 0;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mhdrBack i {
+    display: none;
+  }
+  .mhdrBack::before {
+    content: "<";
+    font-size: 14px;
+    line-height: 1;
+  }
+  .msec {
+    padding-inline: 14px;
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -890,7 +1103,13 @@ span.mhdrBrand {
   background: #0d1117 !important;
   border-radius: 0 !important;
 }
+pre[class*="language-"] {
+  max-width: 100%;
+  overflow-x: auto;
+}
 pre[class*="language-"] > code[class*="language-"] {
+  display: block;
+  min-width: max-content;
   background: transparent !important;
 }
 pre:not([class*="language-"]) > code[class*="language-"] {
@@ -898,3 +1117,25 @@ pre:not([class*="language-"]) > code[class*="language-"] {
   padding: 1.2em 1.4em !important;
   overflow-x: auto;
 }
+
+@media (max-width: 640px) {
+  pre[class*="language-"] > code[class*="language-"] {
+    min-width: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* ── MOBILE WALL ─────────────────────────── */
+#mobileWall {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: #09090f;
+  flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 40px 32px;
+  gap: 24px;
+}
+@media (max-width: 899px) { #mobileWall { display: flex; } }
+.mwEmoji { font-size: 52px; line-height: 1; }
+.mwTitle { font-size: 22px; font-weight: 900; color: #fff; line-height: 1.25; margin: 0; }
+.mwSub   { font-size: 14px; color: rgba(255,255,255,0.42); line-height: 1.65; max-width: 300px; margin: 0; }

@@ -1632,6 +1632,73 @@
   .m3eliToggleBadge { display: none; }
 }
 
+/* ─── Mobile hardening ───────────────────── */
+@media (max-width: 640px) {
+  .m3heroThread {
+    display: none;
+  }
+
+  .m3compareWrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .m3compareTable {
+    min-width: 0;
+    font-size: 12px;
+  }
+
+  .m3compareTable th,
+  .m3compareTable td {
+    padding: 11px 8px;
+    overflow-wrap: anywhere;
+  }
+
+  .m3compareTable th {
+    letter-spacing: 0.04em;
+  }
+
+  .m3forkLayout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .m3forkCodeBlock,
+  .m3forkCodeBlock pre[class*="language-"] {
+    max-width: 100%;
+  }
+
+  .m3forkOutput code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .m3javaTabs {
+    flex-wrap: wrap;
+  }
+
+  .m3javaTab {
+    flex: 1 1 100%;
+    justify-content: space-between;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .m3javaTab:last-child {
+    border-bottom: none;
+  }
+
+  .m3game {
+    grid-template-columns: 1fr;
+  }
+
+  .m3gameScore {
+    text-align: left;
+  }
+}
+
 /* ─── C-language callout ─────────────────── */
 .m3cCallout {
   display: flex; align-items: flex-start; gap: 12px;

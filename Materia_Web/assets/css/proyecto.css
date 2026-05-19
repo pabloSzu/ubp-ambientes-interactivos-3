@@ -399,3 +399,17 @@
   .pyBugTrace table { font-size: 11px; }
   .pyProtoRow { grid-template-columns: 1fr; gap: 4px; }
 }
+
+/* ── MOBILE WALL ─────────────────────────── */
+#mobileWall {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: #09090f;
+  flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 40px 32px;
+  gap: 24px;
+}
+@media (max-width: 899px) { #mobileWall { display: flex; } }
+.mwEmoji { font-size: 52px; line-height: 1; }
+.mwTitle { font-size: 22px; font-weight: 900; color: #fff; line-height: 1.25; margin: 0; }
+.mwSub   { font-size: 14px; color: rgba(255,255,255,0.42); line-height: 1.65; max-width: 300px; margin: 0; }

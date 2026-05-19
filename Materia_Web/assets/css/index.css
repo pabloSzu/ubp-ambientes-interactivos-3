@@ -1506,8 +1506,65 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 @media (max-width: 600px) {
-  .bioTop { flex-direction: column; align-items: flex-start; }
-  .bioPhoto { width: 80px; height: 80px; }
+  .bioSection {
+    padding-block: 44px 54px;
+  }
+  .bioSection .sectionWrap {
+    width: min(100% - 32px, 1280px);
+  }
+  .bioCard {
+    gap: 20px;
+    padding: 24px 20px;
+    border-radius: 18px;
+  }
+  .bioTop {
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  .bioPhoto {
+    width: 82px;
+    height: 82px;
+  }
+  .bioBadgeRow {
+    justify-content: center;
+    gap: 7px;
+  }
+  .bioBadge {
+    max-width: 100%;
+    justify-content: center;
+    font-size: 10px;
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    text-align: center;
+    white-space: normal;
+  }
+  .bioName {
+    font-size: 26px;
+  }
+  .bioRole {
+    max-width: 280px;
+    margin-inline: auto;
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .bioDivider {
+    margin-block: 2px;
+  }
+  .bioBio {
+    font-size: 14px;
+    line-height: 1.72;
+  }
+  .bioBio + .bioBio {
+    margin-top: -4px !important;
+  }
+  .bioSocials {
+    gap: 9px;
+  }
+  .bioSocialLink {
+    min-height: 42px;
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -1602,20 +1659,100 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 @media (max-width: 720px) {
-  .hdrNav2 span { display: none; }
-  .hdrNavLink { padding: 7px 10px; gap: 0; }
-  .hdrDropBtn { padding: 7px 10px; gap: 4px; }
-  .hdrDropBtn span { display: none; }
+  .hdr {
+    gap: 10px;
+    padding-inline: 14px;
+  }
+  .hdrLogo {
+    width: clamp(96px, 28vw, 122px);
+  }
+  .hdrNav2 { display: none; }
+  .hdrBadge .course { display: none; }
+  .hdrCta {
+    min-height: 38px;
+    padding-inline: 15px;
+  }
+  .heroInner {
+    padding-inline: 18px;
+    padding-top: 44px;
+  }
+  .heroTitle {
+    font-size: clamp(40px, 13vw, 58px);
+    line-height: 0.98;
+  }
+  .heroRoadmap {
+    padding-left: 20px;
+  }
+  .heroRoadmapItem {
+    align-items: flex-start;
+  }
   .heroStatsBar { gap: 0; overflow-x: auto; }
+  .groupHead {
+    flex-wrap: wrap;
+  }
+  .groupDesc {
+    display: block;
+    width: 100%;
+    margin-left: 0;
+  }
+  .sectionHead {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 600px) {
-  .hdrNav2 { display: none; }
   .g2, .g3 { grid-template-columns: 1fr; }
   .groupHead { flex-wrap: wrap; }
   .compTrackWrap::before, .compTrackWrap::after { width: 40px; }
   .sectionHead { flex-direction: column; gap: 2px; }
   .heroStatsBar { justify-content: flex-start; }
+  .heroEyebrow {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .heroCtas,
+  .proyectoCodeActions,
+  .bioSocials {
+    width: 100%;
+  }
+  .heroCtas > *,
+  .proyectoCodeBtn,
+  .bioSocialLink,
+  .closing .btnFill {
+    width: 100%;
+    justify-content: center;
+  }
+  .evalCard {
+    overflow-x: auto;
+  }
+  .bioTop {
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+  .footerLogo img {
+    width: 128px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hdrBadge,
+  .hdrSep {
+    display: none;
+  }
+  .hdrCta {
+    font-size: 13px;
+    padding-inline: 13px;
+  }
+  .heroTitle {
+    font-size: clamp(36px, 15vw, 48px);
+  }
+  .heroDesc,
+  .heroMeta {
+    font-size: 14px;
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -2311,3 +2448,17 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   .proyectoFinalContent { flex-direction: column; }
   .proyectoEtapaNewHead { flex-direction: column; }
 }
+
+/* ── MOBILE WALL ─────────────────────────── */
+#mobileWall {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: #09090f;
+  flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 40px 32px;
+  gap: 24px;
+}
+@media (max-width: 899px) { #mobileWall { display: flex; } }
+.mwEmoji { font-size: 52px; line-height: 1; }
+.mwTitle { font-size: 22px; font-weight: 900; color: #fff; line-height: 1.25; margin: 0; }
+.mwSub   { font-size: 14px; color: rgba(255,255,255,0.42); line-height: 1.65; max-width: 300px; margin: 0; }
