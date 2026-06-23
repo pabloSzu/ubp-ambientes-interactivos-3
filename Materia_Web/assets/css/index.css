@@ -58,6 +58,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-size: 16px;
   overflow-x: hidden;
 }
 a { color: inherit; text-decoration: none; }
@@ -403,7 +404,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 
 .heroInner {
   flex: 1;
-  max-width: 1360px;
+  max-width: 1480px;
   width: 100%;
   margin: 0 auto;
   padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 72px) clamp(32px, 4vw, 56px);
@@ -470,10 +471,10 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .heroDesc {
-  font-size: clamp(15px, 1.3vw, 18px);
+  font-size: clamp(17px, 1.4vw, 20px);
   color: var(--sub);
   line-height: 1.72;
-  max-width: 520px;
+  max-width: 580px;
   margin-bottom: 28px;
 }
 
@@ -708,7 +709,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 .heroRoadmapItem:hover .heroRoadmapIcon { opacity: 0.9; }
 
 .heroRoadmapName {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: rgba(255,255,255,0.82);
   transition: color 0.15s;
@@ -793,7 +794,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 .objMarqueeTrack {
   display: flex;
   width: max-content;
-  animation: objScroll 50s linear infinite;
+  animation: objScroll 85s linear infinite;
 }
 .objMarqueeTrack:hover { animation-play-state: paused; }
 
@@ -835,8 +836,8 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 
 .objMiniCard p {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.58;
+  font-size: 15px;
+  line-height: 1.56;
   color: var(--text);
 }
 
@@ -850,7 +851,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .sectionWrap {
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -863,7 +864,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .sectionHead h2 {
-  font-size: clamp(20px, 2vw, 28px);
+  font-size: clamp(22px, 2.2vw, 32px);
   font-weight: 900;
   letter-spacing: -0.02em;
 }
@@ -1012,17 +1013,17 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .mCard h3 {
-  font-size: clamp(16px, 1.5vw, 19px);
+  font-size: clamp(18px, 1.6vw, 21px);
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.22;
   color: var(--text);
   margin-bottom: 10px;
 }
 
 .mDesc {
-  font-size: clamp(14px, 1.1vw, 15px);
+  font-size: clamp(15px, 1.2vw, 17px);
   color: var(--sub);
-  line-height: 1.68;
+  line-height: 1.66;
   flex: 1;
   margin-bottom: 20px;
 }
@@ -1112,7 +1113,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 .compTrack {
   display: flex;
   width: max-content;
-  animation: compScroll 90s linear infinite;
+  animation: compScroll 150s linear infinite;
 }
 .compTrack:hover { animation-play-state: paused; }
 
@@ -1161,7 +1162,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   padding: clamp(44px, 5vw, 64px) clamp(20px, 5vw, 72px);
 }
 
-.evalInner { max-width: 1280px; margin: 0 auto; }
+.evalInner { max-width: 1400px; margin: 0 auto; }
 
 .evalHead {
   margin-bottom: 20px;
@@ -1212,8 +1213,8 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 .evalCard.p1 .evalScore { color: var(--teal); }
 .evalCard.p2 .evalScore { color: var(--gold); }
 
-.evalCard h3 { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
-.evalCard > p { font-size: 13px; color: var(--sub); line-height: 1.56; margin-bottom: 14px; }
+.evalCard h3 { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.evalCard > p { font-size: 14px; color: var(--sub); line-height: 1.58; margin-bottom: 14px; }
 
 .evalModBadges {
   display: flex;
@@ -1234,7 +1235,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 
 .evalCard table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
 .evalCard td {
-  font-size: 13px;
+  font-size: 14px;
   padding: 8px 0;
   border-bottom: 1px solid rgba(255,255,255,0.05);
   color: var(--sub);
@@ -1585,9 +1586,9 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   margin-bottom: 10px;
 }
 .closing p {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--sub);
-  max-width: 460px;
+  max-width: 500px;
   margin: 0 auto 24px;
   line-height: 1.66;
 }

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../assets/css/modulo3.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" />
     <style>
       :root {
@@ -34,7 +35,7 @@
       <a class="mhdrBack" href="../index.html">
         <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <span class="mhdrBrand">PAI3</span>
+      <a class="mhdrBrand" href="../index.html" aria-label="Ir al campus PAI3">PAI3</a>
       <span class="mhdrLabel" id="mhdrLabel">Módulo 03 · Programación Concurrente</span>
       <nav class="mhdrNav2">
         <a class="mhdrNavLink" href="#microobjetivos"><i class="ph ph-target"></i><span>Objetivos</span></a>
@@ -48,6 +49,7 @@
             <a class="mhdrDropItem" href="#race"><i class="ph ph-lightning"></i> Race Condition</a>
             <a class="mhdrDropItem" href="#sincronizacion"><i class="ph ph-lock-key"></i> Sincronización</a>
             <a class="mhdrDropItem" href="#laboratorio"><i class="ph ph-flask"></i> Laboratorio</a>
+            <a class="mhdrDropItem" href="#profundizar"><i class="ph ph-youtube-logo"></i> Ver y profundizar</a>
           </div>
         </div>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-bookmark"></i><span>Glosario</span></a>
@@ -1734,13 +1736,87 @@ public class EjecutorDemo {
     </section>
 
     <!-- ── FOOTER ─────────────────────────────── -->
+    <!-- ── VER Y PROFUNDIZAR ──────────── -->
+    <section class="msec" id="profundizar">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-youtube-logo"></i> Ver y profundizar</span>
+          <h2>Videos para fijar los conceptos</h2>
+          <p class="msecSub">Material audiovisual para afianzar concurrencia en Java. Mirá cada video y resolvé la consigna antes de la actividad.</p>
+        </div>
+
+        <div class="mVideoGrid reveal">
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="mEc5a36Mg3Q" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/mEc5a36Mg3Q/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">El patrón Read-Modify-Write</h3>
+              <p class="mVideoMeta"><i class="ph ph-arrows-clockwise"></i> El corazón del problema</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Casi toda race condition nace de una operación read-modify-write que <em>parece</em> atómica pero no lo es. Identificá las <strong>3 sub-operaciones</strong> (leer, modificar, escribir) en el contador compartido del simulador del módulo. ¿En qué punto exacto se "cuela" otro hilo y se pierde una actualización?</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="ABAlfpIKU7Q" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/ABAlfpIKU7Q/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Short</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Concurrencia vs Paralelismo</h3>
+              <p class="mVideoMeta"><i class="ph ph-git-fork"></i> Clip corto · La distinción clave</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> No son lo mismo. Dá un ejemplo cotidiano de <em>concurrencia sin paralelismo</em> y otro de <em>paralelismo real</em>. ¿Un procesador de un solo núcleo puede ser concurrente? ¿Puede ser paralelo?</p>
+              <div class="mVideoPrompt">
+                <span class="mVideoPromptLabel"><i class="ph ph-robot"></i> Pegale esto a una IA</span>
+                <p class="mVideoPromptText" id="m3prompt">Explicame con una analogía simple la diferencia entre concurrencia y paralelismo. Después decime: en una computadora con un solo núcleo, ¿puede haber concurrencia? ¿Puede haber paralelismo real? ¿Por qué? Dame un ejemplo concreto de cada caso.</p>
+                <button class="mVideoPromptCopy" type="button" data-copy="m3prompt"><i class="ph ph-copy"></i> Copiar pregunta</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="MqnpIwN7dz0" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/MqnpIwN7dz0/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Race Conditions a fondo</h3>
+              <p class="mVideoMeta"><i class="ph ph-warning-octagon"></i> El bug intermitente</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Conectá lo del video con el <strong>Thread Detective</strong> del módulo: ¿qué condición tiene que darse para que el bug aparezca solo "a veces"? ¿Por qué una race condition es tan difícil de reproducir y de depurar?</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="G4XzApE2x1M" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/G4XzApE2x1M/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Tutorial</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Crear hilos en Java, rápido</h3>
+              <p class="mVideoMeta"><i class="ph ph-code"></i> Tutorial práctico</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Tomá el código del tutorial y replicalo en el <strong>laboratorio</strong> del módulo. Corré una versión secuencial y otra con varios hilos sobre la misma tarea: ¿qué diferencia de tiempo medís? ¿El speedup es proporcional a la cantidad de hilos, o hay un techo?</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <footer class="mfoot">
-      <a href="modulo2.html" class="mfootLink">
-        <i class="ph ph-arrow-left"></i> Módulo 2
+      <a class="mfootBtn mfootPrev" href="modulo2.html">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Anterior</span><span class="mfootBtnTitle">Módulo 2</span></span>
       </a>
-      <a href="../index.html" class="mfootBrand"><i class="ph ph-house-simple"></i> Volver al campus</a>
-      <a href="modulo4.html" class="mfootLink">
-        Módulo 4 <i class="ph ph-arrow-right"></i>
+      <a class="mfootHome" href="../index.html">
+        <i class="ph-bold ph-house-simple"></i> Campus
+      </a>
+      <a class="mfootBtn mfootNext mfootPrimary" href="modulo4.html">
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Siguiente</span><span class="mfootBtnTitle">Módulo 4</span></span>
+        <i class="ph-bold ph-arrow-right"></i>
       </a>
     </footer>
 

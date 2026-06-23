@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../assets/css/modulo5.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" />
     <style>
       :root {
@@ -34,7 +35,7 @@
       <a class="mhdrBack" href="../index.html">
         <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <span class="mhdrBrand">PAI3</span>
+      <a class="mhdrBrand" href="../index.html" aria-label="Ir al campus PAI3">PAI3</a>
       <span class="mhdrLabel" id="mhdrLabel">Módulo 05 · Sincronización</span>
       <nav class="mhdrNav2">
         <a class="mhdrNavLink" href="#microobjetivos"><i class="ph ph-target"></i><span>Objetivos</span></a>
@@ -52,6 +53,7 @@
             <a class="mhdrDropItem" href="#filesystem"><i class="ph ph-hard-drive"></i> Filesystem quirks</a>
             <a class="mhdrDropItem" href="#codigo"><i class="ph ph-code"></i> Código Java</a>
             <a class="mhdrDropItem" href="#laboratorio"><i class="ph ph-flask"></i> Laboratorio</a>
+            <a class="mhdrDropItem" href="#profundizar"><i class="ph ph-youtube-logo"></i> Ver y profundizar</a>
           </div>
         </div>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-bookmark"></i><span>Glosario</span></a>
@@ -275,6 +277,7 @@
               <span class="m5conceptBullet">No preempción</span>
               <span class="m5conceptBullet">Espera circular</span>
             </div>
+            <p class="m5conceptGloss"><i class="ph-bold ph-info"></i> <span><strong>En criollo:</strong> el recurso lo usa uno a la vez (<em>exclusión mutua</em>), nadie suelta lo que ya tiene mientras pide más (<em>hold &amp; wait</em>), <strong>a nadie se le puede quitar un recurso por la fuerza</strong> (<em>no preempción</em> = no se puede "expropiar"), y se forma un círculo de esperas. Las 4 juntas = deadlock. Cada una en detalle más abajo.</span></p>
           </div>
 
           <div class="m5conceptCard m5conceptBug reveal" style="--delay:240ms">
@@ -472,6 +475,15 @@
             </div>
           </div>
         </div>
+
+        <div class="m5philVideo reveal">
+          <div class="m5philVideoHead"><i class="ph-bold ph-play-circle"></i> Antes de simular, mirá este video para entenderlo</div>
+          <button class="mVideoEmbed m5philVideoEmbed" data-yt="8KFvrgbuWxY" type="button" aria-label="Reproducir video">
+            <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/8KFvrgbuWxY/hqdefault.jpg" alt="" />
+            <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+            <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -483,6 +495,18 @@
           <h2>¿Deadlock o sincronización? Vos elegís</h2>
           <p class="msecSub">Los mismos 5 filósofos, los mismos 5 tenedores. Solo cambia si hay o no un semáforo de control. El resultado es radicalmente distinto.</p>
         </div>
+
+        <div class="m5simGuide reveal">
+          <div class="m5simGuideTitle"><i class="ph-bold ph-compass"></i> Cómo aprovechar el simulador</div>
+          <ol class="m5simGuideSteps">
+            <li><span class="m5simGuideNum">1</span> <div>Empezá con <strong>"Sin control"</strong>: mirá cómo los 5 filósofos toman un tenedor a la vez y quedan todos esperando el otro → <strong>deadlock</strong>.</div></li>
+            <li><span class="m5simGuideNum">2</span> <div>Cambiá a <strong>"Semáforo(4)"</strong>: con un permiso menos que filósofos, el sistema progresa y todos terminan comiendo.</div></li>
+            <li><span class="m5simGuideNum">3</span> <div>Alterná las vistas <strong>Historia</strong> (la analogía explicada) y <strong>Código</strong> (el Java real) para ver la misma escena desde los dos lados.</div></li>
+            <li><span class="m5simGuideNum">4</span> <div>Avanzá paso a paso con las flechas <strong>← →</strong> y leé los carteles que aparecen en el diagrama.</div></li>
+          </ol>
+          <p class="m5simGuideTip"><i class="ph-bold ph-lightbulb"></i> Probá <strong>sí o sí</strong> los dos escenarios y las dos vistas — toda la gracia está en comparar el deadlock contra la solución con semáforo.</p>
+        </div>
+
         <div class="sm-entry reveal">
           <div class="sm-entryInfo">
             <p class="sm-entryDesc">Avanzá paso a paso y mirá exactamente qué pasa en el diagrama en cada momento. Hay carteles explicativos, flechas de intención, discurso de cada filósofo y dos modos: <strong>Historia</strong> (analogías, super explicado) y <strong>Código Java</strong> sincronizado.</p>
@@ -1416,6 +1440,19 @@ public class DeadlockFix {
             </div>
           </div>
 
+          <div class="mFlipCard reveal" style="--delay:390ms">
+            <div class="mFlipInner">
+              <div class="mFlipFront">
+                <i class="ph-bold ph-hand-grabbing" style="font-size:28px;color:var(--accent)"></i>
+                <strong>Preempción</strong>
+                <span class="mFlipHint"><i class="ph ph-hand-tap"></i> Tocá</span>
+              </div>
+              <div class="mFlipBack">
+                <p>Poder <strong>quitarle un recurso (o la CPU) a un hilo por la fuerza</strong>, sin que lo libere por voluntad propia — "expropiarlo". El sistema operativo la usa para repartir la CPU entre hilos. Con los locks de Java <em>no</em> hay preempción (un hilo suelta el lock solo cuando quiere): por eso aparece la condición "no preempción" de Coffman. <code>tryLock(timeout)</code> la simula: si no conseguís el recurso a tiempo, lo soltás y reintentás.</p>
+              </div>
+            </div>
+          </div>
+
           <div class="mFlipCard reveal" style="--delay:420ms">
             <div class="mFlipInner">
               <div class="mFlipFront">
@@ -1538,13 +1575,69 @@ public class DeadlockFix {
     </section>
 
     <!-- ── FOOTER ─────────────────────────────── -->
+    <!-- ── VER Y PROFUNDIZAR ──────────── -->
+    <section class="msec" id="profundizar">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-youtube-logo"></i> Ver y profundizar</span>
+          <h2>Videos para fijar los conceptos</h2>
+          <p class="msecSub">Material audiovisual sobre sincronización y deadlock. Mirá cada video y resolvé la consigna.</p>
+        </div>
+
+        <div class="mVideoGrid reveal">
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="AjoHqmad3v8" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/AjoHqmad3v8/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Código</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">La cena de los filósofos en código Java</h3>
+              <p class="mVideoMeta"><i class="ph ph-code"></i> Implementación</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Seguí la implementación y identificá las <strong>4 condiciones de Coffman</strong> en el código. ¿Cuál romperías para prevenir el deadlock y cómo lo harías en Java? Compará con la solución del simulador del módulo.</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="yD8JjGQsDP8" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/yD8JjGQsDP8/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Short</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Semáforos en Java, al grano</h3>
+              <p class="mVideoMeta"><i class="ph ph-lock-key"></i> Clip corto</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Ejemplo mínimo de un <code>Semaphore</code>. Relacionalo con el escenario "Semáforo(4)" del simulador: ¿por qué se permiten 4 filósofos y no 5? ¿Qué garantiza esa restricción?</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="NUazC4EUG50" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/NUazC4EUG50/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Deadlock vs Livelock</h3>
+              <p class="mVideoMeta"><i class="ph ph-arrows-counter-clockwise"></i> Dos patologías</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> No es lo mismo trabarse que "moverse sin avanzar". Explicá con tus palabras la diferencia entre <strong>deadlock</strong> y <strong>livelock</strong>, y dá un ejemplo cotidiano de cada uno. ¿Cuál es más difícil de detectar y por qué?</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <footer class="mfoot">
-      <a href="modulo4.html" class="mfootLink">
-        <i class="ph ph-arrow-left"></i> Módulo 4
+      <a class="mfootBtn mfootPrev" href="modulo4.html">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Anterior</span><span class="mfootBtnTitle">Módulo 4</span></span>
       </a>
-      <a href="../index.html" class="mfootBrand"><i class="ph ph-house-simple"></i> Volver al campus</a>
-      <a href="modulo6.html" class="mfootLink">
-        Módulo 6 <i class="ph ph-arrow-right"></i>
+      <a class="mfootHome" href="../index.html">
+        <i class="ph-bold ph-house-simple"></i> Campus
+      </a>
+      <a class="mfootBtn mfootNext mfootPrimary" href="modulo6.html">
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Siguiente</span><span class="mfootBtnTitle">Módulo 6</span></span>
+        <i class="ph-bold ph-arrow-right"></i>
       </a>
     </footer>
 

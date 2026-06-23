@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../assets/css/modulo1.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
     <style>
       :root {
         --accent:        #ffd166;
@@ -40,7 +41,7 @@
       <a class="mhdrBack" href="../index.html">
         <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <span class="mhdrBrand">PAI3</span>
+      <a class="mhdrBrand" href="../index.html" aria-label="Ir al campus PAI3">PAI3</a>
       <span class="mhdrLabel" id="mhdrLabel">Módulo 01 · Interactividad y TV Digital</span>
       <nav class="mhdrNav2">
         <a class="mhdrNavLink" href="#microobjetivos"><i class="ph ph-target"></i><span>Objetivos</span></a>
@@ -56,10 +57,11 @@
             <a class="mhdrDropItem" href="#pipeline"><i class="ph ph-flow-arrow"></i>Pipeline ISDB-Tb / Ginga</a>
             <a class="mhdrDropItem" href="#devendra"><i class="ph ph-map-pin"></i>Caso DEVENDRA</a>
             <a class="mhdrDropItem" href="#streaming"><i class="ph ph-play-circle"></i>Netflix, Twitch, YouTube</a>
+            <a class="mhdrDropItem" href="#modernos"><i class="ph ph-globe-hemisphere-west"></i> Sistemas modernos</a>
             <a class="mhdrDropItem" href="#quiz"><i class="ph ph-exam"></i>Quiz de autoevaluación</a>
+            <a class="mhdrDropItem" href="#profundizar"><i class="ph ph-youtube-logo"></i> Ver y profundizar</a>
           </div>
         </div>
-        <a class="mhdrNavLink" href="#modernos"><i class="ph ph-globe-hemisphere-west"></i><span>Modernos</span></a>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-bookmark"></i><span>Glosario</span></a>
         <a class="mhdrNavLink" href="#actividades"><i class="ph ph-pencil-simple"></i><span>Actividades</span></a>
       </nav>
@@ -354,7 +356,7 @@
         </div>
         <div class="m1splitLayout reveal">
           <div class="m1splitImg">
-            <img src="../assets/img/imagen-5.png" alt="DEVENDRA — TV Digital interactiva en Argentina: Educación, Salud, Alertas sobre ISDB-Tb" />
+            <img src="../assets/img/imagen-5.jpg" alt="DEVENDRA — TV Digital interactiva en Argentina: Educación, Salud, Alertas sobre ISDB-Tb" />
             <div class="m1splitImgBadge">Estándar ISDB-Tb · Argentina desde 2009</div>
           </div>
           <div class="m1splitContent">
@@ -472,7 +474,7 @@
 
           <div class="m1streamCard">
             <div class="m1streamImgWrap">
-              <img src="../assets/img/imagen-1.png" alt="Netflix UI con recomendaciones personalizadas" class="m1streamImg" />
+              <img src="../assets/img/imagen-1.jpg" alt="Netflix UI con recomendaciones personalizadas" class="m1streamImg" />
               <div class="m1streamAnnotation" style="--ax:72%;--ay:22%;--ac:#e50914">
                 <div class="m1streamAnnotationDot"></div>
                 <div class="m1streamAnnotationText">Recomendaciones: N3-N5</div>
@@ -495,12 +497,13 @@
                 <span class="m1streamCicloArrow">→</span>
                 <div class="m1streamCicloItem" style="--ci:#9b6fff">Feedback: video &lt;2s</div>
               </div>
+              <p class="m1streamGloss"><strong>ABR</strong> (Adaptive Bitrate) = ajusta la calidad del video a tu conexión para que no se corte. <strong>ML</strong> (Machine Learning) = el sistema aprende qué recomendarte con cada cosa que mirás.</p>
             </div>
           </div>
 
           <div class="m1streamCard">
             <div class="m1streamImgWrap">
-              <img src="../assets/img/imagen-2.png" alt="Twitch live streaming con chat en tiempo real" class="m1streamImg" />
+              <img src="../assets/img/imagen-2.jpg" alt="Twitch live streaming con chat en tiempo real" class="m1streamImg" />
               <div class="m1streamAnnotation" style="--ax:76%;--ay:28%;--ac:#9147ff">
                 <div class="m1streamAnnotationDot"></div>
                 <div class="m1streamAnnotationText">Chat en vivo: N5 Colectiva</div>
@@ -528,7 +531,7 @@
 
           <div class="m1streamCard">
             <div class="m1streamImgWrap">
-              <img src="../assets/img/imagen-3.png" alt="YouTube mobile con contenido personalizado" class="m1streamImg" />
+              <img src="../assets/img/imagen-3.jpg" alt="YouTube mobile con contenido personalizado" class="m1streamImg" />
               <div class="m1streamAnnotation" style="--ax:62%;--ay:18%;--ac:#ff0000">
                 <div class="m1streamAnnotationDot"></div>
                 <div class="m1streamAnnotationText">Feed personalizado por historial</div>
@@ -1002,19 +1005,61 @@
       </div>
     </section>
 
+    <!-- ── VER Y PROFUNDIZAR ──────────────── -->
+    <section class="msec" id="profundizar">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-youtube-logo"></i> Ver y profundizar</span>
+          <h2>Videos para fijar los conceptos</h2>
+          <p class="msecSub">Material audiovisual seleccionado para complementar la lectura. Mirá cada video y resolvé la consigna: suma a las horas de estudio del módulo y te prepara para la actividad.</p>
+        </div>
+
+        <div class="mVideoGrid reveal">
+          <!-- Video 1 — REAL (cambiá el ID en data-yt para reemplazarlo) -->
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="U2sZLdBq5Ek" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/U2sZLdBq5Ek/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">TV Digital Interactiva — Aplicaciones Ginga</h3>
+              <p class="mVideoMeta"><i class="ph ph-buildings"></i> LIFIA · UNLP · Caso argentino</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Identificá una <em>acción</em> del usuario, el <em>proceso</em> que ejecuta la TV y el <em>feedback</em> que devuelve. ¿En qué nivel del espectro (N1–N5) lo ubicarías?</p>
+            </div>
+          </article>
+
+          <!-- Video 2 -->
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="f4ddAgx9Vyw" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/f4ddAgx9Vyw/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Otra forma de medir la interactividad: un modelo alternativo</h3>
+              <p class="mVideoMeta"><i class="ph ph-scales"></i> Enfoque comparado</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Este video propone una clasificación de niveles de interactividad distinta a nuestro espectro N1–N5. Compará ambos modelos: ¿qué niveles se corresponden y cuáles no? ¿Qué suma o qué deja afuera esta otra mirada? ¿Cuál te resulta más útil para analizar un sistema real y por qué?</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
     <!-- ── FOOTER NAV ─────────────────────── -->
     <footer class="mfoot">
+      <span class="mfootBtn mfootPrev mfootDisabled" aria-disabled="true">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Anterior</span><span class="mfootBtnTitle">Inicio del curso</span></span>
+      </span>
       <a class="mfootHome" href="../index.html">
-        <i class="ph ph-house-simple"></i> Campus
+        <i class="ph-bold ph-house-simple"></i> Campus
       </a>
-      <div class="mfootNav">
-        <span class="mfootBtn mfootBtnDisabled">
-          <i class="ph ph-arrow-left"></i> Anterior
-        </span>
-        <a class="mfootBtn" id="btnNext" href="modulo.html?m=2">
-          Siguiente <i class="ph ph-arrow-right"></i>
-        </a>
-      </div>
+      <a class="mfootBtn mfootNext mfootPrimary" href="modulo2.html">
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Siguiente</span><span class="mfootBtnTitle">Módulo 2</span></span>
+        <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>

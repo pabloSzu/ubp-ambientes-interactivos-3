@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../assets/css/modulo4.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" />
     <style>
       :root {
@@ -34,7 +35,7 @@
       <a class="mhdrBack" href="../index.html">
         <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <span class="mhdrBrand">PAI3</span>
+      <a class="mhdrBrand" href="../index.html" aria-label="Ir al campus PAI3">PAI3</a>
       <span class="mhdrLabel" id="mhdrLabel">Módulo 04 · Comunicación IPC</span>
       <nav class="mhdrNav2">
         <a class="mhdrNavLink" href="#microobjetivos"><i class="ph ph-target"></i><span>Objetivos</span></a>
@@ -47,9 +48,10 @@
             <a class="mhdrDropItem" href="#ipc"><i class="ph ph-database"></i> Mecanismos IPC</a>
             <a class="mhdrDropItem" href="#simulador"><i class="ph ph-arrows-left-right"></i> Simulador Prod-Consumidor</a>
             <a class="mhdrDropItem" href="#laboratorio"><i class="ph ph-flask"></i> Laboratorio</a>
+            <a class="mhdrDropItem" href="#eventos"><i class="ph ph-lightning"></i> Eventos</a>
+            <a class="mhdrDropItem" href="#profundizar"><i class="ph ph-youtube-logo"></i> Ver y profundizar</a>
           </div>
         </div>
-        <a class="mhdrNavLink" href="#eventos"><i class="ph ph-lightning"></i><span>Eventos</span></a>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-bookmark"></i><span>Glosario</span></a>
         <a class="mhdrNavLink" href="#actividades"><i class="ph ph-pencil-simple"></i><span>Actividades</span></a>
       </nav>
@@ -1351,13 +1353,82 @@ while (true) {
     </section>
 
     <!-- ── FOOTER ─────────────────────────────── -->
+    <!-- ── VER Y PROFUNDIZAR ──────────── -->
+    <section class="msec" id="profundizar">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-youtube-logo"></i> Ver y profundizar</span>
+          <h2>Videos para fijar los conceptos</h2>
+          <p class="msecSub">Material audiovisual sobre comunicación entre procesos e hilos. Mirá cada video y resolvé la consigna.</p>
+        </div>
+
+        <div class="mVideoGrid reveal">
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="9ATZc9h4fHM" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/9ATZc9h4fHM/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Tutorial</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Concurrencia en Java, de cero</h3>
+              <p class="mVideoMeta"><i class="ph ph-graduation-cap"></i> Tutorial completo resumido</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Es el punto de partida práctico. Mirá el video y escribí tu primer programa con dos hilos que compartan un recurso. Conectalo con lo visto en el Módulo 3: ¿dónde podría aparecer una race condition?</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="clrjlaSUpUw" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/clrjlaSUpUw/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Ejercicio</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Productor–Consumidor en Java</h3>
+              <p class="mVideoMeta"><i class="ph ph-queue"></i> Ejercicio paso a paso</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Replicá el ejercicio y relacionalo con el <strong>BlockingQueue Simulator</strong> del módulo. ¿Qué pasa cuando el buffer se llena? ¿Y cuando se vacía? ¿Cómo la cola bloqueante sincroniza a productor y consumidor sin perder datos?</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="Y2mDwW2pMv4" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/Y2mDwW2pMv4/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">IPC explicado</h3>
+              <p class="mVideoMeta"><i class="ph ph-arrows-left-right"></i> Los mecanismos</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Para un caso que se te ocurra, elegí entre pipe, cola de mensajes o memoria compartida. Justificá tu elección por velocidad, persistencia y acoplamiento entre los procesos.</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="dRCVPFe30WU" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/dRCVPFe30WU/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Avanzado</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Concurrencia en Java a nivel pro</h3>
+              <p class="mVideoMeta"><i class="ph ph-rocket-launch"></i> Tutorial largo · opcional</p>
+              <p class="mVideoTask"><strong>Consigna (opcional, para ir más allá):</strong> Material extenso para quien quiera dominar la concurrencia en Java. Elegí un tema que no hayamos cubierto (ExecutorService, Future, locks avanzados) y traé un ejemplo de código propio a clase.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <footer class="mfoot">
-      <a href="modulo3.html" class="mfootLink">
-        <i class="ph ph-arrow-left"></i> Módulo 3
+      <a class="mfootBtn mfootPrev" href="modulo3.html">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Anterior</span><span class="mfootBtnTitle">Módulo 3</span></span>
       </a>
-      <a href="../index.html" class="mfootBrand"><i class="ph ph-house-simple"></i> Volver al campus</a>
-      <a href="modulo5.html" class="mfootLink">
-        Módulo 5 <i class="ph ph-arrow-right"></i>
+      <a class="mfootHome" href="../index.html">
+        <i class="ph-bold ph-house-simple"></i> Campus
+      </a>
+      <a class="mfootBtn mfootNext mfootPrimary" href="modulo5.html">
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Siguiente</span><span class="mfootBtnTitle">Módulo 5</span></span>
+        <i class="ph-bold ph-arrow-right"></i>
       </a>
     </footer>
 

@@ -180,7 +180,7 @@
   font-size: clamp(30px, 4vw, 46px); font-weight: 900;
   color: var(--accent); line-height: 1; letter-spacing: -0.03em;
 }
-.m4heroStatLabel { font-size: 13px; color: var(--sub); max-width: 150px; line-height: 1.45; }
+.m4heroStatLabel { font-size: 15px; color: var(--sub); max-width: 150px; line-height: 1.45; }
 
 /* ─── Pull quote ─────────────────────────── */
 .m4pullQuote {
@@ -274,7 +274,7 @@
   text-align: center;
 }
 .m4isoRoomName { font-size: 13px; font-weight: 800; color: var(--rc); }
-.m4isoRoomDesc { font-size: 11px; color: var(--sub); line-height: 1.4; }
+.m4isoRoomDesc { font-size: 15px; color: var(--sub); line-height: 1.4; }
 
 /* Channel visualization */
 .m4isoChannel {
@@ -394,10 +394,10 @@
 .m4ipcSpeedNum {
   font-size: 11px; font-weight: 900; color: var(--sub); white-space: nowrap;
 }
-.m4ipcDesc { font-size: 13px; color: var(--sub); line-height: 1.65; margin-bottom: 12px; }
+.m4ipcDesc { font-size: 15px; color: var(--sub); line-height: 1.65; margin-bottom: 12px; }
 .m4ipcUso {
   display: flex; align-items: flex-start; gap: 6px;
-  font-size: 12px; color: var(--text); font-weight: 600;
+  font-size: 14px; color: var(--text); font-weight: 600;
   padding: 8px 10px; border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.06);
   background: rgba(255,255,255,0.03); margin-bottom: 12px;
@@ -705,7 +705,7 @@
 .m4flashAnswer {
   margin-top: 10px; padding: 10px; border-radius: 8px;
   border-left: 3px solid var(--accent); background: var(--accent-sub);
-  font-size: 13px; color: var(--sub); line-height: 1.5; display: none;
+  font-size: 15px; color: var(--sub); line-height: 1.5; display: none;
 }
 .m4flashAnswer.show { display: block; }
 
@@ -886,7 +886,7 @@
   font-size: 14px; font-weight: 900; color: var(--accent);
 }
 .m4labStepText strong { display: block; font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-.m4labStepText p { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m4labStepText p { font-size: 15px; color: var(--sub); line-height: 1.6; margin: 0; }
 .m4labEmbed {
   border-radius: var(--r); overflow: hidden;
   border: 1px solid var(--border); background: #1e1e1e;
@@ -936,7 +936,7 @@
 .m4gameOpt.wrong { border-color: rgba(255,90,102,0.4); background: rgba(255,90,102,0.08); color: #ff5a66; }
 .m4gameOpt:disabled { cursor: default; opacity: 0.7; }
 .m4gameHint {
-  margin-top: 10px; font-size: 12px; color: var(--sub); line-height: 1.5;
+  margin-top: 10px; font-size: 14px; color: var(--sub); line-height: 1.5;
   padding: 8px 10px; border-radius: 6px;
   border-left: 2px solid var(--accent); background: var(--accent-sub);
   display: none;
@@ -1035,7 +1035,7 @@
   align-items: flex-start; text-align: left;
 }
 .m4flipBack p {
-  font-size: 13px; color: var(--sub); line-height: 1.65; margin: 0;
+  font-size: 15px; color: var(--sub); line-height: 1.65; margin: 0;
 }
 .m4flipBack code {
   font-size: 12px; color: var(--accent);
@@ -1106,7 +1106,7 @@
   width: var(--pct); background: var(--bc);
   box-shadow: 0 0 8px var(--bc);
 }
-.m4rubricDesc { font-size: 13px; color: var(--sub); line-height: 1.6; }
+.m4rubricDesc { font-size: 15px; color: var(--sub); line-height: 1.6; }
 
 /* ─── Footer overrides ───────────────────── */
 .mfootLink {
@@ -1253,7 +1253,7 @@
 .m4evPattern h4 { font-size: 15px; font-weight: 800; margin: 0; }
 .m4evPattern p { font-size: 14px; color: var(--sub); line-height: 1.6; margin: 0; }
 .m4evPattern pre { background: rgba(0,0,0,0.35); border-radius: 10px; padding: 14px 16px; overflow-x: auto; margin: 0; }
-.m4evPattern pre code { font-size: 13px; color: #7dd3fc; font-family: monospace; line-height: 1.65; }
+.m4evPattern pre code { font-size: 15px; color: #7dd3fc; font-family: monospace; line-height: 1.65; }
 
 .m4evConnection {
   display: flex; align-items: flex-start; gap: 16px;

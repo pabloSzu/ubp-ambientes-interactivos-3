@@ -34,7 +34,7 @@
       <a class="mhdrBack" href="index.html">
         <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <span class="mhdrBrand">PAI3</span>
+      <a class="mhdrBrand" href="index.html" aria-label="Ir al campus PAI3">PAI3</a>
       <span class="mhdrLabel">Proyecto Integrador</span>
       <nav class="mhdrNav2">
         <a class="mhdrNavLink" href="#overview"><i class="ph ph-info"></i><span>¿Qué es?</span></a>
@@ -597,10 +597,16 @@ clients.remove(handler); // ← ConcurrentModificationException</pre>
     </section>
 
     <!-- ── FOOTER NAV ─────────────────────── -->
-    <div class="mfoot">
-      <a class="mfootBtn" href="index.html"><i class="ph ph-arrow-left"></i> Volver al campus</a>
-      <a class="mfootBtn" href="assets/downloads/trivia-pai3.zip" download><i class="ph-bold ph-download-simple"></i> Descargar código</a>
-    </div>
+    <footer class="mfoot">
+      <a class="mfootBtn mfootPrev" href="index.html">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Volver al</span><span class="mfootBtnTitle">Campus</span></span>
+      </a>
+      <a class="mfootBtn mfootNext mfootPrimary" href="assets/downloads/trivia-pai3.zip" download>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Descargar</span><span class="mfootBtnTitle">Código base (ZIP)</span></span>
+        <i class="ph-bold ph-download-simple"></i>
+      </a>
+    </footer>
 
     <script>
       // Cursor glow
@@ -611,5 +617,6 @@ clients.remove(handler); // ← ConcurrentModificationException</pre>
         });
       }
     </script>
+    <script src="assets/js/evalproyecto.js"></script>
   </body>
 </html>

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../assets/css/modulo6_extra.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" />
     <style>
       :root {
@@ -35,7 +36,7 @@
       <a class="mhdrBack" href="../index.html">
         <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <span class="mhdrBrand">PAI3</span>
+      <a class="mhdrBrand" href="../index.html" aria-label="Ir al campus PAI3">PAI3</a>
       <span class="mhdrLabel" id="mhdrLabel">Módulo 06 · Paralelismo</span>
       <nav class="mhdrNav2">
         <a class="mhdrNavLink" href="#microobjetivos"><i class="ph ph-target"></i><span>Objetivos</span></a>
@@ -53,6 +54,7 @@
             <a class="mhdrDropItem" href="#codigo"><i class="ph ph-code"></i> Código Java</a>
             <a class="mhdrDropItem" href="#casos"><i class="ph ph-television"></i> Casos TV y streaming</a>
             <a class="mhdrDropItem" href="#laboratorio"><i class="ph ph-flask"></i> Laboratorio</a>
+            <a class="mhdrDropItem" href="#profundizar"><i class="ph ph-youtube-logo"></i> Ver y profundizar</a>
           </div>
         </div>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-bookmark"></i><span>Glosario</span></a>
@@ -1402,13 +1404,69 @@ public class SumaParalela {
     </section>
 
     <!-- ── FOOTER ─────────────────────────────── -->
+    <!-- ── VER Y PROFUNDIZAR ──────────── -->
+    <section class="msec" id="profundizar">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-youtube-logo"></i> Ver y profundizar</span>
+          <h2>Videos para fijar los conceptos</h2>
+          <p class="msecSub">Material audiovisual sobre programación paralela. Mirá cada video y resolvé la consigna.</p>
+        </div>
+
+        <div class="mVideoGrid reveal">
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="cSzsO_S8Hc0" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/cSzsO_S8Hc0/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Fórmula</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Speedup y Eficiencia: cómo se miden</h3>
+              <p class="mVideoMeta"><i class="ph ph-gauge"></i> La fórmula, breve</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Anotá las dos fórmulas: <strong>Speedup = T₁ / Tₙ</strong> y <strong>Eficiencia = Speedup / N</strong>. Calculalas para un caso con N=8 cores y speedup ×5: ¿qué eficiencia da y qué te dice ese número sobre el hardware que estás desaprovechando?</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="weN3I6CfiYA" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/weN3I6CfiYA/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Refuerzo</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Speedup y Eficiencia: otra explicación</h3>
+              <p class="mVideoMeta"><i class="ph ph-arrows-clockwise"></i> Misma idea, otro enfoque</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> El mismo concepto explicado de otra forma. Compará ambos videos: ¿cuál te quedó más claro y por qué? Después conectá speedup y eficiencia con la <strong>Ley de Amdahl</strong> del módulo: ¿por qué la eficiencia cae a medida que sumás cores?</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="z0u5e1h55rk" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/z0u5e1h55rk/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Taxonomía de Flynn explicada</h3>
+              <p class="mVideoMeta"><i class="ph ph-squares-four"></i> Clasificando el hardware</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Para cada categoría (<strong>SISD, SIMD, MIMD, MISD</strong>) dá un ejemplo de hardware real. ¿En cuál entra una GPU? ¿Y un cluster de varios servidores? Compará con la sección de Flynn del módulo.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <footer class="mfoot">
-      <a href="modulo5.html" class="mfootLink">
-        <i class="ph ph-arrow-left"></i> Módulo 5
+      <a class="mfootBtn mfootPrev" href="modulo5.html">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Anterior</span><span class="mfootBtnTitle">Módulo 5</span></span>
       </a>
-      <a href="../index.html" class="mfootBrand"><i class="ph ph-house-simple"></i> Volver al campus</a>
-      <a href="modulo7.html" class="mfootLink">
-        Módulo 7 <i class="ph ph-arrow-right"></i>
+      <a class="mfootHome" href="../index.html">
+        <i class="ph-bold ph-house-simple"></i> Campus
+      </a>
+      <a class="mfootBtn mfootNext mfootPrimary" href="modulo7.html">
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Siguiente</span><span class="mfootBtnTitle">Módulo 7</span></span>
+        <i class="ph-bold ph-arrow-right"></i>
       </a>
     </footer>
 

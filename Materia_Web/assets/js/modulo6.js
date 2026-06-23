@@ -1003,6 +1003,18 @@ function streamToggle() {
       streamIntervalId = null;
       streamRunning    = false;
 
+      // Estado final uniforme: todos los workers terminaron. Sin esto, el worker
+      // que procesó el último frame queda congelado en 100% (el branch "idle"
+      // nunca corre porque el intervalo se corta en la misma vuelta).
+      for (let w = 0; w < wCount; w++) {
+        const fEl = document.getElementById('swf' + w);
+        const bEl = document.getElementById('swb' + w);
+        const pEl = document.getElementById('swp' + w);
+        if (fEl) fEl.textContent = '✓';
+        if (bEl) bEl.style.width = '100%';
+        if (pEl) pEl.textContent = '✓ listo';
+      }
+
       const pbtn = document.getElementById('streamPlayBtn');
       if (pbtn) { pbtn.innerHTML = '<i class="ph-bold ph-play"></i> Iniciar encoding'; pbtn.disabled = false; }
 

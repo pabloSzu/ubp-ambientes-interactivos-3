@@ -135,7 +135,7 @@
   letter-spacing: -0.02em;
 }
 .m1heroStatLabel {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--sub);
   max-width: 150px;
   line-height: 1.45;
@@ -1031,7 +1031,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--sub);
   line-height: 1.5;
 }
@@ -1152,7 +1152,7 @@
   white-space: nowrap;
 }
 .m1actDiagramLevelReason {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--sub);
   line-height: 1.4;
 }
@@ -1397,7 +1397,7 @@
   color: var(--text); margin: 0 0 8px;
 }
 .m1streamCardInfo p {
-  font-size: 13px; line-height: 1.65;
+  font-size: 15px; line-height: 1.65;
   color: var(--sub); margin: 0 0 14px;
 }
 .m1streamCiclo {
@@ -1464,26 +1464,33 @@
 .m1modTableHead {
   display: grid;
   grid-template-columns: 2fr 1.5fr 1.5fr 2fr;
+  column-gap: 24px;
+  align-items: start;
   padding: 12px 20px;
   background: rgba(255,255,255,0.04);
   border-bottom: 1px solid var(--border);
   font-size: 11px; font-weight: 700;
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;
 }
+.m1modTableHead span { min-width: 0; line-height: 1.35; }
 .m1modTableRow {
   display: grid;
   grid-template-columns: 2fr 1.5fr 1.5fr 2fr;
+  column-gap: 24px;
   padding: 14px 20px;
   border-bottom: 1px solid var(--border);
   font-size: 14px; color: var(--sub);
   align-items: center;
   transition: background 0.15s;
 }
+.m1modTableRow span { min-width: 0; }
 .m1modTableRow:last-child { border-bottom: none; }
 .m1modTableRow:hover { background: var(--surface-hover); }
 .m1modTableRow span:first-child { color: var(--text); display: flex; align-items: center; gap: 8px; font-weight: 600; }
 .m1modTag {
   display: inline-flex;
+  justify-self: start;
+  width: fit-content;
   padding: 3px 10px; border-radius: 999px;
   background: color-mix(in srgb, var(--tc) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--tc) 28%, transparent);
@@ -1497,3 +1504,12 @@
   .m1modTableRow { grid-template-columns: 2fr 1fr 1fr; }
   .m1modTableRow span:last-child { display: none; }
 }
+
+/* Glosa de siglas (ABR/ML) bajo el flujo de streaming */
+.m1streamGloss {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--sub);
+  line-height: 1.55;
+}
+.m1streamGloss strong { color: var(--accent); }

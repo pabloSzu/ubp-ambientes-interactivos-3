@@ -35,7 +35,7 @@
       <a class="mhdrBack" href="index.html">
         <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <span class="mhdrBrand">PAI3</span>
+      <a class="mhdrBrand" href="index.html" aria-label="Ir al campus PAI3">PAI3</a>
       <span class="mhdrLabel">Evaluación Integradora</span>
       <nav class="mhdrNav2">
         <a class="mhdrNavLink" href="#parcial1"><i class="ph ph-number-square-one"></i><span>Parcial 1</span></a>
@@ -248,6 +248,36 @@
               </div>
             </div>
 
+            <div class="evActCode evActStarter">
+              <div class="evActCodeBar"><i class="ph-bold ph-code"></i> Esqueleto para arrancar — <code>BancoConcurrente.java</code> · completá los <code>// TODO</code></div>
+              <pre>import java.util.concurrent.*;
+
+public class BancoConcurrente {
+    static final BlockingQueue&lt;Integer&gt; cola = new LinkedBlockingQueue&lt;&gt;();
+
+    public static void main(String[] args) throws InterruptedException {
+        final int CAJEROS = 3, CLIENTES = 15;
+        for (int i = 1; i &lt;= CLIENTES; i++) cola.add(i);   // cargar la cola
+
+        Thread[] cajeros = new Thread[CAJEROS];
+        for (int c = 0; c &lt; CAJEROS; c++) {
+            cajeros[c] = new Thread(() -&gt; {
+                Integer cliente;
+                while ((cliente = cola.poll()) != null) {  // poll() es atómico (thread-safe)
+                    int ms = 100 + (int)(Math.random() * 400);   // 100..500 ms
+                    // TODO 1: simular la atención con Thread.sleep(ms)
+                    // TODO 2: loguear "Cajero X atendió al cliente Y en Z ms"
+                    //          (usá Thread.currentThread().getName())
+                }
+            }, "Cajero-" + (c + 1));
+        }
+        // TODO 3: arrancar todos los cajeros (start) y después esperarlos (join)
+        // Parte B (versión ROTA): reemplazá la BlockingQueue por un índice
+        //   compartido sin sincronizar (int siguiente;) para que dos cajeros
+        //   tomen el mismo cliente. Mostrá el bug con el log.
+      </pre>
+            </div>
+
             <div class="evActPartes">
               <div class="evActParte">
                 <div class="evActParteLabel">A &nbsp;·&nbsp; 3 pts</div>
@@ -316,6 +346,45 @@
                 <strong>El pipeline de sensores</strong>
                 <p>Dos <strong>productores</strong> generan lecturas de sensores (ID único + valor + timestamp). Tres <strong>consumidores</strong> procesan las lecturas y registran el tiempo de procesamiento. La cola tiene capacidad máxima de 10 elementos.</p>
               </div>
+            </div>
+
+            <div class="evActCode evActStarter">
+              <div class="evActCodeBar"><i class="ph-bold ph-code"></i> Esqueleto para arrancar — <code>PipelineSensores.java</code> · completá los <code>// TODO</code></div>
+              <pre>import java.util.concurrent.*;
+
+public class PipelineSensores {
+    record Lectura(int id, double valor, long ts) {}
+
+    public static void main(String[] args) {
+        BlockingQueue&lt;Lectura&gt; cola = new LinkedBlockingQueue&lt;&gt;(10);  // capacidad 10
+
+        for (int p = 1; p &lt;= 2; p++) {            // 2 PRODUCTORES
+            final int pid = p;
+            new Thread(() -&gt; {
+                for (int i = 0; i &lt; 20; i++) {
+                    Lectura l = new Lectura(i, Math.random()*100, System.currentTimeMillis());
+                    // TODO 1: cola.put(l)  → bloquea si la cola está LLENA
+                    // TODO 2: loguear "Productor " + pid + " generó id=" + i
+                    // Parte B: bajá el sleep del productor para que genere ~3x más rápido
+                }
+            }, "Productor-" + p).start();
+        }
+
+        for (int c = 1; c &lt;= 3; c++) {            // 3 CONSUMIDORES
+            final int cid = c;
+            new Thread(() -&gt; {
+                try {
+                    while (true) {
+                        // TODO 3: Lectura l = cola.take()  → bloquea si está VACÍA
+                        // TODO 4: simular procesamiento (Thread.sleep) y loguear
+                        //          "Consumidor " + cid + " procesó id=" + l.id()
+                    }
+                } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+            }, "Consumidor-" + c).start();
+        }
+    }
+}
+      </pre>
             </div>
 
             <div class="evActPartes">
@@ -397,6 +466,48 @@
                 <strong>El escenario</strong>
                 <p>5 filósofos sentados en una mesa circular. Entre cada par de filósofos hay un tenedor. Para comer, cada filósofo necesita los <strong>dos tenedores</strong> a sus lados. Cuando no come, piensa.</p>
               </div>
+            </div>
+
+            <div class="evActCode evActStarter">
+              <div class="evActCodeBar"><i class="ph-bold ph-code"></i> Esqueleto para arrancar — <code>Filosofos.java</code> · ya viene la versión ROTA; completá la corrección</div>
+              <pre>import java.util.concurrent.Semaphore;
+
+public class Filosofos {
+    static final int N = 5;
+    static final Semaphore[] tenedores = new Semaphore[N];
+
+    public static void main(String[] args) {
+        for (int i = 0; i &lt; N; i++) tenedores[i] = new Semaphore(1);
+        for (int i = 0; i &lt; N; i++) {
+            final int id = i;
+            new Thread(() -&gt; filosofo(id), "Filosofo-" + id).start();
+        }
+    }
+
+    static void filosofo(int id) {
+        int izq = id, der = (id + 1) % N;
+        try {
+            while (true) {
+                Thread.sleep((long)(Math.random() * 100));   // pensar
+
+                // Parte A (ROTA): toma SIEMPRE izquierdo y luego derecho → deadlock
+                tenedores[izq].acquire();
+                Thread.sleep(10);                 // ← da tiempo a que se cuelgue
+                tenedores[der].acquire();
+
+                System.out.println("Filósofo " + id + " COME");
+                Thread.sleep((long)(Math.random() * 100));   // comer
+
+                // TODO: soltar ambos tenedores (tenedores[izq].release(), ...[der].release())
+
+                // Parte B (CORREGIDA): aplicá UNA estrategia para evitar el deadlock:
+                //   · jerarquía de recursos: tomar primero el tenedor de MENOR id
+                //   · semáforo de sala: solo N-1 filósofos intentan comer a la vez
+            }
+        } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+    }
+}
+      </pre>
             </div>
 
             <h4 class="evActSubtitle">Parte A — La versión rota <span>8 pts</span></h4>
@@ -523,6 +634,23 @@ public static long sumaSecuencial(long[] datos) {
                       </tbody>
                     </table>
                   </div>
+                  <div class="speedCalc">
+                    <div class="speedCalcTitle"><i class="ph-bold ph-calculator"></i> Calculadora — verificá tu tabla (con P=95)</div>
+                    <div class="speedCalcInputs">
+                      <label>Fracción paralelizable (P)
+                        <div class="speedCalcField"><input type="number" class="scP" min="0" max="100" step="1" value="95"> %</div>
+                      </label>
+                      <label>Procesadores (N)
+                        <input type="number" class="scN" min="1" max="4096" step="1" value="4">
+                      </label>
+                    </div>
+                    <div class="speedCalcOut">
+                      <div class="scOut"><span>Amdahl S(N)</span><strong class="scAmdahl">—</strong></div>
+                      <div class="scOut"><span>Eficiencia</span><strong class="scEff">—</strong></div>
+                      <div class="scOut"><span>Gustafson S'(N)</span><strong class="scGust">—</strong></div>
+                      <div class="scOut"><span>Límite N→∞</span><strong class="scMax">—</strong></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -621,6 +749,23 @@ public static long sumaSecuencial(long[] datos) {
                         <tr><td>∞</td><td>?</td><td>?</td></tr>
                       </tbody>
                     </table>
+                  </div>
+                  <div class="speedCalc">
+                    <div class="speedCalcTitle"><i class="ph-bold ph-calculator"></i> Calculadora — verificá tu tabla (s=0.15 → P=85)</div>
+                    <div class="speedCalcInputs">
+                      <label>Fracción paralelizable (P)
+                        <div class="speedCalcField"><input type="number" class="scP" min="0" max="100" step="1" value="85"> %</div>
+                      </label>
+                      <label>Procesadores (N)
+                        <input type="number" class="scN" min="1" max="4096" step="1" value="12">
+                      </label>
+                    </div>
+                    <div class="speedCalcOut">
+                      <div class="scOut"><span>Amdahl S(N)</span><strong class="scAmdahl">—</strong></div>
+                      <div class="scOut"><span>Eficiencia</span><strong class="scEff">—</strong></div>
+                      <div class="scOut"><span>Gustafson S'(N)</span><strong class="scGust">—</strong></div>
+                      <div class="scOut"><span>Límite N→∞</span><strong class="scMax">—</strong></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -782,10 +927,16 @@ public static long sumaSecuencial(long[] datos) {
     </section>
 
     <!-- ── FOOTER NAV ─────────────────────── -->
-    <div class="mfoot">
-      <a class="mfootBtn" href="index.html"><i class="ph ph-arrow-left"></i> Volver al campus</a>
-      <a class="mfootBtn" href="proyecto.html"><i class="ph ph-game-controller"></i> Proyecto Integrador</a>
-    </div>
+    <footer class="mfoot">
+      <a class="mfootBtn mfootPrev" href="index.html">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Volver al</span><span class="mfootBtnTitle">Campus</span></span>
+      </a>
+      <a class="mfootBtn mfootNext mfootPrimary" href="proyecto.html">
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Seguí con el</span><span class="mfootBtnTitle">Proyecto Integrador</span></span>
+        <i class="ph-bold ph-game-controller"></i>
+      </a>
+    </footer>
 
     <script>
       // Reading progress bar
@@ -804,5 +955,6 @@ public static long sumaSecuencial(long[] datos) {
         });
       }
     </script>
+    <script src="assets/js/evalproyecto.js"></script>
   </body>
 </html>

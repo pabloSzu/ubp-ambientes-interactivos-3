@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../assets/css/modulo2.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
     <style>
       :root {
         --accent:        #a855f7;
@@ -33,7 +34,7 @@
       <a class="mhdrBack" href="../index.html">
         <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <span class="mhdrBrand">PAI3</span>
+      <a class="mhdrBrand" href="../index.html" aria-label="Ir al campus PAI3">PAI3</a>
       <span class="mhdrLabel" id="mhdrLabel">Módulo 02 · Interfaces y UX</span>
       <nav class="mhdrNav2">
         <a class="mhdrNavLink" href="#microobjetivos"><i class="ph ph-target"></i><span>Objetivos</span></a>
@@ -47,9 +48,10 @@
             <a class="mhdrDropItem" href="#heuristicas"><i class="ph ph-list-checks"></i> Heurísticas Nielsen</a>
             <a class="mhdrDropItem" href="#accesibilidad"><i class="ph ph-eye"></i> Accesibilidad</a>
             <a class="mhdrDropItem" href="#flujos"><i class="ph ph-flow-arrow"></i> Flujos de navegación</a>
+            <a class="mhdrDropItem" href="#testing"><i class="ph ph-magnifying-glass"></i> Testing de usabilidad</a>
+            <a class="mhdrDropItem" href="#profundizar"><i class="ph ph-youtube-logo"></i> Ver y profundizar</a>
           </div>
         </div>
-        <a class="mhdrNavLink" href="#testing"><i class="ph ph-magnifying-glass"></i><span>Testing</span></a>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-bookmark"></i><span>Glosario</span></a>
         <a class="mhdrNavLink" href="#actividades"><i class="ph ph-pencil-simple"></i><span>Actividades</span></a>
       </nav>
@@ -835,7 +837,7 @@
 
           <div class="m2dtCard">
             <div class="m2dtImgWrap">
-              <img src="../assets/img/imagen-6.png" alt="Figma diseñando una app Fintech" class="m2dtImg" />
+              <img src="../assets/img/imagen-6.jpg" alt="Figma diseñando una app Fintech" class="m2dtImg" />
             </div>
             <div class="m2dtBody">
               <div class="m2dtBadge" style="--db:#0d99ff">
@@ -854,7 +856,7 @@
 
           <div class="m2dtCard">
             <div class="m2dtImgWrap">
-              <img src="../assets/img/imagen-7.png" alt="Claude Artifacts generando una landing page" class="m2dtImg" />
+              <img src="../assets/img/imagen-7.jpg" alt="Claude Artifacts generando una landing page" class="m2dtImg" />
             </div>
             <div class="m2dtBody">
               <div class="m2dtBadge" style="--db:#d97706">
@@ -873,7 +875,7 @@
 
           <div class="m2dtCard">
             <div class="m2dtImgWrap">
-              <img src="../assets/img/imagen-9.png" alt="Excalidraw wireframe de una app móvil" class="m2dtImg" />
+              <img src="../assets/img/imagen-9.jpg" alt="Excalidraw wireframe de una app móvil" class="m2dtImg" />
             </div>
             <div class="m2dtBody">
               <div class="m2dtBadge" style="--db:#6965db">
@@ -900,7 +902,7 @@
             <h3>Comparación: 4 IAs generando el mismo HTML/CSS/JS</h3>
             <p>ChatGPT, Claude, DeepSeek y Gemini reciben el mismo prompt y generan código para la misma interfaz. Tu misión: comparar los resultados aplicando las heurísticas de Nielsen y los principios de UX del módulo.</p>
           </div>
-          <img src="../assets/img/imagen-8.png" alt="Comparación de 4 IAs: ChatGPT, Claude, DeepSeek, Gemini generando código" class="m2tpImg" />
+          <img src="../assets/img/imagen-8.jpg" alt="Comparación de 4 IAs: ChatGPT, Claude, DeepSeek, Gemini generando código" class="m2tpImg" />
           <div class="m2tpCompareGrid">
             <div class="m2tpCompareCard">
               <h4><i class="ph-bold ph-check-circle" style="color:#00e8c6;margin-right:6px"></i> ¿Qué evaluar?</h4>
@@ -1418,18 +1420,76 @@
     </section>
 
     <!-- ── FOOTER NAV ──────────────────────────── -->
-    <footer class="mfoot">
-      <a class="mfootHome" href="../index.html">
-        <i class="ph ph-house-simple"></i> Campus
-      </a>
-      <div class="mfootNav">
-        <a class="mfootBtn" href="modulo1.html">
-          <i class="ph ph-arrow-left"></i> Anterior
-        </a>
-        <a class="mfootBtn" href="modulo.html?m=3">
-          Siguiente <i class="ph ph-arrow-right"></i>
-        </a>
+    <!-- ── VER Y PROFUNDIZAR ──────────── -->
+    <section class="msec" id="profundizar">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-youtube-logo"></i> Ver y profundizar</span>
+          <h2>Videos para fijar los conceptos</h2>
+          <p class="msecSub">Material audiovisual para profundizar en diseño de interfaces y experiencia de usuario. Mirá cada video y resolvé la consigna.</p>
+        </div>
+
+        <div class="mVideoGrid reveal">
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="T0fhv_7CJB8" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/T0fhv_7CJB8/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">La evolución de las interfaces de usuario</h3>
+              <p class="mVideoMeta"><i class="ph ph-clock-countdown"></i> Ojo: el video es de hace ~4 años</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Tené presente que el video ya tiene unos 4 años. Preguntate: ¿cambió algo desde entonces? La IA conversacional y las nuevas generaciones —criadas 100&#37; con pantallas táctiles, muchas sin saber usar una PC porque se criaron con el celular— ¿suponen una nueva etapa en la evolución de la UI? Anotá tu hipótesis y después contrastala preguntándole a una IA.</p>
+              <div class="mVideoPrompt">
+                <span class="mVideoPromptLabel"><i class="ph ph-robot"></i> Pegale esto a una IA</span>
+                <p class="mVideoPromptText" id="m2prompt">Las interfaces evolucionaron de la línea de comandos al mouse y luego al touch. Hoy se crían generaciones 100% táctiles que muchas veces no saben usar una computadora, y la IA conversacional permite "hablarle" a los sistemas. ¿Cómo creés que va a evolucionar la interfaz de usuario en los próximos 10 años? ¿La pantalla táctil le cede el paso a la voz, los gestos o las interfaces neuronales? Dame una predicción con ejemplos concretos.</p>
+                <button class="mVideoPromptCopy" type="button" data-copy="m2prompt"><i class="ph ph-copy"></i> Copiar pregunta</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="VyaHwvPWuZU" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/VyaHwvPWuZU/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Lighthouse: auditá performance y accesibilidad</h3>
+              <p class="mVideoMeta"><i class="ph ph-gauge"></i> Herramienta · Probala vos</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Lighthouse (integrado en Chrome DevTools) mide performance, accesibilidad, SEO y buenas prácticas de cualquier página. Mirá el video para entender qué es y cómo se corre, y después <strong>probalo vos</strong>: elegí un sitio que uses, corré la auditoría y observá los puntajes de Accesibilidad y Performance. Tomá una recomendación concreta que te dé la herramienta y relacionala con las heurísticas o los principios WCAG del módulo.</p>
+              <p class="mVideoNote"><i class="ph ph-warning"></i> <span><strong>Importante:</strong> corré Lighthouse en una <strong>ventana de incógnito</strong>. Las extensiones del navegador alteran la medición y bajan los puntajes de forma engañosa.</span></p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="ABggYX2jOsM" data-start="2142" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/ABggYX2jOsM/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">Las 12 leyes de UI/UX</h3>
+              <p class="mVideoMeta"><i class="ph ph-ruler"></i> Principios de diseño · arranca en el minuto clave</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> El video recorre 12 leyes de UI/UX (el play arranca directo en esa parte). Elegí <strong>3 de las 12</strong> y, para cada una, encontrá un ejemplo real donde se cumpla y otro donde se viole. ¿Cómo impacta cada caso en el tiempo y el esfuerzo del usuario?</p>
+            </div>
+          </article>
+        </div>
       </div>
+    </section>
+
+    <footer class="mfoot">
+      <a class="mfootBtn mfootPrev" href="modulo1.html">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Anterior</span><span class="mfootBtnTitle">Módulo 1</span></span>
+      </a>
+      <a class="mfootHome" href="../index.html">
+        <i class="ph-bold ph-house-simple"></i> Campus
+      </a>
+      <a class="mfootBtn mfootNext mfootPrimary" href="modulo3.html">
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Siguiente</span><span class="mfootBtnTitle">Módulo 3</span></span>
+        <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>

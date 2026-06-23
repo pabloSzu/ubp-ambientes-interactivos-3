@@ -124,19 +124,25 @@ function renderHeuristic(idx) {
     t.setAttribute('aria-selected', i === idx ? 'true' : 'false');
   });
   heuristicPanelEl.innerHTML = `
-    <div class="m2hPanelLeft">
+    <div class="m2hPanelMedia">
+      <button class="m2hImgBtn" type="button" aria-label="Ver ejemplo en imagen de ${h.name}">
+        <span class="m2hImgHead"><i class="ph-bold ph-cursor-click"></i> Hacé clic para ver el ejemplo en imagen</span>
+        <img class="m2hImg" src="../assets/img/leyHeuristica${idx + 1}.jpg" alt="Ejemplo visual de ${h.name}" loading="lazy" onerror="this.closest('.m2hImgBtn').remove()">
+      </button>
+    </div>
+    <div class="m2hPanelText">
       <div class="m2hEye">${h.num} · Heurística de Nielsen</div>
       <div class="m2hTitle">${h.name}</div>
       <div class="m2hDesc">${h.desc}</div>
-    </div>
-    <div class="m2hExamples">
-      <div class="m2hExample">
-        <div class="m2hExampleLabel bad">✗ ${h.bad.label}</div>
-        <div class="m2hExampleText">${h.bad.text}</div>
-      </div>
-      <div class="m2hExample">
-        <div class="m2hExampleLabel good">✓ ${h.good.label}</div>
-        <div class="m2hExampleText">${h.good.text}</div>
+      <div class="m2hExamples">
+        <div class="m2hExample">
+          <div class="m2hExampleLabel bad">✗ ${h.bad.label}</div>
+          <div class="m2hExampleText">${h.bad.text}</div>
+        </div>
+        <div class="m2hExample">
+          <div class="m2hExampleLabel good">✓ ${h.good.label}</div>
+          <div class="m2hExampleText">${h.good.text}</div>
+        </div>
       </div>
     </div>
   `;
@@ -153,6 +159,32 @@ if (heuristicTabsEl) {
     heuristicTabsEl.appendChild(btn);
   });
   renderHeuristic(0);
+}
+
+/* ─── Lightbox para las imágenes de cada heurística ─── */
+if (heuristicPanelEl) {
+  const lb = document.createElement('div');
+  lb.className = 'm2lightbox';
+  lb.innerHTML = '<button class="m2lightboxClose" type="button" aria-label="Cerrar"><i class="ph-bold ph-x"></i></button><img alt="">';
+  document.body.appendChild(lb);
+  const lbImg = lb.querySelector('img');
+  const closeLb = () => lb.classList.remove('open');
+
+  lb.addEventListener('click', (e) => {
+    if (e.target === lb || e.target.closest('.m2lightboxClose')) closeLb();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLb();
+  });
+  heuristicPanelEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.m2hImgBtn');
+    if (!btn) return;
+    const img = btn.querySelector('img');
+    if (!img) return;
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lb.classList.add('open');
+  });
 }
 
 /* ─── Patrones de navegación ─────────────── */

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../assets/css/modulo7.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-one-dark.min.css" />
     <style>
       :root {
@@ -34,7 +35,7 @@
       <a class="mhdrBack" href="../index.html">
         <i class="ph ph-arrow-left"></i> Campus
       </a>
-      <span class="mhdrBrand">PAI3</span>
+      <a class="mhdrBrand" href="../index.html" aria-label="Ir al campus PAI3">PAI3</a>
       <span id="mhdrLabel" class="mhdrLabel">Módulo 07 · HPC &amp; GPU</span>
       <nav class="mhdrNav2">
         <a class="mhdrNavLink" href="#microobjetivos"><i class="ph ph-target"></i><span>Objetivos</span></a>
@@ -48,6 +49,7 @@
             <a class="mhdrDropItem" href="#cloud"><i class="ph ph-cloud"></i>Cloud HPC</a>
             <a class="mhdrDropItem" href="#codigo"><i class="ph ph-code"></i>Código Java</a>
             <a class="mhdrDropItem" href="#laboratorio"><i class="ph ph-flask"></i>Laboratorio</a>
+            <a class="mhdrDropItem" href="#profundizar"><i class="ph ph-youtube-logo"></i> Ver y profundizar</a>
           </div>
         </div>
         <a class="mhdrNavLink" href="#glosario"><i class="ph ph-book-open"></i><span>Glosario</span></a>
@@ -403,7 +405,7 @@
               <div class="m7hwWhenTitle">✅ Usar cuando:</div>
               <ul>
                 <li>Código con mucho control flow (if/else, recursión)</li>
-                <li>Latencia ultra-baja (HFT, gaming en tiempo real)</li>
+                <li>Latencia ultra-baja (HFT —trading de alta frecuencia—, gaming en tiempo real)</li>
                 <li>Tareas secuenciales o de baja paralelización</li>
               </ul>
             </div>
@@ -448,7 +450,7 @@
               </div>
               <div>
                 <span class="m7hwName">FPGA</span>
-                <span class="m7hwSub">Reconfigurable · Intel Agilex</span>
+                <span class="m7hwSub">Field-Programmable Gate Array · Intel Agilex</span>
               </div>
             </div>
             <div class="m7hwBody">
@@ -476,7 +478,7 @@
               </div>
               <div>
                 <span class="m7hwName">ASIC</span>
-                <span class="m7hwSub">Propósito único · Google TPU</span>
+                <span class="m7hwSub">Application-Specific Integrated Circuit · Google TPU</span>
               </div>
             </div>
             <div class="m7hwBody">
@@ -1479,13 +1481,69 @@ public class MatrizBenchmark {
     </section>
 
     <!-- ── FOOTER ─────────────────────────────── -->
+    <!-- ── VER Y PROFUNDIZAR ──────────── -->
+    <section class="msec" id="profundizar">
+      <div class="msecWrap">
+        <div class="msecHead reveal">
+          <span class="msecEye"><i class="ph ph-youtube-logo"></i> Ver y profundizar</span>
+          <h2>Videos para fijar los conceptos</h2>
+          <p class="msecSub">Material audiovisual sobre HPC, GPU y cloud. Mirá cada video y resolvé la consigna.</p>
+        </div>
+
+        <div class="mVideoGrid reveal">
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="nIBu1EFYmBU" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/nIBu1EFYmBU/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Video</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">HPC explicado: cluster, nodo, red y seguridad</h3>
+              <p class="mVideoMeta"><i class="ph ph-stack"></i> La base de la computación de alto rendimiento</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Con tus palabras, definí <strong>nodo</strong>, <strong>cluster</strong> y el rol de la <strong>red de interconexión</strong>. ¿Por qué la red (InfiniBand) es tan crítica en un cluster? Relacionalo con la topología Fat-Tree del módulo.</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="8x1g7yyVhCM" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/8x1g7yyVhCM/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Comparativa</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">FPGA vs CPU vs GPU vs ASIC</h3>
+              <p class="mVideoMeta"><i class="ph ph-cpu"></i> ¿Cuándo usar cada uno?</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Armá una tabla propia con los 4 (CPU, GPU, FPGA, ASIC) y, para cada uno, un caso de uso ideal. ¿Por qué una GPU acelera ciertos cálculos y no otros? Conectalo con la taxonomía de Flynn (SIMD) de M6 y con la comparativa de hardware del módulo.</p>
+            </div>
+          </article>
+
+          <article class="mVideoCard">
+            <button class="mVideoEmbed" data-yt="LYlDYJs5A3I" type="button" aria-label="Reproducir video">
+              <img class="mVideoThumb" loading="lazy" src="https://i.ytimg.com/vi/LYlDYJs5A3I/hqdefault.jpg" alt="" />
+              <span class="mVideoBadge"><i class="ph-fill ph-youtube-logo"></i> Caso real</span>
+              <span class="mVideoPlay"><i class="ph-fill ph-play"></i></span>
+            </button>
+            <div class="mVideoBody">
+              <h3 class="mVideoTitle">NVIDIA Blackwell: el ecosistema completo</h3>
+              <p class="mVideoMeta"><i class="ph ph-graphics-card"></i> GPU · CPU · Red · DPU</p>
+              <p class="mVideoTask"><strong>Consigna:</strong> Un sistema HPC moderno no es solo la GPU. Identificá en el video qué rol cumple cada pieza (GPU, CPU, red, <strong>DPU</strong>) y por qué se necesitan juntas. ¿Qué es una DPU y qué tarea le saca de encima a la CPU?</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <footer class="mfoot">
-      <a href="modulo6.html" class="mfootLink">
-        <i class="ph ph-arrow-left"></i> Módulo 6
+      <a class="mfootBtn mfootPrev" href="modulo6.html">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Anterior</span><span class="mfootBtnTitle">Módulo 6</span></span>
       </a>
-      <a href="../index.html" class="mfootBrand"><i class="ph ph-house-simple"></i> Volver al campus</a>
-      <span class="mfootLink" style="opacity:0.3">
-        Módulo 8 <i class="ph ph-arrow-right"></i>
+      <a class="mfootHome" href="../index.html">
+        <i class="ph-bold ph-house-simple"></i> Campus
+      </a>
+      <span class="mfootBtn mfootNext mfootDisabled" aria-disabled="true">
+        <span class="mfootBtnText"><span class="mfootBtnKicker">Siguiente</span><span class="mfootBtnTitle">Próximamente</span></span>
+        <i class="ph-bold ph-arrow-right"></i>
       </span>
     </footer>
 

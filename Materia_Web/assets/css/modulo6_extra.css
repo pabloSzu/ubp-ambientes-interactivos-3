@@ -54,7 +54,7 @@
   list-style: none; padding: 14px 16px; margin: 0;
   display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--border);
 }
-.m6memList li { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--sub); line-height: 1.5; }
+.m6memList li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: var(--sub); line-height: 1.5; }
 .m6memList i { flex-shrink: 0; margin-top: 1px; }
 .m6memExample { flex: 1; }
 .m6memExLbl {
@@ -75,7 +75,7 @@
 .m6memCompareItem:last-child  { border-left:  1px solid var(--border); }
 .m6memCompareItemAccent { background: var(--accent-sub); text-align: center; }
 .m6memCompareItem strong { display: block; font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
-.m6memCompareItem p { font-size: 12px; color: var(--sub); margin: 0; line-height: 1.6; }
+.m6memCompareItem p { font-size: 14px; color: var(--sub); margin: 0; line-height: 1.6; }
 
 /* ─── Comparación Visual Seq vs Par ─────── */
 .m6cmp {
@@ -158,8 +158,8 @@
 .m6casoCard:hover { border-color: var(--accent-border); transform: translateY(-2px); }
 .m6casoIcon { width: 44px; height: 44px; border-radius: 10px; background: color-mix(in srgb, var(--cc) 12%, transparent); border: 1px solid color-mix(in srgb, var(--cc) 30%, transparent); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--cc); }
 .m6casoTag { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; padding: 3px 9px; border-radius: 5px; width: fit-content; background: var(--accent-sub); border: 1px solid var(--accent-border); color: var(--accent); }
-.m6casoCard strong { font-size: 13px; font-weight: 800; color: var(--text); line-height: 1.4; }
-.m6casoCard p { font-size: 12px; color: var(--sub); line-height: 1.65; margin: 0; flex: 1; }
+.m6casoCard strong { font-size: 15px; font-weight: 800; color: var(--text); line-height: 1.4; }
+.m6casoCard p { font-size: 14px; color: var(--sub); line-height: 1.65; margin: 0; flex: 1; }
 .m6casoStat { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--sub); margin-top: 4px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.07); }
 .m6casoStat span { font-size: 16px; font-weight: 900; color: var(--accent); }
 .m6casosFlow { margin-top: 24px; padding: 20px 24px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--border); }

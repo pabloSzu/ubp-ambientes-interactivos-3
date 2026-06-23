@@ -81,7 +81,7 @@
   color: var(--accent); line-height: 1; letter-spacing: -0.03em;
 }
 .m2heroStatSuf { font-size: clamp(18px, 2.5vw, 28px); font-weight: 900; color: var(--accent); }
-.m2heroStatLabel { font-size: 13px; color: var(--sub); max-width: 150px; line-height: 1.45; }
+.m2heroStatLabel { font-size: 15px; color: var(--sub); max-width: 150px; line-height: 1.45; }
 
 /* ─── Pull quote ─────────────────────────── */
 .m2pullQuote {
@@ -253,7 +253,7 @@
 .m2tlCard:hover { transform: translateY(-4px); box-shadow: 0 8px 28px color-mix(in srgb, var(--ti) 22%, transparent); }
 .m2tlIcon { font-size: 22px; color: var(--ti); margin-bottom: 8px; }
 .m2tlCard h4 { font-size: 13px; font-weight: 900; color: var(--text); margin-bottom: 8px; }
-.m2tlCard p { font-size: 12px; color: var(--sub); line-height: 1.55; margin-bottom: 10px; }
+.m2tlCard p { font-size: 14px; color: var(--sub); line-height: 1.55; margin-bottom: 10px; }
 .m2tlTag {
   display: inline-flex; font-size: 10px; font-weight: 800;
   text-transform: uppercase; letter-spacing: 0.1em; color: var(--ti);
@@ -479,10 +479,16 @@
 .m2hTab.active { border-color: var(--accent-border); background: var(--accent-sub); color: var(--accent); }
 .m2hTabNum { font-size: 11px; font-weight: 900; letter-spacing: 0.04em; opacity: 0.85; }
 .m2heuristicPanel {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr); gap: 26px;
+  align-items: start;
   padding: 28px; border-radius: var(--r);
   border: 1px solid var(--accent-border);
   background: var(--accent-sub); backdrop-filter: blur(20px);
+}
+.m2hPanelText { min-width: 0; order: 1; }
+.m2hPanelMedia { align-self: start; order: 2; }
+@media (max-width: 900px) {
+  .m2heuristicPanel { grid-template-columns: 1fr; gap: 20px; }
 }
 .m2hEye { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 6px; }
 .m2hTitle { font-size: clamp(18px, 2.2vw, 26px); font-weight: 900; color: var(--text); margin-bottom: 10px; letter-spacing: -0.01em; }
@@ -507,7 +513,7 @@
   color: var(--accent); line-height: 1; letter-spacing: -0.04em;
 }
 .m2a11yStatSuf { font-size: 32px; font-weight: 900; color: var(--accent); margin-top: -8px; }
-.m2a11yStatLabel { font-size: 13px; color: var(--sub); text-align: center; max-width: 160px; line-height: 1.4; }
+.m2a11yStatLabel { font-size: 15px; color: var(--sub); text-align: center; max-width: 160px; line-height: 1.4; }
 
 .m2a11yTypes {
   display: grid; grid-template-columns: repeat(4, 1fr);
@@ -660,7 +666,7 @@
 .m2flowType:hover { transform: translateY(-3px); }
 .m2flowTypeIcon { font-size: 24px; color: var(--ft); margin-bottom: 10px; }
 .m2flowType h4 { font-size: 15px; font-weight: 900; color: var(--text); margin-bottom: 8px; }
-.m2flowType p { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m2flowType p { font-size: 15px; color: var(--sub); line-height: 1.6; margin: 0; }
 
 /* ─── Mini-game ──────────────────────────── */
 .m1game {
@@ -772,7 +778,7 @@
 }
 .m1flipFront strong { font-size: 15px; font-weight: 800; color: var(--text); }
 .m1flipBack { transform: rotateY(180deg); background: var(--accent-sub); border-color: var(--accent-border); }
-.m1flipBack p { font-size: 13px; color: var(--sub); line-height: 1.6; margin: 0; }
+.m1flipBack p { font-size: 15px; color: var(--sub); line-height: 1.6; margin: 0; }
 @keyframes flipHintPulse { 0%,100%{opacity:0.5;transform:scale(1);} 50%{opacity:1;transform:scale(1.08);} }
 .m1flipHint { font-size: 12px; color: var(--accent); font-weight: 700; animation: flipHintPulse 2s ease-in-out infinite; }
 .m1flipCard:hover .m1flipFront {
@@ -873,7 +879,7 @@
 }
 .m1rubricPct { font-size: 24px; font-weight: 900; color: var(--accent); text-align: center; line-height: 1.2; }
 .m1rubricInfo strong { display: block; font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
-.m1rubricInfo span { display: block; font-size: 13px; color: var(--sub); margin-bottom: 8px; line-height: 1.5; }
+.m1rubricInfo span { display: block; font-size: 15px; color: var(--sub); margin-bottom: 8px; line-height: 1.5; }
 .m1rubricBar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
 
 /* ─── DESIGN TOOLS ───────────────────────── */
@@ -913,7 +919,7 @@
   color: var(--text); margin: 0 0 7px;
 }
 .m2dtBody p {
-  font-size: 13px; line-height: 1.6;
+  font-size: 15px; line-height: 1.6;
   color: var(--sub); margin: 0 0 12px;
 }
 .m2dtTags { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -1154,3 +1160,88 @@
     align-self: center;
   }
 }
+
+/* ─── Imagen por heurística + lightbox ───────── */
+.m2hImgBtn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: zoom-in;
+  text-align: left;
+  font-family: inherit;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.m2hImgBtn:hover {
+  border-color: var(--accent-border);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+.m2hImgHead {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  background: var(--accent-sub);
+  border-bottom: 1px solid var(--border);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.m2hImgHead i { font-size: 15px; flex-shrink: 0; }
+.m2hImg {
+  display: block;
+  width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+  background: #0b0e16;
+  padding: 10px;
+  transition: filter 0.2s;
+}
+.m2hImgBtn:hover .m2hImg { filter: brightness(1.06); }
+
+.m2lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vw;
+  background: rgba(3, 5, 10, 0.9);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s;
+  cursor: zoom-out;
+}
+.m2lightbox.open { opacity: 1; pointer-events: auto; }
+.m2lightbox img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.m2lightboxClose {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.m2lightboxClose:hover { background: rgba(255, 255, 255, 0.2); }

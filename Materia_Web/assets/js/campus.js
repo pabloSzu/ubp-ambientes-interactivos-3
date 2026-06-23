@@ -414,3 +414,48 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.mhdrDropdown').forEach(d => d.classList.remove('open'));
   });
 });
+
+/* ─── "Ver y profundizar": embed liviano de YouTube ───
+   No carga el iframe hasta el clic (performance). Para agregar
+   un video: poné el ID en data-yt y el thumbnail correspondiente. */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.mVideoEmbed[data-yt]').forEach(btn => {
+    const id = (btn.dataset.yt || '').trim();
+    if (!id) return; // slot vacío
+    btn.addEventListener('click', () => {
+      const ifr = document.createElement('iframe');
+      const start = (btn.dataset.start || '').trim();
+      const startParam = start ? `&start=${encodeURIComponent(start)}` : '';
+      ifr.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0${startParam}`;
+      ifr.title = 'Video de YouTube';
+      ifr.loading = 'lazy';
+      ifr.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      ifr.allowFullscreen = true;
+      btn.replaceWith(ifr);
+    }, { once: true });
+  });
+
+  /* Botón "Copiar pregunta" de los bloques pregunta-para-IA */
+  document.querySelectorAll('.mVideoPromptCopy[data-copy]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const el = document.getElementById(btn.dataset.copy);
+      if (!el) return;
+      const text = el.innerText.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {
+        const r = document.createRange();
+        r.selectNode(el);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(r);
+        try { document.execCommand('copy'); } catch (_) {}
+        sel.removeAllRanges();
+      }
+      const original = btn.innerHTML;
+      btn.innerHTML = '<i class="ph ph-check"></i> ¡Copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = original; btn.classList.remove('copied'); }, 1800);
+    });
+  });
+});
