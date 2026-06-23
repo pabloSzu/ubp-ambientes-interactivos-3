@@ -65,20 +65,17 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
-  filter: blur(110px);
-  will-change: transform;
+  filter: blur(70px);
 }
 .mb1 {
   width: 600px; height: 600px;
   background: radial-gradient(circle, var(--accent-sub) 0%, transparent 70%);
   top: -180px; right: -80px;
-  animation: ba 36s infinite alternate ease-in-out;
 }
 .mb2 {
   width: 500px; height: 500px;
   background: radial-gradient(circle, rgba(155, 111, 255, 0.07) 0%, transparent 70%);
   bottom: 10%; left: -80px;
-  animation: bb 42s infinite alternate ease-in-out;
 }
 @keyframes ba { to { transform: translate(-60px, 80px); } }
 @keyframes bb { to { transform: translate(60px, -60px); } }
@@ -113,9 +110,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   gap: 16px;
   padding: 0 clamp(16px, 3vw, 48px);
   height: 58px;
-  background: rgba(6, 8, 15, 0.86);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  background: rgba(8, 10, 18, 0.96);
 }
 .mhdr::after {
   content: '';
@@ -561,6 +556,8 @@ a.mhdrBrand:hover {
   z-index: 1;
   padding: clamp(40px, 5vw, 64px) clamp(20px, 5vw, 72px);
   border-bottom: 1px solid var(--border);
+  content-visibility: auto;          /* perf: no renderiza secciones fuera de pantalla */
+  contain-intrinsic-size: auto 760px;
 }
 .msec.alt { background: rgba(255, 255, 255, 0.012); }
 

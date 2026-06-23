@@ -71,41 +71,52 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
-  filter: blur(110px);
-  will-change: transform;
+  filter: blur(70px);
 }
 .b1 {
   width: 700px; height: 700px;
   background: radial-gradient(circle, rgba(139, 26, 58, 0.18) 0%, transparent 70%);
   top: -300px; left: -200px;
-  animation: d1 34s infinite alternate ease-in-out;
 }
 .b2 {
   width: 500px; height: 500px;
   background: radial-gradient(circle, rgba(0, 232, 198, 0.1) 0%, transparent 70%);
   top: -150px; right: -100px;
-  animation: d2 40s infinite alternate ease-in-out;
 }
 .b3 {
   width: 460px; height: 460px;
   background: radial-gradient(circle, rgba(128, 96, 255, 0.1) 0%, transparent 70%);
   bottom: 10%; left: 20%;
-  animation: d3 30s infinite alternate ease-in-out;
 }
 @keyframes d1 { to { transform: translate(70px, 100px); } }
 @keyframes d2 { to { transform: translate(-50px, 70px); } }
 @keyframes d3 { to { transform: translate(40px, -50px); } }
 
+/* Perf: no renderiza secciones fuera de pantalla (scroll mucho más fluido) */
+.objSection,
+.modulesSection,
+.compSection,
+.evalSection,
+.bioSection,
+.closing {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+
 /* ─── Cursor ─────────────────────────────── */
 #glow {
   position: fixed;
-  width: 420px; height: 420px;
+  top: 0; left: 0;
+  width: 10px; height: 10px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 232, 198, 0.04), transparent 70%);
+  background: var(--teal);
+  box-shadow:
+    0 0 0 5px rgba(0, 232, 198, 0.18),
+    0 0 14px 2px rgba(0, 232, 198, 0.5);
   pointer-events: none;
-  z-index: 1;
+  z-index: 9999;                 /* por encima de todo: no re-difumina cards */
   transform: translate(-9999px, -9999px);
-  transition: transform 0.16s ease;
+  transition: transform 0.11s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
@@ -130,9 +141,7 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   gap: 20px;
   padding: 0 clamp(20px, 4vw, 56px);
   height: 62px;
-  background: rgba(6, 8, 15, 0.82);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  background: rgba(8, 10, 18, 0.96);
   border: none;
 }
 
@@ -395,7 +404,6 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   background-size: 28px 28px;
   mask-image: radial-gradient(ellipse 90% 70% at 60% 40%, black 20%, transparent 80%);
   pointer-events: none;
-  animation: gridDrift 20s ease-in-out infinite alternate;
 }
 @keyframes gridDrift {
   from { background-position: 0 0; }
@@ -458,11 +466,10 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
     var(--purple) 65%,
     var(--teal)   100%
   );
-  background-size: 250% 250%;
+  background-size: 100% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: accentShift 6s ease-in-out infinite;
 }
 @keyframes accentShift {
   0%   { background-position: 0%   50%; }

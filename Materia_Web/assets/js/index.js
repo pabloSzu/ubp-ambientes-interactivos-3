@@ -1,8 +1,6 @@
-// Cursor glow
-const glow = document.getElementById('glow');
-document.addEventListener('mousemove', e => {
-  glow.style.transform = `translate(${e.clientX - 210}px, ${e.clientY - 210}px)`;
-});
+// Efecto de cursor desactivado: el seguidor con trail siempre se lee "lento"
+// (el ojo lo compara con el cursor real, que es instantáneo). El #glow queda
+// fuera de pantalla, invisible y sin costo de render.
 
 // Scroll reveal
 const io = new IntersectionObserver(entries => {
