@@ -37,15 +37,219 @@ prioridad sobre la brevedad.
 
 ## 3. Alcance
 
-El ebook cubrirá los siete módulos:
+El alcance se regirá por el programa formal de la asignatura. Los temas
+enumerados en el programa constituyen el **piso curricular obligatorio**, no una
+lista cerrada ni un resumen suficiente para redactar el ebook. Cada tema
+principal deberá desplegarse en todos los conceptos previos, subtemas, modelos,
+ejemplos, comparaciones y explicaciones necesarios para que pueda comprenderse
+con profundidad y en relación con el resto de la materia.
 
-1. Interactividad y TV Digital.
-2. Interfaces, Navegabilidad y UX.
-3. Programación Concurrente.
-4. Comunicación entre Procesos e Hilos.
-5. Sincronización y Deadlock.
-6. Paralelismo.
-7. HPC, GPU y Cloud.
+### 3.1 Propósito formativo
+
+La asignatura se sitúa en el cambio del paradigma de comunicación producido por
+la digitalización del video, Internet, la conectividad continua y la
+convergencia entre medios audiovisuales, telecomunicaciones e informática. El
+protocolo IP y las tecnologías de redes funcionan como base tecnológica común
+para medios y plataformas que históricamente evolucionaron por separado.
+
+En este contexto, la programación de aplicaciones interactivas forma parte
+central de la formación de la Licenciatura. El estudiante debe comprender la
+relación entre programación, interfaces, medios, contenidos digitales,
+dispositivos y plataformas; participar conceptualmente en la cadena que va
+desde la idea hasta la ejecución; y desarrollar criterios para crear soluciones
+interactivas innovadoras.
+
+La materia amplía y profundiza aprendizajes de Programación para Ambientes
+Interactivos I y II. Su campo profesional comprende aplicaciones y contenidos
+interactivos para web, dispositivos móviles y otras plataformas, además de
+interfaces gráficas, videojuegos, consolas y realidad virtual como contextos de
+aplicación posibles. Estos contextos no se convertirán automáticamente en
+módulos independientes: se utilizarán como casos y ejemplos cuando contribuyan
+a explicar los contenidos obligatorios del programa.
+
+### 3.2 Objetivos obligatorios
+
+El ebook deberá permitir al estudiante:
+
+1. Conocer el concepto de interactividad y el lenguaje interactivo para
+   transferirlos a situaciones prácticas.
+2. Conocer el estado del arte de la televisión digital interactiva para situarse
+   profesionalmente en el contexto mundial.
+3. Revisar modelos de aplicaciones para TV digital en Argentina y el mundo.
+4. Aproximarse a los conceptos de interfaz, navegabilidad, usuario y experiencia,
+   reconociendo la especificidad de cada uno.
+5. Aprender los conceptos de UX, UI y navegabilidad para avanzar hacia los
+   contenidos de plataformas interactivas.
+6. Desarrollar capacidades para construir programas concurrentes.
+7. Desarrollar capacidades para testear y depurar programas concurrentes.
+8. Comprender los algoritmos paralelos, sus posibilidades y las limitaciones
+   impuestas por las arquitecturas paralelas.
+
+### 3.3 Contenidos mínimos institucionales
+
+Los contenidos mínimos obligatorios son:
+
+- Programación concurrente y paralelismo.
+- Procesos hijos y múltiples hilos de ejecución.
+- Comunicación y sincronización entre procesos e hilos.
+- Algoritmos concurrentes, distribuidos y paralelos.
+- Programación paralela.
+
+La especificación y la matriz maestra deberán comprobar de forma explícita dónde
+y con qué profundidad se desarrolla cada contenido mínimo.
+
+### 3.4 Contenidos obligatorios por módulo
+
+#### Módulo 1 · La interactividad y la TV digital interactiva
+
+Contenidos formales:
+
+- Interactividad.
+- Niveles de interactividad.
+- Aplicaciones para TV digital.
+- Caso DEVENDRA.
+- Interfaces de Netflix, Flow y DIRECTV Play.
+
+El desarrollo incluirá, como subtemas necesarios, el ciclo
+acción–procesamiento–feedback, lenguaje interactivo, participación del usuario,
+tiempos de respuesta, grados o modelos de interactividad, evolución de la TV
+analógica a la digital, estándares y middleware, Ginga, canal de retorno,
+modelos argentinos e internacionales, convergencia con streaming y criterios
+para comparar plataformas. Las tecnologías históricas o actuales deberán
+distinguirse con claridad para no presentar como equivalente lo que pertenece a
+etapas diferentes.
+
+#### Módulo 2 · Interfaces, navegabilidad y experiencia del usuario
+
+Contenidos formales:
+
+- Especificidades de las plataformas móvil y PC.
+- Experiencia de usuario.
+- Navegabilidad e interfaces.
+- Maquetación y uso de Moqups.
+
+El desarrollo incluirá, como subtemas necesarios, diferencias entre UI,
+interacción y UX; usuario, contexto y modelos mentales; affordances y
+significantes; arquitectura de información; jerarquía visual; patrones de
+navegación; flujos de usuario; consistencia; feedback; prevención y recuperación
+de errores; diseño responsive y adaptación entre móvil y escritorio;
+accesibilidad; usabilidad; heurísticas; wireframes, mockups y prototipos; y el
+papel de Moqups dentro de un proceso de diseño. Podrán incorporarse otras
+herramientas actuales para contextualizar, sin desplazar la herramienta indicada
+por el programa.
+
+#### Módulo 3 · Introducción a la programación concurrente
+
+Contenidos formales:
+
+- Introducción a la concurrencia.
+- Creación de procesos hijo.
+- Programación con múltiples hilos de ejecución.
+
+El desarrollo incluirá, como subtemas necesarios, programa, proceso e hilo;
+espacios de memoria y recursos; creación y finalización de procesos; `fork()` y
+su semántica en sistemas que lo soportan; ciclo de vida de los hilos; scheduler,
+preempción y cambio de contexto; concurrencia frente a paralelismo;
+interleavings; estado compartido; atomicidad; condiciones de carrera;
+visibilidad de memoria; creación de hilos en Java mediante `Thread`, `Runnable`
+y APIs de más alto nivel; excepciones, cancelación, pruebas y depuración básica
+de programas concurrentes.
+
+Cuando un concepto del programa dependa de una API propia de otro sistema
+operativo —por ejemplo, `fork()`— se explicará el modelo original y luego su
+relación o diferencia con Java, sin fingir una equivalencia inexistente.
+
+#### Módulo 4 · Comunicación entre procesos e hilos
+
+Contenidos formales:
+
+- Comunicación entre procesos (IPC).
+- Pipes.
+- FIFO.
+- Colas de mensajes.
+- Memoria compartida.
+
+El desarrollo incluirá, como subtemas necesarios, aislamiento y necesidad de
+comunicación; paso de mensajes frente a memoria compartida; comunicación
+sincrónica y asincrónica; bloqueo y buffering; pipes anónimos; FIFO o named
+pipes; colas de mensajes; serialización; memoria compartida y sus riesgos;
+productor–consumidor; backpressure; comunicación entre hilos; mecanismos Java
+aplicables; sockets como extensión necesaria para procesos remotos; y criterios
+de selección según latencia, throughput, persistencia, acoplamiento, seguridad y
+complejidad.
+
+#### Módulo 5 · Sincronización entre procesos e hilos
+
+Contenidos formales:
+
+- Particularidades del filesystem.
+- Semáforos.
+- Mutexes.
+- Variables de condición.
+- Monitores.
+
+El desarrollo incluirá, como subtemas necesarios, sección crítica, exclusión
+mutua, invariantes, atomicidad y orden; mutex y locks; semáforos binarios y
+contadores; variables de condición y espera por predicados; monitores;
+`synchronized`, `wait`, `notify` y `notifyAll`; `Lock` y `Condition`; visibilidad
+y relación con el modelo de memoria de Java; deadlock y condiciones de Coffman;
+prevención, evitación y detección; starvation y livelock; problemas clásicos de
+sincronización; locks de archivos; operaciones atómicas, TOCTOU, renombrado,
+persistencia y otras particularidades relevantes del filesystem.
+
+#### Módulo 6 · Programación en sistemas paralelos
+
+Contenidos formales:
+
+- Clasificación de arquitecturas SISD, SIMD, MISD y MIMD.
+- Sistemas multiprocesador de memoria compartida: sincronización y comunicación
+  entre procesos.
+- Sistemas paralelos de memoria distribuida: sincronización y comunicación
+  mediante paso de mensajes.
+
+El desarrollo incluirá, como subtemas necesarios, taxonomía de Flynn;
+paralelismo de datos y de tareas; descomposición; granularidad; dependencias;
+balanceo de carga; overhead; speedup, eficiencia y escalabilidad; memoria
+compartida, cachés, coherencia, UMA y NUMA; memoria distribuida; paso de mensajes
+y nociones introductorias de MPI; patrones de programación paralela; pools de
+hilos, `ExecutorService`, Fork/Join y streams paralelos en Java; medición y
+comparación de versiones secuenciales y paralelas.
+
+#### Módulo 7 · Computación de alta performance
+
+Contenidos formales:
+
+- Algoritmos de alto requerimiento computacional.
+- Estudio de performance de algoritmos paralelos.
+- Ley de Amdahl.
+- Ley de Gustafson–Barsis.
+
+El desarrollo incluirá, como subtemas necesarios, métricas y metodología de
+benchmarking; latencia, throughput, speedup, eficiencia, escalabilidad fuerte y
+débil; cuellos de botella; fracción serial; costos de comunicación y
+sincronización; interpretación, cálculo, supuestos y límites de las leyes de
+Amdahl y Gustafson–Barsis; CPU y GPU; clusters; interconexión; almacenamiento;
+job scheduling; cloud para cargas de alto rendimiento; y casos de aplicación en
+simulación, renderizado, video, inteligencia artificial y experiencias
+interactivas. GPU, FPGA, ASIC, clusters y cloud funcionarán como arquitecturas y
+contextos para aplicar el análisis de performance, no como sustitutos de los
+contenidos formales.
+
+### 3.5 Regla para ampliar el temario
+
+La incorporación de un subtema adicional deberá cumplir al menos una de estas
+condiciones:
+
+- Es requisito conceptual para comprender un contenido obligatorio.
+- Permite comparar tecnologías o modelos que el programa nombra.
+- Corrige una posible confusión o anacronismo.
+- Conecta el contenido con una API, herramienta o caso profesional pertinente.
+- Es necesario para explicar límites, rendimiento, seguridad o depuración.
+- Construye el puente conceptual hacia otro módulo.
+
+La ampliación no deberá transformar el ebook en una colección enciclopédica sin
+jerarquía. La matriz maestra distinguirá entre contenido obligatorio,
+prerrequisito explicativo, profundización y caso de aplicación.
 
 También incluirá portada, índice general, introducción a la materia y los
 elementos editoriales necesarios para recorrer el contenido como una obra
@@ -336,4 +540,3 @@ El proyecto se considerará terminado cuando:
 - El HTML genere correctamente el PDF integral y los siete PDF individuales.
 - La revisión transversal no detecte vacíos, contradicciones ni saltos
   conceptuales pendientes.
-
