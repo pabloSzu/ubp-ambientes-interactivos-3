@@ -9,6 +9,7 @@ node_modules/
 dist/
 build/
 .vercel/
+.worktrees/
 
 # Documentos internos de planificación (se quedan en disco, no se publican)
 CONTENIDOS_MAESTRO.md
