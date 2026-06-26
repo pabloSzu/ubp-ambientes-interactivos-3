@@ -267,7 +267,7 @@ const MODULES = {
    Inicialización
 ═══════════════════════════════════════════ */
 const params = new URLSearchParams(window.location.search);
-const filenameMatch = window.location.pathname.match(/modulo(\d+)\.html/);
+const filenameMatch = window.location.pathname.match(/modulo0*(\d+)/);
 const id = Number(params.get("m")) || (filenameMatch ? Number(filenameMatch[1]) : 1);
 const data = MODULES[id] || MODULES[1];
 const doc = document.documentElement;
