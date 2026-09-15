@@ -3,8 +3,14 @@
 Repositorio de trabajo de la materia **Programación para Ambientes Interactivos III**
 (Licenciatura en Sistemas de Información, Universidad Blas Pascal).
 
-La materia se entrega como una **experiencia web asincrónica**, no como PDF sueltos.
-El producto final para estudiantes vive en:
+Lo que se entrega formalmente a la universidad son los **entregables** en
+`entregables/` (Contenido, Microobjetivos, Glosario, Actividades, Evaluaciones
+y Presentaciones en Word/PDF/PPTX, por módulo).
+
+Además de eso, existe una **plataforma web complementaria**, construida por
+iniciativa propia como material extra para que los alumnos puedan cursar la
+materia de forma más interactiva. No es lo que se sube a la universidad; es
+un plus. Vive en:
 
 ```text
 Materia_Web/
@@ -43,7 +49,8 @@ Luego abrir: http://localhost:8124/index.html
 - `proyecto.html` — proyecto integrador (trivia multijugador).
 - `assets/` — `css/`, `js/`, imágenes y recursos.
 
-## Subir a la universidad
+## Qué se sube a la universidad
 
-Subir la carpeta `Materia_Web/` completa. El punto de entrada para estudiantes
-es `index.html`.
+Se sube el contenido de `entregables/` (Word/PDF/PPTX por módulo, evaluaciones
+y presentaciones). `Materia_Web/` es un recurso aparte, para los alumnos, y no
+forma parte de la entrega académica.
