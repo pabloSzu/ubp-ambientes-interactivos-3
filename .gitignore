@@ -19,3 +19,21 @@ Programación para Ambientes Interactivos III- Contenido y Módulos.pdf
 
 # Carpeta raíz de código fuente (duplicada en Materia_Web/assets/codigo/)
 trivia-pai3/
+
+# Entregables académicos, scripts de build y artefactos internos
+# (este repo es solo la plataforma web que se despliega en Vercel)
+entregables/
+output/
+scripts/
+docs/
+.superpowers/
+package.json
+package-lock.json
+
+# Archivos sueltos de trabajo, no forman parte de la plataforma web
+PAI3 - materia-completa.html
+PAI3 - materia-completa.pdf
+PLANTILLA.pptx
+ebook-muestra.html
+_mem.png
+_tz.png
